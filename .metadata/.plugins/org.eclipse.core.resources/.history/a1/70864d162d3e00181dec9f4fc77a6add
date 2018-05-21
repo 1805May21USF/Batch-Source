@@ -1,0 +1,9 @@
+package open;
+
+public class math {
+
+	public static void main(String[] args) {
+		String a = "5" + 3;
+	}
+
+}

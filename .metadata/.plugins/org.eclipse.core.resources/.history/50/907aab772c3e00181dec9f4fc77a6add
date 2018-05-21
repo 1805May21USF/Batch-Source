@@ -1,0 +1,10 @@
+package open;
+
+public class math {
+
+	public static void main(String[] args) {
+		String string1 = "TEST";
+		string1.equals(string1.toLowerCase());
+	}
+
+}
