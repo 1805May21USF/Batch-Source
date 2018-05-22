@@ -25,6 +25,7 @@ public class FunStuff {
 		 * String [] args: args to be utilized in method
 		 */
 		System.out.println("I did a thing!");
+<<<<<<< HEAD
 		Person t = new Person("Tim");
 		
 		
@@ -33,3 +34,13 @@ public class FunStuff {
 		
 	}
 }
+=======
+		
+		Person p= new Person("Tim");
+		System.out.println(p);
+		
+		Game g= new Game();
+		Game g2= new Game("MGS","Awesome",20.71);
+		}
+}
+>>>>>>> d85e5520c17cd9adf752007f2227babea7b85d0f
