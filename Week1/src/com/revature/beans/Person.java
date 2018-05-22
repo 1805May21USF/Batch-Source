@@ -57,5 +57,13 @@ public class Person {
 		return "Person [name=" + name + ", age=" + age + ", weight=" + weight + "]";
 	}	
 	
+	public static String getHomePlanet() {
+		return homePlanet;
+	}
+	
+	public int eat() {
+		this.setWeight(weight + 5);
+		return this.getWeight();
+	}
 	
 }
