@@ -1,22 +1,11 @@
 package com.revature.driver;
 
-<<<<<<< HEAD
-public class FunStuff {
-/*
- * Commnts!
- * 
- * Naming Conventions:
- * Classes + Projects: Pascal Case capitialize each word
- * Methods and Variables: Camel Case ex. firstSecondThird
- * Package Names: lowercase separated by periods
- * Constants: ALLCAPS
- */
-	
-//main method is the entry point
-	public static void main(String[] args) {
-		/*
-		 * static don't need an instance/belong to class
-=======
+//Retrieves Person blueprint from com.revature.beans package
+//Java bean - most basic implementation of object in Java
+//ctrl+shift+o to set import statement for classes
+import com.revature.beans.Game;
+import com.revature.beans.Person;
+
 //Packages-Namespace that organizes 
 //a set of related classes and interfaces
 
@@ -27,7 +16,7 @@ public class FunStuff {
  * Naming Conventions
  * Classes and Projects: Pascal Case capitalize each word
  * methods and variables: Camel Case ex. firstSecondThird
- * Package names: lowercase, seperated by periods
+ * Package names: lowercase, separated by periods
  * constants: ALLCAPSLOLZ
  */
 
@@ -40,5 +29,11 @@ public class FunStuff {
 		 * String [] args: args to be utilized in method
 		 */
 		System.out.println("I did a thing!");
+		
+		Person p = new Person("Tim");
+		System.out.println(p);
+		
+		Game g = new Game();
+		Game g2 = new Game("MGS", "Awesome", 20.71);
 	}
 }
