@@ -1,5 +1,6 @@
 package com.revature.driver;
-<<<<<<< HEAD
+import com.revature.beans.*;
+
 //Packages-Namespace that organizes 
 //a set of related classes and interfaces.
 
@@ -14,51 +15,33 @@ public class FunStuff {
 	 * methods and variables: Camel Case ex: firstSecondThird
 	 * Package names: lowercase, seperated by periods
 	 * constants: ALLCAPS
-	 *
 	 */
-	
-	
-	
-	
-	
 	
 	//Main Method is the entry point
 	public static void main(String[] args) {
-		
 		
 		/*
 		 * static don't need an instance / belongs to the class
 		 * void- no return value
 		 * String [] args : arguments to be utilized in method
+		 * 
 		 */
-		// TODO Auto-generated method stub
+
 		System.out.println("Pizza!");
+		
+		//create a new person Tim
+		Person p = new Person("Tim");
+		
+		System.out.print(p.getName() + ": ");
+		System.out.println(p.getWeight());
+		System.out.println(p.getName() + ": " + p.eat());
+		
+		
+		Man m = new Man("Bob");
+		System.out.print(m.getName() + ": ");
+		System.out.println(m.getWeight()) ;
+		m.eat();
+		System.out.print(m.getName() + ": ");
+		System.out.println(m.getWeight());
 	}
-
-=======
-
-//Packages-Namespace that organizes 
-//a set of related classes and interfaces
-
-public class FunStuff {
-/*
- * Comments!
- * 
- * Naming Conventions
- * Classes and Projects: Pascal Case capitalize each word
- * methods and variables: Camel Case ex. firstSecondThird
- * Package names: lowercase, seperated by periods
- * constants: ALLCAPSLOLZ
- */
-
-//main method is the entry point
-	public static void main(String[] args) {
-		/*
-		 * static dont need an instance/ belongs to class
-		 * void: doesn't return anything
-		 * String [] args: args to be utilized in method
-		 */
-		System.out.println("I did a thing!");
-	}
->>>>>>> 3d37a58c25fbc39281d0fb06edfc9199336a10fc
 }
