@@ -1,0 +1,63 @@
+package Com.revature.beans;
+
+public class Persons {
+	//encapsulation (Make something private) (private variables public methods)
+	
+	private static String homePlanet = "Earth";
+	private String name;
+	private int age;
+	private int weight;
+
+	//default constructors
+	public Persons(String name) 
+	{
+	//using the key word this to call the constructor
+	//'this' key is calling the constructor below
+	this(name, 20);
+	}
+
+	//the above 'this' is using this constructor
+	public Persons(String name, int age) 
+	{
+	this.name = name;
+	this.age = age;
+	}
+
+
+
+
+
+	//constructor with parameters
+	public Persons(String name, int age, int weight) {
+	super();
+	this.name = name;
+	this.age = age;
+	this.weight = weight;
+	}
+
+	public String getName() {
+	return name;
+	}
+	public void setName(String name) {
+	this.name = name;
+	}
+	public int getAge() {
+	return age;
+	}
+	public void setAge(int age) {
+	this.age = age;
+	}
+	public int getWeight() {
+	return weight;
+	}
+	public void setWeight(int weight) {
+	this.weight = weight;
+	}
+
+	public String toString() 
+	{
+	return "Persons [Name:"+name+ ", "+"age:"+age+", "+"weight:"+weight+"]";
+	}
+
+
+	}

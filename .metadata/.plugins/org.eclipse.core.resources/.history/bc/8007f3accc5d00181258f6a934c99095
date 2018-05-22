@@ -1,0 +1,42 @@
+package Com.revature.com;
+
+public class FunStuff {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static void main(String[] args) {
+	/*Static doesn't need an instance/ belongs to class
+	 * void: doesn't return anything
+	 * String []
+	 * 
+	 */
+	
+	
+	
+	
+	
+	System.outprintln("I did a thing!");
+	
+	person p= new Person("Tim");
+	System.out.println(p.toString());
+	}
+}
+	
+	
+	
+	
+	
+
+}

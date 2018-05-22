@@ -1,0 +1,33 @@
+package Com.revature.com;
+import Com.revature.beans.Persons;
+//packages-Namespace that organizes
+//a set of related classes and interfaces
+
+public class FunStuff {
+	/*Naming Conventions
+	 * Classes and Projects: Pascal Case capitalize each word
+	 * methods and variables: Came Case ex. FirstSecondThird
+	 * Package names: lowercase, separated by periods
+	 * constants: ALLCAPSLOLZ
+	 */
+	
+	public static void main(String[] args) {
+	/*Static doesn't need an instance/ belongs to class
+	 * void: doesn't return anything
+	 * String [] args: args to be utilized in method
+	 * 
+	 */
+	
+	System.out.println("I did a thing!");
+	
+	Persons p= new Persons("Tim");
+	System.out.println(p);
+	}
+}
+	
+	
+	
+	
+	
+
+

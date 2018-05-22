@@ -1,0 +1,58 @@
+package Com.revature.beans;
+
+public class Personjava {
+	//encapsulation (Make something private) (private variables public methods)
+	private static String homeplanet="earth";
+	private String name;
+	private int age;
+	private int weight;
+	
+	//Constructors
+	/*public Person() {
+		
+	} */
+	//default constructor
+	public Person(String name) {
+	this.setAge(20);
+	Person()
+	}
+	
+	public Person( String name , int age) {
+		
+	}
+	
+	
+	
+	public Person(String name, int age, int weight) {
+		super();
+		this.name = name;
+		this.age = age;
+		this.weight = weight;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public int getWeight() {
+		return weight;
+	}
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+	
+	@override
+	public String toString() {
+		return "Person [name="
+	}
+	
+
+}
