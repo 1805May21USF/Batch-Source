@@ -1,4 +1,7 @@
 package com.revature.gldepaul1;
+package com.revature.beans;
+
+
 
 //Packages-Namespace that organizaes
 //a set of related classes and interfaces
