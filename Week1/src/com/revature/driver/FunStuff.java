@@ -1,5 +1,6 @@
 package com.revature.driver;
 
+import com.revature.beans.Game;
 import com.revature.beans.Person;
 
 public class FunStuff {
@@ -23,6 +24,10 @@ public class FunStuff {
 		System.out.println("I did a thing!");
 		Person p = new Person("Tim");
 		System.out.println(p);
+		
+		Game g = new Game();
+		Game g2 = new Game("MGS","Awesome",20.71);
+		
 		
 	}
 }
