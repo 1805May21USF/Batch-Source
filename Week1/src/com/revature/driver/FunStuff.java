@@ -1,14 +1,8 @@
 package com.revature.driver;
 
-<<<<<<< HEAD
-//Packages  - namespace that organizes a set of related classes and interfaces
-public class FunStuff {
+import com.revature.beans.Game;
+import com.revature.beans.Person;
 
-	public static void main(String[] args) {
-		System.out.println("Hello World");
-	}
-
-=======
 //Packages-Namespace that organizes 
 //a set of related classes and interfaces
 
@@ -19,7 +13,7 @@ public class FunStuff {
  * Naming Conventions
  * Classes and Projects: Pascal Case capitalize each word
  * methods and variables: Camel Case ex. firstSecondThird
- * Package names: lowercase, seperated by periods
+ * Package names: lowercase, separated by periods
  * constants: ALLCAPSLOLZ
  */
 
@@ -31,6 +25,11 @@ public class FunStuff {
 		 * String [] args: args to be utilized in method
 		 */
 		System.out.println("I did a thing!");
+		Person t = new Person("Tim");
+		
+		
+		Game g = new Game();
+		Game g2 = new Game("MGS", "Awesome", 20.99);
+		
 	}
->>>>>>> 3d37a58c25fbc39281d0fb06edfc9199336a10fc
 }
