@@ -1,5 +1,6 @@
 package com.revature.driver;
 
+import com.revature.beans.Person;
 
 public class FunStuff {
 /*
@@ -20,5 +21,8 @@ public class FunStuff {
 		 * String [] args: args to be utilized in method
 		 */
 		System.out.println("I did a thing!");
+		Person p = new Person("Tim");
+		System.out.println(p);
+		
 	}
 }
