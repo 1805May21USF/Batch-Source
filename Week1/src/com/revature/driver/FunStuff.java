@@ -1,15 +1,5 @@
 package com.revature.driver;
 
-<<<<<<< HEAD
-public class FunStuff {
-
-	public static void main(String[] args) {
-		System.out.println("Hey dawg");
-	}
-
-=======
-//Packages-Namespace that organizes 
-//a set of related classes and interfaces
 
 public class FunStuff {
 /*
@@ -31,5 +21,4 @@ public class FunStuff {
 		 */
 		System.out.println("I did a thing!");
 	}
->>>>>>> 3d37a58c25fbc39281d0fb06edfc9199336a10fc
 }
