@@ -1,6 +1,6 @@
 package com.revature.driver;
 
-import com.revature.beans.Game;
+import com.revature.beans.Man;
 import com.revature.beans.Person;
 
 
@@ -26,11 +26,22 @@ public class FunStuff {
 		 * void: doesn't return anything
 		 * String [] args: args to be utilized in method
 		 */
+<<<<<<< HEAD
 		System.out.println("I did a thing!");		
+=======
+	/*	System.out.println("I did a thing!");
+		
+>>>>>>> 3ebf56765f16133b3c08ed32cefd5349d6312136
 		Person p= new Person("Tim");
 		System.out.println(p);
 		
 		Game g= new Game();
-		Game g2= new Game("MGS","Awesome",20.71);
+		Game g2= new Game("MGS","Awesome",20.71);*/
+		Person p= new Person("Tim");
+		System.out.println(p.getWeight());
+		System.out.println(p.eat());
+		Man m= new Man();
+		System.out.println(m.getWeight());
+		System.out.println(m.eat());
 		}
 }
