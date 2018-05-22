@@ -59,8 +59,6 @@ public class Person {
 		return homePlanet;
 	}
 	
-<<<<<<< HEAD
-=======
 	public int eat() {
 		this.setWeight(weight+5);
 		return this.getWeight();
@@ -68,5 +66,4 @@ public class Person {
 	
 	
 	
->>>>>>> 3ebf56765f16133b3c08ed32cefd5349d6312136
 }

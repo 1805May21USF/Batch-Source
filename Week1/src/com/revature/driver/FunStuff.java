@@ -26,12 +26,8 @@ public class FunStuff {
 		 * void: doesn't return anything
 		 * String [] args: args to be utilized in method
 		 */
-<<<<<<< HEAD
-		System.out.println("I did a thing!");		
-=======
 	/*	System.out.println("I did a thing!");
 		
->>>>>>> 3ebf56765f16133b3c08ed32cefd5349d6312136
 		Person p= new Person("Tim");
 		System.out.println(p);
 		
