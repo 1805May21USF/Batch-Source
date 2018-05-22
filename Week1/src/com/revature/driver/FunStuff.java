@@ -31,5 +31,8 @@ public class FunStuff {
 		Man m = new Man();
 		System.out.println(m.getWeight());
 		System.out.println(m.eat());
+		for (int i = 0; i < 23; i++) {
+			
+		}
 	}
 }
