@@ -46,7 +46,7 @@ public class FunStuff {
 		Person p = new Person("Time");
 		System.out.println(p.getWeight());
 		p.eat();
-		System.out.println("Weight after eating" + p.getWeight());
+		System.out.println("Weight after eating: " + p.getWeight());
 		Man m= new Man();
 		System.out.println(m.getWeight());
 		System.out.printf("Weight After eating: %d" , m.eat());
