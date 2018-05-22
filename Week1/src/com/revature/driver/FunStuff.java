@@ -1,17 +1,8 @@
 package com.revature.driver;
 
-<<<<<<< HEAD
-public class FunStuff {
-	
-	//main method is the entry point
-	//static: don't need an instance / belongs to class
-	//void: doesn't return anything
-	//String[] args: arguments to be utilized in method
-	public static void main(String[] args) {
-		System.out.println("Hello");
-	}
+import com.revature.beans.Game;
+import com.revature.beans.Person;
 
-=======
 //Packages-Namespace that organizes 
 //a set of related classes and interfaces
 
@@ -34,6 +25,12 @@ public class FunStuff {
 		 * String [] args: args to be utilized in method
 		 */
 		System.out.println("I did a thing!");
+		
+		Person p = new Person("Tim");
+		System.out.println(p.toString());
+		
+		Game g = new Game();
+		Game g2 = new Game("Metal Gear Solid", "Awesome", 20.17);
 	}
->>>>>>> 3d37a58c25fbc39281d0fb06edfc9199336a10fc
+
 }
