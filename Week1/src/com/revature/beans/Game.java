@@ -27,7 +27,7 @@ public class Game {
 	//code block
 	{
 		//instance code block that executes before constructor
-		//when object is instantiated. Note that we can't reference 
+		//when object is instantiated. Note that we can't 	reference 
 		//the object using "this," since the object isn't instantiated 
 		//yet.
 		System.out.println("Inside code block");
