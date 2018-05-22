@@ -1,5 +1,8 @@
 package com.revature.driver;
 
+import com.revature.beans.Game;
+import com.revature.beans.Person;
+
 //Packages-Namespace that organizes
 //a set of related classes and interfaces
 
@@ -22,6 +25,14 @@ public class FunStuff {
 		 * String [] args: args to be utilized in method
 		 */
 		System.out.println("Revature Rocks!!!");
+		
+		Person p1 = new Person("Tim");
+		System.out.println(p1);
+		
+		Game g1 = new Game();
+		Game g2 = new Game("MGS", "Awesome", 19.99);
+//		System.out.println(g1);
+//		System.out.println(g2);
 	}
 
 }
