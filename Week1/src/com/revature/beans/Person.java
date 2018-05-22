@@ -98,7 +98,10 @@ public class Person {
 		return homePlanet;
 	}
 	
-	
+	public int eat() {
+		this.setWeight(weight+5);
+		return this.getWeight();
+	}
 	
 	
 	
