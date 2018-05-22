@@ -1,8 +1,11 @@
 package com.revature.driver;
 
+<<<<<<< HEAD
 //Retrieves Person blueprint from com.revature.beans package
 //Java bean - most basic implementation of object in Java
 //ctrl+shift+o to set import statement for classes
+=======
+>>>>>>> d85e5520c17cd9adf752007f2227babea7b85d0f
 import com.revature.beans.Game;
 import com.revature.beans.Person;
 
@@ -30,10 +33,19 @@ public class FunStuff {
 		 */
 		System.out.println("I did a thing!");
 		
+<<<<<<< HEAD
 		Person p = new Person("Tim");
 		System.out.println(p);
 		
 		Game g = new Game();
 		Game g2 = new Game("MGS", "Awesome", 20.71);
 	}
+=======
+		Person p= new Person("Tim");
+		System.out.println(p);
+		
+		Game g= new Game();
+		Game g2= new Game("MGS","Awesome",20.71);
+		}
+>>>>>>> d85e5520c17cd9adf752007f2227babea7b85d0f
 }
