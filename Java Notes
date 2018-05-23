@@ -1,0 +1,228 @@
+Why java?
+ - platform independent
+ - great documentation
+ - write once run anywhere
+ - incredibly wide spread = which is good for business
+ - 
+
+ what makes up java?
+  - JVM (Java Virtual Machine)
+  	- compiles code into machine code that processors can understand / portability
+
+  - JRE (Java Runtime Error)
+  	- JVM + librairies
+  	- Everything to run java
+
+  - JDK (Java Development Kit)
+  	- JVM + JRE + Compiler
+  	- Everything to write java
+
+
+Java
+- OOP
+	- Polymorphism
+		* multiple is-a relationship
+	- Inheritance
+		* language allows for hierarchy of objects
+		* no multiple inheritance 
+	- Encapsulation
+		* wrap and protect from outside manipulation
+		* private fields
+		* getters and setters
+	- Abstraction
+		* sometimes this pillar doesnt count depending on who asks
+		* implementation details
+		* "what is does, not how it does it"
+		* toString() is an example
+- unit of programability is object!
+- objects have: states and behaviors
+- states --> variables
+- behaviors --> methods
+
+- Overriding
+	* same name and parameters but different behavior
+
+- Overloading 
+	* same name different parameter
+
+
+Parametric polymorphism
+	- the ability of the programming language to be recognize an expression
+	- equates to a variable type required as an input
+
+Instances variables: property of a specific object
+
+Static variables: property of class shared by objects of that class
+
+Instance methods: behavior of a specific object
+
+Static methods: behavior relative to entire class
+
+Access modifiers: 
+	* private 
+	- class level access
+	- methods, fields, and inner classes
+	- private constructors which is used to make singleton
+
+	* public
+	- least restrictive
+	- any class, in any package
+	- method, fields, and classes
+
+	* protected
+	- accessible through inheritance or within the package
+	- child class of a superclass with a protected method will be able to inherit the protected members of that class
+	- methods and fields ONLY not classes
+	- kind of private
+	- anything outside a given package, protected members of the given package will be private
+
+	* Default / Package private
+	- dont use default as a keyword
+	- package level access
+	- methods fields and classes
+	- importing does not mean you will get access
+
+
+
+Imports
+import com.revature.beans.Persons
+	- the part "com.revature.beans.Persons" --> fully qualified class name
+	- import static com.revature.beans.Persons --> will get (import) the static variables and methods
+
+
+
+
+
+Variable Scope
+- global
+- no!
+- everything must belong to a class or below?
+
+State or class
+- accessible to all members of that class
+
+Method "Local"
+- accessible within the method it was declared in
+
+Block
+- accessible inside a control statement- loop variables
+
+Instances
+- inside a particular object
+- 'this' keyword
+
+
+{} --> defines the scope
+
+
+data types
+	- what is the difference between reference and primitive types?
+		* one is using the stack; object is used on the heap
+
+
+
+Narrowing
+- reducing bit depth
+
+
+Widening
+ - expanding but depth
+ - run out of space
+ - loss of precission 
+
+
+ Wrappers
+  - "wrap" around primitive types
+  - good for utility methods
+  - Primitive: int, short, double
+  - wrapper: Integer, Short, Double
+
+
+ Auto-Boxins
+  - implicit conversion from primitive to wrapper
+
+
+ Auto-unboxins
+  - wrapper to primitive
+
+
+
+ Static vs Final
+ * Static
+ 	- no static classes
+ 	- variables and methods
+
+ * Final
+ 	- Variable: value cant be changed
+ 	- class: cant be extended
+ 	- method: cant be overridden 
+ 	- String wrapper classes are final
+
+
+Control Flow
+ - if statement
+ - provide multiple parts of execution
+ - if(condition)
+ 	{
+ 		logic: if condition is true
+ 	}
+ 	else
+ 	{
+ 		logic: if condition is false
+ 	}
+ 	else if (2nd condition)
+ 	{
+ 		logic: if first condition is true then this will execute.
+ 	}
+ 	finally
+ 	{
+ 		if none of the above executes, this will.
+ 	}
+
+
+Switch Cases
+ - provides multiple paths of execution based on
+ switch(x)
+ {
+ 	case 0:
+ 		//do logic;
+ 		break;
+ 	case 1:
+ 		//do logic;
+ 		break;
+ 	default:
+ 		//if it x doesnt == one of the cases then it will do the logic here
+ 		break;
+
+
+for() loops
+
+
+for each: enhanced for
+for(x : array or collection)
+{
+	do things;
+}
+
+for(customer c: CustomerList)
+{
+	do thing things;
+}
+
+
+- good for moving through a collection
+- more cpu efficient
+- no problems with out-of-bounds
+	- not size dependent
+
+
+Conditional statement
+
+
+
+
+
+
+
+
+
