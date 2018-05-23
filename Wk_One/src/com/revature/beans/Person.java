@@ -49,10 +49,29 @@ public class Person {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
+	
+	public static String getHomePlanet() {
+		return homePlanet;
+	}
+
+	public static void setHomePlanet(String homePlanet) {
+		Person.homePlanet = homePlanet;
+	}
 
 	@Override
 	public String toString() {
 		return "Person [name=" + name + ", age=" + age + ", weight=" + weight + "]";
 	}
 	
+	public int eat() {
+		
+		int newWeight = weight; //newWeight here defines method scope
+		
+		for(int i = 0; i<5; i++) {
+			newWeight++;
+		}
+		
+		this.setWeight(newWeight);
+		return this.getWeight();
+	}
 }
