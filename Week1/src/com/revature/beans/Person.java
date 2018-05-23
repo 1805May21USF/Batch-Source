@@ -53,7 +53,15 @@ public class Person {
 		return homePlanet;
 	}
 	
-	
+	public int eat() {
+		int newWeight=weight;
+		for(int i=1;i<6;i++) {
+			newWeight++;
+		}
+		
+		this.setWeight(newWeight);
+		return this.getWeight();
+	}
 	
 	
 	
