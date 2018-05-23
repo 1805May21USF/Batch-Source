@@ -1,5 +1,9 @@
 package com.test;
 
+import java.util.ArrayList;
+
+import com.revature.exceptions.NewException;
+
 public class TestingEqualsforStuff {
 
 	public static void main(String[] args) {
@@ -11,6 +15,10 @@ public class TestingEqualsforStuff {
 		System.out.println(a == b);
 		System.out.println(sa == sb);
 		System.out.println(a == aI);
+		ArrayList<String> aList = new ArrayList<>();
+		
+		EvenNumber o = new EvenNumber(5);
+		
 	}
 
 }
