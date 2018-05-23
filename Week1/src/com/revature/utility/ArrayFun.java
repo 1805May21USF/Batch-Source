@@ -1,6 +1,9 @@
 package com.revature.utility;
 import java.util.Arrays;
 
+//var args: 1 to many; var args has to be last in parameter list
+//public static String format(String pattern, object... arguments);
+
 public class ArrayFun {
 
 	public static void printMe(int[]a) {
@@ -8,6 +11,10 @@ public class ArrayFun {
 			System.out.println(a[i]);
 		}
 		System.out.println("The End!");
+	}
+	
+	 void printMeBest(int[] yar) throws ArrayIndexOutOfBoundsException{
+		System.out.println(yar[1]);
 	}
 	
 	static void printMeGooder(int[] a) {
@@ -27,13 +34,13 @@ public static void main(String [] Args) {
 	//printMeGooder(arr2);
 //	System.out.println("ArrayLength");777
 	System.out.println(arr2.length);
+	//converts your array to a list.
 	Arrays.asList(arr2);
 	printMeGooder(arr2);
 	System.out.println();
 	Arrays.sort(arr2);
 	printMeGooder(arr2);
-}
-	
+	}
 	
 }
 

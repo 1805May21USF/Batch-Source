@@ -114,7 +114,7 @@ public class Pizza {
 		
 		}//end Switch
 		System.out.println("Do you want another Pizza?");
-		in.nextLine()
+		in.nextLine();
 	}
 
 }
