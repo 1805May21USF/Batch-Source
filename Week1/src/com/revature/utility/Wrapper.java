@@ -1,0 +1,26 @@
+package com.revature.utility;
+
+public class Wrapper {
+	
+	static int myInt = 3;
+	static Integer myInteger = 5;
+	static Double myDouble = 4.34567;
+	static Boolean myBool = true;
+	
+	
+	public static int addEmUp(int a, int b) 
+	{
+		
+		System.out.println(myDouble.intValue());
+		System.out.println(myBool.hashCode(false));
+		return a+b;
+		
+	}
+	
+	
+	public static void main(String [] args)
+	{
+		System.out.println(addEmUp(myInt, myInteger));
+	}
+
+}
