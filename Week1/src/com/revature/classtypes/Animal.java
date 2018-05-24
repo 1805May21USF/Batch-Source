@@ -15,8 +15,9 @@ public class Animal {
 		System.out.println("Double");
 	}
 
-public abstract class Animal {
-	
-	public abstract void breathe();
-	
+	public void breathe() {
+		// TODO Auto-generated method stub
+		
+	}
 }
+
