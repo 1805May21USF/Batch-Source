@@ -1,5 +1,6 @@
 package com.revature.classtypes;
 
+<<<<<<< HEAD
 public class Animal {
 
 	public static void main(String[] args) {
@@ -13,4 +14,10 @@ public class Animal {
 		System.out.println("Double");
 	}
 
+=======
+public abstract class Animal {
+	
+	public abstract void breathe();
+	
+>>>>>>> 51758b88e2983a08995e0ccd8d01b4e4fe0b58d9
 }
