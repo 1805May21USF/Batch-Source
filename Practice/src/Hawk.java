@@ -19,9 +19,6 @@ class Raptor extends Bird {
     static { System.out.println("r4"); }
 }
 
-class Poopie extends Raptor {
-	static { System.out.println("Poop");}
-}
 public class Hawk extends Raptor {
 
     public static void main(String[] args) {
