@@ -22,9 +22,13 @@ public class OverloadedMethods {
 	
 	public void print(String str) {
 		System.out.println(str);
-	}
+	} 
 	
 	public void print(String str, String str2) {
 		System.out.println(str + " " + str2);
 	}
 	
+	public void print(String str, String str3) {
+		System.out.println(str);
+	}
+}
