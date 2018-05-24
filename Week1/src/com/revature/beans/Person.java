@@ -54,7 +54,12 @@ public class Person {
 	}
 	
 	public int eat() {
-		this.setWeight(weight+5);
+		int newWeight=weight;
+		for(int i=1;i<6;i++) {
+			newWeight++;
+		}
+		
+		this.setWeight(newWeight);
 		return this.getWeight();
 	}
 	
