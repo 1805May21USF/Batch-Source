@@ -7,11 +7,18 @@ public class FunScan {
 	
 	public static void printMe() {
 		String contents;
+		String contents1;
 		System.out.println("What would you like to print?");
-		contents= sc.next();
+		contents= sc.nextLine();
+		
+		System.out.println("What would you like also to print?");
+		
+		contents1= sc.nextLine();
+		
 		
 		//sc.close();
 		System.out.println(contents);
+		System.out.println(contents1);
 		//sc.reset();
 		System.out.println("test");
 		System.out.println("again");
