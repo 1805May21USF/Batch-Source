@@ -3,6 +3,7 @@ package com.revature.driver;
 import com.revature.beans.Game;
 import com.revature.beans.Man;
 import com.revature.beans.Person;
+import com.revature.random.ControlMe;
 
 //Packages-Namespace that organizes 
 //a set of related classes and interfaces
@@ -30,7 +31,6 @@ public class FunStuff {
 		/*		System.out.println("I did a thing!");
 		Person p = new Person("Peter");
 		System.out.println(p.toString());
-		
 		Game g = new Game();
 		Game g2 = new Game("MGS","Awesome",20.71);*/
 		
@@ -40,6 +40,10 @@ public class FunStuff {
 		Man m = new Man();
 		System.out.println(m.getWeight());
 		System.out.println(m.eat());
+		
+		ControlMe cm = new ControlMe();
+		cm.start();
+		System.out.println(cm.toString());
 
 	}
 }
