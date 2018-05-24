@@ -46,7 +46,8 @@ public class CompareMain {
 		
 		System.out.println("=================================");
 		
-		Collections.sort(studentList, (arg0, arg1) -> {return arg0.getName().compareTo(arg1.getName());});
+		Collections.sort(studentList, (arg0, arg1) 
+				-> {return arg0.getName().compareTo(arg1.getName());});
 		
 		for(Student s : studentList){
 			
