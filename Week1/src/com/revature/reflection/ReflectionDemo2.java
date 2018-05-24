@@ -25,6 +25,9 @@ public class ReflectionDemo2 {
 
 }
 class A{
+	static void potato() {
+		
+	}
 	public void a1() {
 		
 	}

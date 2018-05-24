@@ -6,7 +6,7 @@ public class ReflectionDemo1 {
 
 	public static void main(String[] args) {
 		try {
-			Class<?> c = Class.forName("java.awt.Dimension");
+			Class<?> c = Class.forName("com.revature.reflection.ReflectionDemo1");
 			System.out.println("Constructors:");
 			Constructor<?> constructors[]=c.getConstructors();
 			for(int i=0;i<constructors.length; i++) {

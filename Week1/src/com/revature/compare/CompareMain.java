@@ -26,7 +26,7 @@ public class CompareMain {
 		
 		System.out.println("=================================");
 		
-		Collections.sort(studentList);
+		Collections.sort(studentList,(arg1,arg2)->{return arg1.studentID-arg2.studentID; });
 		
 		for(Student s : studentList){
 			
@@ -47,6 +47,16 @@ public class CompareMain {
 		System.out.println("=================================");
 		
 		Collections.sort(studentList, (arg0, arg1) -> {return arg0.getName().compareTo(arg1.getName());});
+		
+		for(Student s : studentList){
+			
+			System.out.println(s);
+			
+		}
+		
+		System.out.println("=================================");
+		
+		Collections.sort(studentList, (arg0, arg1) -> {return arg0.getFavoriteFood().compareTo(arg1.getFavoriteFood());});
 		
 		for(Student s : studentList){
 			

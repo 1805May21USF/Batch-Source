@@ -1,8 +1,8 @@
 package com.revature.compare;
 
-public class Student  implements Comparable<Student>{
+public class Student {// implements Comparable<Student>{
 	//method 1 from notes- comparing by StudentID
-	@Override
+	//@Override
 	public int compareTo(Student arg0) {
 		return this.getStudentID() - arg0.getStudentID();
 	}
