@@ -39,13 +39,12 @@ public class Consumer implements Runnable{
 			e1.printStackTrace();
 		}
 		
-		try {
+		/*try {
 			queue.put(msg);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}*/		
 	}
 
 }
