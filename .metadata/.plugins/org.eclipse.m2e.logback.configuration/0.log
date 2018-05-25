@@ -912,3 +912,27 @@ Caused by: org.apache.maven.model.building.ModelBuildingException: 1 problem was
 	at org.apache.maven.model.building.DefaultModelBuilder.build(DefaultModelBuilder.java:273) ~[maven-model-builder-3.3.9.jar:3.3.9]
 	at org.apache.maven.project.DefaultProjectBuilder.build(DefaultProjectBuilder.java:161) ~[maven-core-3.3.9.jar:3.3.9]
 	... 15 common frames omitted
+2018-05-25 14:02:25,772 [Worker-1] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2018-05-25 14:03:20,863 [Worker-7] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.revature:ThatsSoMaven:0.0.1-SNAPSHOT @ C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven\pom.xml.
+2018-05-25 14:03:21,478 [Worker-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/junit/junit5-engine/5.0.0-ALPHA/junit5-engine-5.0.0-ALPHA.jar
+2018-05-25 14:03:21,588 [Worker-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/junit/junit5-engine/5.0.0-ALPHA/junit5-engine-5.0.0-ALPHA.jar
+2018-05-25 14:03:21,604 [Worker-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/junit/junit5-api/5.0.0-ALPHA/junit5-api-5.0.0-ALPHA.jar
+2018-05-25 14:03:22,188 [Worker-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/junit/junit5-api/5.0.0-ALPHA/junit5-api-5.0.0-ALPHA.jar
+2018-05-25 14:03:22,202 [Worker-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/opentest4j/opentest4j/1.0.0-ALPHA/opentest4j-1.0.0-ALPHA.jar
+2018-05-25 14:03:22,309 [Worker-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/opentest4j/opentest4j/1.0.0-ALPHA/opentest4j-1.0.0-ALPHA.jar
+2018-05-25 14:03:22,318 [Worker-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/junit/junit-commons/5.0.0-ALPHA/junit-commons-5.0.0-ALPHA.jar
+2018-05-25 14:03:22,538 [Worker-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/junit/junit-commons/5.0.0-ALPHA/junit-commons-5.0.0-ALPHA.jar
+2018-05-25 14:03:22,550 [Worker-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/org/junit/junit-engine-api/5.0.0-ALPHA/junit-engine-api-5.0.0-ALPHA.jar
+2018-05-25 14:03:23,108 [Worker-7] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/org/junit/junit-engine-api/5.0.0-ALPHA/junit-engine-api-5.0.0-ALPHA.jar
+2018-05-25 14:03:27,971 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2018-05-25 14:03:27,971 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven\src\main\resources
+2018-05-25 14:03:27,971 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2018-05-25 14:03:27,971 [Worker-7] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven\src\test\resources
+2018-05-25 14:03:30,001 [Worker-15] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2018-05-25 14:03:30,001 [Worker-15] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven\src\main\resources
+2018-05-25 14:03:30,002 [Worker-15] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2018-05-25 14:03:30,002 [Worker-15] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven\src\test\resources
+2018-05-25 14:07:00,563 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2018-05-25 14:07:00,563 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven\src\main\resources
+2018-05-25 14:07:00,570 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2018-05-25 14:07:00,570 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven\src\test\resources
