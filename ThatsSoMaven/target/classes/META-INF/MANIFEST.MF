@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: tiffa
 Build-Jdk: 1.8.0_171
+=======
+Built-By: Kitten
+Build-Jdk: 1.8.0_144
+>>>>>>> ec5f11550b6b3458c1acdc08a12362358b94e466
 Created-By: Maven Integration for Eclipse
 
