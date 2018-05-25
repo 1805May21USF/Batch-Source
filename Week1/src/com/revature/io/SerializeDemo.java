@@ -17,7 +17,7 @@ public class SerializeDemo {
 		/*
 		 * The file that data is being read FROM must exist already.
 		 */
-		System.out.println(io.readInputStreamContents());
+		//System.out.println(io.readInputStreamContents());
 		
 		/* Reading and writing Collections
 		 * This is using com.revature.beans.Person
@@ -26,14 +26,15 @@ public class SerializeDemo {
 		 */
 		
 		
-	/*	Person p = new Person("Matt");
+		/*Person p = new Person("Matt");
 		IOWithCollections.personList.add(p);
 		Person s= new Person("Gavin");
 		IOWithCollections.personList.add(s);
 		
 		IOWithCollections.writePersonFile();*/
 		
-		/*IOWithCollections.readPersonFile();
-		System.out.println(IOWithCollections.personList.get(0).getName());*/
+		IOWithCollections.readPersonFile();
+		System.out.println(IOWithCollections.personList.get(0).getName());
+		System.out.println(IOWithCollections.personList.get(1).getName());
 	}
 }
