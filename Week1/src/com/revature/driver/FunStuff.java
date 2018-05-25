@@ -1,12 +1,11 @@
 package com.revature.driver;
 
-<<<<<<< HEAD
 //Retrieves Person blueprint from com.revature.beans package
 //Java bean - most basic implementation of object in Java
 //ctrl+shift+o to set import statement for classes
-=======
->>>>>>> d85e5520c17cd9adf752007f2227babea7b85d0f
+
 import com.revature.beans.Game;
+import com.revature.beans.Man;
 import com.revature.beans.Person;
 
 //Packages-Namespace that organizes 
@@ -27,25 +26,54 @@ public class FunStuff {
 	public static void main(String[] args) {
 		/*
 		 * static dont need an instance/ belongs to class
->>>>>>> 3d37a58c25fbc39281d0fb06edfc9199336a10fc
 		 * void: doesn't return anything
 		 * String [] args: args to be utilized in method
 		 */
-		System.out.println("I did a thing!");
+		//System.out.println("I did a thing!");
 		
-<<<<<<< HEAD
-		Person p = new Person("Tim");
-		System.out.println(p);
-		
-		Game g = new Game();
+		/*Game g = new Game();
 		Game g2 = new Game("MGS", "Awesome", 20.71);
-	}
-=======
-		Person p= new Person("Tim");
-		System.out.println(p);
 		
-		Game g= new Game();
-		Game g2= new Game("MGS","Awesome",20.71);
+		Person p = new Person("Tim");
+		
+		//System.out.println(p);
+		System.out.println(p.getWeight());
+		System.out.println(p.eat());
+		
+		Man m = new Man();
+		
+		System.out.println(m.getWeight());
+		System.out.println(m.eat());*/
+		/*int x = 0;
+		
+		for(int i = 0; i < 5; i++) 
+		{
+			x++;
 		}
->>>>>>> d85e5520c17cd9adf752007f2227babea7b85d0f
+		
+		switch(x)
+		{
+			case 5:
+				x++;
+			default:
+				x--;
+		}
+		
+		do
+		{
+			x++;
+			if(x == 10)
+			{
+				x = 0;
+			}
+		}while(x > 5);
+		
+		while(x != 5)
+		{
+			
+			x++;
+		}
+		
+		System.out.println(x);*/
+	}
 }
