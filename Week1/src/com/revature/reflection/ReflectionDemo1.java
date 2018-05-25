@@ -1,6 +1,6 @@
 package com.revature.reflection;
 //Demonstrate reflection
-import java.lang.reflect.*;
+import java.lang.reflect.*; //imports all the members of reflection
 
 public class ReflectionDemo1 {
 
