@@ -1,10 +1,6 @@
 package com.revature.driver;
 
-<<<<<<< HEAD
-import com.revature.beans.Game;
-=======
 import com.revature.beans.Man;
->>>>>>> 3ebf56765f16133b3c08ed32cefd5349d6312136
 import com.revature.beans.Person;
 
 //Packages-Namespace that organizes 
@@ -28,19 +24,6 @@ public class FunStuff {
 		 * void: doesn't return anything
 		 * String [] args: args to be utilized in method
 		 */
-<<<<<<< HEAD
-		
-		
-		System.out.println("I did a thing!");
-		Person p = new Person("Peter");
-		System.out.println(p.toString());
-		
-		Game g = new Game();
-		Game g2 = new Game("MGS","Awesome",20.71);
-		
-
-	}
-=======
 	/*	System.out.println("I did a thing!");
 		
 		Person p= new Person("Tim");
@@ -55,5 +38,4 @@ public class FunStuff {
 		System.out.println(m.getWeight());
 		System.out.println(m.eat());
 		}
->>>>>>> 3ebf56765f16133b3c08ed32cefd5349d6312136
 }
