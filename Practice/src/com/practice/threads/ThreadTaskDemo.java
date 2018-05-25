@@ -33,9 +33,10 @@ class PrintChar implements Runnable {
 		times = t;
 	}
 
-	@Override /**
-				 * Override the run() method to tell the system what task to perform
-				 */
+	/**
+	 * Override the run() method to tell the system what task to perform
+	 */
+	@Override
 	public void run() {
 		for (int i = 0; i < times; i++) {
 			System.out.print(charToPrint);
