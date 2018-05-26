@@ -6,8 +6,10 @@ import java.util.Arrays;
 import com.revature.questions.QuestionEight;
 import com.revature.questions.QuestionEighteen;
 import com.revature.questions.QuestionEleven;
+import com.revature.questions.QuestionFifteen;
 import com.revature.questions.QuestionFive;
 import com.revature.questions.QuestionFour;
+import com.revature.questions.QuestionFourteen;
 import com.revature.questions.QuestionNine;
 import com.revature.questions.QuestionNineteen;
 import com.revature.questions.QuestionOne;
@@ -19,6 +21,7 @@ import com.revature.questions.QuestionTen;
 import com.revature.questions.QuestionThirteen;
 import com.revature.questions.QuestionThree;
 import com.revature.questions.QuestionTwelve;
+import com.revature.questions.QuestionTwenty;
 import com.revature.questions.QuestionTwo;
 import com.revature.util.Employee;
 
@@ -105,32 +108,38 @@ public class Main {
 		
 		//Question Eleven
 		QuestionEleven q11 = new QuestionEleven();
+		System.out.println("Question Eleven: ");
 		q11.run();
 		System.out.println(linebreak);
 		
 		//Question Twelve
 		QuestionTwelve q12 = new QuestionTwelve();
+		System.out.println("Question Twelve: ");
 		q12.run();
 		System.out.println(linebreak);
 		
 		
 		//Question Thirteen
 		QuestionThirteen q13 = new QuestionThirteen();
+		System.out.println("Question Thirteen: ");
 		q13.run();
 		System.out.println(linebreak);
 		
 		//Question Fourteen
 		QuestionFourteen q14 = new QuestionFourteen();
+		System.out.println("Question Fourteen: ");
 		q14.run();
 		System.out.println(linebreak);
 		
 		//Question Fifteen
 		QuestionFifteen q15 = new QuestionFifteen();
+		System.out.println("Question Fifteen: ");
 		q15.run();
 		System.out.println(linebreak);
 		
 		//Question Sixteen
 		QuestionSixteen q16 = new QuestionSixteen();
+		System.out.println("Question Sixteen: ");
 		try {
 				q16.run(args[0]);
 		}
@@ -141,17 +150,26 @@ public class Main {
 		
 		//Question Seventeen
 		QuestionSeventeen q17 = new QuestionSeventeen();
+		System.out.println("Question Seventeen: ");
 		System.out.println(q17.run());
 		System.out.println(linebreak);
 		
 		//Question Eighteen
 		QuestionEighteen q18 = new QuestionEighteen();
+		System.out.println("Question Eighteen: ");
 		q18.run();
 		System.out.println(linebreak);
 		
 		//Question Nineteen
 		QuestionNineteen q19 = new QuestionNineteen();
+		System.out.println("Question Nineteen: ");
 		q19.run();
+		System.out.println(linebreak);
+		
+		//Question Twenty
+		QuestionTwenty q20 = new QuestionTwenty();
+		System.out.println("Question Twenty: ");
+		q20.run();
 		System.out.println(linebreak);
 	}
 

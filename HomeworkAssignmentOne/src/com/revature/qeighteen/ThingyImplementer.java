@@ -18,7 +18,7 @@ public class ThingyImplementer implements Thingy{
 	public String toYellyCase(String s) {
 		char[] chars = s.toCharArray();
 		for(int i = 0;i<chars.length;i++) {
-			chars[i]=Character.toUpperCase(chars[i]);
+			chars[i] = Character.toUpperCase(chars[i]);
 		}
 		return new String(chars);
 	}
