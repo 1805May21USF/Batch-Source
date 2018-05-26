@@ -109,7 +109,7 @@ public class CoreJavaDriver {
 		for (int i = 0; i < 3; i++)
 			Switch.switchProblem(i);
 	}
-	//Problem 15: Calculate Inteface
+	//Problem 15: Calculate Interface
 	private static void problem15() {
 		System.out.println("Calculate: ");
 		Calculation cal = new Calculation();
@@ -155,7 +155,7 @@ public class CoreJavaDriver {
 	}
 	//Problem 20: FileIO
 	private static void problem20() {
-		FileIO.fileIO();
+		FileIO.fileIO();	
 	}
 	
 
@@ -209,6 +209,9 @@ public class CoreJavaDriver {
 				case 15:
 					problem15();
 					break;
+/*				case 16:
+					problem16();
+					break;*/
 				case 17: 
 					problem17();
 					break;

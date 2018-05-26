@@ -32,10 +32,14 @@ public class ArrayListStuff {
 		//Remove Primes
 		bd = new StringBuilder();
 		ArrayList<Integer> primes = Primes.primes(ints);
-		for (int i : ints) {
-			if (!primes.contains(i))
-				bd.append(i);
+		ArrayList<Integer> toRemove = new ArrayList();
+		for (Integer i : ints) {
+			if (primes.contains((int)i))
+				toRemove.add(i);
+			else
+				bd.append(i + " ");
 		}
-		System.out.println("Without Primes: " + bd.toString());
+		ints.removeAll(toRemove);
+		System.out.println("Without Primes: " + bd);
 	}
 }
