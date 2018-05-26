@@ -6,6 +6,10 @@ public class QuestionFive {
 		
 	}
 	
+	/*
+	 * Just indexes to the given index and
+	 * saves it to a new array.
+	 */
 	public String run(String s,int idx) {
 		char[] y = s.toCharArray();
 		char[] toret = new char[idx+1];

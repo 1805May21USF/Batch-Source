@@ -5,6 +5,16 @@ public class QuestionThree {
 	public QuestionThree(){
 		
 	}
+	
+	/*
+	 * Swaps about the midpoint of the word.
+	 * Somehow works for even and odd sized words,
+	 * dont ask me how.
+	 * 
+	 * NOTE: The swap used stores data without using
+	 * another temporary variable through integer 
+	 * arithmetic.
+	 */
 	public String run(String s) {
 		char[] y = s.toCharArray();
 		int midpoint =  y.length/2;

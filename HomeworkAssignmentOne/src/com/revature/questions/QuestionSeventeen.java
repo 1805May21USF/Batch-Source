@@ -7,6 +7,9 @@ public class QuestionSeventeen {
 	public QuestionSeventeen() {
 		
 	}
+	/*
+	 * Just uses scanner to get some values and multiply them.
+	 */
 	public double run() {
 		
 		Scanner input = new Scanner(System.in);

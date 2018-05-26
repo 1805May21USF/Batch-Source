@@ -6,6 +6,9 @@ public class QuestionFour {
 		
 	}
 	
+	/*
+	 *Simple for loop for multiplying
+	 */
 	public void run(int n) {
 		int val = 1;
 		for(int i = 1 ; i <= n; i++) {

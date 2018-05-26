@@ -6,6 +6,11 @@ public class QuestionOne {
 		
 	}
 	public void run(int[] toSort) {
+		
+		//A simple bubblesort
+		//swaps values that are out of order
+		//Ends when a pass has no swaps
+		
 		boolean isDone = false;
 		while(!isDone) {
 			boolean didSwap = false;

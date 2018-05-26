@@ -10,6 +10,11 @@ public class QuestionSeven {
 	public QuestionSeven() {
 		
 	}
+	/*
+	 * Check the comparator classes in com.revature.util.
+	 * They should probably be in com.revature.qseven.
+	 * 
+	 */
 	public void run(ArrayList<Employee> e) {
 		System.out.println("Sorted by name:");
 		ArrayList<Employee> b = e;

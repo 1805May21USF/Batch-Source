@@ -5,23 +5,26 @@ public class QuestionThirteen {
 	public QuestionThirteen() {
 		
 	}
+	
+	/*
+	 * It's just an alternating sequence of ones and zeros
+	 * with each row length being the row count + 1. Uses a toggle
+	 * to switch between zero and one.
+	 */
 	public void run() {
 		
-		for(int i = 0;i<4;i++) {
-			switch(i) {
-			case 0:
-				System.out.println("0");
-				break;
-			case 1:
-				System.out.println("1 0");
-				break;
-			case 2:
-				System.out.println("1 0 1");
-				break;
-			case 3:
-				System.out.println("0 1 0 1");
-				break;
+		boolean toggle = true;
+		for(int i = 1;i<5;i++) {
+			for(int j = 0;j<i;j++) {
+				if(toggle) {
+					System.out.print(0 + " ");
+				}
+				else {
+					System.out.print(1 + " ");
+				}
+				toggle = !toggle;
 			}
+			System.out.println();
 		}
 	}
 

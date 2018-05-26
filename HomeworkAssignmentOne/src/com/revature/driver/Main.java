@@ -1,3 +1,16 @@
+/*----------------------------------------------------------------------------------
+ * Name:Corwin Lester
+ * 
+ * Project: Homework Assignment 1
+ * 
+ * Desc: The main body of homework assignment one. No key inputs were coded
+ * except when explicitly specified. This project was run with "fiver" as an argument
+ * to the main function via ecplipse run configurations.
+ * 
+ * All question solution comments are in their respective question classes. 
+ * 
+ -----------------------------------------------------------------------------------*/
+
 package com.revature.driver;
 
 import java.util.ArrayList;

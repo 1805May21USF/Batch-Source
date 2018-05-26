@@ -6,6 +6,13 @@ public class QuestionNine {
 	public QuestionNine() {
 		
 	}
+	
+	/*
+	 * A simple prime detection. Go through each number, then
+	 * go through all the numbers leading up to it testing using modulo.
+	 * if it is zero then the number is not prime.
+	 */
+	
 	public void run() {
 		ArrayList<Integer> nums = new ArrayList<Integer>();
 		
