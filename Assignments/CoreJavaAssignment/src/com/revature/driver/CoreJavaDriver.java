@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 import com.revature.floats.FloatClass;
+import com.revature.problem.Arguments;
 import com.revature.problem.ArrayListStuff;
 import com.revature.problem.BubbleSort;
 import com.revature.problem.Calculation;
@@ -40,23 +41,26 @@ public class CoreJavaDriver {
 	//Problem 3: Reverse
 	private static void problem3() {
 		String strRev = "String to Reverse!";
-		System.out.println("Reverse: '" + strRev + "' becomes '" + Reverse.reverse(strRev) + "'");
+		System.out.println("String: " + strRev);
+		System.out.println("Reversed: " + Reverse.reverse(strRev));
 	}
 	//Problem 4: N Factorial
 	private static void problem4() {
-		int nFact = Factorial.factorial(4);
-		Factorial.print(nFact);
-		System.out.println();
+		int n = 4;
+		int nFact = Factorial.factorial(n);
+		Factorial.print(nFact, n);
 	}
 	//Problem 5: Substring
 	private static void problem5() {
 		String strSub = "Rolltide yall";
-		System.out.println("Substring: '" + strSub + "' becomes '" + Substring.substring(strSub, 7) + "'");
+		int idx = 7;
+		System.out.println("String: " + strSub);
+		System.out.println("Substring(" + idx + "): " + Substring.substring(strSub, idx));
 	}
 	//Problem 6: Even
 	private static void problem6() {
 		int numEven = 8;
-		System.out.println("Even: " + numEven + " is " + Even.even(numEven));
+		System.out.println(numEven + " is " + Even.even(numEven));
 	}
 	//Problem 7: Comparator
 	private static void problem7() {
@@ -83,7 +87,7 @@ public class CoreJavaDriver {
 	private static void problem10() {
 		int num1 = 5;
 		int num2 = 7;
-		System.out.println("Between " + num1 + " and " + num2);
+		System.out.println("Numbers: " + num1 + " and " + num2);
 		Minimum.print(Minimum.minimum(num1, num2));
 	}
 	//Problem 11: Floats in another Package
@@ -101,7 +105,8 @@ public class CoreJavaDriver {
 	}
 	//Problem 13: Triangle
 	private static void problem13() {
-		Triangle.print(Triangle.triangle(4));
+		int size = 4;
+		Triangle.print(Triangle.triangle(size), size);
 	}
 	//Problem 14: Switch
 	private static void problem14() {
@@ -119,13 +124,20 @@ public class CoreJavaDriver {
 		System.out.println("Div: 20 / 2 = " + cal.divide(20, 2));
 	}
 	//Problem 16: String length from command line
-	
+	private static void problem16(String[] args) {
+		System.out.println("Argument length: " + Arguments.arguments(args));
+	}
 	//Problem 17: Interest
 	private static void problem17() {
 		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("Principle: ");
 		double principle = Double.parseDouble(sc.nextLine());
+		System.out.print("Rate in decimal: ");
 		double rate = Double.parseDouble(sc.nextLine());
+		System.out.print("Number of years: ");
 		double time = Double.parseDouble(sc.nextLine());
+		
 		System.out.println("Interest: " + Interest.interest(principle, rate, time));
 	}
 	//Problem 18: Abstract
@@ -209,9 +221,9 @@ public class CoreJavaDriver {
 				case 15:
 					problem15();
 					break;
-/*				case 16:
-					problem16();
-					break;*/
+				case 16:
+					problem16(args);
+					break;
 				case 17: 
 					problem17();
 					break;

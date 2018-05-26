@@ -3,8 +3,6 @@ package com.revature.problem;
 import java.util.LinkedList;
 
 public class Triangle {
-	
-	
 	public static String triangle(int size) {
 		StringBuilder builder = new StringBuilder();
 		boolean otherNum = false;
@@ -25,7 +23,7 @@ public class Triangle {
 		return builder.toString();
 	}
 	
-	public static void print(String str) {
-		System.out.print("Triangle: " + str);
+	public static void print(String str, int size) {
+		System.out.print("Triangle " + size + ": " + str);
 	}
 }

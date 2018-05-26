@@ -15,8 +15,8 @@ public class Factorial {
 		return result;
 	}
 	
-	public static void print(int num) {
-		System.out.print("N Factorial: ");
+	public static void print(int num, int n) {
+		System.out.print(n + " Factorial: ");
 		
 		if (num == -1) {
 			System.out.print("Sorry no negative numbers!");
