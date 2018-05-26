@@ -3,9 +3,9 @@ package com.revature.toomuchhw;
 The string should be entered as a command line argument using (String [ ] args).*/
 public class Problem16 {
 	String s;
-	public Problem16(String string) {
+	public Problem16(String s) {
 		// TODO Auto-generated constructor stub
-		this.s = string;	
+		this.s = s;	
 	}
 	
 	public int findLength() {

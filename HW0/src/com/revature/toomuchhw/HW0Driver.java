@@ -13,46 +13,59 @@ public class HW0Driver {
 	public static void main(String[] args) throws IOException{
 
 		//Problem 1 - Bubble Sort
+		System.out.println("Problem 1: ");
 		int[] p1 = new Problem1().performBubbleSort(new int[] {1,0,5,6,3,2,3,7,9,8,4});
-		for(int i:p1) {System.out.println(i);};
+		for(int i:p1) {System.out.print(i+" ");};
 		
 		//Problem 2 - FibMe
+		System.out.println("\n\nProblem 2: ");
 		int[] p2 = new Problem2().fibMe();
-		for(int i:p2) {System.out.println(i);};
+		for(int i:p2) {System.out.print(i+" ");};
 		
 		//Problem 3 - Reversies
-		System.out.println(new Problem3().reverseMe("elppA"));
+		System.out.println("\n\nProblem 3: ");
+		System.out.println("elppA to "+new Problem3().reverseMe("elppA"));
 		
 		//Problem 4 - Factorials
+		System.out.println("\nProblem 4: ");
 		System.out.println(new Problem4().factMe(5));
 		
 		//Problem 5 - Substring
+		System.out.println("\nProblem 5: ");
 		System.out.println(new Problem5().grabStuff("Tide Roll", 6));
 		
 		//Problem 6 - Is Even
-		System.out.println(new Problem6().isEven(3));
+		System.out.println("\nProblem 6: ");
+		System.out.println("Is 3 even? "+new Problem6().isEven(3));
 		
 		//Problem 7 - Compare Employees
+		System.out.println("\nProblem 7: ");
 		ArrayList<Employee> names = new Problem7().compareNames();
 		ArrayList<Employee> departments = new Problem7().compareDepartment();
 		ArrayList<Employee> ages = new Problem7().compareAge();
-		for(int i = 0; i < names.size(); i++) {System.out.println(names.get(i).getName());}
-		for(int i = 0; i < names.size(); i++) {System.out.println(departments.get(i).getDepartment());}
-		for(int i = 0; i < names.size(); i++) {System.out.println(ages.get(i).getAge());}
+		for(int i = 0; i < names.size(); i++) {System.out.print(names.get(i).getName()+" ");}
+		System.out.println();
+		for(int i = 0; i < names.size(); i++) {System.out.print(departments.get(i).getDepartment()+" ");}
+		System.out.println();
+		for(int i = 0; i < names.size(); i++) {System.out.print(ages.get(i).getAge()+" ");}
 		
 		//Problem 8 - Palindromes
-		ArrayList<String> words = new ArrayList<String>(Arrays.asList("karan", "madam", "tom", "civic", "radar", "jimmy", "kayak", "john",  "refer", "billy", "did"));
+		System.out.println("\n\nProblem 8: ");
+		ArrayList<String> words = new ArrayList<String>(
+				Arrays.asList("karan", "madam", "tom", "civic", "radar", "jimmy", "kayak", "john",  "refer", "billy", "did"));
 		System.out.println(new Problem8().findAllPalindromes(words));
 		
 		//Problem 9 - Primes
-		System.out.println("\n\nProblem 9: ");
+		System.out.println("\nProblem 9: ");
 		new Problem9().printPrime();
 		
 		//Problem 10 - Min
+		System.out.println("\n\nProblem 10: ");
 		int theMin = new Problem10(3,8).findMin();
-		System.out.println(theMin);
+		System.out.println("Out of [3,8] the min is "+theMin);
 		
 		//Problem 11 - Accessing Floats
+		System.out.println("\nProblem 11: ");
 		new Problem11().getFloats();
 		
 		//Problem 12 - Print Evens
@@ -81,10 +94,11 @@ public class HW0Driver {
 		System.out.print(new Problem15(x,y).division()+" ");
 		
 		//Problem 16 - Var Args in Command Line
-		//System.out.println(new Problem16(args[0]));
+		System.out.println("\n\nProblem 16: ");
+		System.out.println(args[0]+" is length "+new Problem16(args[0]).findLength());
 		
 		//Problem 17 - Simple Interest
-	/*	System.out.println("\n\nProblem 17: ");
+		System.out.println("\nProblem 17: ");
 		Scanner input = new Scanner(System.in);
 		System.out.print("Input Principal: ");
 		int principal = input.nextInt();
@@ -93,10 +107,10 @@ public class HW0Driver {
 		System.out.print("Input Year: ");
 		int year = input.nextInt();
 		Problem17 interest = new Problem17(principal,percent_rate,year);
-		System.out.println("Simple interest is: "+interest.calcInterest());*/
+		System.out.println("Simple interest is: "+interest.calcInterest());
 		
 		//Problem 18 - Wrappers and Abstract Classes/Methods
-		System.out.println("\n\nProblem 18: ");
+		System.out.println("\nProblem 18: ");
 		String s = "10";
 		Problem18 a = new Problem18();
 		System.out.print(a.uppercases(s)+" ");

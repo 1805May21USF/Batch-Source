@@ -14,7 +14,7 @@ public class Problem9 {
 		for(int n:storage) {
 			if(checkPrime(n))
 			{
-				System.out.println(n);
+				System.out.print(n+" ");
 			}
 		}
 	}

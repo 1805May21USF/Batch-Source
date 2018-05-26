@@ -14,7 +14,6 @@ public class Problem19 {
 	}
 
 	public boolean checkPrime(int p) {
-		System.out.println(p);
 		if(p==1||p==2||p==3) {
 			return true;
 		}

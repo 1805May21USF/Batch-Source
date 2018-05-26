@@ -13,7 +13,7 @@ public class Problem11 {
 		float a = new GetProblem11().getA();
 		float b = new GetProblem11().getB();
 		
-		System.out.println(a+b);
+		System.out.println(a+","+b);
 	}
 	
 
