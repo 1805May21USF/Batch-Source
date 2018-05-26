@@ -23,3 +23,6 @@
 hs_err_pid*
 /.metadata/
 /.recommenders/
+
+#Stop hubbing folder
+/RemoteSystemsTempFiles
