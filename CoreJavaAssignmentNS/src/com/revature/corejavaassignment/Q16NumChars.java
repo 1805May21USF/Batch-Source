@@ -2,12 +2,21 @@ package com.revature.corejavaassignment;
 
 public class Q16NumChars {
 	
-	private static int numChars(String[] args) {
-		return args.length;
+	private static int numChars(String input) {
+		return input.length();
 	}
 	
-	public static void numCharsDemo() {
-		int numChars;
+	public static void numCharsDemo(String[] args) {
+		System.out.println("Q16. NumChars");
+		try {
+			String input = args[0];
+			System.out.println("\tThere are " + numChars(input) + " characters in " + input + ".");
+			System.out.println();
+		} catch (Exception e) {
+			System.out.println("Please provide arguments for the thing.");
+			System.out.println();
+		}
+		/*int numChars;
 		String[] input;
 		
 		System.out.println("Q16. NumChars");
@@ -18,17 +27,16 @@ public class Q16NumChars {
 		
 		System.out.print("\tString offering: ");
 		
-		input = AssignmentDemo.in.nextLine().toString(); //Using the static scanner in demo class
-		//in.close();
+		String input = AssignmentDemo.in.toString();
 		
 		numChars = numChars(input);
 		System.out.println("\tThere are " + numChars + " characters in " + input + ".");
-		System.out.println("\tPlease allow 0 to 7 business days for Florida rain.\n");
-		
+		System.out.println("\tPlease allow 0 to 7 business days for Florida rain. Roll Tide!\n");
+		*/
 	}
 	
 	public static void main(String[] args) {
-		numCharsDemo();
+		numCharsDemo(args);
 	}
 
 }

@@ -49,5 +49,12 @@ public class Q9PrimeNumbers {
 	public static void main(String[] args) {
 		primeNumberDemo();
 	}
+	
+	/*
+	 * Getter method for Q19
+	 */
+	public static boolean getIsPrime(int input) {
+		return isPrime(input);
+	}
 
 }

@@ -9,14 +9,7 @@ import java.util.Scanner;
  *
  */
 public class AssignmentDemo {
-	
-	/*
-	 * Remember to do:
-	 * Q7Comparator
-	 * Q11PackageAccess
-	 * Q13Triangle
-	 * Q16NumChars
-	 */
+
 	public static Scanner in = new Scanner(System.in);
 	
 	public static void main(String[] args) {
@@ -42,8 +35,7 @@ public class AssignmentDemo {
 		Q6IsEven.isEvenDemo(100);
 		System.out.println();
 		
-		
-		
+		Q7Comparator.comparatorDemo();
 		Q8Palindromes.palindromeDemo();
 		Q9PrimeNumbers.primeNumberDemo();
 		
@@ -54,13 +46,16 @@ public class AssignmentDemo {
 		Q10TernaryOperator.ternaryOperatorDemo(15, 9);
 		System.out.println(); //Making room for Q11
 		
-		
+		Q11PackageGetter.packageAccessDemo();
 		Q12EnhancedForLoop.enhancedForLoopDemo();
-		
+		Q13Triangle.triangleDemo(4); //Argument dictates the number of lines
 		Q14Switch.switchDemo();
 		Q15TestClass.main(args); //Q15 says to call from a main method
-		Q16NumChars.numCharsDemo();
+		Q16NumChars.numCharsDemo(args); //args must be set in run configurations
 		Q17InterestCalculator.interestCalculatorDemo();
+		Q18ConcreteClass.main(args);
+		Q19IntegerArrayList.integerArrayListDemo(1, 10);
+		Q20FileReader.fileReaderDemo();
 		
 	}
 

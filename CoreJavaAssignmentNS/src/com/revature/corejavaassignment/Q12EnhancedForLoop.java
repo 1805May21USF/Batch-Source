@@ -46,8 +46,7 @@ public class Q12EnhancedForLoop {
 	}
 	
 	public static void main(String[] args) {
-		populateIntArray();
-		printEvens();
+		enhancedForLoopDemo();
 	}
 	
 }
