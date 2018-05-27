@@ -2,7 +2,7 @@ package com.revature.corejavaassignment;
 
 public class Q3ReverseString {
 	
-	private static String reverseString(String input) {
+	public static String reverseString(String input) {
 		
 		char[] charArray = input.toCharArray();
 		
@@ -17,8 +17,9 @@ public class Q3ReverseString {
 	}
 	
 	public static void reverseStringDemo(String input) {
-		System.out.print("Q3. Reverse String\n\t");
-		System.out.println(reverseString(input));
+		System.out.print("Q3. Reverse String\n");
+		System.out.println("\tBefore Reverse: " + input);
+		System.out.println("\tAfter Reverse: " + reverseString(input));
 		System.out.println(); //Making room for Q4
 	}
 	
