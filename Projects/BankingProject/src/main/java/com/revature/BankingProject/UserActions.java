@@ -4,14 +4,16 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.UUID;
 
 import com.revature.Utility.UtilityActions;
 
 public class UserActions {
-	private static File filename = new File("BankAccounts.txt");
+	private static File bankfilename = new File("BankAccounts.txt");
 	private static File cusfilename = new File("CustomerAccounts.txt");
+	private static File userfilename = new File("UserAccounts.txt");
 	private static Scanner sc = App.sc;
 	
 	public void customerOptions(CustomerAccount customerAccount, int accountNum) {
@@ -103,14 +105,14 @@ public class UserActions {
 			bankAccounts = new ArrayList<BankAccount>();
 		bankAccounts.add(bankAccount);
 		
-		UtilityActions.write(bankAccounts, filename);
+		UtilityActions.write(bankAccounts, bankfilename);
         
         return bankAccount.getAccountID();
 	}
 
 	//Get the accounts from the file
 	public static ArrayList<BankAccount> getBankAccounts() {
-		return convertToBankAccounts(UtilityActions.read(filename));
+		return convertToBankAccounts(UtilityActions.read(bankfilename));
 	}
 	
 	//Convert generic array to BankAccount
@@ -159,7 +161,7 @@ public class UserActions {
 				if (bc.getAccountID().equals(bankAccount.getAccountID()))
 					bc.setBalance(bc.getBalance() + amt);
 
-		UtilityActions.write(bankAccounts, filename);
+		UtilityActions.write(bankAccounts, bankfilename);
 	}
 
 	public void selectAnAccount(String username) {
@@ -195,7 +197,7 @@ public class UserActions {
 				if (bc.getAccountID().equals(bankAccount.getAccountID())) 
 					bc.setBalance(bc.getBalance() - amt);
 						
-		UtilityActions.write(bankAccounts, filename);
+		UtilityActions.write(bankAccounts, bankfilename);
 	}
 
 	public void transfer(UUID id, UUID id2, double amt) {
@@ -214,6 +216,87 @@ public class UserActions {
 		
 		UtilityActions.write(cusAccounts, cusfilename);
 	}
+
+	public static void approveAccount(UUID id, CustomerAccount cus) {
+		ArrayList<CustomerAccount> cusAccounts = CustomerActions.getCustomerAccounts();
+		ArrayList<BankAccount> bankAccounts = UserActions.getBankAccounts();
+		
+		//Add new account to customer
+		for (CustomerAccount acc : cusAccounts) {
+			if (acc.getUsername().equals(cus.getUsername())) {
+				acc.addBankAccountID(id);	
+				//remove id from applies
+				Iterator<UUID> i = acc.getApplies().iterator();
+				while (i.hasNext()) {
+				   UUID applyId = i.next();
+				   if (applyId.equals(id))
+					   i.remove();
+				}
+			}
+		}
+		UtilityActions.write(cusAccounts, cusfilename);
+		
+		//Change status of bank account to open
+		for (BankAccount acc : bankAccounts) 
+			if (acc.getAccountID().equals(id))
+				acc.setOpen(true);
+		UtilityActions.write(bankAccounts, bankfilename);
+	}
 	
-	//approve/deny applies
+	public static void denyAccount(UUID id, CustomerAccount cus) {
+		ArrayList<CustomerAccount> cusAccounts = CustomerActions.getCustomerAccounts();
+		ArrayList<BankAccount> bankAccounts = UserActions.getBankAccounts();
+		ArrayList<UserAccount> userAccounts = RegistrationActions.getAccounts();
+		
+		//Delete customer
+		Iterator<CustomerAccount> i = cusAccounts.iterator();
+		while (i.hasNext()) {
+		   CustomerAccount acc = i.next();
+		   if (acc.getUsername().equals(cus.getUsername()))
+			   i.remove();
+		}
+		UtilityActions.write(cusAccounts, cusfilename);
+		
+		//Delete bankaccount
+		Iterator<BankAccount> j = bankAccounts.iterator();
+		while (j.hasNext()) {
+			BankAccount acc = j.next();
+		    if (acc.getAccountID().equals(id))
+			   j.remove();
+		}
+		UtilityActions.write(bankAccounts, bankfilename);
+		
+		//Delete user account
+		Iterator<UserAccount> k = userAccounts.iterator();
+		while (k.hasNext()) {
+			UserAccount acc = k.next();
+		    if (acc.getUsername().equals(cus.getUsername()))
+			   k.remove();
+		}
+		UtilityActions.write(userAccounts, userfilename);
+	}
+
+	public static void viewAccountApplies() {
+		ArrayList<CustomerAccount> cusAccounts = CustomerActions.getCustomerAccounts();
+		
+		if (cusAccounts == null)
+			return;
+		
+		for (CustomerAccount cus : cusAccounts) {
+			for (UUID id : cus.getApplies()) {
+				//state some info on what account it is
+				System.out.println("Customer: [ " + cus.getUsername() + " ] has applied for an account.");
+				System.out.println("1 for Approve, 2 for Deny, -1 for Exit: ");
+				String input = sc.nextLine();
+				if (input.equals("-1"))
+					return;
+				else if (input.equals("1")) 
+					approveAccount(id, cus);
+				else if (input.equals("2"))
+					denyAccount(id, cus);
+				else
+					System.out.println("Invalid entry");
+			}
+		}
+	}
 }

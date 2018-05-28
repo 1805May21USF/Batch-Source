@@ -15,7 +15,7 @@ import com.revature.Utility.UtilityActions;
 
 class TestRegistrationActions {	
 	private static RegistrationActions r = new RegistrationActions();
-	private static File filename = new File("RegistrationAccounts.txt");
+	private static File filename = new File("UserAccounts.txt");
 	
 	//Executes once before all 
 	@BeforeAll

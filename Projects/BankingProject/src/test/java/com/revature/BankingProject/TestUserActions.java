@@ -42,14 +42,12 @@ class TestUserActions {
 		r.register("user", "pass", 0);
 		id = UserActions.createBankAccount();	
 		CustomerAccount cus = CustomerActions.createCustomerAccount("user", "asdf", "asdf", "asdf");
-		cus.addBankAccountID(id);
-		CustomerActions.saveCustomerAccount(cus);	
+		UserActions.approveAccount(id, cus);
 		
 		r.register("user2", "pass", 0);
 		id2 = UserActions.createBankAccount();
 		CustomerAccount cus2 = CustomerActions.createCustomerAccount("user2", "asdf", "asdf", "asdf");
-		cus2.addBankAccountID(id2);
-		CustomerActions.saveCustomerAccount(cus2);
+		UserActions.approveAccount(id2, cus2);
 	}
 	
 	private static void clearAccounts() {
@@ -135,8 +133,9 @@ class TestUserActions {
 	@Test
 	void testApplyForJoint() {
 		//customer applies for joint ownership of user2's account
-		CustomerAccount curAccount = CustomerActions.getCustomerAccountByUsername("user");
+		CustomerAccount curAccount = CustomerActions.getCustomerAccountByUsername("user");	
 		CustomerAccount otherAccount = CustomerActions.getCustomerAccountByUsername("user2");
+		
 		u.apply(curAccount, otherAccount.getBankAccountIDs().get(0));
 		curAccount = CustomerActions.getCustomerAccountByUsername("user");
 		assertNotNull(curAccount.getApplies().get(0));

@@ -47,16 +47,15 @@ public class App
 
 	private static void optionRegister() {
     	boolean succeeded = false;  	
-    	//int accountType = getAccountType();
     	String username = "";
     	
 		while (!succeeded) {
 			username = getUsername();
 			succeeded = b.register(username, getPassword(), 0);			
 		}
-		//Instead of creating the  bank account, set a flag for access that needs admin approval
+		//Creates customer, add and saves a new apply
 		CustomerAccount customerAccount = CustomerActions.createCustomerAccount(username, getName(), getAddress(), getAge());
-		customerAccount.addBankAccountID(UserActions.createBankAccount());
+		customerAccount.addApply(UserActions.createBankAccount());
 		CustomerActions.saveCustomerAccount(customerAccount);
 
 		System.out.println("Account created successfully.");

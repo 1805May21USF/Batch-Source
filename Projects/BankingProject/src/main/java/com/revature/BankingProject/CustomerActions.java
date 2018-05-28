@@ -55,7 +55,7 @@ public class CustomerActions {
 		
 		for (CustomerAccount cus : customerAccounts)
 			if (cus.getUsername().equals(customerAccount.getUsername()))
-				cus.setBankAccountIDs(customerAccount.getBankAccountIDs());
+				cus.setApplies(customerAccount.getApplies());
 		
 		UtilityActions.write(customerAccounts, filename);
 	}

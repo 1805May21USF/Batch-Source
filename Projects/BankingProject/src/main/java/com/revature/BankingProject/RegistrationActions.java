@@ -37,14 +37,15 @@ public class RegistrationActions {
 	private void adminOptions() {
 		String input;
 		while (true) {
-			System.out.println("Select 1 for Select A Customer Account, 2 for View , -1 for Exit.");
+			System.out.println("Select 1 for Select A Customer Account, 2 for View Account Applies, -1 for Exit.");
 			input = sc.nextLine();
 			if (input.equals("-1"))
 				return;
 			if (input.equals("1")) {
 				connectToUserAccount();
 			} else if (input.equals("2")) {
-
+				//view list of applies for approval/deny
+				UserActions.viewAccountApplies();
 			} else {
 				System.out.println("Invalid entry, try again");
 			}
@@ -67,6 +68,7 @@ public class RegistrationActions {
 				customerOptions(input);
 				break;
 			}
+			System.out.println("Username doesn't exist.");
 		}	
 	}
 
@@ -179,8 +181,7 @@ public class RegistrationActions {
 					return;
 				break;
 			}
-		}
-				
+		}			
 		u.apply(curAccount, id);
 	}
 }
