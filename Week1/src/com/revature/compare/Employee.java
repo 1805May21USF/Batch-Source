@@ -4,6 +4,8 @@ public class Employee implements Comparable<Employee>{
 	public String name;
 	public String dept;
 	public int age;
+	public static float f1;
+	public static float f2;
 	@Override
 	public int compareTo(Employee arg0) {
 

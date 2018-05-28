@@ -77,4 +77,70 @@ public class AllTests {
 		assert (Q10.max(10, 4) == 10);
 
 }
+	@Test 
+	public void QT11() {
+	
+		Q11.doit((float) 1999.1,-1);
+		assert (com.revature.compare.Employee.f1 ==1999.1f);
+		assert (com.revature.compare.Employee.f2==-1);
+
+}
+	@Test 
+	public void QT12() {
+		
+		assert (Q12.doit().toString().equals("0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, "));
+}
+	@Test 
+	public void QT13() {
+		System.err.println(Q13.doit());
+		assert (Q13.doit().equals("0 \n1 0 \n1 0 1 \n0 1 0 1 \n"));
+}	
+	@Test 
+	public void QT14() {
+		System.out.println(Q14.doit(0)[0]);
+		System.out.println(Q14.doit(1)[0]);
+		System.out.println(Q14.doit(2)[0]);
+
+	}
+	
+	@Test 
+	public void QT15() {
+		for (int i=0; i<20; i++) {
+			double r1 = Math.random();
+			double r2 = Math.random();
+			assert (Q15.add(r1, r2) == r1+r2);
+			assert (Q15.sub(r1, r2) == r1-r2);
+			assert (Q15.mult(r1, r2) == r1*r2);
+			assert (Q15.div(r1, r2) == r1/r2);
+			
+
+		}
+}
+	
+	@Test 
+	public void QT16() {
+		String[] args= new String[1];
+		args[0]="LOLOLOLOLOLOLOL";
+		Q16.main(args);
+}
+	
+	@Test 
+	public void QT17() {
+		//SEE Q17 class
+}
+	
+	@Test 
+	public void QT18() {
+		//SEE Q18 class
+}
+	@Test 
+	public void QT19() {
+		Q19.doit();
+}
+	@Test 
+	public void QT20() {
+		Q20.doit();
+}
+	
+	
 }
