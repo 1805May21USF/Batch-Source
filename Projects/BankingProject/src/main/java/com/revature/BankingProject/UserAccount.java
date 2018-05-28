@@ -2,7 +2,7 @@ package com.revature.BankingProject;
 
 import java.io.Serializable;
 
-public class Account implements Serializable {
+public class UserAccount implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String username;
@@ -10,7 +10,7 @@ public class Account implements Serializable {
 	private int accountType;
 	
 	//0: customer, 1:employee, 2:admin
-	public Account(String username, String password, int accountType) {
+	public UserAccount(String username, String password, int accountType) {
 		super();
 		this.username = username;
 		this.password = password;
