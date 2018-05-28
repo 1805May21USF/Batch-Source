@@ -248,15 +248,6 @@ public class UserActions {
 		ArrayList<BankAccount> bankAccounts = UserActions.getBankAccounts();
 		ArrayList<UserAccount> userAccounts = RegistrationActions.getAccounts();
 		
-		//Delete customer
-		Iterator<CustomerAccount> i = cusAccounts.iterator();
-		while (i.hasNext()) {
-		   CustomerAccount acc = i.next();
-		   if (acc.getUsername().equals(cus.getUsername()))
-			   i.remove();
-		}
-		UtilityActions.write(cusAccounts, cusfilename);
-		
 		//Delete bankaccount
 		Iterator<BankAccount> j = bankAccounts.iterator();
 		while (j.hasNext()) {
@@ -265,6 +256,17 @@ public class UserActions {
 			   j.remove();
 		}
 		UtilityActions.write(bankAccounts, bankfilename);
+		
+		//should it delete customer/user account if applies and bank accounts empty?
+		
+		//Delete customer
+		Iterator<CustomerAccount> i = cusAccounts.iterator();
+		while (i.hasNext()) {
+		   CustomerAccount acc = i.next();
+		   if (acc.getUsername().equals(cus.getUsername()))
+			   i.remove();
+		}
+		UtilityActions.write(cusAccounts, cusfilename);
 		
 		//Delete user account
 		Iterator<UserAccount> k = userAccounts.iterator();
