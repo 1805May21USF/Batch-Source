@@ -1,5 +1,10 @@
 package com.revature.corejavaassignment;
 
+/**
+ * Simple calculator that uses an interface.
+ * @author Nathaniel Simpson
+ *
+ */
 public class Q15Class implements Q15Interface{
 
 	@Override

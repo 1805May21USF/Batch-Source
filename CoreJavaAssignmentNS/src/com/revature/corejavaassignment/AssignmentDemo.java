@@ -10,6 +10,7 @@ import java.util.Scanner;
  */
 public class AssignmentDemo {
 
+	// Scanner used for classes that require user input
 	public static Scanner in = new Scanner(System.in);
 	
 	public static void main(String[] args) {
@@ -53,7 +54,7 @@ public class AssignmentDemo {
 		Q15TestClass.main(args); //Q15 says to call from a main method
 		Q16NumChars.numCharsDemo(args); //args must be set in run configurations
 		Q17InterestCalculator.interestCalculatorDemo();
-		Q18ConcreteClass.main(args);
+		Q18ConcreteClass.abstractClassDemo();
 		Q19IntegerArrayList.integerArrayListDemo(1, 10);
 		Q20FileReader.fileReaderDemo();
 		

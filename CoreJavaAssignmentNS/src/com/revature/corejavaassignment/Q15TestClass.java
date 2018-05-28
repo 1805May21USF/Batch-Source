@@ -1,5 +1,10 @@
 package com.revature.corejavaassignment;
 
+/**
+ * Demonstration class for the simple calculator.
+ * @author Nathaniel Simpson
+ *
+ */
 public class Q15TestClass {
 	
 	public static void main(String[] args) {

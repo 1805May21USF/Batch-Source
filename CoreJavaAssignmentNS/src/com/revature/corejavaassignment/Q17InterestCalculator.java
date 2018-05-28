@@ -1,11 +1,25 @@
 package com.revature.corejavaassignment;
 
+/**
+ * Calculates the interest after an amount of time.
+ * @author Nathaniel Simpson
+ *
+ */
 public class Q17InterestCalculator {
 
+	/*
+	 * Calculates the interest.
+	 * @param principal - initial amount of money
+	 * @param rate - interest rate
+	 * @param time - time in years
+	 */
 	private static double interestCalculator(double principal, double rate, double time) {
 		return principal * rate * time;
 	}
 
+	/*
+	 * Demonstrates the interest calculator.
+	 */
 	public static void interestCalculatorDemo() {
 		double principal = 0;
 		double rate = 0;
@@ -31,6 +45,9 @@ public class Q17InterestCalculator {
 		
 	}
 
+	/*
+	 * For testing
+	 */
 	public static void main(String[] args) {
 		interestCalculatorDemo();
 	}

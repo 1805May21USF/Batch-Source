@@ -5,11 +5,24 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Reads information from a .txt file, formats it
+ * into a user-friendly format, and outputs it
+ * to the console.
+ * @author Nathaniel Simpson
+ *
+ */
 public class Q20FileReader {
 	
 	private final static String fileName = "Data.txt";
 	private static String line = "";
 	
+	/*
+	 * Reads information from a .txt file, formats it
+	 * into a user-friendly format, and outputs it
+	 * to the console.
+	 * @param fileName - the name of the .txt file
+	 */
 	private static void fileReader(String fileName) {
 		
 		System.out.println("Q20. FileReader");
@@ -36,10 +49,16 @@ public class Q20FileReader {
 		
 	}
 	
+	/*
+	 * Demonstrates the file reader.
+	 */
 	public static void fileReaderDemo() {
 		fileReader(fileName);
 	}
 	
+	/*
+	 * For testing
+	 */
 	public static void main(String[] args) {
 		fileReader(fileName);
 	}

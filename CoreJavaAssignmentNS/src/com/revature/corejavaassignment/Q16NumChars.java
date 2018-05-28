@@ -1,11 +1,26 @@
 package com.revature.corejavaassignment;
 
+/**
+ * Finds the number of characters in a String from
+ * the program arguments from the run
+ * configurations.
+ * @author Nathaniel Simpson
+ *
+ */
 public class Q16NumChars {
 	
+	/*
+	 * Finds the length of a String.
+	 * @param input - String to find the length of
+	 * @return the length of the input String 
+	 */
 	private static int numChars(String input) {
 		return input.length();
 	}
 	
+	/*
+	 * Demonstrates the numChars method.
+	 */
 	public static void numCharsDemo(String[] args) {
 		System.out.println("Q16. NumChars");
 		try {
@@ -16,25 +31,11 @@ public class Q16NumChars {
 			System.out.println("Please provide arguments for the thing.");
 			System.out.println();
 		}
-		/*int numChars;
-		String[] input;
-		
-		System.out.println("Q16. NumChars");
-		
-		System.out.println("\tI demand the offering of one String. In return,"
-				+ " I will give you the number of characters in the String "
-				+ "and make it rain in Florida.");
-		
-		System.out.print("\tString offering: ");
-		
-		String input = AssignmentDemo.in.toString();
-		
-		numChars = numChars(input);
-		System.out.println("\tThere are " + numChars + " characters in " + input + ".");
-		System.out.println("\tPlease allow 0 to 7 business days for Florida rain. Roll Tide!\n");
-		*/
 	}
 	
+	/*
+	 * For testing
+	 */
 	public static void main(String[] args) {
 		numCharsDemo(args);
 	}

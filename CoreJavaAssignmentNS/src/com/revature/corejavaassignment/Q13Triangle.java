@@ -1,10 +1,17 @@
 package com.revature.corejavaassignment;
 
+/**
+ * Creates a triangle out of alternating
+ * 0s and 1s.
+ * @author Nathaniel Simpson
+ *
+ */
 public class Q13Triangle {
 	
-	private static int number = 0;
-	private static int length = 1;
-	
+	/*
+	 * Creates a triangle out of
+	 * alternating 0s and 1s
+	 */
 	private static void triangle(int numLines) {
 		int zeroOne = 0;
 		
@@ -21,21 +28,26 @@ public class Q13Triangle {
 					zeroOne = 1;
 				else
 					zeroOne = 0;
-				
-				length++;
+
 			}
 			
 			System.out.println();
 		}
 	}
 	
+	/*
+	 * Demonstrates the triangle method
+	 */
 	public static void triangleDemo(int input) {
 		triangle(input);
 		System.out.println();
 	}
 	
+	/*
+	 * For testing
+	 */
 	public static void main(String[] args) {
-		triangle(6);
+		triangle(4);
 	}
 
 }

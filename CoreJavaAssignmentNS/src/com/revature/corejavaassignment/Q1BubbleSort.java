@@ -12,16 +12,19 @@ public class Q1BubbleSort {
 
 	/*
 	 * Method which performs the bubble sort.
+	 * @param array - the array to be sorted.
 	 */
 	private static void bubbleSort(int[] array) {
 
 		// Checker to determine if elements were swapped
 		// in the array. If none were swapped during a
-		// pass, then the array should be sorted.
+		// pass, then the array is finished sorting.
 		boolean wasSwapped = true;
 		
 		while(wasSwapped) {
 			
+			// Sets wasSwapped to false initially.
+			// If a swap occurs, it is set to true again.
 			wasSwapped = false;
 			
 			// Compares each element in the array to the
@@ -41,12 +44,14 @@ public class Q1BubbleSort {
 			
 		}
 
+		// Sets the rollTideArray to the new sorted array.
 		rollTideArray = array;
 
 	}
 
 	/*
 	 * Prints the array
+	 * @param array - the array to be printed.
 	 */
 	private static void printArray(int[] array) {
 		System.out.print("\t[");

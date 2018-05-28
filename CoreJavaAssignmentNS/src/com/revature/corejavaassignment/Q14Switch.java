@@ -4,8 +4,20 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Uses a switch statement to find the square root of a number,
+ * output the current date, or splits a String into a
+ * String array, depending on the argument.
+ * @author Nathaniel Simpson
+ *
+ */
 public class Q14Switch {
 
+	/*
+	 * Uses a switch statement to find the square root of a number,
+	 * output the current date, or splits a String into a
+	 * String array, depending on the argument.
+	 */
 	private static void q14Switch(int input) {
 
 		switch (input) {
@@ -31,6 +43,9 @@ public class Q14Switch {
 
 	}
 	
+	/*
+	 * Demonstrates the switch statement
+	 */
 	public static void switchDemo() {
 		System.out.println("Q14. Switch");
 		q14Switch(1);
@@ -39,6 +54,9 @@ public class Q14Switch {
 		System.out.println(); //Making room for Q15
 	}
 	
+	/*
+	 * For testing
+	 */
 	public static void main(String[] args) {
 		q14Switch(1);
 		q14Switch(2);

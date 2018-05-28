@@ -1,5 +1,10 @@
 package com.revature.corejavaassignment;
 
+/**
+ * Interface for a simple calculator.
+ * @author Nathaniel Simpson
+ *
+ */
 public interface Q15Interface {
 
 	int add(int a, int b);
