@@ -5,11 +5,18 @@
  */
 package com.revature.corejava;
 
+//import the Comparator interface
+import java.util.Comparator;
+
 /**
  * @author Nicholas Smith
  *
  */
-public class Q07
+public class Q07 
 {
-
+	//create a method that prints the solution
+	public void printSolution() 
+	{
+		
+	}
 }

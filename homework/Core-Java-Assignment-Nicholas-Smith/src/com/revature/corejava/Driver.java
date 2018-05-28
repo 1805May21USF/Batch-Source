@@ -3,6 +3,8 @@
  */
 package com.revature.corejava;
 
+import java.util.ArrayList;
+
 /**
  * @author Nicholas Smith
  *
@@ -56,5 +58,29 @@ public class Driver
 		
 		String q05String = q05.subString("Trevor", 4);
 		q05.printSolution(q05String);
+		
+		boolean isEven = q06.isEven(28);
+		q06.printSolution(isEven);
+		
+		Employee e1 = new Employee();
+		e1.setName("Smith");
+		e1.setAge(28);
+		e1.setDepartment("Finance");
+		
+		Employee e2 = new Employee();
+		e1.setName("Turner");
+		e1.setAge(31);
+		e1.setDepartment("IT");
+		
+		//create an employee arrrayList that holds e1 and e2 
+		ArrayList <Employee> empArr = new ArrayList<Employee>();
+		
+		empArr.add(e1);
+		empArr.add(e2);
+		
+		System.out.println("Q7: unsorted" + empArr.toString());
+		System.out.println("Q7: Sort by name:");
+		System.out.println("Q7: unsorted");
+		System.out.println("Q7: unsorted");	
 	}
 }

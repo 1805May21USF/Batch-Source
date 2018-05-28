@@ -13,5 +13,7 @@ package com.revature.corejava;
  */
 public class Q08
 {
-
+	//create global variables
+	
+	
 }
