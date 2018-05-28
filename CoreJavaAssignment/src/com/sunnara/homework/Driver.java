@@ -1,6 +1,6 @@
 package com.sunnara.homework;
 
-public class Answer {
+public class Driver {
 
 	
 	public static void main (String[] args) {
@@ -16,11 +16,8 @@ public class Answer {
 		q5.start();
 		Q06 q6 = new Q06();
 		q6.start();
-		//Q07 q7 = new Q07();
-		/*
-		 * complete
-		 */
-		
+		Q07 q7 = new Q07();
+		q7.start();
 		Q08 q8 = new Q08();
 		q8.start();
 		Q09 q9 = new Q09();
@@ -34,15 +31,17 @@ public class Answer {
 		Q13 q13 = new Q13();
 		q13.start();
 		Q14 q14 = new Q14();
-		//
+		q14.start();
 		Q15 q15 = new Q15();
 		q15.start();
 		Q16 q16 = new Q16();
-		//
+		String[] arg = {"I am 18 characters"};
+		q16.main(arg);
 		Q17 q17 = new Q17();
 		q17.start();
 		Q18 q18 = new Q18();
-		
+		String[] arg2 = {};
+		q18.main(arg2);
 		Q19 q19 = new Q19();
 		q19.start();
 		Q20 q20 = new Q20();

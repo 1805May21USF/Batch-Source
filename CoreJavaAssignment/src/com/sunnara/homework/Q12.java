@@ -16,7 +16,7 @@ public class Q12 {
 	
 	public void start() {
 		System.out.println("Question 12:");
-		System.out.println("From 1-100\nThe even nnumbers are:");
+		System.out.println("From 1-100\nThe even numbers are:");
 		printEven();
 		System.out.println("\n");
 	}

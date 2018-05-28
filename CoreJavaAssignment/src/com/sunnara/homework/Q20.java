@@ -22,6 +22,7 @@ public class Q20 {
 	private final String DATA = "Data.txt"; //text file won't change name
 	
 	public void start() {
+		System.out.println("Question 20:\nPrint out info in Data.txt");
 		readFile();
 	}
 

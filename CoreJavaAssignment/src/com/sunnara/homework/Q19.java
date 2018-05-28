@@ -28,6 +28,7 @@ public class Q19 {
 		System.out.println("Removing Primes from ArrayList");
 		removePrime();
 		printList();
+		System.out.println();
 	}
 	
 	public void printList() {

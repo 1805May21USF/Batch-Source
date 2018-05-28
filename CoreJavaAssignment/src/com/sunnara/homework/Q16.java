@@ -1,7 +1,5 @@
 package com.sunnara.homework;
 
-import java.util.Scanner;
-
 /*
  * Write a program to display the number of characters 
  * for a string input. The string should be entered as a 
@@ -12,15 +10,13 @@ public class Q16 {
 	
 	public static void main(String[] args) {
 		
-		Scanner input = new Scanner(System.in);
-		String s = input.nextLine();
-	}
-	
-	public void charAmt(String[] args) {
+		System.out.println("Question 16:");
 		int count = 0;
-		for(String s : args ) {
+		for(String s : args) {
 			count += s.length();
 		}
+		System.out.println("The String : \"" + args[0] +"\" has " + count + " characters");
+		System.out.println();
 	}
-
+	
 }
