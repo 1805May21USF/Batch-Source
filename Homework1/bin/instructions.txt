@@ -1,0 +1,8 @@
+Instruction File
+-----------------
+
+Most classes shown here represent a question. Some questions asked for multiple classes hence, there are way mre classes than questions. 
+
+In the main program "Homework1Main.java" each question is listed and has the classes that define the question. RUNNING THE MAIN RUNS AN INSTANCE OF ALL THE QUESTIONS AT ONCE. If one question requires an input, that will need to be entered before moving on. 
+
+In question 11, for FloatVars, the class is located in another package named 'floating' under the source folder.
