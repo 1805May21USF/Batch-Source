@@ -9,6 +9,7 @@ public class App
 	
     public static void main( String[] args )
     {
+    	createAdmin();
     	boolean done = false;
     	String option;
     		
@@ -26,13 +27,15 @@ public class App
     			System.out.println("Invalid entry, please select 1 for Login, 2 for Register, 5 for Exit.");
     		}
     	}
-    	
     	sc.close();
-    	
     	System.out.println("Closed.");
     }
     
-    private static void optionLogin() {
+    private static void createAdmin() {
+    	b.register("admin", "pass", 2);
+	}
+
+	private static void optionLogin() {
     	String username = getUsername();
 		String password = getPassword();
 		
@@ -44,19 +47,17 @@ public class App
 
 	private static void optionRegister() {
     	boolean succeeded = false;  	
-    	int accountType = getAccountType();
+    	//int accountType = getAccountType();
     	String username = "";
     	
 		while (!succeeded) {
 			username = getUsername();
-			succeeded = b.register(username, getPassword(), accountType);			
+			succeeded = b.register(username, getPassword(), 0);			
 		}
-		//Create customerAccount and bankAccount, linking them together
-		//change this if I get to employees accept/denying accounts
+		//Instead of creating the  bank account, set a flag for access that needs admin approval
 		CustomerAccount customerAccount = CustomerActions.createCustomerAccount(username, getName(), getAddress(), getAge());
 		customerAccount.addBankAccountID(UserActions.createBankAccount());
 		CustomerActions.saveCustomerAccount(customerAccount);
-		//write the customerAccount back to file
 
 		System.out.println("Account created successfully.");
 	}

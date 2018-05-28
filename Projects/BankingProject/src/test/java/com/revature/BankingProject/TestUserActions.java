@@ -13,24 +13,23 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.revature.Utility.UtilityActions;
 
 class TestUserActions {
 	private static UserActions u = new UserActions();
-	private static CustomerActions c = new CustomerActions();
 	private static RegistrationActions r = new RegistrationActions();
-	private static UUID id;
+	private static UUID id, id2;
 	private static File bankfilename = new File("BankAccounts.txt");
 	private static File regfilename = new File("UserAccounts.txt");
 	private static File cusfilename = new File("CustomerAccounts.txt");
 	
 	//Executes once before all 
-	@BeforeAll
-	static void setup() {	
+	@BeforeEach
+	void setup() {	
 		clearAccounts();
-			
 		makeDummyUsers();
 	}
 	
@@ -42,7 +41,15 @@ class TestUserActions {
 	private static void makeDummyUsers() {
 		r.register("user", "pass", 0);
 		id = UserActions.createBankAccount();	
-		c.attachBankAccountToCustomer(id, "user");	
+		CustomerAccount cus = CustomerActions.createCustomerAccount("user", "asdf", "asdf", "asdf");
+		cus.addBankAccountID(id);
+		CustomerActions.saveCustomerAccount(cus);	
+		
+		r.register("user2", "pass", 0);
+		id2 = UserActions.createBankAccount();
+		CustomerAccount cus2 = CustomerActions.createCustomerAccount("user2", "asdf", "asdf", "asdf");
+		cus2.addBankAccountID(id2);
+		CustomerActions.saveCustomerAccount(cus2);
 	}
 	
 	private static void clearAccounts() {
@@ -60,21 +67,20 @@ class TestUserActions {
 	@Test
 	void testGetAllBankAccounts() {
 		//Gets all bank accounts
-		assertNotNull(u.getBankAccounts());
+		assertNotNull(UserActions.getBankAccounts());
 		
 		//Gets null if no accounts exist
 		clearAccounts();
-		assertNull(u.getBankAccounts());
-		makeDummyUsers();
+		assertNull(UserActions.getBankAccounts());
 	}
 	
 	@Test
 	void testGetBankAccountById() {
 		//Get account success
-		assertNotNull(u.getBankAccountById(id));
+		assertNotNull(UserActions.getBankAccountById(id));
 		
 		//Get account failure
-		assertNull(u.getBankAccountById(UUID.randomUUID()));
+		assertNull(UserActions.getBankAccountById(UUID.randomUUID()));
 	}
 	
 	@Test
@@ -89,14 +95,14 @@ class TestUserActions {
 	@Test
 	void testGetBalance() {
 		//Get balance of a account real account
-		assertNotNull(u.getBalance(id));
+		assertNotNull(UserActions.getBalance(id));
 	}
 	
 	@Test 
 	void testDeposit() {
-		double balance = u.getBalance(id);
-		u.deposit(u.getBankAccountById(id), 25.03);
-		double balance2 = u.getBalance(id);
+		double balance = UserActions.getBalance(id);
+		u.deposit(UserActions.getBankAccountById(id), 25.03);
+		double balance2 = UserActions.getBalance(id);
 		double difference = balance2 - balance;
 		
 		//Deposit funds and balance changes
@@ -105,11 +111,11 @@ class TestUserActions {
 	
 	@Test
 	void testWithdraw() {
-		u.deposit(u.getBankAccountById(id), 4.0);
-		double balance = u.getBalance(id);
+		u.deposit(UserActions.getBankAccountById(id), 4.0);
+		double balance = UserActions.getBalance(id);
 		
-		u.withdraw(u.getBankAccountById(id), 2.0);
-		double balance2 = u.getBalance(id);
+		u.withdraw(UserActions.getBankAccountById(id), 2.0);
+		double balance2 = UserActions.getBalance(id);
 		
 		//different balances in account
 		assertNotEquals(balance, balance2, 0.01);
@@ -117,18 +123,22 @@ class TestUserActions {
 	
 	@Test
 	void testTransfer() {
-		//make another user
-		r.register("user2", "pass", 0);
-		UUID id2 = UserActions.createBankAccount();	
-		c.attachBankAccountToCustomer(id2, "user2");
-		
-		double balance = u.getBalance(id);
-		double balance2 = u.getBalance(id2);
-		ArrayList<BankAccount> accs = u.getBankAccounts();
-		
+		double balance = UserActions.getBalance(id);
+		double balance2 = UserActions.getBalance(id2);
+
 		u.transfer(id, id2, 50);
 		//Transfer funds changes balances
-		assertEquals(u.getBalance(id), balance - 50, 0.01);
-		assertEquals(u.getBalance(id2), balance + 50, 0.01);
+		assertEquals(UserActions.getBalance(id), balance - 50, 0.01);
+		assertEquals(UserActions.getBalance(id2), balance2 + 50, 0.01);
+	}
+	
+	@Test
+	void testApplyForJoint() {
+		//customer applies for joint ownership of user2's account
+		CustomerAccount curAccount = CustomerActions.getCustomerAccountByUsername("user");
+		CustomerAccount otherAccount = CustomerActions.getCustomerAccountByUsername("user2");
+		u.apply(curAccount, otherAccount.getBankAccountIDs().get(0));
+		curAccount = CustomerActions.getCustomerAccountByUsername("user");
+		assertNotNull(curAccount.getApplies().get(0));
 	}
 }

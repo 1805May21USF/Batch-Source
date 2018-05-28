@@ -50,15 +50,6 @@ public class CustomerActions {
 		return customerAccount;
 	}
 	
-	public boolean attachBankAccountToCustomer(UUID id, String username) {
-		CustomerAccount customerAccount = getCustomerAccountByUsername(username);
-		if (customerAccount != null) {
-			customerAccount.addBankAccountID(id);
-			return true;
-		}
-		return false;
-	}
-
 	public static void saveCustomerAccount(CustomerAccount customerAccount) {
 		ArrayList<CustomerAccount> customerAccounts = getCustomerAccounts();
 		
@@ -67,5 +58,14 @@ public class CustomerActions {
 				cus.setBankAccountIDs(customerAccount.getBankAccountIDs());
 		
 		UtilityActions.write(customerAccounts, filename);
+	}
+
+	public void viewPersonalInfo(String username) {
+		CustomerAccount customerAccount = getCustomerAccountByUsername(username);
+		System.out.println("Name: " + customerAccount.getName());
+		System.out.println("Address: " + customerAccount.getAddress());
+		System.out.println("Age: " + customerAccount.getAge());
+		System.out.println("Username: " + customerAccount.getUsername());
+		System.out.println("Number of Accounts: " + customerAccount.getBankAccountIDs().size());
 	}
 }

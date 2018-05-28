@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class CustomerAccount implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String address;
 	private String age;
 	private String username;
 	private ArrayList<UUID> bankAccountIDs;
+	private ArrayList<UUID> applies;
 	
 	public CustomerAccount(String name, String address, String age, String username) {
 		super();
@@ -18,6 +20,7 @@ public class CustomerAccount implements Serializable {
 		this.age = age;
 		this.username = username;
 		this.bankAccountIDs = new ArrayList<UUID>();
+		this.applies = new ArrayList<UUID>();
 	}
 	
 	public String getName() {
@@ -52,5 +55,16 @@ public class CustomerAccount implements Serializable {
 	}
 	public void addBankAccountID(UUID id) {
 		bankAccountIDs.add(id);
+	}
+	public ArrayList<UUID> getApplies() {
+		return applies;
+	}
+	public void setApplies(ArrayList<UUID> applies) {
+		this.applies = applies;
+	}
+	public void addApply(UUID id) {
+		if (applies.contains(id))
+			return;
+		applies.add(id);
 	}
 }

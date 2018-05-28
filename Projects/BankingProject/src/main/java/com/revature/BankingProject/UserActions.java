@@ -11,6 +11,7 @@ import com.revature.Utility.UtilityActions;
 
 public class UserActions {
 	private static File filename = new File("BankAccounts.txt");
+	private static File cusfilename = new File("CustomerAccounts.txt");
 	private static Scanner sc = App.sc;
 	
 	public void customerOptions(CustomerAccount customerAccount, int accountNum) {
@@ -44,8 +45,8 @@ public class UserActions {
 	private void optionDeposit(CustomerAccount customerAccount, int accountNum) {
 		UUID bankAccountID = customerAccount.getBankAccountIDs().get(accountNum);
 		BankAccount bankAccount = getBankAccountById(bankAccountID);
-		double amt = getAmount();
 		
+		double amt = UtilityActions.getValidAmount();
 		if (amt == -1)
 			return;
 		
@@ -55,19 +56,8 @@ public class UserActions {
 	public void optionWithdraw(CustomerAccount customerAccount, int accountNum) {
 		UUID bankAccountID = customerAccount.getBankAccountIDs().get(accountNum);
 		BankAccount bankAccount = getBankAccountById(bankAccountID);
-		double amt;
 		
-		while (true) {
-			amt = getAmount();
-			
-			if (amt == -1)
-				break;			
-			if (bankAccount.getBalance() >= amt) {
-				bankAccount.setBalance(bankAccount.getBalance() - amt);
-				break;
-			}
-			System.out.println("Amount greater than balance, please enter a smaller amount.");
-		}
+		double amt = UtilityActions.getValidWithDrawAmount(bankAccountID);
 		if (amt == -1)
 			return;
 		
@@ -76,18 +66,8 @@ public class UserActions {
 	
 	public void optionTransfer(CustomerAccount customerAccount, int accountNum) {
 		UUID bankAccountID = customerAccount.getBankAccountIDs().get(accountNum);
-		double amt;
 		
-		while (true) {
-			amt = getAmount();
-			
-			if (amt == -1)
-				break;			
-			if (getBalance(bankAccountID) >= amt) {
-				break;
-			}
-			System.out.println("Amount greater than balance, please enter a smaller amount.");
-		}
+		double amt = UtilityActions.getValidWithDrawAmount(bankAccountID);
 		if (amt == -1)
 			return;
 		
@@ -100,70 +80,21 @@ public class UserActions {
 	
 	private UUID getReceiverUUID() {
 		String input;
-		
+
 		while (true) {
-			//get username of receiver
 			System.out.println("Username to transfer funds to, -1 to Exit: ");
 			input = sc.nextLine();
 			
 			if (input.equals("-1"))
 				return null;
 			
-			//check if exists
 			if (RegistrationActions.usernameExists(input)) {
 				CustomerAccount customerAccount = CustomerActions.getCustomerAccountByUsername(input);
-				return getUUID(customerAccount);
+				return UtilityActions.getUUID(customerAccount);
 			}
 		}
 	}
 	
-	private UUID getUUID(CustomerAccount customerAccount) {
-		StringBuilder bd = new StringBuilder();
-
-		//determine account number
-		int size = customerAccount.getBankAccountIDs().size();
-		for (int i = 0; i < size; i++) {
-			bd.append(i + " ");
-		}
-		int accNum;
-		while (true) {
-			System.out.println("Select one of user's accounts or -1 to Exit: [ " + bd + "]");
-			String accInput = sc.nextLine();
-			if (accInput.equals("-1"))
-				return null;
-			try {
-				accNum = Integer.parseInt(accInput);
-				if (accNum < size && accNum >= 0)
-					return customerAccount.getBankAccountIDs().get(accNum);
-			} catch (NumberFormatException e) {
-				
-			}
-			System.out.println("Invalid entry");
-		}
-	}
-	
-	private double getAmount() {
-		double depositAmt;
-		String input;
-		
-		while (true) {
-			System.out.println("Amount or -1 to Exit: ");
-			input = sc.nextLine();
-			
-			try {			
-				depositAmt = Double.parseDouble(input);
-				if (input.equals("-1"))
-					break;
-				if (depositAmt > 0)
-					break;
-			} catch (NumberFormatException e) {
-				
-			} 
-			System.out.println("Invalid entry, please enter a number.");	
-		}
-		return depositAmt;
-	}
-
 	public static UUID createBankAccount() {
 		ArrayList<BankAccount> bankAccounts = getBankAccounts();
 		BankAccount bankAccount = new BankAccount(); 
@@ -194,7 +125,7 @@ public class UserActions {
 		return bankAccounts;
 	}
 	
-	public BankAccount getBankAccountById(UUID id) {
+	public static BankAccount getBankAccountById(UUID id) {
 		ArrayList<BankAccount> bankAccounts = getBankAccounts();
 		
 		if (bankAccounts != null) 
@@ -212,7 +143,7 @@ public class UserActions {
 		return false;
 	}
 
-	public double getBalance(UUID id) {	
+	public static double getBalance(UUID id) {	
 		BankAccount bankAccount = getBankAccountById(id);
 		
 		if (bankAccount != null) 
@@ -273,4 +204,16 @@ public class UserActions {
 		bankAccount = getBankAccountById(id2);
 		deposit(bankAccount, amt);
 	}
+	
+	public void apply(CustomerAccount curAccount, UUID idOfBankAccountToAdd) {
+		ArrayList<CustomerAccount> cusAccounts = CustomerActions.getCustomerAccounts();
+		
+		for (CustomerAccount acc : cusAccounts) 
+			if (acc.getUsername().equals(curAccount.getUsername()))
+					acc.addApply(idOfBankAccountToAdd);
+		
+		UtilityActions.write(cusAccounts, cusfilename);
+	}
+	
+	//approve/deny applies
 }
