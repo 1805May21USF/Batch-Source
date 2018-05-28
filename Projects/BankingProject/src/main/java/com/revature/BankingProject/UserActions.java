@@ -31,6 +31,7 @@ public class UserActions {
 				optionDeposit(customerAccount, accountNum);
 			} else if (option.equals("4")) {
 				//Transfer
+				optionTransfer(customerAccount, accountNum);
 			} else if (option.equals("-1")) {
 				//Exit
 				break;
@@ -73,6 +74,74 @@ public class UserActions {
 		withdraw(bankAccount, amt);	
 	}
 	
+	public void optionTransfer(CustomerAccount customerAccount, int accountNum) {
+		UUID bankAccountID = customerAccount.getBankAccountIDs().get(accountNum);
+		double amt;
+		
+		while (true) {
+			amt = getAmount();
+			
+			if (amt == -1)
+				break;			
+			if (getBalance(bankAccountID) >= amt) {
+				break;
+			}
+			System.out.println("Amount greater than balance, please enter a smaller amount.");
+		}
+		if (amt == -1)
+			return;
+		
+		UUID sender = customerAccount.getBankAccountIDs().get(accountNum);
+		UUID receiver = getReceiverUUID();
+		if (receiver == null)
+			return;
+		transfer(sender, receiver, amt);
+	}
+	
+	private UUID getReceiverUUID() {
+		String input;
+		
+		while (true) {
+			//get username of receiver
+			System.out.println("Username to transfer funds to, -1 to Exit: ");
+			input = sc.nextLine();
+			
+			if (input.equals("-1"))
+				return null;
+			
+			//check if exists
+			if (RegistrationActions.usernameExists(input)) {
+				CustomerAccount customerAccount = CustomerActions.getCustomerAccountByUsername(input);
+				return getUUID(customerAccount);
+			}
+		}
+	}
+	
+	private UUID getUUID(CustomerAccount customerAccount) {
+		StringBuilder bd = new StringBuilder();
+
+		//determine account number
+		int size = customerAccount.getBankAccountIDs().size();
+		for (int i = 0; i < size; i++) {
+			bd.append(i + " ");
+		}
+		int accNum;
+		while (true) {
+			System.out.println("Select one of user's accounts or -1 to Exit: [ " + bd + "]");
+			String accInput = sc.nextLine();
+			if (accInput.equals("-1"))
+				return null;
+			try {
+				accNum = Integer.parseInt(accInput);
+				if (accNum < size && accNum >= 0)
+					return customerAccount.getBankAccountIDs().get(accNum);
+			} catch (NumberFormatException e) {
+				
+			}
+			System.out.println("Invalid entry");
+		}
+	}
+	
 	private double getAmount() {
 		double depositAmt;
 		String input;
@@ -96,8 +165,11 @@ public class UserActions {
 	}
 
 	public static UUID createBankAccount() {
-		ArrayList<BankAccount> bankAccounts = new ArrayList<BankAccount>();
+		ArrayList<BankAccount> bankAccounts = getBankAccounts();
 		BankAccount bankAccount = new BankAccount(); 
+		
+		if (bankAccounts == null)
+			bankAccounts = new ArrayList<BankAccount>();
 		bankAccounts.add(bankAccount);
 		
 		UtilityActions.write(bankAccounts, filename);
@@ -106,12 +178,12 @@ public class UserActions {
 	}
 
 	//Get the accounts from the file
-	public ArrayList<BankAccount> getBankAccounts() {
+	public static ArrayList<BankAccount> getBankAccounts() {
 		return convertToBankAccounts(UtilityActions.read(filename));
 	}
 	
 	//Convert generic array to BankAccount
-	private ArrayList<BankAccount> convertToBankAccounts(ArrayList<?> list) {		
+	private static ArrayList<BankAccount> convertToBankAccounts(ArrayList<?> list) {		
 		ArrayList<BankAccount> bankAccounts = null;
 		
 		if (list != null) {
@@ -193,5 +265,12 @@ public class UserActions {
 					bc.setBalance(bc.getBalance() - amt);
 						
 		UtilityActions.write(bankAccounts, filename);
+	}
+
+	public void transfer(UUID id, UUID id2, double amt) {
+		BankAccount bankAccount = getBankAccountById(id);
+		withdraw(bankAccount, amt);
+		bankAccount = getBankAccountById(id2);
+		deposit(bankAccount, amt);
 	}
 }

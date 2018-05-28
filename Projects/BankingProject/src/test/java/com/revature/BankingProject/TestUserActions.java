@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.junit.jupiter.api.AfterAll;
@@ -22,13 +23,13 @@ class TestUserActions {
 	private static RegistrationActions r = new RegistrationActions();
 	private static UUID id;
 	private static File bankfilename = new File("BankAccounts.txt");
-	private static File regfilename = new File("RegistrationAccounts.txt");
+	private static File regfilename = new File("UserAccounts.txt");
+	private static File cusfilename = new File("CustomerAccounts.txt");
 	
 	//Executes once before all 
 	@BeforeAll
 	static void setup() {	
-		UtilityActions.clearAccounts(bankfilename);
-		UtilityActions.clearAccounts(regfilename);
+		clearAccounts();
 			
 		makeDummyUsers();
 	}
@@ -47,6 +48,7 @@ class TestUserActions {
 	private static void clearAccounts() {
 		UtilityActions.clearAccounts(bankfilename);
 		UtilityActions.clearAccounts(regfilename);
+		UtilityActions.clearAccounts(cusfilename);
 	}
 	
 	@Test
@@ -115,6 +117,18 @@ class TestUserActions {
 	
 	@Test
 	void testTransfer() {
+		//make another user
+		r.register("user2", "pass", 0);
+		UUID id2 = UserActions.createBankAccount();	
+		c.attachBankAccountToCustomer(id2, "user2");
 		
+		double balance = u.getBalance(id);
+		double balance2 = u.getBalance(id2);
+		ArrayList<BankAccount> accs = u.getBankAccounts();
+		
+		u.transfer(id, id2, 50);
+		//Transfer funds changes balances
+		assertEquals(u.getBalance(id), balance - 50, 0.01);
+		assertEquals(u.getBalance(id2), balance + 50, 0.01);
 	}
 }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import com.revature.Utility.UtilityActions;
 
 public class RegistrationActions {
-	private static File filename = new File("RegistrationAccounts.txt");
+	private static File filename = new File("UserAccounts.txt");
 	private static UserActions u = new UserActions();
 	private static CustomerActions c = new CustomerActions();
 	
@@ -63,7 +63,7 @@ public class RegistrationActions {
 	}
 
 	//Check if username already exists
-	public boolean usernameExists(String username) {
+	public static boolean usernameExists(String username) {
 		ArrayList<UserAccount> userAccounts = getAccounts();
 		
 		if (userAccounts != null)
@@ -85,12 +85,12 @@ public class RegistrationActions {
 	}
 	
 	//Get the accounts from the file
-	public ArrayList<UserAccount> getAccounts() {
+	public static ArrayList<UserAccount> getAccounts() {
 		return convert(UtilityActions.read(filename));
 	}
 	
 	//Convert generic array to UserAccount
-	private ArrayList<UserAccount> convert(ArrayList<?> list) {		
+	private static ArrayList<UserAccount> convert(ArrayList<?> list) {		
 		ArrayList<UserAccount> userAccounts = null;
 		
 		if (list != null) {
