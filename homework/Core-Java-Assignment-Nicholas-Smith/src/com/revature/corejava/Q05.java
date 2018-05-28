@@ -14,19 +14,22 @@ package com.revature.corejava;
 public class Q05
 {
 	//create global variables
-	String asdf = new String("asdf");
+	String reversedString = new String("a");
 	
 	//create a method that prints the solution to the problem
-	public void printSolution() 
+	public void printSolution(String word) 
 	{
-		System.out.println("Q5: ");
+		System.out.println("Q5: " + word);
 	}
 	
 	//create a substring method
 	//returns a String
-	//takes a String str
-	public String subString() 
-	{
-		return asdf;
+	//takes a String str and int idx
+	public String subString(String str, int idx) 
+	{	
+		//example word: table
+		
+		//temp
+		return reversedString;
 	}
 }

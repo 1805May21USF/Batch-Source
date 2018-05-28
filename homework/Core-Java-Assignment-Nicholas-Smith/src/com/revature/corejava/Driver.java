@@ -54,6 +54,7 @@ public class Driver
 		q04.factorial(5);
 		q04.printSolution();
 		
-		q05.printSolution();
+		String q05String = q05.subString("asdf", 2);
+		q05.printSolution(q05String);
 	}
 }
