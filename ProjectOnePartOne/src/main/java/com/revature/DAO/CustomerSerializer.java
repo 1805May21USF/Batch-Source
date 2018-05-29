@@ -63,10 +63,14 @@ public class CustomerSerializer implements CustomerDAO {
 	@Override
 	public void deleteCustomer(Customer customer) {
 		loadFromFile();
-		for(Customer e:this.customers) {
-			if(e.getUserName().equals(customer.getUserName())){
-				this.customers.remove(e);
+		int remove = -1;
+		for(int i = 0;i<this.customers.size();i++) {
+			if(this.customers.get(i).getUserName().equals(customer.getUserName())){
+				remove = i;
 			}
+		}
+		if(remove>-1) {
+			this.customers.remove(remove);
 		}
 		saveToFile();
 		

@@ -61,10 +61,14 @@ public class EmployeeSerializer  implements EmployeeDAO{
 	@Override
 	public void deleteEmployee(Employee employee) {
 		loadFromFile();
-		for(Employee e:this.employees) {
-			if(e.getUserName().equals(employee.getUserName())){
-				this.employees.remove(e);
+		int remove = -1;
+		for(int i = 0;i<this.employees.size();i++) {
+			if(this.employees.get(i).getUserName().equals(employee.getUserName())){
+				remove = i;
 			}
+		}
+		if(remove>-1) {
+			this.employees.remove(remove);
 		}
 		saveToFile();
 		

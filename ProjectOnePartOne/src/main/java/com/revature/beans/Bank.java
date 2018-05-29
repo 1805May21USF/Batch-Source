@@ -43,9 +43,6 @@ public class Bank implements Serializable {
 		
 		c1.setAccounts(as);
 		
-		d.updateAccount(a);
-		d.updateCustomer(c1);
-		
 		ArrayList<Customer> csa = new ArrayList<Customer>();
 		cs.add(c1);
 		
@@ -55,7 +52,6 @@ public class Bank implements Serializable {
 		
 		c1.setApplications(asa);
 		
-		d.updateApplication(ap);
 		d.updateCustomer(c1);
 	}
 	public void start() {
@@ -197,6 +193,7 @@ public class Bank implements Serializable {
 		
 		this.setBankView(3);
 	}
+	
 	public void loginMenu() {
 		linebreak();
 		String username;
@@ -289,7 +286,7 @@ public class Bank implements Serializable {
 			System.out.println("Application Menu");
 			linebreak();
 			System.out.println("1. Open account application.");
-			System.out.println("2. View open applications.");
+			System.out.println("2. View applications.");
 			System.out.println("3. Exit");
 			int selection;
 			Scanner scanner = new Scanner(System.in);
@@ -300,6 +297,7 @@ public class Bank implements Serializable {
 					break;
 				}
 				case 2:{
+					applicationSelectMenu();
 					break;
 				}
 				case 3:{
@@ -327,6 +325,7 @@ public class Bank implements Serializable {
 			linebreak();
 			System.out.println("Apply For An Account!");
 			linebreak();
+			
 			System.out.println("Signer: "+a.getSigner().getFname() + " " + a.getSigner().getLname());
 			System.out.println("Initial Balance: $" + a.getBalance());
 			System.out.print("Joint Customers: ");
@@ -338,7 +337,8 @@ public class Bank implements Serializable {
 			System.out.println("1. Change initial balance. ");
 			System.out.println("2. Add a joint customer.");
 			System.out.println("3. View open applications.");
-			System.out.println("4. Exit");
+			System.out.println("4. Submit.");
+			System.out.println("5. Exit");
 			int selection;
 			Scanner scanner = new Scanner(System.in);
 			selection = Integer.parseInt(scanner.nextLine());
@@ -372,6 +372,9 @@ public class Bank implements Serializable {
 					break;
 				}
 				case 4:{
+					break;
+				}
+				case 6:{
 					inMenu=false;
 					break;
 				}
@@ -383,6 +386,66 @@ public class Bank implements Serializable {
 			}
 		}
 	}
+	
+	public void applicationViewMenu(int ID) {
+		boolean inMenu = true;
+		while(inMenu) {
+			linebreak();
+			System.out.println("Application #"+ID);
+			linebreak();
+			
+			
+			
+			System.out.print("Signer: " +)
+		}
+	}
+	
+	public void applicationSelectMenu() {
+		boolean inMenu = true;
+		while(inMenu) {
+			linebreak();
+			System.out.println("Applications");
+			linebreak();
+			int selection;
+			Scanner scanner = new Scanner(System.in);
+			
+			Customer currentCustomer = d.getCustomer(this.currentUser.ID);
+			if(currentCustomer.getApplications().size()!=0) {
+				for(int i = 0;i<currentCustomer.getApplications().size();i++) {
+					System.out.println(i+1+". Application #" +currentCustomer.getApplications().get(i).getID());
+				}
+				System.out.println(currentCustomer.getApplications().size()+1 + ". Exit.");
+				String input;
+				input = scanner.nextLine();
+				selection = Integer.parseInt(input);
+				
+				while(!(selection > 0 && selection < currentCustomer.getApplications().size()+2)) {
+					System.out.println("That was not a selection!");
+					input = scanner.nextLine();
+					selection = Integer.parseInt(input);
+				}
+				
+				selection = selection-1;
+				applicationViewMenu(currentCustomer.getApplications().get(selection).getID());
+				
+			} else {
+				System.out.println("You have no applications!");
+				System.out.println("1. Exit.");
+				String input = scanner.nextLine();
+				selection = Integer.parseInt(input);
+				if(selection == 1) {
+					inMenu = false;
+				}
+			}
+			if(selection == currentCustomer.getApplications().size()+1) {
+				inMenu = false;
+			}
+			
+		}
+		
+		
+	}
+	
 	public void accountSelectionMenu() {
 		boolean inMenu = true;
 		while(inMenu) {
@@ -427,6 +490,44 @@ public class Bank implements Serializable {
 		}
 	}
 	public void employeeMainMenu() {
+		
+boolean loggedIn = true;
+		
+		while(loggedIn) {
+			
+			int selection;
+			linebreak();
+			System.out.println("Welcome!");
+			linebreak();
+			System.out.println("1. Customer Information");
+			System.out.println("2. Open Applications");
+			System.out.println("3. Exit");
+				
+			Scanner scanner = new Scanner(System.in);
+			selection = Integer.parseInt(scanner.nextLine());
+			switch(selection) {
+				case 1:{
+					applicationMainMenu();
+					this.setBankView(3);
+					break;
+				}
+				case 2:{
+					break;
+				}
+				case 3:{
+					loggedIn = false;
+					currentUser = null;
+					this.setBankView(0);
+					break;
+				}
+				default:{
+					System.out.flush();
+					System.out.println("That wasn't a menu choice!");
+					break;
+				}
+				
+			}
+		}
 		
 	}
 	public void adminMainMenu() {
