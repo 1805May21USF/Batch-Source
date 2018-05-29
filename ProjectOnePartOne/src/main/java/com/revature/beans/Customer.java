@@ -19,6 +19,7 @@ public class Customer extends User implements Serializable {
 		this.fname = f;
 		this.lname = l;
 		this.applications = new ArrayList<Application>();
+		this.accounts = new ArrayList<Account>();
 	}
 	
 	public Customer(int i,String u,String p,String f, String l) {
@@ -26,6 +27,7 @@ public class Customer extends User implements Serializable {
 		this.fname = f;
 		this.lname = l;
 		this.applications = new ArrayList<Application>();
+		this.accounts = new ArrayList<Account>();
 	}
 	
 	public boolean applicationApprove(Application a) {
@@ -78,12 +80,12 @@ public class Customer extends User implements Serializable {
 		return this.applications;
 	}
 
-	public void setApplication(ArrayList<Application> apps) {
+	public void setApplications(ArrayList<Application> apps) {
 		this.applications = apps;
 	}
 
 	public ArrayList<Account> getAccounts() {
-		return accounts;
+		return this.accounts;
 	}
 
 	public void setAccounts(ArrayList<Account> accounts) {

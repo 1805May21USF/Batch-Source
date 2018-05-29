@@ -31,6 +31,32 @@ public class Bank implements Serializable {
 		Employee e2 = new Employee("admin","admin","Admin","Admin");
 		e2.makeAdmin();
 		d.updateEmployee(e2);
+		
+		Customer c1 = new Customer("corwin","lester","Corwin","Lester");
+		
+		ArrayList<Customer> cs = new ArrayList<Customer>();
+		cs.add(c1);
+		
+		Account a = new Account(100.00,c1,cs);
+		ArrayList<Account> as = new ArrayList<Account>();
+		as.add(a);
+		
+		c1.setAccounts(as);
+		
+		d.updateAccount(a);
+		d.updateCustomer(c1);
+		
+		ArrayList<Customer> csa = new ArrayList<Customer>();
+		cs.add(c1);
+		
+		Application ap = new Application(c1,0.0,csa);
+		ArrayList<Application> asa = new ArrayList<Application>();
+		asa.add(ap);
+		
+		c1.setApplications(asa);
+		
+		d.updateApplication(ap);
+		d.updateCustomer(c1);
 	}
 	public void start() {
 		this.connect();
@@ -238,18 +264,7 @@ public class Bank implements Serializable {
 					break;
 				}
 				case 3:{
-					linebreak();
-					System.out.println("Accounts");
-					linebreak();
-					Customer currentCustomer = d.getCustomer(this.currentUser.ID);
-					for(int i = 0;i<currentCustomer.getAccounts().size();i++) {
-						System.out.println(i+". " +currentCustomer.getAccounts().get(i));
-					}
-					String input;
-					input = scanner.nextLine();
-					selection = Integer.parseInt(input);
-					selection = selection + 1;
-
+					accountSelectionMenu();
 					break;
 				}
 				case 4:{
@@ -366,6 +381,49 @@ public class Bank implements Serializable {
 					break;
 				}
 			}
+		}
+	}
+	public void accountSelectionMenu() {
+		boolean inMenu = true;
+		while(inMenu) {
+			
+			linebreak();
+			System.out.println("Accounts");
+			linebreak();
+			Scanner scanner = new Scanner(System.in);
+			int selection;
+			
+			
+			Customer currentCustomer = d.getCustomer(this.currentUser.ID);
+			if(currentCustomer.getAccounts().size()!=0) {
+				for(int i = 0;i<currentCustomer.getAccounts().size();i++) {
+					System.out.println(i+1+". Account #" +currentCustomer.getAccounts().get(i).getID());
+				}
+				System.out.println(currentCustomer.getAccounts().size()+1 + ". Exit.");
+				String input;
+				input = scanner.nextLine();
+				selection = Integer.parseInt(input);
+				
+				while(!(selection > 0 && selection < currentCustomer.getAccounts().size()+2)) {
+					System.out.println("That was not a selection!");
+					input = scanner.nextLine();
+					selection = Integer.parseInt(input);
+				}
+				
+				
+				if(selection == currentCustomer.getAccounts().size()+1) {
+					inMenu = false;
+				}
+			} else {
+				System.out.println("You have no accounts!");
+				System.out.println("1. Exit.");
+				String input = scanner.nextLine();
+				selection = Integer.parseInt(input);
+				if(selection == 1) {
+					inMenu = false;
+				}
+			}
+
 		}
 	}
 	public void employeeMainMenu() {
