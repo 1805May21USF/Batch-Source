@@ -43,6 +43,8 @@ public class Q06 {
 			
 		}
 		
-		scan.nextLine();
+		while(scan.hasNextLine()) {
+			scan.nextLine();
+		}
 	}
 }

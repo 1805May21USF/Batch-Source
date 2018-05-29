@@ -22,6 +22,8 @@ public class Q10 {
 		int min = (value1 < value2) ? value1 : value2;	
 		System.out.println(min + " is the smaller number!");
 		
-		scan.nextLine();
+		while(scan.hasNextLine()) {
+			scan.nextLine();
+		}
 	}
 }
