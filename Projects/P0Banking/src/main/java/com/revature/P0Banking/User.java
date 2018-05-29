@@ -9,7 +9,11 @@ public class User{
 	//private static int age;
 	private static String[] acct_info;
 	
-	//Get username and password from user
+	/**************************************************************
+	 * Name: getInfo(), getPersonalInfo()
+	 * Inputs: None
+	 * Description:Get username, password, name from users
+	 */
 	public static void getInfo() {
 		System.out.print("Username: ");
     	String un_login = App.sc.nextLine();
@@ -25,10 +29,17 @@ public class User{
 		/*System.out.print("Age: ");
 		age = App.sc.nextInt();*/
 	}
+	//***************************************************************
 	
-	//Read file and check if there is a match of username and password
-	//returns a boolean
-	public static Partner returnUserNameMatch(String username, ArrayList<?> accts) {
+	
+	/*
+	 * Name: returnUserNameMatch()
+	 * Inputs: String username, ArrayList<?> accts
+	 * Outputs: Partner Object
+	 * Description: Utility method used to find a matching username account from a list of generic accounts
+	 * pulled from AccountDatabase.txt
+	 */
+	public static Partner returnUserNameMatch(String username, ArrayList<?> accts) throws NullPointerException{
 		
 		for(int i = 0; i < accts.size(); i++)
 		{
@@ -43,6 +54,12 @@ public class User{
     	return null;
 	}
 	
+	/*
+	 * Name: returnLoginMatch
+	 * Inputs: String username, String password, ArrayList<?> accts
+	 * Outputs: Partner object
+	 * Description: Returns a matched login by searching if username and password equals one found in ArrayList from AccountDatabase.txt
+	 */
 	public static Partner returnLoginMatch(String username, String password, ArrayList<?> accts) {
 			
 			for(int i = 0; i < accts.size(); i++)
@@ -61,7 +78,12 @@ public class User{
 	    	return null;
 	}
 	
-	//Deals with generic type safety issues by type casting every object in the ArrayList as a subclass of Account
+	/*
+	 * Name: convertToPartner()
+	 * Input:ArrayList<?> accts
+	 * Output:ArrayList<Partner>
+	 * Description: Deals with generic type safety by type casting every object in the ArrayList as a subclass of Account
+	 */
 	public static ArrayList<Partner> convertToPartner (ArrayList<?> accts){
 		ArrayList<Partner> newAccts =  new ArrayList<Partner>();
 		for(int i = 0; i < accts.size(); i++){
@@ -73,6 +95,13 @@ public class User{
 		return newAccts;
 	}
 	
+	
+	/*
+	 * Name: readFromFile()
+	 * Input:None
+	 * Output:ArrayList<?>
+	 * Description: Utility method for reading from file - AccountDatabase.txt
+	 */
 	public static ArrayList<?> readFromFile() throws FileNotFoundException, IOException, ClassNotFoundException{
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream(App.file));
 		ArrayList<?> accts = (ArrayList<?>)in.readObject();
@@ -80,7 +109,12 @@ public class User{
 		return accts;
 	}
 	
-	//Grab any new updates to file then combines old set of accounts with new account and outputs to AccountDatabase.txt
+	/*
+	 * Name: saveToFile()
+	 * Input:ArrayList<Partner> newAccts
+	 * Output:None
+	 * Description: Utility method for saving changes to file - AccountDatabase.txt
+	 */
 	public static void saveToFile(ArrayList<Partner> newAccts) throws IOException {
 		FileOutputStream fileout = new FileOutputStream(App.file);
     	ObjectOutputStream out = new ObjectOutputStream(fileout);
@@ -88,6 +122,12 @@ public class User{
     	out.close();
 	}
 	
+	/*
+	 * Name: addToAccounts()
+	 * Input:String account_type, ArrayList<Partner> accts
+	 * Output:ArrayList<Partner>
+	 * Description: Utility method to add new user to array list
+	 */
 	public static ArrayList<Partner> addToAccounts(String account_type, ArrayList<Partner> accts){
 		if(account_type.equals("Customer")){
 			accts.add(new Customer(name,acct_info[0],acct_info[1]));
@@ -101,8 +141,13 @@ public class User{
 		return accts;
 	}
 	
-	//Register for an account
-	public static ArrayList<Partner> registerAcct(String account_type, String username) throws IOException {
+	/*
+	 * Name: registerAcct
+	 * Input:String account_type, String username
+	 * Output:ArrayList<Partner>
+	 * Description: Utility method to register a user with unique username and password. Not used in current iteration due to bankadmin createAccount method in progress
+	 */
+/*	public static ArrayList<Partner> registerAcct(String account_type, String username) throws IOException {
 		//Asks for necessary information
 		getInfo();
 		getPersonalInfo();
@@ -132,8 +177,14 @@ public class User{
 		}
 		System.out.println("Please attempt to register again with a unique username");
 		return newAccts;
-	}
+	}*/
 	
+	/*
+	 * Name: registerAcct
+	 * Input:String account_type, String username
+	 * Output:ArrayList<Partner>
+	 * Description: Utility method to register a user with just the account_type. Not used due to bank admin function still in progress
+	 */
 	public static ArrayList<Partner> registerAcct(String account_type) throws IOException {
 		//Asks for necessary information
 		getInfo();
@@ -165,7 +216,12 @@ public class User{
 		return newAccts;
 	}
 	
-	//Login to an Account
+	/*
+	 * Name: loginAcct
+	 * Input:None
+	 * Output:ArrayList<Partner>
+	 * Description: Utility method to login accounts
+	 */
 	public static ArrayList<Partner> loginAcct() throws FileNotFoundException, IOException, ClassNotFoundException {
 		//Clears scanner buffer for further user input
 		getInfo();

@@ -10,15 +10,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
 class UserTest {
 	private static File file = new File("Test.txt");
 	private static Customer test = new Customer("Bob", "user", "pass");
-	private static Employee test_e = new Employee("Sam", "user1", "pass");
+	//private static Employee test_e = new Employee("Sam", "user1", "pass");
 	private static BankAdmin test_b = new BankAdmin("Tom", "user2", "pass");
 	private static String[] info = {"user", "pass"};
 	
@@ -101,7 +99,7 @@ class UserTest {
 			o.setName("Test"+b);
 			b++;
 		}
-		int size = accounts.size();
+		//int size = accounts.size();
 		
 		int c = 3;
 		for(Partner o: accounts) {

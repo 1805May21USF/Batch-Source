@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
+
 public class Account implements Serializable{
 	/**
 	 * 
@@ -13,15 +14,24 @@ public class Account implements Serializable{
 	private double balance;
 	private String name;
 	private UUID uniqueId = UUID.randomUUID();
-	private final long id;
+	private final String id;
 
 	public Account(String name) {
 		this.balance = 0.00;
 		this.name = name;
-		this.id = uniqueId.getLeastSignificantBits();
+		//cool id and logger to see when a new account has been created!
+		this.id = Long.toString(uniqueId.getLeastSignificantBits()).substring(0, 10);
+		App.log.info(name+id+" has been created.");
+		
 	}
 	
-	public ArrayList<Partner> prompt(String currentUser, ArrayList<Partner> newAccts){
+	/*
+	 * Name: promptAccountActions
+	 * Input:ArrayList<Partner> newAccts, String currentUser
+	 * Output:ArrayList<Partner>
+	 * Description: Public access method that gives a user options when accessing their bank account
+	 */
+	public ArrayList<Partner> promptAccountActions(String currentUser, ArrayList<Partner> newAccts) throws SecurityException, IOException{
 		int pick = -1;
 		while(pick != 5){
 			try {
@@ -33,7 +43,7 @@ public class Account implements Serializable{
 					}
 					switch(pick) {
 						case 1:
-							this.view();
+							this.viewBalance();
 							break;
 						case 2:
 							System.out.print("Withdraw amount: ");
@@ -66,25 +76,55 @@ public class Account implements Serializable{
 		return newAccts;
 	}
 	
-	public void view() {
+	/*
+	 * Name: viewBalance
+	 * Input:None
+	 * Output:None
+	 * Description: Private access method that views balance on account only for specific account instance
+	 */
+	private void viewBalance() {
 		System.out.print(this.getName()+this.getId()+" has: $");
 		System.out.printf("%.2f\n",this.getBalance());
 	}
 	
+	/*
+	 * Name: withdraw
+	 * Input:double amount
+	 * Output:None
+	 * Description: Public account method that allows user to withdraw money from account instance
+	 */
 	public void withdraw(double amount) throws BadInputException{
 		if(amount>this.getBalance()) {
 			System.out.println("\nThe amount exceeded what you have.");
 			throw new BadInputException();
 		}
 		else if(amount < 0) {throw new BadInputException();}
-		else {this.setBalance(this.getBalance()-amount);}
+		else {
+			this.setBalance(this.getBalance()-amount);
+			String money = String.format("%.2f", amount);
+			App.log.info(this.name+this.id+" withdrew: $"+money);
+		}
 	}
 	
+	/*
+	 * Name: deposit
+	 * Input:double amount
+	 * Output:None
+	 * Description: Public account method that allows user to deposit money to account instance
+	 */
 	public void deposit(double amount) throws BadInputException{
 		//deposit yo money
 		this.setBalance(this.getBalance()+amount);
+		String money = String.format("%.2f", amount);
+		App.log.info(this.name+this.id+" deposited: $"+money);
 	}
 	
+	/*
+	 * Name: transfer
+	 * Input:String user, ArrayList<Partner> accts
+	 * Output:ArrayList<Partner>
+	 * Description: Public account method that allows user to transfer money between accounts to another unique username.
+	 */
 	public ArrayList<Partner> transfer(String user, ArrayList<Partner> accts) throws BadInputException,IOException,ClassNotFoundException{
 		ArrayList<?> getFileAccts = User.readFromFile();
 		Partner transferAcct = User.returnUserNameMatch(user, getFileAccts);
@@ -103,15 +143,25 @@ public class Account implements Serializable{
 			if(pick-1 > listAccts.size() || pick < 0) {
 				throw new BadInputException();
 			}
+			Account transferMoney = ((Customer) transferAcct).getAccounts().get(pick-1);
+			if(transferMoney.getId().equals(this.id)) {
+				System.out.println("Can't transfer to same account");
+				throw new BadInputException();
+			}
 			System.out.print("Transfer amount: ");
 			double amountTransfer = App.sc.nextDouble();
 			this.withdraw(amountTransfer);
 			((Customer) transferAcct).getAccounts().get(pick-1).deposit(amountTransfer);
+			String money = String.format("%.2f", amountTransfer);
+			App.log.info(this.name+this.id+" transferred: $"+money+" to "+transferAcct.getUsername());
 			accts.add(transferAcct);
 		}
 		return accts;
 	}
 
+	/*
+	 * Getters and Setters
+	 */
 	public double getBalance() {
 		return balance;
 	}
@@ -128,9 +178,10 @@ public class Account implements Serializable{
 		this.name = name;
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
+
 
 
 

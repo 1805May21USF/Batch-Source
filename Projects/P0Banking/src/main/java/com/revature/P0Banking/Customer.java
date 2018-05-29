@@ -3,7 +3,6 @@ package com.revature.P0Banking;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Customer extends Partner implements Serializable{
@@ -13,8 +12,8 @@ public class Customer extends Partner implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String[] queueJointUserInfo;
 	private boolean appliedForJoint;
-	private static DecimalFormat dFormat = new DecimalFormat(".##");
-
+	
+	//Constructor Chaining Woo!
 	public Customer(String name, int age, String username, String password) {
 		super(username, password,name, age);
 		this.accounts.add(new Account("Primary"));
@@ -26,7 +25,13 @@ public class Customer extends Partner implements Serializable{
 		this.appliedForJoint = false;
 	}
 
-	public boolean applyJoint() {
+	/*
+	 * Name: applyJoint
+	 * Input:None
+	 * Output:boolean
+	 * Description: Customer access that just allows Customer objects to apply for a joint account
+	 */
+	private boolean applyJoint() {
 		App.sc.nextLine();
 		System.out.print("Username of joint member? ");
 		String user = App.sc.nextLine();
@@ -36,7 +41,7 @@ public class Customer extends Partner implements Serializable{
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(App.file));
 			ArrayList<?> accts = (ArrayList<?>)in.readObject();
-			if(User.returnUserNameMatch(user,accts) != null) {
+			if(User.returnUserNameMatch(user,accts) != null && !this.getUsername().equals(user) && this.appliedForJoint == false) {
 				this.queueJointUserInfo = new String[]{user,pass};
 				this.appliedForJoint = true;
 				in.close();
@@ -50,10 +55,16 @@ public class Customer extends Partner implements Serializable{
 		return false;
 	}
 	
+	/*
+	 * Name: viewPersonalInfo
+	 * Input:Customer user
+	 * Output:None
+	 * Description: Public access method that allows Bank Partners to view personal Info
+	 */
 	public void viewPersonalInfo(Customer user) {
 		System.out.println("Name: "+user.getName());
 		System.out.println("Username: "+user.getUsername());
-		System.out.println("Balance accounts: ");
+		System.out.println("Accounts: ");
 		int i = 1;
 		for(Account acct: user.getAccounts()) {
 			System.out.println(i+") "+acct.getName()+acct.getId()+": $"+String.format("%.2f", acct.getBalance()));
@@ -61,20 +72,12 @@ public class Customer extends Partner implements Serializable{
 		}
 	}
 	
-	public ArrayList<Partner> accessAccounts(ArrayList<Partner> newAccts) {
-		System.out.println("Select an account to access: ");
-		printListOfAccounts(accounts);
-		int pick = App.sc.nextInt();
-		if(pick > accounts.size() || pick < 0) {
-			System.out.println("Please pick a valid account.");
-		}
-		else {
-			Account account = accounts.get(pick-1);
-			newAccts = account.prompt(this.getUsername(),newAccts);
-		}
-		return newAccts;
-	}
-	
+	/*
+	 * Name: customerActions
+	 * Input:ArrayList<Partner> newAccts, int pick
+	 * Output:ArrayList<Partner>
+	 * Description: "Customer" access method that provides actions a customer can take in his/her account.
+	 */
 	private ArrayList<Partner> customerActions(ArrayList<Partner> newAccts, int pick) throws BadInputException{
 		switch(pick) {
 			case 1:
@@ -84,13 +87,19 @@ public class Customer extends Partner implements Serializable{
 				newAccts = this.accessAccounts(newAccts);
 				break;
 			case 3:
-				if(this.applyJoint()) {System.out.println("\nYou have applied for a joint account "+this.getName()+". An employee will approve or deny the application soon.");}
-				else {System.out.println("\nThere is no account with those credentials or you have already applied. Please try again.");}
+				if(this.applyJoint()) {System.out.println("You have applied for a joint account "+this.getName()+". An employee will approve or deny the application soon.\n");}
+				else {System.out.println("\nThat is not a viable account or you have already applied. Please try again.");}
 				break;
 		}
 		return newAccts;
 	}
 	
+	/*
+	 * Name: bankAdminActions
+	 * Input:ArrayList<Partner> newAccts, int pick
+	 * Output:ArrayList<Partner>
+	 * Description: "Customer" access method that provides actions a bank admin can take in a customer's account.
+	 */
 	private ArrayList<Partner> bankAdminActions(ArrayList<Partner> newAccts, int pick) throws BadInputException{
 		switch(pick) {
 			case 1:
@@ -102,37 +111,20 @@ public class Customer extends Partner implements Serializable{
 			case 3:
 				if(this.appliedForJoint) {
 					int choice = jointAccountActions();
-					switch(choice) {
-						case 1:
-							//make new account object
-							Account jointAccount = new Account("Joint");
-							//place it into Customer and Joint Member ,remove old current user and joint from arraylist
-							Partner jointMember = User.returnLoginMatch(this.getQueueJointUserInfo()[0], this.getQueueJointUserInfo()[1], newAccts);
-							newAccts.remove(this);
-							newAccts.remove(jointMember);
-							this.getAccounts().add(jointAccount);
-							jointMember.getAccounts().add(jointAccount);
-							//set flags back to normal
-							this.setAppliedForJoint(false);
-							this.setQueueJointUserInfo(new String[2]);
-							//add objects back to arraylist
-							newAccts.add(jointMember);
-							newAccts.add(this);
-							break;
-						case 2:
-							//Deny just resets flags and info.
-							this.setAppliedForJoint(false);
-							this.setQueueJointUserInfo(new String[2]);
-							break;
-					}
+					newAccts = approveDenyJoints(choice, newAccts);
 				}else {
 					System.out.println("There is no request for a joint account.");
 				}
-				break;
 		}
 		return newAccts;
 	}
-	
+
+	/*
+	 * Name: employeeActions
+	 * Input:ArrayList<Partner> newAccts, int pick
+	 * Output:ArrayList<Partner>
+	 * Description: "Customer" access method that provides actions a employee can take in a customer's account.
+	 */
 	private ArrayList<Partner> employeeActions(ArrayList<Partner> newAccts, int pick) throws BadInputException{
 		switch(pick) {
 			case 1:
@@ -149,11 +141,11 @@ public class Customer extends Partner implements Serializable{
 							//make new account object
 							Account jointAccount = new Account("Joint");
 							//place it into Customer and Joint Member ,remove old current user and joint from arraylist
-							this.getAccounts().add(jointAccount);
 							Partner jointMember = User.returnLoginMatch(this.getQueueJointUserInfo()[0], this.getQueueJointUserInfo()[1], newAccts);
 							newAccts.remove(this);
 							newAccts.remove(jointMember);
 							jointMember.getAccounts().add(jointAccount);
+							this.getAccounts().add(jointAccount);
 							//set flags back to normal
 							this.setAppliedForJoint(false);
 							this.setQueueJointUserInfo(new String[2]);
@@ -175,34 +167,81 @@ public class Customer extends Partner implements Serializable{
 		return newAccts;
 	}
 	
-	public ArrayList<Partner> receiveCustomerAction(ArrayList<Partner> newAccts, Partner user) throws BadInputException {
+	/*
+	 * Name: approveDenyJoints
+	 * Input:ArrayList<Partner> newAccts, int choice
+	 * Output:ArrayList<Partner>
+	 * Description: "Customer" access method that provides ability to bank admin and employee to approve
+	 * or deny requests for joints to bank admin and employee.
+	 */
+	private ArrayList<Partner> approveDenyJoints(int choice, ArrayList<Partner> newAccts) {
+		switch(choice) {
+		case 1:
+			//make new account object
+			Account jointAccount = new Account("Joint");
+			//place it into Customer and Joint Member ,remove old current user and joint from arraylist
+			Partner jointMember = User.returnLoginMatch(this.getQueueJointUserInfo()[0], this.getQueueJointUserInfo()[1], newAccts);
+			newAccts.remove(this);
+			newAccts.remove(jointMember);
+			this.getAccounts().add(jointAccount);
+			jointMember.getAccounts().add(jointAccount);
+			//set flags back to normal
+			this.setAppliedForJoint(false);
+			this.setQueueJointUserInfo(new String[2]);
+			//add objects back to arraylist
+			newAccts.add(jointMember);
+			newAccts.add(this);
+			System.out.println("Joint account has been approved!");
+			break;
+		case 2:
+			//Deny just resets flags and info.
+			this.setAppliedForJoint(false);
+			this.setQueueJointUserInfo(new String[2]);
+			System.out.println("Joint account has been denied!");
+			break;
+		}
+		return newAccts;
+	
+	}
+	
+	/*
+	 * Name: receiveCustomerAction
+	 * Input:ArrayList<Partner> newAccts, Partner user
+	 * Output:ArrayList<Partner>
+	 * Description: Public access method that provides actions to customer accounts based on who is accessing the Customer account.
+	 */
+	public ArrayList<Partner> receiveCustomerAction(ArrayList<Partner> newAccts, Partner user) {
 		int pick = -1;
 		while(pick != 4) {
-			if(user instanceof Customer) {
-				System.out.print("What would you like to do?\n1)View personal info\n2)Access your accounts\n3)Apply for a joint account\n4)Log Out\n");
-				pick = App.sc.nextInt();
-				if(pick>4 || pick<1) {
-					throw new BadInputException();
+			try {
+				if(user instanceof Customer) {
+					System.out.print("What would you like to do?\n1)View personal info\n2)Access your accounts\n3)Apply for a joint account\n4)Log Out\n");
+					pick = App.sc.nextInt();
+					if(pick>4 || pick<1) {
+						throw new BadInputException();
+					}
+					newAccts = customerActions(newAccts, pick);
 				}
-				newAccts = customerActions(newAccts, pick);
-			}
-			else if(user instanceof Employee) {
-				System.out.print("What would you like to do?\n1)View personal info\n2)Check request for joint account\n3)Log Out\n");
-				pick = App.sc.nextInt();
-				if(pick>3 || pick<1) {
-					throw new BadInputException();
-				}else if(pick == 3) {
-					break;
+				else if(user instanceof Employee) {
+					System.out.print("What would you like to do?\n1)View personal info\n2)Check request for joint account\n3)Log Out\n");
+					pick = App.sc.nextInt();
+					if(pick>3 || pick<1) {
+						throw new BadInputException();
+					}else if(pick == 3) {
+						break;
+					}
+					newAccts = employeeActions(newAccts, pick);
 				}
-				newAccts = employeeActions(newAccts, pick);
-			}
-			else if(user instanceof BankAdmin) {
-				System.out.print("What would you like to do?\n1)View personal info\n2)Access user accounts\n3)Check request for joint account\n4)Log Out\n");
-				pick = App.sc.nextInt();
-				if(pick>4 || pick<1) {
-					throw new BadInputException();
+				else if(user instanceof BankAdmin) {
+					System.out.print("What would you like to do?\n1)View personal info\n2)Access user accounts\n3)Check request for joint account\n4)Log Out\n");
+					pick = App.sc.nextInt();
+					if(pick>4 || pick<1) {
+						throw new BadInputException();
+					}
+					newAccts = bankAdminActions(newAccts, pick);
 				}
-				newAccts = bankAdminActions(newAccts, pick);
+			}catch(BadInputException e) {
+				e.getMessage();
 			}
 		}
 		App.sc.nextLine();
@@ -210,16 +249,15 @@ public class Customer extends Partner implements Serializable{
 	}
 
 
-
+	/*
+	 * Getters and Setters
+	 */
 	public boolean isAppliedForJoint() {
 		return appliedForJoint;
 	}
-
-
 	public void setAppliedForJoint(boolean appliedForJoint) {
 		this.appliedForJoint = appliedForJoint;
 	}
-
 	public String[] getQueueJointUserInfo() {
 		return queueJointUserInfo;
 	}

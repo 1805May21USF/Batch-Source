@@ -14,7 +14,13 @@ public class Employee extends Partner implements Serializable{
 		super(username, password,name);
 	}
 	
-	public ArrayList<Partner> receiveEmployeeActions(ArrayList<Partner> accts) throws IOException{
+	/*
+	 * Name: receiveEmployeeActions
+	 * Input:ArrayList<Partner> accounts
+	 * Output:ArrayList<Partner>
+	 * Description: Public method that allows user to receive actions only for employees
+	 */
+	public ArrayList<Partner> receiveEmployeeActions(ArrayList<Partner> accounts) throws IOException{
 		int pick = -1;
 		while(pick != 2) {
 			//System.out.print("What would you like to do admin?\n1)Access an account\n2)Create an account\n3)Log Out\n");
@@ -26,7 +32,7 @@ public class Employee extends Partner implements Serializable{
 				}
 				switch(pick) {
 					case 1:
-						pickPartnerAccount(accts);
+						pickPartnerAccount(accounts);
 						break;
 					/*case 2:
 						accts = bankAdminAccountCreation(accts);
@@ -34,9 +40,15 @@ public class Employee extends Partner implements Serializable{
 				}
 			}catch(BadInputException e) {e.getMessage();}
 		}
-		return accts;
+		return accounts;
 	}
 	
+	/*
+	 * Name: pickPartnerAccount
+	 * Input:ArrayList<Partner> accounts
+	 * Output:None
+	 * Description: Class only access that allows Employee object to pick a partner account to access
+	 */
 	private void pickPartnerAccount(ArrayList<Partner> accounts) throws BadInputException {
 		App.sc.nextLine();
 		System.out.print("Username of partner account to access: ");

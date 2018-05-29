@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 class AccountTests {
 	private static Account test = new Account("test");
 	private static Account test1 = new Account("test1");
+	
 	@Test
 	public void createUniqueId() {
 		

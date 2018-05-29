@@ -46,10 +46,4 @@ class AppTest {
     	}
     }
     
-    @Test
-    public void checkMore()
-    {
-    	fail("Not yet implemented");
-    }
-
 }

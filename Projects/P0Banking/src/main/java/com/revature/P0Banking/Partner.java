@@ -1,5 +1,6 @@
 package com.revature.P0Banking;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -24,7 +25,13 @@ public class Partner implements Serializable{
 		this.password = password;
 		this.name = name;
 	}
-	
+/*
+ * Name: findFlaggedJoints, getFlaggedJoints
+ * Inputs: ArrayList<Partner> newAccts
+ * Outputs: int
+ * Description: Used to eventually create a way to display all flagged for approval joint accounts for 
+ * bank admin/employee to easily approve or deny.
+ */
 	/*private static int findFlaggedJoints(ArrayList<Partner> newAccts) {
 		int i = 1;
 		System.out.println("Select account: ");
@@ -35,9 +42,9 @@ public class Partner implements Serializable{
 			}
 		}
 		return i;
-	}*/
+	}
 	
-/*	private static int getFlaggedJoints(ArrayList<Partner> newAccts) {
+	private static int getFlaggedJoints(ArrayList<Partner> newAccts) {
 		int i = 1;
 		System.out.println("Select account: ");
 		for(Partner obj : newAccts) {
@@ -48,7 +55,15 @@ public class Partner implements Serializable{
 		}
 		return i;
 	}*/
+//****************************************************************************************
 	
+	/*
+	 * Name: jointAccountActions
+	 * Input:None
+	 * Output:int
+	 * Description: Class/Subclass only method to access jointAccountActions - mainly for Employee/BankAdmin
+	 * Note: Has code for eventual functionality
+	 */
 	protected int jointAccountActions() {
 		//Displays flagged accounts - maybe some other time
 		/*int sizeFlagged,pick;
@@ -64,11 +79,18 @@ public class Partner implements Serializable{
 				System.out.println("Please select a valid account.");
 			}
 		}*/
-		System.out.println("Customer requests a joint account.\n1)Approve\n2)Deny\n");
+		System.out.println("Customer requests a joint account.\n1)Approve\n2)Deny");
 		int pick = App.sc.nextInt();
 		return pick;
 	}
 	
+	/*
+	 * Name: accessAccounts
+	 * Input:ArrayList<Partner> accounts
+	 * Output:ArrayList<Partner>
+	 * Description: Class/Subclass only access method that allows users to receive an interface that lets them choose an account to access
+	 * bank admin, employee only.
+	 */
 	protected ArrayList<Partner> accessAccounts(ArrayList<Partner> newAccts) {
 		System.out.println("Select an account to access: ");
 		printListOfAccounts(accounts);
@@ -78,16 +100,34 @@ public class Partner implements Serializable{
 		}
 		else {
 			Account account = accounts.get(pick-1);
-			newAccts = account.prompt(this.getUsername(),newAccts);
+			try {
+				newAccts = account.promptAccountActions(this.getUsername(),newAccts);
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return newAccts;
 	}
 	
+	/*
+	 * Name: printListOfAccounts
+	 * Input:ArrayList<Partner> accounts
+	 * Output:None
+	 * Description: Class/Subclass access that prints a list of accounts give an ArrayList of accounts
+	 */
 	protected void printListOfAccounts(ArrayList<Account> accts) {
 		for(int i=0; i<accts.size();i++) {
-			System.out.println((i+1)+") "+accts.get(i).getName()+"-"+accts.get(i).getId());
+			System.out.println((i+1)+") "+accts.get(i).getName()+accts.get(i).getId());
 		}
 	}
+	
+	/*
+	 * Getters and Setters
+	 */
 	public ArrayList<Account> getAccounts() {
 		return accounts;
 	}
