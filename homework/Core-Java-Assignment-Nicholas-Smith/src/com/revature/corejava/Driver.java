@@ -81,6 +81,17 @@ public class Driver
 		System.out.println("Q7: unsorted" + empArr.toString());
 		System.out.println("Q7: Sort by name:");
 		System.out.println("Q7: unsorted");
-		System.out.println("Q7: unsorted");	
+		System.out.println("Q7: unsorted");
+				
+		System.out.println("Q8: Original array: " + q08.makeArray().toString());
+		ArrayList<String> q08PalindromeArray = q08.makePalindromeArray();
+		System.out.println("Q8: Palindrome array: " + q08PalindromeArray.toString());
+		
+		ArrayList<Integer> q09List = q09.makeArrayList();
+		boolean prime = q09.isPrime(50);
+		ArrayList<Integer> q09PrimeList = q09.makePrimeArrayList();
+		System.out.println("Q9: Prime Array List: " + q09PrimeList.toString());
+
+	
 	}
 }
