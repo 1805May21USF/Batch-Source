@@ -7,7 +7,7 @@
 	1 0 1 *
 	0 1 0 1
  *
- * Completed: No
+ * Completed: Yes
  */
 package com.revature.corejava;
 
@@ -24,9 +24,7 @@ public class Q13
 	//create a method to create the array of arrays (2D array)
 	//return 2D array
 	public String[][] makeArray()
-	{
-		System.out.println("I am in the makeArray method");
-		
+	{		
 		//initialize the array
 		//it is 4 X 4
 		String[][]array = 
@@ -43,8 +41,27 @@ public class Q13
 	//create a method to print the 2D array
 	//takes in a 2D String array
 	public void printArray(String[][] array) 
-	{
-		System.out.println("I am in the printArray method");
+	{		
+		//loop over the 2D array
+		//outer array has indexes 0-3
+		
+		//outer for loop
+		for(int i = 0; i <= 3; i++) 
+		{
+			//inner for loop
+			//inner arrays have indexes 0-3
+			for(int j = 0; j <= 3; j++) 
+			{
+				//print the element 
+				String element = array[i][j];
+				
+				//print on the same line
+				System.out.print(" " + element);
+			}
+			
+			//print on the next line after printing the elements in the inner array
+			System.out.println("");
+		}
 	}
 	
 }
