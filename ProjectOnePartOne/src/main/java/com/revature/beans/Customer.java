@@ -36,7 +36,7 @@ public class Customer extends User implements Serializable {
 			return false;
 		}
 		else {
-			this.applications.get(indx).setApproval(true);
+			this.applications.get(indx).setApproval("APPROVED");
 			return true;
 		}
 	}
@@ -46,7 +46,7 @@ public class Customer extends User implements Serializable {
 			return false;
 		}
 		else {
-			this.applications.get(indx).setApproval(false);
+			this.applications.get(indx).setApproval("DENIED");
 			return true;
 		}
 	}

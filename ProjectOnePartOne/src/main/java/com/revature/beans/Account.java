@@ -9,12 +9,14 @@ public class Account implements Serializable {
 	private int ID;
 	private double balance;
 	private Customer signer;
+	private String status;
 	private ArrayList<Customer> customers;
 	private ArrayList<Transaction> transactions;
 	
 	public Account(double b,Customer s,ArrayList<Customer> c) {
 		Random rnd = new Random();
 		this.setID(100000 + rnd.nextInt(900000));
+		this.status = "OPEN";
 		this.setBalance(b);
 		this.setSigner(s);
 		this.setCustomers(c);

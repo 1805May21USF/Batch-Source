@@ -10,13 +10,14 @@ public class Application implements Serializable{
 	private Customer signer;
 	private double balance;
 	private ArrayList<Customer> customers;
-	private boolean approval;
+	private String approval;
 	public Application(Customer s,double b,ArrayList<Customer> c) {
 		Random rnd = new Random();
 		this.setID(100000 + rnd.nextInt(900000));
 		this.setBalance(b);
 		this.setSigner(s);
 		this.setCustomers(c);
+		this.setApproval("PENDING");
 	}
 	public ArrayList<Customer> getCustomers() {
 		return customers;
@@ -24,10 +25,10 @@ public class Application implements Serializable{
 	public void setCustomers(ArrayList<Customer> customers) {
 		this.customers = customers;
 	}
-	public boolean isApproval() {
+	public String getApproval() {
 		return approval;
 	}
-	public void setApproval(boolean a) {
+	public void setApproval(String a) {
 		this.approval = a;
 	}
 	public Customer getSigner() {
