@@ -4,6 +4,7 @@
 package com.revature.corejava;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Nicholas Smith
@@ -43,24 +44,42 @@ public class Driver
 		//print the solution to the console
 		q01.printSolution();
 		
+		//line break
+		System.out.println("");
+		
 		//compute the first 25 Fibonacci numbers
 		q02.fibonacciArray();
 		//print the solution to the console
 		q02.printSolution();
+		
+		//line break
+		System.out.println("");
 		
 		//reverse the string
 		String reversedString = q03.reverse("This String is being reversed.");
 		//print the solution to the console
 		q03.printSolution(reversedString);
 		
+		//line break
+		System.out.println("");
+		
 		q04.factorial(5);
 		q04.printSolution();
+		
+		//line break
+		System.out.println("");
 		
 		String q05String = q05.subString("Trevor", 4);
 		q05.printSolution(q05String);
 		
+		//line break
+		System.out.println("");
+		
 		boolean isEven = q06.isEven(28);
 		q06.printSolution(isEven);
+		
+		//line break
+		System.out.println("");
 		
 		Employee e1 = new Employee();
 		e1.setName("Smith");
@@ -82,19 +101,43 @@ public class Driver
 		System.out.println("Q7: Sort by name:");
 		System.out.println("Q7: unsorted");
 		System.out.println("Q7: unsorted");
+		
+		//line break
+		System.out.println("");
 				
 		System.out.println("Q8: Original array: " + q08.makeArray().toString());
 		ArrayList<String> q08PalindromeArray = q08.makePalindromeArray();
 		System.out.println("Q8: Palindrome array: " + q08PalindromeArray.toString());
+		
+		//line break
+		System.out.println("");
 		
 		ArrayList<Integer> q09List = q09.makeArrayList();
 		boolean prime = q09.isPrime(50);
 		ArrayList<Integer> q09PrimeList = q09.makePrimeArrayList();
 		System.out.println("Q9: Prime Array List: " + q09PrimeList.toString());
 		
+		//line break
+		System.out.println("");
+		
 		int min = q10.findMin(85, 41);
 		System.out.println("Q10: " + min);
 		
+		//line break
+		System.out.println("");
+		
 		q11.printSolution();
+		
+		//line break
+		System.out.println("");
+		
+		int[] intArray = q12.makeIntArray();
+		int[] evenIntArray = q12.makeEvenIntArray(intArray);
+		q12.printSolution();
+		
+		//line break
+		System.out.println("");
+		
+		
 	}
 }
