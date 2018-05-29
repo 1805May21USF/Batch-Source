@@ -1,12 +1,21 @@
 package com.revature.same;
 
+/*
+ * A class to check if a numner is even or not
+ */
 public class EvenOrNah {
 
+	/*
+	 * A Constructor for the EvenOrNah class
+	 */
 	public EvenOrNah() {
-		// TODO Auto-generated constructor stub
-		//System.out.println(evenOrNah(-2));
 	}
 	
+	/*
+	 * A method thats checks if a number is even
+	 * @Param number to check if it is even
+	 * @return returns true if the number is true and false otherwise
+	 */
 	public static Boolean evenOrNah(int number) {
 		Boolean isEven = false;
 		int operation = (number/2)*2;

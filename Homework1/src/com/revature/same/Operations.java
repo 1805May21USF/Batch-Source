@@ -1,5 +1,8 @@
 package com.revature.same;
 
+/*
+ * An interface defining the methods to be implemented
+ */
 public interface Operations {
 	int addition(int x, int y);
 	int subtraction(int x, int y);

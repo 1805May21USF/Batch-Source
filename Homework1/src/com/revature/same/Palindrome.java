@@ -4,6 +4,9 @@ import java.util.ArrayList;
 public class Palindrome {
 	public static ArrayList<String> names;
 		
+	/*
+	 * A constructor for the Palindrome class
+	 */
 	public Palindrome() {
 		// TODO Auto-generated constructor stub
 		this.names =  new ArrayList<>();
@@ -18,6 +21,11 @@ public class Palindrome {
 		return word.equals(reverse);
 	}
 	
+	/*
+	 * A method that checks if the String elements in an array are palindromes
+	 * @Param names: an arraylist containing Strings
+	 * @return returns an arraylist of all the palindromes
+	 */
 	public static ArrayList<String> palindrome(ArrayList<String> names){
 		ArrayList<String> pal = new ArrayList<String>();
 		Reverse rev = new Reverse();

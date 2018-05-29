@@ -4,8 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
+/*
+ * A class that adds up even numbers in 1 to 10 and prints to console
+ * adds up odd numbers in 1 to 10 and prints to console.
+ * removes all the prime numbers from an array and prints the array to console
+ */
 public class EvenOddPrime {
 
+	/*
+	 * A constructor for the EvenOddPrime class. Calls isPr
+	 */
 	public EvenOddPrime() {
 		// TODO Auto-generated constructor stub
 		
@@ -36,6 +44,11 @@ public class EvenOddPrime {
 		System.out.println("The non-prime numbers in 1 to 10 are " + notPrime);
 	}
 	
+	/*
+	 * A method checks if a number is prime
+	 * @Param number: an integer to check if it is prime
+	 * @return returns true if the number is prime and false otherwise
+	 */
 	public static boolean isPr(int number) {
         if (number < 2) 
         	return false;

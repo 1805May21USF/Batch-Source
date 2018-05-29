@@ -1,7 +1,14 @@
 package com.revature.same;
 
+/*
+ * Sorts an array using Bubble sort
+ */
 public class BubbleSort {
 
+	/*
+	 * Constructor for the BubbleSort Class
+	 * Calls the bubblesort and print methods
+	 */
 	public BubbleSort() {
 		// TODO Auto-generated constructor stub
 		int bubble[] = {1,0,5,6,3,2,3,7,9,8,4};
@@ -10,6 +17,11 @@ public class BubbleSort {
 		print(bubble);
 	}
 
+	/*
+	 * Performs bubble sort on an integer array
+	 * @Param bubble the integer array to be sorted
+	 * @return A bubble sorted integer array
+	 */
 	public static int[] bubblesort(int bubble[]) {
 		for(int i = 0; i < bubble.length; i++) {
 			for(int j = 0; j < bubble.length-i-1; j++) {
@@ -24,6 +36,11 @@ public class BubbleSort {
 		return bubble;
 	}
 	
+	/*
+	 * Prints the contents of an array
+	 * @Param bubble the integer array to be printed to console
+	 * @return null
+	 */
 	public static void print(int bubble[])
     {
         for(int i=0; i<bubble.length; i++) {
