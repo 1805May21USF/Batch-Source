@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class IO {
-	private static final String inFile="in.txt";
+	private static final String inFile="data.txt";
 	private static final String outFile="output.txt";
 	//Write a String to a file
 	public void writeOutputStreamContents(String contents) {

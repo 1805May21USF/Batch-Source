@@ -16,6 +16,17 @@ public class Producer implements Runnable{
 	public void run() {
 		
 		for(int i = 0; i < 100; i++){
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			if(queue.isEmpty()) {
+				System.exit(0);
+			}
 			
 			Message msg = new Message("" + i);
 			
@@ -39,5 +50,7 @@ public class Producer implements Runnable{
 		
 		
 	}
+
+	
 
 }

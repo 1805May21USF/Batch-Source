@@ -11,7 +11,7 @@ public class SerializeDemo {
 		 * if it does not exist, run it, and then refresh project 
 		 * in the project explorer to see it
 		 */
-		//io.writeOutputStreamContents("Hello");
+		io.writeOutputStreamContents("Hello");
 		
 		
 		/*
@@ -32,9 +32,10 @@ public class SerializeDemo {
 		IOWithCollections.personList.add(s);
 		
 		IOWithCollections.writePersonFile();*/
-		
+		/*
 		IOWithCollections.readPersonFile();
 		System.out.println(IOWithCollections.personList.get(0).getName());
 		System.out.println(IOWithCollections.personList.get(1).getName());
+		*/
 	}
 }

@@ -1,5 +1,4 @@
 package com.revature.driver;
-package com.
 
 import com.revature.beans.Man;
 import com.revature.beans.Person;
