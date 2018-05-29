@@ -135,10 +135,14 @@ public class AllTests {
 }
 	@Test 
 	public void QT19() {
+		//SEE Q19 class
+
 		Q19.doit();
 }
 	@Test 
 	public void QT20() {
+		//SEE Q20 class
+
 		Q20.doit();
 }
 	
