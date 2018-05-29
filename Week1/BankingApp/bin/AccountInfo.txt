@@ -1,0 +1,15 @@
+{
+0000001:1:loggedOut:loggedOut:loggedOut:0
+}
+{
+}
+0000002:0:tester:test:password:0
+{
+3847109:0:Jacob:Jacob1990:jacobrules:595
+}
+{
+0182733:1:Horace:broomstick:horacepotter:201
+}
+{
+1129682:2:Valorie:vinewine:2drunk2spurious:8000
+}
