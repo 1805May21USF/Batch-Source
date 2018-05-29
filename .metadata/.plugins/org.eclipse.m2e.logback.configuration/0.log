@@ -936,3 +936,4 @@ Caused by: org.apache.maven.model.building.ModelBuildingException: 1 problem was
 2018-05-25 14:07:00,563 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven\src\main\resources
 2018-05-25 14:07:00,570 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2018-05-25 14:07:00,570 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven\src\test\resources
+2018-05-26 18:50:27,260 [Worker-8] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
