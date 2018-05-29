@@ -7,5 +7,16 @@ public class VowelException extends Exception {
 			System.out.println("Exception");
 		}
 	}
+	
+	public static void main(String[] args) {
+		String str = "abc";
+		try {
+		
+		
+		}
+		finally{
+			
+		}
+	}
 
 }

@@ -1,7 +1,8 @@
 package com.revature.utility;
 
 import java.util.Arrays;
-
+//var args: 1 to many, var arg has to be last in parameter list
+//public static String format(String pattern, object... arguments);
 public class ArraysFun {
 	public static void main(String[] args) {
 		
@@ -29,5 +30,8 @@ public class ArraysFun {
 		for(int i : a) {
 			System.out.println(i);
 		}
+	}
+	static void printMeBest(int[] yar) throws ArrayIndexOutOfBoundsException{
+		System.out.println(yar[1]);
 	}
 }
