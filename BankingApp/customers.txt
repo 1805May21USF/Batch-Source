@@ -1,0 +1,3 @@
+bobross420:ross:bob:password1
+raider69:jenkins:leeroy:dragon
+jameson42:jameson:james:bestpassword
