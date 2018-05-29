@@ -21,8 +21,7 @@ Q7. Sort two employees based on their name, department, and age using the Compar
 Q8. Write a program that stores the following strings in an ArrayList and saves all the palindromes in another ArrayList.
 “karan”, “madam”, ”tom”, “civic”, “radar”, “jimmy”, “kayak”, “john”,  “refer”, “billy”, “did”
 
-Q9. Create an ArrayList which stores numbers from 1 to 100 and prints out all the prime numbers to the console.
-==================================================================
+Q9. Create an ArrayList which stores numbers from 1 to 100 and prints out all the prime numbers to the console. 
 
 Q10. Find the minimum of two numbers using ternary operators.
 
