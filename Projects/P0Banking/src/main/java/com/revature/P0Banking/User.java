@@ -1,102 +1,203 @@
 package com.revature.P0Banking;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.*;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class User{
 	private static String name;
-	private static int age;
+	//private static int age;
 	private static String[] acct_info;
-	private static File file = new File("AccountDatabase.txt");
-	private static Scanner sc = new Scanner(System.in);
 	
 	//Get username and password from user
 	public static void getInfo() {
 		System.out.print("Username: ");
-    	String un_login = sc.nextLine();
+    	String un_login = App.sc.nextLine();
     	System.out.print("Password: ");
-    	String pw_login = sc.nextLine();
-    	System.out.print("Name: ");
-		name = sc.nextLine();
-		System.out.print("Age: ");
-		age = sc.nextInt();
+    	String pw_login = App.sc.nextLine();
     	acct_info = new String[]{un_login,pw_login};
+	}
+	
+	//Get personal info - name, age from user
+	public static void getPersonalInfo() {
+		System.out.print("Name: ");
+		name = App.sc.nextLine();
+		/*System.out.print("Age: ");
+		age = App.sc.nextInt();*/
 	}
 	
 	//Read file and check if there is a match of username and password
 	//returns a boolean
-	public boolean checkMatch(String username, String password, ArrayList<?> accts) {
+	public static Partner returnUserNameMatch(String username, ArrayList<?> accts) {
 		
 		for(int i = 0; i < accts.size(); i++)
 		{
 			Object account= accts.get(i);
 			if(account instanceof Customer 
-					&& ((Customer) account).getUsername().equals(username) 
-					&& ((Customer) account).getPassword().equals(password)) {
-				return true;}
+					&& ((Customer) account).getUsername().equals(username)) {return (Customer)account;}
 			if(account instanceof Employee
-					&& ((Employee) account).getUsername().equals(username) 
-					&& ((Employee) account).getPassword().equals(password)) {return true;}
+					&& ((Employee) account).getUsername().equals(username)) {return (Employee)account;}
 			if(account instanceof BankAdmin
-					&& ((BankAdmin) account).getUsername().equals(username) 
-					&& ((BankAdmin) account).getPassword().equals(password)) {return true;}
+					&& ((BankAdmin) account).getUsername().equals(username)) {return (BankAdmin)account;}
 		}
-    	return false;
+    	return null;
+	}
+	
+	public static Partner returnLoginMatch(String username, String password, ArrayList<?> accts) {
+			
+			for(int i = 0; i < accts.size(); i++)
+			{
+				Object account= accts.get(i);
+				if(account instanceof Customer 
+						&& ((Customer) account).getUsername().equals(username)
+						&& ((Customer) account).getPassword().equals(password)) {return (Customer)account;}
+				if(account instanceof Employee
+						&& ((Employee) account).getUsername().equals(username)
+						&& ((Employee) account).getPassword().equals(password)) {return (Employee)account;}
+				if(account instanceof BankAdmin
+						&& ((BankAdmin) account).getUsername().equals(username)
+						&& ((BankAdmin) account).getPassword().equals(password)) {return (BankAdmin)account;}
+			}
+	    	return null;
+	}
+	
+	//Deals with generic type safety issues by type casting every object in the ArrayList as a subclass of Account
+	public static ArrayList<Partner> convertToPartner (ArrayList<?> accts){
+		ArrayList<Partner> newAccts =  new ArrayList<Partner>();
+		for(int i = 0; i < accts.size(); i++){
+			Object account= accts.get(i);
+			if(account instanceof Customer) {newAccts.add((Customer)account);}
+			if(account instanceof Employee) {newAccts.add((Employee)account);}
+			if(account instanceof BankAdmin) {newAccts.add((BankAdmin)account);}
+		}
+		return newAccts;
+	}
+	
+	public static ArrayList<?> readFromFile() throws FileNotFoundException, IOException, ClassNotFoundException{
+		ObjectInputStream in = new ObjectInputStream(new FileInputStream(App.file));
+		ArrayList<?> accts = (ArrayList<?>)in.readObject();
+		in.close();
+		return accts;
+	}
+	
+	//Grab any new updates to file then combines old set of accounts with new account and outputs to AccountDatabase.txt
+	public static void saveToFile(ArrayList<Partner> newAccts) throws IOException {
+		FileOutputStream fileout = new FileOutputStream(App.file);
+    	ObjectOutputStream out = new ObjectOutputStream(fileout);
+    	out.writeObject(newAccts);
+    	out.close();
+	}
+	
+	public static ArrayList<Partner> addToAccounts(String account_type, ArrayList<Partner> accts){
+		if(account_type.equals("Customer")){
+			accts.add(new Customer(name,acct_info[0],acct_info[1]));
+		}
+		else if(account_type.equals("Employee")) {
+			accts.add(new Employee(name,acct_info[0],acct_info[1]));
+		}
+		else if(account_type.equals("BankAdmin")) {
+			accts.add(new BankAdmin(name,acct_info[0],acct_info[1]));
+		}
+		return accts;
 	}
 	
 	//Register for an account
-	public boolean registerAcct(String account_type) throws IOException {
+	public static ArrayList<Partner> registerAcct(String account_type, String username) throws IOException {
+		//Asks for necessary information
 		getInfo();
+		getPersonalInfo();
+		ArrayList<Partner> newAccts = new ArrayList<Partner>();
+		//Try to read in to file to check for a duplicate username/password
 		try {
 			//
-    		ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-			ArrayList<?> accts =  (ArrayList<?>)in.readObject();
-    		if(!checkMatch(acct_info[0],acct_info[1],accts)) {
-				if(accts.get(0) instanceof Customer){
-					((ArrayList<Customer>)accts).add(new Customer(name,age,acct_info[0],acct_info[1]));
-				}
-				/*if(accts.get(0) instanceof Employee) {
-					
-				}
-				if(accts.get(0) instanceof BankAdmin) {
-					
-				}*/
-				FileOutputStream fileout = new FileOutputStream(file);
-		    	ObjectOutputStream out = new ObjectOutputStream(fileout);
-		    	out.writeObject(accts);
-		    	out.close();
-		    	return true;
+    		ArrayList<?> accts = readFromFile();
+    		User.returnUserNameMatch(username, accts);
+			//If there is no match, user can register
+    		if(returnUserNameMatch(acct_info[0],accts)==null) {
+    			newAccts.addAll(convertToPartner(accts));
+    			newAccts = addToAccounts(account_type,newAccts);
+    			//saveToFile(newAccts);
+    			System.out.println("You have registered your account.");
+    			return newAccts;
     		}
-    		in.close();
 		} catch (EOFException | FileNotFoundException e) {
-			//Deals with empty file - maybe missing file too
-			ArrayList<Account> new_acct = new ArrayList<Account>();
-			new_acct.add(new Customer(name,age,acct_info[0],acct_info[1]));
-				FileOutputStream fileout = new FileOutputStream(file);
-		    	ObjectOutputStream out = new ObjectOutputStream(fileout);
-		    	out.writeObject(new_acct);
-		    	out.close();
+			//Deals with empty file and missing files
+			newAccts = addToAccounts(account_type,newAccts);
+			//saveToFile(newAccts);
+			System.out.println("You have registered your account.");
+			return newAccts;
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
-		return false;
+		System.out.println("Please attempt to register again with a unique username");
+		return newAccts;
 	}
 	
-	public boolean loginAcct(String account_type) throws FileNotFoundException, IOException, ClassNotFoundException {
-		//String[] info = getInfo();
-		ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-		ArrayList<Customer> new_accts =  (ArrayList<Customer>)in.readObject();
-		System.out.println(new_accts.size());
-		for(Customer o: new_accts)
-		{
-			System.out.println(o.getName());
+	public static ArrayList<Partner> registerAcct(String account_type) throws IOException {
+		//Asks for necessary information
+		getInfo();
+		getPersonalInfo();
+		ArrayList<Partner> newAccts = new ArrayList<Partner>();
+		//Try to read in to file to check for a duplicate username/password
+		try {
+			//
+    		ArrayList<?> accts = readFromFile();
+			//If there is no match, user can register
+    		if(returnUserNameMatch(acct_info[0],accts)==null) {
+    			newAccts.addAll(convertToPartner(accts));
+    			newAccts = addToAccounts(account_type,newAccts);
+    			//saveToFile(newAccts);
+    			System.out.println("You have registered your account.");
+    			return newAccts;
+    		}
+		} catch (EOFException | FileNotFoundException e) {
+			//Deals with empty file and missing files
+			newAccts = addToAccounts(account_type,newAccts);
+			//saveToFile(newAccts);
+			System.out.println("You have registered your account.");
+			return newAccts;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
 		}
-		in.close();
-		return false;
+		System.out.println("Please attempt to register again with a unique username");
+		return newAccts;
+	}
+	
+	//Login to an Account
+	public static ArrayList<Partner> loginAcct() throws FileNotFoundException, IOException, ClassNotFoundException {
+		//Clears scanner buffer for further user input
+		getInfo();
+		ArrayList<Partner> newAccts = new ArrayList<Partner>();
+		try {
+			ArrayList<?> accts = readFromFile();
+			Partner partner = returnLoginMatch(acct_info[0],acct_info[1], accts);
+			newAccts = convertToPartner(accts);
+			newAccts.remove(partner);
+			if(partner==null) {
+				System.out.println("Wrong username and password combination. Please try again.");
+				return newAccts;
+			}
+			else {
+				System.out.println("\nWelcome "+partner.getName()+"! You have logged in.");
+				if(partner instanceof Customer) {
+					newAccts = ((Customer)partner).receiveCustomerAction(newAccts,partner);
+				}else if(partner instanceof BankAdmin) {
+					newAccts = ((BankAdmin)partner).receiveBankAdminActions(newAccts);
+				}else if(partner instanceof Employee) {
+					newAccts = ((Employee)partner).receiveEmployeeActions(newAccts);
+				}
+				newAccts.add(partner);
+				return newAccts;
+			}
+		}catch(EOFException e) {
+			System.out.println("There is no account with those credentials.");
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return newAccts;
 	}
 	
 	
