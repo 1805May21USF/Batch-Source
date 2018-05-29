@@ -13,6 +13,7 @@ public class P19ArrayListBlah {
 			i++;
 		}
 		System.out.println(java.util.Arrays.toString(arr.toArray()));
+		//even and odd sums
 		for (int j = 0; j<arr.size(); j++) {
 			if (j%2==0) {
 				evenAddUp+=arr.get(j);
@@ -25,6 +26,8 @@ public class P19ArrayListBlah {
 		P9Primes.isItPrime();
 		//arr.remove(1);
 		//System.out.println(java.util.Arrays.toString(P9Primes.primes.toArray()));
+		
+		//mark elements for removal
 		for (int k=0; k <arr.size(); k++) {
 			//System.out.println(arr.get(k));
 			if (P9Primes.primes.contains(arr.get(k))) {
@@ -32,6 +35,7 @@ public class P19ArrayListBlah {
 			}
 		}
 		boolean ugh = true;
+		//remove them
 		while(ugh) {
 			for(int q = 0; q < arr.size(); q++) {
 				if (arr.get(q) == -1) {		
