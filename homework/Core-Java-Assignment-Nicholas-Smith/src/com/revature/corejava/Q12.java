@@ -3,7 +3,7 @@
  *  Print out all the even numbers from the array. Use the 
  *  enhanced FOR loop for printing out the numbers.
  *  
- *  Completed: No
+ *  Completed: Yes
  */
 package com.revature.corejava;
 

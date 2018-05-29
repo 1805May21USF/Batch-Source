@@ -138,6 +138,8 @@ public class Driver
 		//line break
 		System.out.println("");
 		
-		
+		String[][] array = q13.makeArray();
+		System.out.println("Q13: " + array);
+		q13.printArray(array);
 	}
 }
