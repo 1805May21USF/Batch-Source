@@ -16,6 +16,7 @@ public class Banking {
 	private static ArrayList<Double> balance = new ArrayList<>();
 	private static ArrayList<String> sharedAccounts = new ArrayList<>();
 	private static Logger log = Logger.getLogger(Banking.class.getName());
+	private static Scanner scan = App.getScanner();
 	
 	// Executes when a customer logs in
 	public static void customer(String username) {
@@ -44,8 +45,7 @@ public class Banking {
 	
 	// Executes the customer's menu
 	private static void customerMenu() {
-		// Creates a Scanner for input and a boolean loop value
-		Scanner scan = new Scanner(System.in);
+		// Creates a boolean loop value
 		boolean flag = true;
 		
 		while(flag) {
@@ -109,7 +109,8 @@ public class Banking {
 					viewAccount(user);
 					break;
 				// Executes when exit is entered and closes the program
-				case("exit"):	System.exit(1);
+				case("exit"):	scan.close();
+								System.exit(1);
 				// Executes when logout is entered and breaks the loop
 				case("logout"):	flag = false;
 				// Executes when anything else is entered
@@ -120,8 +121,7 @@ public class Banking {
 	
 	// Executes when a withdrawal is requested
 	private static String[] withdraw(String username) {
-		// Opens a Scanner for input, sets the loop flag, and creates a String array to store input
-		Scanner scan = new Scanner(System.in);
+		// Sets the loop flag, and creates a String array to store input
 		boolean flag = true;
 		String[] values = new String[3];
 		
@@ -227,8 +227,7 @@ public class Banking {
 	
 	// Executes when a deposit is requested
 	private static String[] deposit(String username) {
-		// Opens a Scanner for input, sets the loop flag, and creates a String array to store input
-		Scanner scan = new Scanner(System.in);
+		// Sets the loop flag, and creates a String array to store input
 		boolean flag = true;
 		String[] values = new String[3];
 		
@@ -329,7 +328,6 @@ public class Banking {
 	
 	// Executes when a transfer is requested
 	private static String[] transfer(String username) {
-		Scanner scan = new Scanner(System.in);
 		String[] values = null;
 		boolean flag = true;
 		
@@ -681,8 +679,7 @@ public class Banking {
 	
 	// Executes the account closure process
 	private static String[] closeAccount(String username) {
-		// Creates a scanner for input, a storage array. and a boolean loop condition
-		Scanner scan = new Scanner(System.in);
+		// Creates a storage array and a boolean loop condition
 		String[] close = new String[2];
 		boolean flag = true;
 		
@@ -760,8 +757,7 @@ public class Banking {
 	
 	// Executed by a user to request an account
 	private static String[] openAccount(String username) {
-		// Creates a Scanner for input, a storage array, and a boolean loop value
-		Scanner scan = new Scanner(System.in);
+		// Creates a storage array and a boolean loop value
 		String[] input = new String[4];
 		boolean flag = true;
 		
@@ -903,8 +899,7 @@ public class Banking {
 		
 	// Executed by a user to view the balance of a specific account
 	private static void viewBalance() {
-		// Creates a Scanner for input and a boolean loop value
-		Scanner scan = new Scanner(System.in);
+		// Creates a boolean loop value
 		boolean flag = true;
 		
 		while(flag) {
@@ -994,8 +989,7 @@ public class Banking {
 		// Reads the stored requests
 		readRequests();
 		
-		// Creates a Scanner for input, a boolean loop value, and a username for account management
-		Scanner scan = new Scanner(System.in);
+		// Creates a boolean loop value and a username for account management
 		boolean flag = true;
 		String username;
 		
@@ -1079,7 +1073,8 @@ public class Banking {
 					}
 					break;
 				// Executes if exit is entered and closes the program
-				case("exit"):	System.exit(1);
+				case("exit"):	scan.close();
+								System.exit(1);
 				// Executes if logout is entered and breaks the loop
 				case("logout"):	flag = false;
 				// Executes if anything else is entered
@@ -1090,8 +1085,7 @@ public class Banking {
 	
 	// Retrieves a user's information for the admin
 	private static String retrieveUserInformation() {
-		// Creates a Scanner for input, a boolean loop value, and a username String to return
-		Scanner scan = new Scanner(System.in);
+		// Creates a boolean loop value and a username String to return
 		boolean flag = true;
 		String username = null;
 		
@@ -1127,9 +1121,6 @@ public class Banking {
 	}
 	
 	private static void readRequests() {	
-		// Creates a Scanner for input
-		Scanner scan = new Scanner(System.in);
-		
 		try {
 			// Retrieves the request files
 			File accountRequests = new File("data/requests/requests.txt");
@@ -1490,9 +1481,8 @@ public class Banking {
 		}
 	}
 	
+	// Requests confirmation from the user
 	private static boolean confirm() {
-		Scanner scan = new Scanner(System.in);
-		
 		boolean flag = true;
 		
 		while(flag) {

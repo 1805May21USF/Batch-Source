@@ -4,12 +4,14 @@ import java.util.Scanner;
 
 public class App 
 {
+	// Creates a Scanner object to process user input
+	private static Scanner scan = new Scanner(System.in);
+	
     public static void main( String[] args ){
     	menu();
     }
     
     public static void menu() {
-    	// Creates a Scanner object to process user input
     	Scanner scan = new Scanner(System.in);
     	
     	// Creates a String to hold input
@@ -24,11 +26,13 @@ public class App
     		
     		// Executes if the user wants to sign in
     		if(input.equalsIgnoreCase("sign-in") || input.equalsIgnoreCase("si") || input.equalsIgnoreCase("signin")) {
-    			SignIn.login();
+    			SignIn si = new SignIn();
+    			si.login();
     		}
     		// Executes if the user wants to sign up
     		else if (input.equalsIgnoreCase("sign-up") || input.equalsIgnoreCase("su") || input.equalsIgnoreCase("signup")) {
-    			SignUp.signUp();
+    			SignUp su = new SignUp();
+    			su.signUp();
     		}
     		// Executes if the user enters shorthand for exit
     		else if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("ex") || input.equalsIgnoreCase("e")) {
@@ -41,5 +45,12 @@ public class App
     			System.out.println("Please privde valid input (sign-in, signin, si, sign-up, signup, su, exit, ex, e): ");
     		}
     	}
+    	
+    	scan.close();
+    }
+    
+    // Retrieves the scanner
+    public static Scanner getScanner() {
+    	return scan;
     }
 }

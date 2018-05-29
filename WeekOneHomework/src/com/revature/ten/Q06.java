@@ -42,5 +42,7 @@ public class Q06 {
 			}
 			
 		}
+		
+		scan.nextLine();
 	}
 }

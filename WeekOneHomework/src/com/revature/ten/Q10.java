@@ -21,5 +21,7 @@ public class Q10 {
 		// Determins which number is smaller using a ternary operator and states which number is smaller
 		int min = (value1 < value2) ? value1 : value2;	
 		System.out.println(min + " is the smaller number!");
+		
+		scan.nextLine();
 	}
 }

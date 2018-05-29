@@ -61,8 +61,8 @@ public class Main {
 	  		  		 		  Q09.prime();
 	  		  		 		  break;
 					case (10): System.out.println("Running ternary minimum program...");
-	  		  		  		  Q10.minimum(scan);
-	  		  		  		  break;
+	  		  		  		   Q10.minimum(scan);
+	  		  		  		   break;
 					case (11): System.out.println("Running access seperate package program...");
 							   Q11.print();
 							   break;
@@ -78,7 +78,8 @@ public class Main {
 					case (15): System.out.println("Running calculator program...");
 							   Q15.calculate();
 							   break;
-					case (16): System.out.println("Please enter a string of letters: ");
+					case (16): System.out.println("Running character counting program...");
+							   System.out.println("Please enter a string of letters: ");
 							   String line = scan.nextLine();
 							   String[] lines = line.split(" ");
 							   Q16.main(lines);
@@ -86,7 +87,8 @@ public class Main {
 					case (17): System.out.println("Running interest calculator program...");
 							   Q17.interest(scan);
 							   break;
-					case (18): System.out.println("Please enter a string of letters: ");
+					case (18): System.out.println("Running String operations program...");
+							   System.out.println("Please enter a string of letters: ");
 					   		   String stringLine = scan.nextLine();
 					   		   String[] stringLines = stringLine.split(" ");
 					   		   Q18.main(stringLines);
@@ -106,6 +108,7 @@ public class Main {
 			}
 		}
 		
+		// Closes the scanner
 		scan.close();
 	}
 }

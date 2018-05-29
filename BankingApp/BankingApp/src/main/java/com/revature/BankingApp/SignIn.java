@@ -9,8 +9,9 @@ import java.io.IOException;
 import org.apache.log4j.FileAppender;
 
 public class SignIn {
+	private static Scanner scan = App.getScanner();
+	
 	public static void login() {
-		Scanner scan = new Scanner(System.in);
 		String input = "";
 		
 		while(!input.equalsIgnoreCase("exit")) {
@@ -44,7 +45,6 @@ public class SignIn {
 				System.out.println("Username and password do not match any customer records.");
 			}
 		}
-		App.menu();
 	}
 	
 	static boolean exists(String username, String password) {
