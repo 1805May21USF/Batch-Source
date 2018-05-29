@@ -80,30 +80,6 @@ public class Driver
 		
 		//line break
 		System.out.println("");
-		
-		Employee e1 = new Employee();
-		e1.setName("Smith");
-		e1.setAge(28);
-		e1.setDepartment("Finance");
-		
-		Employee e2 = new Employee();
-		e1.setName("Turner");
-		e1.setAge(31);
-		e1.setDepartment("IT");
-		
-		//create an employee arrrayList that holds e1 and e2 
-		ArrayList <Employee> empArr = new ArrayList<Employee>();
-		
-		empArr.add(e1);
-		empArr.add(e2);
-		
-		System.out.println("Q7: unsorted" + empArr.toString());
-		System.out.println("Q7: Sort by name:");
-		System.out.println("Q7: unsorted");
-		System.out.println("Q7: unsorted");
-		
-		//line break
-		System.out.println("");
 				
 		System.out.println("Q8: Original array: " + q08.makeArray().toString());
 		ArrayList<String> q08PalindromeArray = q08.makePalindromeArray();
@@ -144,5 +120,9 @@ public class Driver
 		
 		//line break
 		System.out.println("");
+		
+		System.out.println("Q17: ");
+		q17.computeInterest();
+	
 	}
 }
