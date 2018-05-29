@@ -23,7 +23,7 @@ public class CustomerAccount implements Serializable {
 		this.applies = new ArrayList<UUID>();
 	}
 	
-	public String getName() {
+	public String getName() {		
 		return name;
 	}
 	public void setName(String name) {

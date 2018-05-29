@@ -16,30 +16,47 @@ public class UserActions {
 	private static File userfilename = new File("UserAccounts.txt");
 	private static Scanner sc = App.sc;
 	
-	public void customerOptions(CustomerAccount customerAccount, int accountNum) {
+	public void customerOptions(CustomerAccount customerAccount, int accountNum, boolean owner) {
 		while (true) {
-			System.out.println("Select 1 for Check Balance, 2 for Withdraw, 3 for Deposit, 4 for Transfer, -1 for Exit");
-			String option = sc.nextLine();
-			
-			if (option.equals("1")) {
-				//Check Balance
-				NumberFormat formatter = new DecimalFormat("#0.00");
-				double balance = getBalance(customerAccount.getBankAccountIDs().get(accountNum));
-				System.out.println("Balance: " + formatter.format(balance));
-			} else if (option.equals("2")) {
-				//Withdraw
-				optionWithdraw(customerAccount, accountNum);
-			} else if (option.equals("3")) {
-				//Deposit
-				optionDeposit(customerAccount, accountNum);
-			} else if (option.equals("4")) {
-				//Transfer
-				optionTransfer(customerAccount, accountNum);
-			} else if (option.equals("-1")) {
-				//Exit
-				break;
+			if (!owner) {
+				System.out.println("Select 1 for Check Balance, -1 for Exit");
+				String option = sc.nextLine();
+				
+				if (option.equals("1")) {
+					//Check Balance
+					NumberFormat formatter = new DecimalFormat("#0.00");
+					double balance = getBalance(customerAccount.getBankAccountIDs().get(accountNum));
+					System.out.println("Balance: " + formatter.format(balance));
+				} else if (option.equals("-1")) {
+					//Exit
+					break;
+				} else {
+					System.out.println("Invalid entry, ");
+				}
 			} else {
-				System.out.println("Invalid entry, ");
+				System.out.println("Select 1 for Check Balance, 2 for Withdraw, 3 for Deposit, 4 for Transfer, -1 for Exit");
+				String option = sc.nextLine();
+				
+				if (option.equals("1")) {
+					//Check Balance
+					NumberFormat formatter = new DecimalFormat("#0.00");
+					double balance = getBalance(customerAccount.getBankAccountIDs().get(accountNum));
+					System.out.println("Balance: " + formatter.format(balance));
+				} else if (option.equals("2")) {
+					//Withdraw
+					optionWithdraw(customerAccount, accountNum);
+				} else if (option.equals("3")) {
+					//Deposit
+					optionDeposit(customerAccount, accountNum);
+				} else if (option.equals("4")) {
+					//Transfer
+					optionTransfer(customerAccount, accountNum);
+				} else if (option.equals("-1")) {
+					//Exit
+					break;
+				} else {
+					System.out.println("Invalid entry, ");
+				}
 			}
 		}
 	}
@@ -86,8 +103,8 @@ public class UserActions {
 		while (true) {
 			System.out.println("Username to transfer funds to, -1 to Exit: ");
 			input = sc.nextLine();
-			
-			if (input.equals("-1"))
+	
+			if (input.equals("-1") || input.equals("admin"))
 				return null;
 			
 			if (RegistrationActions.usernameExists(input)) {
@@ -164,8 +181,7 @@ public class UserActions {
 		UtilityActions.write(bankAccounts, bankfilename);
 	}
 
-	public void selectAnAccount(String username) {
-
+	public void selectAnAccount(String username, boolean owner) {
 		CustomerAccount customerAccount = CustomerActions.getCustomerAccountByUsername(username);
 		ArrayList<UUID> bankAccountIDs = customerAccount.getBankAccountIDs();
 		StringBuilder builder = new StringBuilder();
@@ -182,7 +198,7 @@ public class UserActions {
 			String accountNumInput = sc.nextLine();
 			int accountNum = Integer.parseInt(accountNumInput);
 			if (accountNum >= 0 && accountNum < bankAccountIDs.size()) {
-				customerOptions(customerAccount, accountNum);
+				customerOptions(customerAccount, accountNum, owner);
 			} else if (accountNum == -1) {
 				break;
 			}
@@ -281,12 +297,11 @@ public class UserActions {
 	public static void viewAccountApplies() {
 		ArrayList<CustomerAccount> cusAccounts = CustomerActions.getCustomerAccounts();
 		
-		if (cusAccounts == null)
+		if (cusAccounts == null )
 			return;
 		
 		for (CustomerAccount cus : cusAccounts) {
-			for (UUID id : cus.getApplies()) {
-				//state some info on what account it is
+			for (UUID id : cus.getApplies()) {			
 				System.out.println("Customer: [ " + cus.getUsername() + " ] has applied for an account.");
 				System.out.println("1 for Approve, 2 for Deny, -1 for Exit: ");
 				String input = sc.nextLine();
@@ -300,5 +315,6 @@ public class UserActions {
 					System.out.println("Invalid entry");
 			}
 		}
+		
 	}
 }

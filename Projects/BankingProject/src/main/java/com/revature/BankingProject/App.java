@@ -20,7 +20,7 @@ public class App
     		if (option.equals("1")) {
     			optionLogin();
     		} else if (option.equals("2")) {
-    			optionRegister();
+    			optionRegister(0);
     		} else if (option.equals("-1")) {
     			break;
     		} else {
@@ -45,18 +45,20 @@ public class App
 			System.out.println("Invalid login, try again.");
 	}
 
-	private static void optionRegister() {
+	protected static void optionRegister(int type) {
     	boolean succeeded = false;  	
     	String username = "";
     	
 		while (!succeeded) {
 			username = getUsername();
-			succeeded = b.register(username, getPassword(), 0);			
+			succeeded = b.register(username, getPassword(), type);			
 		}
 		//Creates customer, add and saves a new apply
-		CustomerAccount customerAccount = CustomerActions.createCustomerAccount(username, getName(), getAddress(), getAge());
-		customerAccount.addApply(UserActions.createBankAccount());
-		CustomerActions.saveCustomerAccount(customerAccount);
+		if (type == 0) {
+			CustomerAccount customerAccount = CustomerActions.createCustomerAccount(username, getName(), getAddress(), getAge());
+			customerAccount.addApply(UserActions.createBankAccount());
+			CustomerActions.saveCustomerAccount(customerAccount);
+		}
 
 		System.out.println("Account created successfully.");
 	}

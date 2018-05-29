@@ -67,7 +67,12 @@ class TestAdminActions {
 	
 	@Test 
 	void testDenyAccount() {
+		UserActions.denyAccount(id, cus);
+		//check bank is closed
+		assertNull(UserActions.getBankAccountById(id));
 		
+		//check is deleted
+		assertNull(CustomerActions.getCustomerAccountByUsername("user"));
 	}
 	
 	//cancel account

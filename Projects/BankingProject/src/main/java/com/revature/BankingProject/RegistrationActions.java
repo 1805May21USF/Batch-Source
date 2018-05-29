@@ -18,87 +18,106 @@ public class RegistrationActions {
 		
 		switch (userAccount.getAccountType()) {
 			case 0:
-				customerOptions(username);
+				customerOptions(username, true);
 				break;
 			case 1:
-				//Employee options
-					//view customer info
-						//account
-						//balances
-						//personal info
-					//approve/deny applications
+				companyOptions(false);
 				break;
 			case 2:
-				adminOptions();
+				companyOptions(true);
 				break;
 		}
 	}
 	
-	private void adminOptions() {
+	private void companyOptions(boolean owner) {
 		String input;
 		while (true) {
-			System.out.println("Select 1 for Select A Customer Account, 2 for View Account Applies, -1 for Exit.");
-			input = sc.nextLine();
-			if (input.equals("-1"))
-				return;
-			if (input.equals("1")) {
-				connectToUserAccount();
-			} else if (input.equals("2")) {
-				//view list of applies for approval/deny
-				UserActions.viewAccountApplies();
-			} else {
-				System.out.println("Invalid entry, try again");
+			if (!owner) {
+				System.out.println("Select 1 for Select A Customer Account, " +
+						"2 for View Account Applies, -1 for Exit.");
+				input = sc.nextLine();
+				if (input.equals("-1"))
+					return;
+				if (input.equals("1")) {
+					connectToUserAccount(owner);
+				} else if (input.equals("2")) {
+					UserActions.viewAccountApplies();
+				} else {
+					System.out.println("Invalid entry, try again");
+				}
+			} else {		
+				System.out.println("Select 1 for Select A Customer Account, " +
+						"2 for View Account Applies, 3 for Create New Employee, -1 for Exit.");
+				input = sc.nextLine();
+				if (input.equals("-1"))
+					return;
+				if (input.equals("1")) {
+					connectToUserAccount(owner);
+				} else if (input.equals("2")) {
+					UserActions.viewAccountApplies();
+				} else if (input.equals("3")) {
+					App.optionRegister(1);
+				} else {
+					System.out.println("Invalid entry, try again");
+				}
 			}
 		}
-		//Admin options
-			//view customer info
-			//edit customer info
-			//view/edit employee info?
-			//withdraw, deposit, transfer to/from all accounts
-			//cancel accounts
 	}
 
-	private void connectToUserAccount() {
+	private void connectToUserAccount(boolean owner) {
 		while (true) {
 			System.out.println("Customer username or -1 for Exit: ");
 			String input = sc.nextLine();
 			if (input.equals("-1"))
 				break;
-			if (RegistrationActions.usernameExists(input)) {
-				customerOptions(input);
+			if (RegistrationActions.usernameExists(input) && CustomerActions.getCustomerAccountByUsername(input) != null) {
+				customerOptions(input, owner);
 				break;
 			}
-			System.out.println("Username doesn't exist.");
+			System.out.println("Invalid username.");
 		}	
 	}
 
-	private void customerOptions(String username) {
+	private void customerOptions(String username, boolean owner) {
 		String input;
 		while (true) {
-			System.out.println("Select 1 for View Personal Info, 2 for Select A Bank Account, 3 for Apply For Joint Account, -1 for Exit.");
-			input = sc.nextLine();
-			if (input.equals("-1"))
-				return;
-			if (input.equals("1")) {
-				c.viewPersonalInfo(username);
-			} else if (input.equals("2")) {
-				u.selectAnAccount(username);
-			} else if (input.equals("3")) {
-				applyForJointAccount(username);
+			if (!owner) {
+				System.out.println("Select 1 for View Personal Info, 2 for Select A Bank Account, -1 for Exit.");
+				input = sc.nextLine();
+				if (input.equals("-1"))
+					return;
+				if (input.equals("1")) {
+					c.viewPersonalInfo(username);
+				} else if (input.equals("2")) {
+					u.selectAnAccount(username, owner);
+				} else {
+					System.out.println("Invalid entry, try again");
+				}
 			} else {
-				System.out.println("Invalid entry, try again");
+				System.out.println("Select 1 for View Personal Info, 2 for Select A Bank Account, 3 for Apply For Joint Account, -1 for Exit.");
+				input = sc.nextLine();
+				if (input.equals("-1"))
+					return;
+				if (input.equals("1")) {
+					c.viewPersonalInfo(username);
+				} else if (input.equals("2")) {
+					u.selectAnAccount(username, owner);
+				} else if (input.equals("3")) {
+					applyForJointAccount(username);
+				} else {
+					System.out.println("Invalid entry, try again");
+				}
 			}
 		}
 	}
 	
 	//register
 	public boolean register(String username, String password, int type) {
-		UserAccount acc = new UserAccount(username, password, type);
-
 		if (usernameExists(username)) {
 			System.out.println("User name taken, try again.");
 			return false;
 		} else {	
+			UserAccount acc = new UserAccount(username, password, type);
 			ArrayList<UserAccount> userAccounts = getAccounts();
 			if (userAccounts == null) 
 				userAccounts = new ArrayList<UserAccount>();
@@ -106,8 +125,6 @@ public class RegistrationActions {
 			
 			UtilityActions.write(userAccounts, filename);
 		}
-		//register customer account info to username
-		
 		return true;
 	}
 
@@ -168,14 +185,15 @@ public class RegistrationActions {
 			System.out.println("Please enter a username to apply to or -1 for Exit:");
 			String input = sc.nextLine();
 			
-			if (input.equals("admin")) {
-				System.out.println("Restricted username.");
-			    return;
-			}
 			if (input.equals("-1"))
 				return;
 			if (usernameExists(input)) {
-				CustomerAccount otherAccount = CustomerActions.getCustomerAccountByUsername(input);
+				CustomerAccount otherAccount = CustomerActions.getCustomerAccountByUsername(input);			
+				if (otherAccount == null) {
+					System.out.println("Invalid username");
+					return;
+				}			
+				
 				id = UtilityActions.getUUID(otherAccount);
 				if (id == null)
 					return;
