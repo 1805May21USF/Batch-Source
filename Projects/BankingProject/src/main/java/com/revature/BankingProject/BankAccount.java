@@ -3,6 +3,9 @@ package com.revature.BankingProject;
 import java.io.Serializable;
 import java.util.UUID;
 
+/*
+ * Bank account object for money transactions.
+ */
 public class BankAccount implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private double balance;

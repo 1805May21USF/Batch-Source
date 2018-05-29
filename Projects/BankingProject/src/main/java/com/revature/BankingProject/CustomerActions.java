@@ -7,9 +7,15 @@ import java.util.UUID;
 
 import com.revature.Utility.UtilityActions;
 
+/*
+ * Provides interactions with customer accounts.
+ */
 public class CustomerActions {
 	private static File filename = new File("CustomerAccounts.txt");
 
+	/*
+	 * Creates a new customer account with personal fields.
+	 */
 	public static CustomerAccount createCustomerAccount(String username, String name, String address, String age) {
 		ArrayList<CustomerAccount> customerAccounts = getCustomerAccounts();
 		CustomerAccount customerAccount = new CustomerAccount(name, address, age, username);
@@ -23,6 +29,9 @@ public class CustomerActions {
 		return customerAccount;
 	}
 	
+	/*
+	 * Retrieves a customer account associated with the given username.
+	 */
 	public static CustomerAccount getCustomerAccountByUsername(String username) {
 		ArrayList<CustomerAccount> customerAccounts = getCustomerAccounts();
 		
@@ -33,12 +42,16 @@ public class CustomerActions {
 		return null;
 	}
 	
-	//Get the accounts from the file
+	/*
+	 * Retrieves all of the customer accounts.
+	 */
 	public static ArrayList<CustomerAccount> getCustomerAccounts() {
 		return convertToCustomerAccounts(UtilityActions.read(filename));
 	}
 	
-	//Convert generic array to CustomerAccount
+	/*
+	 * Converts a generic list to customer accounts.
+	 */
 	private static ArrayList<CustomerAccount> convertToCustomerAccounts(ArrayList<?> list) {		
 		ArrayList<CustomerAccount> customerAccount = null;
 		
@@ -50,6 +63,9 @@ public class CustomerActions {
 		return customerAccount;
 	}
 	
+	/*
+	 * Saves new customer accounts to file.
+	 */
 	public static void saveCustomerAccount(CustomerAccount customerAccount) {
 		ArrayList<CustomerAccount> customerAccounts = getCustomerAccounts();
 		
@@ -60,12 +76,21 @@ public class CustomerActions {
 		UtilityActions.write(customerAccounts, filename);
 	}
 
+	/*
+	 * Retrieves and displays customer account personal information.
+	 */
 	public void viewPersonalInfo(String username) {
 		CustomerAccount customerAccount = getCustomerAccountByUsername(username);
 		System.out.println("Name: " + customerAccount.getName());
 		System.out.println("Address: " + customerAccount.getAddress());
 		System.out.println("Age: " + customerAccount.getAge());
 		System.out.println("Username: " + customerAccount.getUsername());
-		System.out.println("Number of Accounts: " + customerAccount.getBankAccountIDs().size());
+		
+		int openAccounts = 0;
+		for (int i = 0; i < customerAccount.getBankAccountIDs().size(); i++) {
+			if (UserActions.getBankAccountById(customerAccount.getBankAccountIDs().get(i)).isOpen())
+				openAccounts++;
+		}		
+		System.out.println("Number of Accounts: " + openAccounts);
 	}
 }

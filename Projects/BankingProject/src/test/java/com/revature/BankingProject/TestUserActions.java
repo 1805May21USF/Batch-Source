@@ -99,7 +99,7 @@ class TestUserActions {
 	@Test 
 	void testDeposit() {
 		double balance = UserActions.getBalance(id);
-		u.deposit(UserActions.getBankAccountById(id), 25.03);
+		UserActions.deposit(UserActions.getBankAccountById(id), 25.03);
 		double balance2 = UserActions.getBalance(id);
 		double difference = balance2 - balance;
 		
@@ -109,10 +109,10 @@ class TestUserActions {
 	
 	@Test
 	void testWithdraw() {
-		u.deposit(UserActions.getBankAccountById(id), 4.0);
+		UserActions.deposit(UserActions.getBankAccountById(id), 4.0);
 		double balance = UserActions.getBalance(id);
 		
-		u.withdraw(UserActions.getBankAccountById(id), 2.0);
+		UserActions.withdraw(UserActions.getBankAccountById(id), 2.0);
 		double balance2 = UserActions.getBalance(id);
 		
 		//different balances in account
@@ -124,7 +124,7 @@ class TestUserActions {
 		double balance = UserActions.getBalance(id);
 		double balance2 = UserActions.getBalance(id2);
 
-		u.transfer(id, id2, 50);
+		UserActions.transfer(id, id2, 50);
 		//Transfer funds changes balances
 		assertEquals(UserActions.getBalance(id), balance - 50, 0.01);
 		assertEquals(UserActions.getBalance(id2), balance2 + 50, 0.01);

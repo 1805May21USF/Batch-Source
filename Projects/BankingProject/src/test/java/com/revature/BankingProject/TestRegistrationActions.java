@@ -42,21 +42,21 @@ class TestRegistrationActions {
 	@Test
 	void testGetAccounts() {
 		//Gets accounts from file	
-		assertNotNull(r.getAccounts());
+		assertNotNull(RegistrationActions.getAccounts());
 		
 		//Gets null since accounts is empty
 		UtilityActions.clearAccounts(filename);
-		assertNull(r.getAccounts());
+		assertNull(RegistrationActions.getAccounts());
 		r.register("user", "pass", 0);
 	}
 	
 	@Test
 	void testUserNameExists() {
 		//Username exists
-		assertTrue(r.usernameExists("user"));
+		assertTrue(RegistrationActions.usernameExists("user"));
 
 		//Username not used yet
-		assertFalse(r.usernameExists("hasdfdfdkf"));
+		assertFalse(RegistrationActions.usernameExists("hasdfdfdkf"));
 	}
 	
 	@Test

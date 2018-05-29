@@ -2,9 +2,11 @@ package com.revature.BankingProject;
 
 import java.io.Serializable;
 
+/*
+ * User account object for storing login information.
+ */
 public class UserAccount implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
 	private String username;
 	private String password;
 	private int accountType;

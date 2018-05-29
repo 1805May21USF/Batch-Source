@@ -15,10 +15,15 @@ import com.revature.BankingProject.App;
 import com.revature.BankingProject.CustomerAccount;
 import com.revature.BankingProject.UserActions;
 
+/*
+ * Provides shared utility actions.
+ */
 public class UtilityActions {
 	private static Scanner sc = App.sc;
 	
-	//Clears all accounts of file, for testing purposes
+	/*
+	 * Clears all data in the file for testing purposes.
+	 */
 	public static void clearAccounts(File filename) {
 		RandomAccessFile file;
 		try {
@@ -31,6 +36,9 @@ public class UtilityActions {
 		}
 	}
 	
+	/*
+	 * Writes data out to the file for data persistance.
+	 */
 	public static void write(ArrayList<?> accounts, File filename) {
 	    // Serialization 
         try {   
@@ -44,10 +52,13 @@ public class UtilityActions {
             out.close();
             file.close();
         } catch(IOException ex) {
-            System.out.println("IOException is caught");
+        	System.out.println("IOException is caught");
         }
 	}
 	
+	/*
+	 * Reads data in from the file.
+	 */
 	public static ArrayList<?> read(File filename) {
 		ArrayList<?> list = null;
 		ObjectInputStream in;
@@ -66,14 +77,16 @@ public class UtilityActions {
             
             file.close();
         } catch(IOException ex) {
-            System.out.println("IOException is caught in getAccounts");
+            System.out.println("IOException is caught");
         } catch(ClassNotFoundException ex) {
             System.out.println("ClassNotFoundException is caught");
-        }
-        
+        }   
         return list;
 	}
 	
+	/*
+	 * Retrieves the id of a customer's bank account.
+	 */
 	public static UUID getUUID(CustomerAccount customerAccount) {
 		StringBuilder bd = new StringBuilder();
 
@@ -84,7 +97,7 @@ public class UtilityActions {
 		}
 		int accNum;
 		while (true) {
-			System.out.println("Select one of user's accounts or -1 to Exit: [ " + bd + "]");
+			System.out.println("Select one of user's accounts: [ " + bd + "]" + "\n-1 to Exit");
 			String accInput = sc.nextLine();
 			if (accInput.equals("-1"))
 				return null;
@@ -93,18 +106,21 @@ public class UtilityActions {
 				if (accNum < size && accNum >= 0)
 					return customerAccount.getBankAccountIDs().get(accNum);
 			} catch (NumberFormatException e) {
-				
+				System.out.println("NumberFormatException was caught.");
 			}
 			System.out.println("Invalid entry");
 		}
 	}
 	
+	/*
+	 * Obtains a valid double amount from the user.
+	 */
 	public static double getValidAmount() {
 		double depositAmt;
 		String input;
 		
 		while (true) {
-			System.out.println("Amount or -1 to Exit: ");
+			System.out.println("Amount: \n-1 Exit");
 			input = sc.nextLine();
 			
 			try {			
@@ -114,13 +130,16 @@ public class UtilityActions {
 				if (depositAmt > 0)
 					break;
 			} catch (NumberFormatException e) {
-				
+				System.out.println("NumberFormatException was caught.");
 			} 
 			System.out.println("Invalid entry, please enter a number.");	
 		}
 		return depositAmt;
 	}
 	
+	/*
+	 * Retrieves a valid withdraw amount from user's bank account.
+	 */
 	public static double getValidWithDrawAmount(UUID bankAccountID) {
 		double amt;
 		

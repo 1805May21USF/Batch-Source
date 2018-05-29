@@ -37,14 +37,10 @@ class TestAdminActions {
 		r.register("user", "pass", 0);
 		id = UserActions.createBankAccount();	
 		cus = CustomerActions.createCustomerAccount("user", "asdf", "asdf", "asdf");
-		//cus.addBankAccountID(id);
-		//CustomerActions.saveCustomerAccount(cus);	
-		
+
 		r.register("user2", "pass", 0);
 		id2 = UserActions.createBankAccount();
 		cus2 = CustomerActions.createCustomerAccount("user2", "asdf", "asdf", "asdf");
-		//cus2.addBankAccountID(id2);
-		//CustomerActions.saveCustomerAccount(cus2);
 	}
 	
 	private static void clearAccounts() {
@@ -74,9 +70,4 @@ class TestAdminActions {
 		//check is deleted
 		assertNull(CustomerActions.getCustomerAccountByUsername("user"));
 	}
-	
-	//cancel account
-	//approve request for account
-	//deny request for account
-	//edit personal info of account
 }

@@ -2,19 +2,27 @@ package com.revature.BankingProject;
 
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+/*
+ * Main driver for banking interaction.
+ */
 public class App 
 {
 	public final static Scanner sc = new Scanner(System.in);
 	private static RegistrationActions b = new RegistrationActions();
+	static Logger log = LogManager.getLogger(App.class);
 	
     public static void main( String[] args )
     {
-    	createAdmin();
+    	if (!RegistrationActions.usernameExists("admin"))
+    		createAdmin();
     	boolean done = false;
     	String option;
     		
     	while (!done) {
-    		System.out.println("Select 1 for Login, 2 for Register, -1 for Exit");
+    		System.out.println("1. Login\n2. Register\n-1 Exit");
     		
     		option = sc.nextLine();
     		if (option.equals("1")) {
@@ -24,17 +32,23 @@ public class App
     		} else if (option.equals("-1")) {
     			break;
     		} else {
-    			System.out.println("Invalid entry, please select 1 for Login, 2 for Register, 5 for Exit.");
+    			System.out.println("Invalid entry");
     		}
     	}
     	sc.close();
     	System.out.println("Closed.");
     }
     
+    /*
+     * Creates a default admin account.
+     */
     private static void createAdmin() {
     	b.register("admin", "pass", 2);
 	}
 
+    /*
+     * Allows users to login.
+     */
 	private static void optionLogin() {
     	String username = getUsername();
 		String password = getPassword();
@@ -42,9 +56,12 @@ public class App
 		if (b.login(username, password)) 
 			b.userOptions(username);
 		else 
-			System.out.println("Invalid login, try again.");
+			System.out.println("Invalid login");
 	}
 
+	/*
+	 * Allows users to register for an account.
+	 */
 	protected static void optionRegister(int type) {
     	boolean succeeded = false;  	
     	String username = "";
@@ -53,7 +70,7 @@ public class App
 			username = getUsername();
 			succeeded = b.register(username, getPassword(), type);			
 		}
-		//Creates customer, add and saves a new apply
+		//Creates customer, adds and saves a new apply for a bank account
 		if (type == 0) {
 			CustomerAccount customerAccount = CustomerActions.createCustomerAccount(username, getName(), getAddress(), getAge());
 			customerAccount.addApply(UserActions.createBankAccount());
@@ -63,40 +80,41 @@ public class App
 		System.out.println("Account created successfully.");
 	}
 
+	/*
+	 * Username input prompt.
+	 */
 	private static String getUsername() {
     	System.out.println("Username: ");
 		return sc.nextLine();
     }
     
+	/*
+	 * Password input prompt.
+	 */
     private static String getPassword() {
 		System.out.println("Password: ");
 		return sc.nextLine();
     }
     
-    private static int getAccountType() {
-    	System.out.println("Account Type (0 for customer, 1 for employee, 2 for admin): ");
-    	String input;
-    	
-    	while (true) {
-	    	input = sc.nextLine();
-			
-			if (input.equals("0") || input.equals("1") || input.equals("2"))
-				return Integer.parseInt(input);
-				
-			System.out.println("Invalid entry, please enter (0 for customer, 1 for employee, 2 for admin). ");
-    	}
-    }
-    
+    /*
+     * Name input prompt.
+     */
 	private static String getName() {
 		System.out.println("Name: ");
 		return sc.nextLine();
 	}
 	
+	/*
+	 * Address input prompt.
+	 */
 	private static String getAddress() {
 		System.out.println("Address: ");
 		return sc.nextLine();
 	}
 	
+	/*
+	 * Age input prompt.
+	 */
 	private static String getAge() {
 		System.out.println("Age: ");
 		return sc.nextLine();

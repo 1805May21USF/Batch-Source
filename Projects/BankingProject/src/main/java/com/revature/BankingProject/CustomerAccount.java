@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/*
+ * Customer account object for managing customer information and accounts.
+ */
 public class CustomerAccount implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name;

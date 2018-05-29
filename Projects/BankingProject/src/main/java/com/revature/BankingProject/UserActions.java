@@ -10,16 +10,23 @@ import java.util.UUID;
 
 import com.revature.Utility.UtilityActions;
 
+/*
+ * Provides interaction with user accounts.
+ */
 public class UserActions {
 	private static File bankfilename = new File("BankAccounts.txt");
 	private static File cusfilename = new File("CustomerAccounts.txt");
 	private static File userfilename = new File("UserAccounts.txt");
 	private static Scanner sc = App.sc;
+	static NumberFormat formatter = new DecimalFormat("#0.00");
 	
-	public void customerOptions(CustomerAccount customerAccount, int accountNum, boolean owner) {
+	/*
+	 * Provides users with bank account options.
+	 */
+	public static void customerOptions(CustomerAccount customerAccount, int accountNum, boolean owner) {
 		while (true) {
 			if (!owner) {
-				System.out.println("Select 1 for Check Balance, -1 for Exit");
+				System.out.println("1. Check Balance\n-1 Exit");
 				String option = sc.nextLine();
 				
 				if (option.equals("1")) {
@@ -31,15 +38,14 @@ public class UserActions {
 					//Exit
 					break;
 				} else {
-					System.out.println("Invalid entry, ");
+					System.out.println("Invalid entry");
 				}
 			} else {
-				System.out.println("Select 1 for Check Balance, 2 for Withdraw, 3 for Deposit, 4 for Transfer, -1 for Exit");
+				System.out.println("1. Check Balance\n2. Withdraw\n3. Deposit\n4. Transfer\n-1 Exit");
 				String option = sc.nextLine();
 				
 				if (option.equals("1")) {
 					//Check Balance
-					NumberFormat formatter = new DecimalFormat("#0.00");
 					double balance = getBalance(customerAccount.getBankAccountIDs().get(accountNum));
 					System.out.println("Balance: " + formatter.format(balance));
 				} else if (option.equals("2")) {
@@ -55,13 +61,16 @@ public class UserActions {
 					//Exit
 					break;
 				} else {
-					System.out.println("Invalid entry, ");
+					System.out.println("Invalid entry");
 				}
 			}
 		}
 	}
 
-	private void optionDeposit(CustomerAccount customerAccount, int accountNum) {
+	/*
+	 * Allows customers to deposit funds into their account.
+	 */
+	private static void optionDeposit(CustomerAccount customerAccount, int accountNum) {
 		UUID bankAccountID = customerAccount.getBankAccountIDs().get(accountNum);
 		BankAccount bankAccount = getBankAccountById(bankAccountID);
 		
@@ -70,9 +79,15 @@ public class UserActions {
 			return;
 		
 		deposit(bankAccount, amt);	
+		App.log.info("Customer: " + customerAccount.getUsername() + 
+				" Account #: " + accountNum + 
+				" Deposited: " + formatter.format(amt));
 	}
 	
-	public void optionWithdraw(CustomerAccount customerAccount, int accountNum) {
+	/*
+	 * Allows customers to withdraw funds from their account.
+	 */
+	public static void optionWithdraw(CustomerAccount customerAccount, int accountNum) {
 		UUID bankAccountID = customerAccount.getBankAccountIDs().get(accountNum);
 		BankAccount bankAccount = getBankAccountById(bankAccountID);
 		
@@ -81,9 +96,15 @@ public class UserActions {
 			return;
 		
 		withdraw(bankAccount, amt);	
+		App.log.info("Customer: " + customerAccount.getUsername() + 
+				" Account #: " + accountNum + 
+				" Withdrew: " + formatter.format(amt));
 	}
 	
-	public void optionTransfer(CustomerAccount customerAccount, int accountNum) {
+	/*
+	 * Allows customers to transfer funds from their account to another.
+	 */
+	public static void optionTransfer(CustomerAccount customerAccount, int accountNum) {
 		UUID bankAccountID = customerAccount.getBankAccountIDs().get(accountNum);
 		
 		double amt = UtilityActions.getValidWithDrawAmount(bankAccountID);
@@ -95,13 +116,19 @@ public class UserActions {
 		if (receiver == null)
 			return;
 		transfer(sender, receiver, amt);
+		App.log.info("Customer: " + customerAccount.getUsername() + 
+				" Account #: " + accountNum + 
+				" Transfered: " + formatter.format(amt));
 	}
 	
-	private UUID getReceiverUUID() {
+	/*
+	 * Retrieves the id of the transfer receiver's account.
+	 */
+	private static UUID getReceiverUUID() {
 		String input;
 
 		while (true) {
-			System.out.println("Username to transfer funds to, -1 to Exit: ");
+			System.out.println("Username to transfer funds to\n-1 Exit");
 			input = sc.nextLine();
 	
 			if (input.equals("-1") || input.equals("admin"))
@@ -114,6 +141,9 @@ public class UserActions {
 		}
 	}
 	
+	/*
+	 * Creates a new bank account.
+	 */
 	public static UUID createBankAccount() {
 		ArrayList<BankAccount> bankAccounts = getBankAccounts();
 		BankAccount bankAccount = new BankAccount(); 
@@ -127,12 +157,16 @@ public class UserActions {
         return bankAccount.getAccountID();
 	}
 
-	//Get the accounts from the file
+	/*
+	 * Retrieves all bank accounts from file.
+	 */
 	public static ArrayList<BankAccount> getBankAccounts() {
 		return convertToBankAccounts(UtilityActions.read(bankfilename));
 	}
 	
-	//Convert generic array to BankAccount
+	/*
+	 * Converts a generic list to bank accounts.
+	 */
 	private static ArrayList<BankAccount> convertToBankAccounts(ArrayList<?> list) {		
 		ArrayList<BankAccount> bankAccounts = null;
 		
@@ -144,6 +178,9 @@ public class UserActions {
 		return bankAccounts;
 	}
 	
+	/*
+	 * Retrieves a bank account by the id.
+	 */
 	public static BankAccount getBankAccountById(UUID id) {
 		ArrayList<BankAccount> bankAccounts = getBankAccounts();
 		
@@ -154,6 +191,9 @@ public class UserActions {
 		return null;
 	}
 
+	/*
+	 * Determines if a bank account exists.
+	 */
 	public boolean bankAccountExists(UUID id) {
 		BankAccount bankAccount = getBankAccountById(id);
 		
@@ -162,6 +202,9 @@ public class UserActions {
 		return false;
 	}
 
+	/*
+	 * Retrieves the current balance of an account.
+	 */
 	public static double getBalance(UUID id) {	
 		BankAccount bankAccount = getBankAccountById(id);
 		
@@ -170,7 +213,10 @@ public class UserActions {
 		return 0;
 	}
 
-	public void deposit(BankAccount bankAccount, double amt) {
+	/*
+	 * Allows for depositing of funds into a bank account balance.
+	 */
+	public static void deposit(BankAccount bankAccount, double amt) {
 		ArrayList<BankAccount> bankAccounts = getBankAccounts();
 		
 		if (bankAccounts != null) 
@@ -181,31 +227,47 @@ public class UserActions {
 		UtilityActions.write(bankAccounts, bankfilename);
 	}
 
-	public void selectAnAccount(String username, boolean owner) {
+	/*
+	 * Selects one of a customer's bank accounts.
+	 */
+	public int selectAnAccount(String username, boolean owner) {
 		CustomerAccount customerAccount = CustomerActions.getCustomerAccountByUsername(username);
 		ArrayList<UUID> bankAccountIDs = customerAccount.getBankAccountIDs();
 		StringBuilder builder = new StringBuilder();
 		
 		builder.append("[ ");
 		for (int i = 0; i < bankAccountIDs.size(); i++) {
-			builder.append(i + " ");
+			BankAccount bankAccount = UserActions.getBankAccountById(bankAccountIDs.get(i));
+			if (bankAccount.isOpen())
+				builder.append(i + " ");
 		}		
-		builder.append("] or -1 for Exit.");
+		builder.append("]\n-1 Exit");
 	
 		while (true) {
 			System.out.println("Please select an account number: " + builder);
 			
 			String accountNumInput = sc.nextLine();
-			int accountNum = Integer.parseInt(accountNumInput);
+			int accountNum;
+			try {
+				accountNum = Integer.parseInt(accountNumInput);
+			} catch (NumberFormatException e) {
+				break;
+			}
 			if (accountNum >= 0 && accountNum < bankAccountIDs.size()) {
-				customerOptions(customerAccount, accountNum, owner);
+				BankAccount bankAccount = UserActions.getBankAccountById(customerAccount.getBankAccountIDs().get(accountNum));
+				if (bankAccount.isOpen())
+					return accountNum;
 			} else if (accountNum == -1) {
 				break;
 			}
 		}
+		return -1;
 	}
 
-	public void withdraw(BankAccount bankAccount, double amt) {
+	/*
+	 * Withdraws funds from a bank account balance.
+	 */
+	public static void withdraw(BankAccount bankAccount, double amt) {
 		ArrayList<BankAccount> bankAccounts = getBankAccounts();
 		
 		if (bankAccounts != null) 
@@ -216,13 +278,19 @@ public class UserActions {
 		UtilityActions.write(bankAccounts, bankfilename);
 	}
 
-	public void transfer(UUID id, UUID id2, double amt) {
+	/*
+	 * Allows for transfer of funds from one account to another.
+	 */
+	public static void transfer(UUID id, UUID id2, double amt) {
 		BankAccount bankAccount = getBankAccountById(id);
 		withdraw(bankAccount, amt);
 		bankAccount = getBankAccountById(id2);
 		deposit(bankAccount, amt);
 	}
 	
+	/*
+	 * Add an application for a bank account to a customer account.
+	 */
 	public void apply(CustomerAccount curAccount, UUID idOfBankAccountToAdd) {
 		ArrayList<CustomerAccount> cusAccounts = CustomerActions.getCustomerAccounts();
 		
@@ -233,6 +301,9 @@ public class UserActions {
 		UtilityActions.write(cusAccounts, cusfilename);
 	}
 
+	/*
+	 * Approves a bank account to access to the customer.
+	 */
 	public static void approveAccount(UUID id, CustomerAccount cus) {
 		ArrayList<CustomerAccount> cusAccounts = CustomerActions.getCustomerAccounts();
 		ArrayList<BankAccount> bankAccounts = UserActions.getBankAccounts();
@@ -259,6 +330,9 @@ public class UserActions {
 		UtilityActions.write(bankAccounts, bankfilename);
 	}
 	
+	/*
+	 * Denies access to a bank account for a customer. 
+	 */
 	public static void denyAccount(UUID id, CustomerAccount cus) {
 		ArrayList<CustomerAccount> cusAccounts = CustomerActions.getCustomerAccounts();
 		ArrayList<BankAccount> bankAccounts = UserActions.getBankAccounts();
@@ -272,8 +346,6 @@ public class UserActions {
 			   j.remove();
 		}
 		UtilityActions.write(bankAccounts, bankfilename);
-		
-		//should it delete customer/user account if applies and bank accounts empty?
 		
 		//Delete customer
 		Iterator<CustomerAccount> i = cusAccounts.iterator();
@@ -294,6 +366,9 @@ public class UserActions {
 		UtilityActions.write(userAccounts, userfilename);
 	}
 
+	/*
+	 * View all customer account applications for accounts.
+	 */
 	public static void viewAccountApplies() {
 		ArrayList<CustomerAccount> cusAccounts = CustomerActions.getCustomerAccounts();
 		
@@ -303,7 +378,7 @@ public class UserActions {
 		for (CustomerAccount cus : cusAccounts) {
 			for (UUID id : cus.getApplies()) {			
 				System.out.println("Customer: [ " + cus.getUsername() + " ] has applied for an account.");
-				System.out.println("1 for Approve, 2 for Deny, -1 for Exit: ");
+				System.out.println("1. Approve\n2. Deny\n-1 Exit");
 				String input = sc.nextLine();
 				if (input.equals("-1"))
 					return;
@@ -315,6 +390,5 @@ public class UserActions {
 					System.out.println("Invalid entry");
 			}
 		}
-		
 	}
 }
