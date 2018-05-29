@@ -242,10 +242,14 @@ public class Bank implements Serializable {
 					System.out.println("Accounts");
 					linebreak();
 					Customer currentCustomer = d.getCustomer(this.currentUser.ID);
-					for(Account a:currentCustomer.getAccounts()) {
-						
+					for(int i = 0;i<currentCustomer.getAccounts().size();i++) {
+						System.out.println(i+". " +currentCustomer.getAccounts().get(i));
 					}
-					for()
+					String input;
+					input = scanner.nextLine();
+					selection = Integer.parseInt(input);
+					selection = selection + 1;
+
 					break;
 				}
 				case 4:{
