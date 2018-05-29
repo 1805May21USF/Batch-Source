@@ -49,6 +49,6 @@ public class OperationImpl implements Operations {
 	 * @return returns the division of x and y
 	 */
 	public double division(int x, int y) {
-		return x/y;
+		return x * 1.0 / y * 1.0;
 	}
 }

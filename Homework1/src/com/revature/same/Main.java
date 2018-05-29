@@ -106,6 +106,15 @@ public class Main {
 		SwitchCase sc = new SwitchCase();
 		System.out.println("==================================================");
 		
+		//Operation Question 15
+		System.out.println("Question 15");
+		OperationImpl OP = new OperationImpl();
+		System.out.println("Addition of 5 and 4 = " + OP.addition(5, 4));
+		System.out.println("Subtraction of 5 and 4 = " + OP.subtraction(5, 4));
+		System.out.println("Multiplication of 5 and 4 = " + OP.multiplication(5, 4));
+		System.out.println("Division of 5 and 4 = " + OP.division(5, 4));
+		System.out.println("==================================================");
+		
 		//CountCharacters Question 16
 		System.out.println("Question 16");
 		if(args.length > 0) {
