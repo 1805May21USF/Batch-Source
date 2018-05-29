@@ -91,7 +91,10 @@ public class Driver
 		boolean prime = q09.isPrime(50);
 		ArrayList<Integer> q09PrimeList = q09.makePrimeArrayList();
 		System.out.println("Q9: Prime Array List: " + q09PrimeList.toString());
-
-	
+		
+		int min = q10.findMin(85, 41);
+		System.out.println("Q10: " + min);
+		
+		q11.printSolution();
 	}
 }
