@@ -54,7 +54,7 @@ public class Bank
 		
 		//Mike and Terry can register because they are older than 18.
 		Account account1 = cust1.register("mike", "123");
-		Account account2 = cust2.register("terry", "truck");
+		Account account2 = cust2.register("terry", "789");
 		
 		//Greet the user.
 		System.out.println("Welcome to Bank.");
@@ -82,37 +82,38 @@ public class Bank
 			//number is assigned to what Mike enters
 			int number = input.nextInt();
 			
-			if(number == 1) 
-			{
-				account1.printBalance();
-			}
-			if(number == 2) 
-			{
-				System.out.println("Enter amount: ");
-				double amount = input.nextDouble();
-				account1.deposit(amount);
-			}
-			if(number == 3) 
-			{
-				System.out.println("Enter amount: ");
-				double amount = input.nextDouble();
-				account1.withdraw(amount);
-			}
-			if(number == 4) 
-			{
-				System.out.println("Enter amount: ");
-				double amount = input.nextDouble();
-				cust1.transfer(account1, account2, amount);
-			}
+				if(number == 1) 
+				{
+					account1.printBalance();
+				}
+				if(number == 2) 
+				{
+					System.out.println("Enter amount: ");
+					double amount = input.nextDouble();
+					account1.deposit(amount);
+				}
+				if(number == 3) 
+				{
+					System.out.println("Enter amount: ");
+					double amount = input.nextDouble();
+					account1.withdraw(amount);
+				}
+				if(number == 4) 
+				{
+					System.out.println("Enter amount: ");
+					double amount = input.nextDouble();
+					cust1.transfer(account1, account2, amount);
+				}
+				if(number == 5) 
+				{
+					System.out.println("Goodbye.");
+				}
 			
-
+			
 		}
 		else 
 		{
 			System.out.println("Incorrect username and password. Goodbye.");
 		}
-		
-		
 	}
-
 }
