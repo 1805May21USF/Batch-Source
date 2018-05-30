@@ -1,5 +1,6 @@
 /**
  * This class represents a customer of a bank.
+ * A customer can have multiple Accounts. 
  * 
  * Complete: No
  */
@@ -13,17 +14,13 @@ public class Customer
 {
 	//instance variables
 	private String name;
-	private String username;
-	private String password;
-	private int id;
+	private int socialSecurity;
 	
 	//create a constructor for Customer that takes 4 arguments
-	public Customer(String n, String u, String p, int i) 
+	public Customer(String n, int i) 
 	{
 		name = n;
-		username = u;
-		password = p;
-		id = i;
+		setSocialSecurity(i);
 	}
 	
 	//create a constructor for Customer that takes no arguments
@@ -41,30 +38,7 @@ public class Customer
 	{
 		this.name = name;
 	}
-	public String getUsername()
-	{
-		return username;
-	}
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
-	public String getPassword()
-	{
-		return password;
-	}
-	public void setPassword(String password)
-	{
-		this.password = password;
-	}
-	public int getId()
-	{
-		return id;
-	}
-	public void setId(int id)
-	{
-		this.id = id;
-	}
+	
 
 	//create a method to transfer funds between accounts
 	//takes Account object1, Account object 2, double amount
@@ -80,6 +54,24 @@ public class Customer
 		//set the account balance of a2 to a2's balance + amount
 		a2.setBalance(a2.getBalance() + amount);
 
+	}
+	
+	//create a method that allows customers to register for an account
+	//takes a user name and password
+	//returns nothing
+	public void register (String username, String password) 
+	{
+		
+	}
+
+	public int getSocialSecurity()
+	{
+		return socialSecurity;
+	}
+
+	public void setSocialSecurity(int socialSecurity)
+	{
+		this.socialSecurity = socialSecurity;
 	}
 	
 }

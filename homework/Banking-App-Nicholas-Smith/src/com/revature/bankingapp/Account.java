@@ -14,6 +14,10 @@ public class Account
 	private double balance;
 	private int accountNumber;
 	
+	//account is also associated with a user name and password
+	private String username;
+	private String password;
+	
 	//getters and setters
 	public double getBalance()
 	{
@@ -30,6 +34,22 @@ public class Account
 	public void setAccountNumber(int accountNumber)
 	{
 		this.accountNumber = accountNumber;
+	}
+	public String getUsername()
+	{
+		return username;
+	}
+	public void setUsername(String username)
+	{
+		this.username = username;
+	}
+	public String getPassword()
+	{
+		return password;
+	}
+	public void setPassword(String password)
+	{
+		this.password = password;
 	}
 	
 	//create a method to withdraw funds
@@ -49,5 +69,9 @@ public class Account
 		//add amount to balance
 		balance = balance + amount;
 	}
+
+	
+	//TODO : 
+	//Maybe: create a method to view the balance of the account
 	
 }

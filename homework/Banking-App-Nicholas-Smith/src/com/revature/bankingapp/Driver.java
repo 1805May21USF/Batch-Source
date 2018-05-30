@@ -79,20 +79,16 @@ public class Driver
 		
 		
 		
-		
-		
 		//---------- Customer TESTING BEGIN ----------
 		
 		//line break
 		System.out.println("");
 		
 		//Create a new Customer object
-		Customer c1 = new Customer("Nicholas Smith", "smithboy", "123", 4141);
+		Customer c1 = new Customer("Nicholas Smith", 789881212);
 		
 		System.out.println("c1 name: " + c1.getName());
-		System.out.println("c1 username: " + c1.getUsername());
-		System.out.println("c1 pass: " + c1.getPassword());
-		System.out.println("c1 id: " + c1.getId());
+		System.out.println("c1 social security: " + c1.getSocialSecurity());
 		
 		//line break
 		System.out.println("");
@@ -104,12 +100,15 @@ public class Driver
 		//test the transfer method
 		//transfer 45.85 dollars from a1 to a2
 		
-		c1.transfer(a1, a2, 45.85);
+		c1.transfer(a1, a2, 35.25);
+		
+		//line break
+		System.out.println("");
 		
 		//print the new balances of a1 and a2
 		System.out.println("a1 balance: " + a1.getBalance());
 		System.out.println("a2 balance: " + a2.getBalance());
-			
+		
 		//-----------Customer TESTING END ------------
 		
 		
