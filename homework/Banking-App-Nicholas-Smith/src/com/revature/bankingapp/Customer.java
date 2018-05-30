@@ -16,7 +16,7 @@ public class Customer
 	private String name;
 	private int socialSecurity;
 	
-	//create a constructor for Customer that takes 4 arguments
+	//create a constructor for Customer that takes 2 arguments
 	public Customer(String n, int i) 
 	{
 		name = n;
@@ -38,6 +38,14 @@ public class Customer
 	{
 		this.name = name;
 	}
+	public int getSocialSecurity()
+	{
+		return socialSecurity;
+	}
+	public void setSocialSecurity(int socialSecurity)
+	{
+		this.socialSecurity = socialSecurity;
+	}
 	
 
 	//create a method to transfer funds between accounts
@@ -58,20 +66,21 @@ public class Customer
 	
 	//create a method that allows customers to register for an account
 	//takes a user name and password
-	//returns nothing
-	public void register (String username, String password) 
+	//returns Account
+	public Account register (String username, String password) 
 	{
+		//creates a new Account Object
+		Account a1 = new Account(username, password);
 		
-	}
-
-	public int getSocialSecurity()
-	{
-		return socialSecurity;
-	}
-
-	public void setSocialSecurity(int socialSecurity)
-	{
-		this.socialSecurity = socialSecurity;
+		return a1;
 	}
 	
+	//create method that prints customer information
+	public void printCustomer() 
+	{
+		//print to the console
+		System.out.println("Customer name: " + name);
+		System.out.println("Customer social security: " + socialSecurity);
+	}
+
 }

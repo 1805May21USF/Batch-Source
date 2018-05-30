@@ -3,6 +3,7 @@
  */
 package com.revature.bankingapp;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -86,6 +87,10 @@ public class Driver
 		
 		//Create a new Customer object
 		Customer c1 = new Customer("Nicholas Smith", 789881212);
+		Customer c2 = new Customer("Bob Dole", 412562);
+		Customer c3 = new Customer("Marry Joe", 7899754);
+		
+		
 		
 		System.out.println("c1 name: " + c1.getName());
 		System.out.println("c1 social security: " + c1.getSocialSecurity());
@@ -109,9 +114,44 @@ public class Driver
 		System.out.println("a1 balance: " + a1.getBalance());
 		System.out.println("a2 balance: " + a2.getBalance());
 		
+		
 		//-----------Customer TESTING END ------------
 		
 		
+		
+		//-------------General TESTING BEGIN -----------
+		
+		
+		//test the register method
+		Account a3 = c1.register("boo", "8989");
+		
+		System.out.println("user: " + a3.getUsername());
+		System.out.println("pass: " + a3.getPassword());
+		
+		//-------------General TESTING END --------------
+		
+		
+		//------------Employee TESTING BEGIN-------------------
+		
+		//line break
+		System.out.println("");
+		
+		//create a new employee object
+		Employee e1 = new Employee("Bob", 7989);
+		
+		System.out.println("e1 name: " + e1.getName());
+		System.out.println("e1 id: " + e1.getEmpID());
+		
+		//line break
+		System.out.println("");
+		e1.viewCustomer(c1);
+		e1.viewCustomer(c2);
+		e1.viewCustomer(c3);
+		
+		
+		//------------Employee TESTING ENDS--------------------
+		
+	
 	}
 
 }

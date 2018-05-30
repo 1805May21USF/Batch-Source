@@ -18,6 +18,19 @@ public class Account
 	private String username;
 	private String password;
 	
+	//create a constructor for Account
+	public Account(String u, String p) 
+	{
+		username = u;
+		password = p;
+	}
+	
+	//create a constructor for Account using 0 parameters
+	public Account() 
+	{
+		//
+	}
+	
 	//getters and setters
 	public double getBalance()
 	{
