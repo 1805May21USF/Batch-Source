@@ -14,7 +14,7 @@ public class Customer implements Serializable {
 	public String phoneNumber;
 	public String email;
 	public String username;
-	public boolean accountActive;
+	//public boolean accountActive;
 	public String accessLevel;
 	//bankEmployee
 	//bankAdmin

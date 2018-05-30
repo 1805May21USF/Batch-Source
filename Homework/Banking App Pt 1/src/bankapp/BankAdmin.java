@@ -70,7 +70,9 @@ public class BankAdmin {
 	public void CancelAccounts() {
 		// Create field in customer that shows account cancelled is true or false.
 		// Place a check when logging in if account is active to be able to login.
-		c.accountActive = true;
+		
+		//Uncomment to continue creating CancelAccounts() method. Also uncomment the variable in Customers.
+		//c.accountActive = true;
 	}
 	
 	// Approve or Deny Account Application

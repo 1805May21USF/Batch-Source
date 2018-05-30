@@ -185,7 +185,7 @@ public class BankAppDriver {
 				// Ask for you username
 				System.out.print("Enter Username: ");
 				usernameM = scanMain.next();
-				
+				System.out.print("Username: " + usernameM);
 				// Check if username exists. If exists, show login menu.
 				File f = new File("bankcust/customer/cust" + usernameM + ".ser");
 				// If file exists, view menu option
