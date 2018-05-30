@@ -106,7 +106,7 @@ public class RegisterNewAccount {
 			System.out.println("Exception was caught at accessing Person.txt: " + ex.getMessage());
 		}
 		// Write into the PersonBalance.txt
-		try (FileWriter fw = new FileWriter("src\\main\\java\\com\\revature\\BankApp\\data\\Person.txt", true);
+		try (FileWriter fw = new FileWriter("src\\main\\java\\com\\revature\\BankApp\\data\\PersonBalance.txt", true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter out = new PrintWriter(bw)) {
 			out.println(username1 + "," + tempAccountNumber + ",0.00");

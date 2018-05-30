@@ -46,7 +46,7 @@ public class EmployeeApproveApplications {
 			if (words[0].equals("FirstName")) {
 
 			} else {
-				if (Long.parseLong(words[5]) == accountNo) {
+				if (accountNo == Long.parseLong(words[5])) {
 					String tempVar = tempArray.get(i);
 					tempArray.add(words[0] + "," + words[1] + "," + words[2] + "," + words[3] + ",1," + accountNo);
 					tempArray.remove(tempVar);
@@ -69,7 +69,7 @@ public class EmployeeApproveApplications {
 		} catch (Exception ex) {
 			System.out.println("Exception was caught at accessing Person.txt: " + ex.getMessage());
 		}
-		System.out.println("Approval succeeded.");
+		System.out.println("Approval succeeded for " + );
 	}
 
 	/* Returns the user's account number from the value that they entered. */
