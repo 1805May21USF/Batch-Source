@@ -1,7 +1,7 @@
 package com.revature.main;
 import java.util.ArrayList;
+import org.apache.log4j.Logger;
 import java.util.Scanner;
-import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,7 +10,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 public class Bank {
 	
-	//final static Logger logger = Logger.getLogger(com.revature.main.Bank.class);
+	
+	final static Logger logger = Logger.getLogger(com.revature.main.Bank.class);
 	private static final String name = "Bank";
 	public static Scanner clientIn;
 	public static Scanner input = new Scanner(System.in);
@@ -55,7 +56,24 @@ public class Bank {
 			System.out.println("what?");
 		}
 	}
-
+	
+	private static void runMe(String parameter){
+		
+		if(logger.isDebugEnabled()){
+			logger.debug("This is debug : " + parameter);
+		}
+		
+		if(logger.isInfoEnabled()){
+			logger.info("This is info : " + parameter);
+		}
+		
+		logger.warn("This is warn : " + parameter);
+		logger.error("This is error : " + parameter);
+		logger.fatal("This is fatal : " + parameter);
+		
+	}
+	
+	
 	//main menu
 	void mainMenu() {
 		System.out.println("<----------Hello User---------->");
@@ -217,8 +235,8 @@ private void newClientSelectAccount(Client client, String username) {
 		if(option == 1) {
 			System.out.println("How much would you like to add?");
 			double amount = input.nextDouble();
-			client.accounts.get(0).setBalance(amount += account.getBalance());
-			System.out.println("New balance: " + account.getBalance());
+			account.setBalance(amount += account.getBalance());
+			logger.warn("New balance: " + account.getBalance());
 			//write to file starting with all of the client
 				 }
 			
@@ -226,7 +244,7 @@ private void newClientSelectAccount(Client client, String username) {
 			System.out.println("How much would you like to withdraw");
 			double amount = input.nextDouble();
 			account.setBalance(amount -= account.getBalance());
-			System.out.println("New balance: " + account.getBalance());
+			logger.warn("New balance: " + account.getBalance());
 			//write new balance
 			}
 		else if(option == 3){
