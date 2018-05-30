@@ -11,8 +11,6 @@ import java.util.Collections;
 
 import com.revature.beans.Customer;
 import com.revature.beans.Employee;
-import com.revature.comparators.CustomerIdComparator;
-import com.revature.comparators.UserUsernameComparator;
 
 public class CustomerSerializer implements CustomerDAO {
 

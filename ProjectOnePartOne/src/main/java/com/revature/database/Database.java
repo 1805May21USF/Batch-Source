@@ -3,11 +3,8 @@ package com.revature.database;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import com.revature.DAO.AccountSerializer;
-import com.revature.DAO.ApplicationSerializer;
 import com.revature.DAO.CustomerSerializer;
 import com.revature.DAO.EmployeeSerializer;
-import com.revature.DAO.TransactionSerializer;
 import com.revature.beans.Account;
 import com.revature.beans.Application;
 import com.revature.beans.Customer;
@@ -19,16 +16,10 @@ public class Database {
 	
 	private CustomerSerializer customerSerializer;
 	private EmployeeSerializer employeeSerializer;
-	private ApplicationSerializer applicationSerializer;
-	private AccountSerializer accountSerializer;
-	private TransactionSerializer transactionSerializer;
 	
 	public Database() {
 		customerSerializer = new CustomerSerializer();
 		employeeSerializer = new EmployeeSerializer();
-		applicationSerializer = new ApplicationSerializer();
-		accountSerializer = new AccountSerializer();
-		transactionSerializer = new TransactionSerializer();
 	}
 	
 	public void updateCustomer(Customer c) {
@@ -68,51 +59,6 @@ public class Database {
 	}
 	public ArrayList<Employee> getAllEmployees() {
 		return employeeSerializer.getAllEmployee();
-	}
-	
-	public void updateApplication(Application a) {
-		applicationSerializer.updateApplication(a);
-	}
-	public void deleteApplication(Application a) {
-		applicationSerializer.deleteApplication(a);
-	}
-	public void getApplication(Application a) {
-		applicationSerializer.getApplication(a.getID());
-	}
-	public ArrayList<Application> getAllApplications() {
-		return applicationSerializer.getAllApplication();
-	}
-	
-	public void updateAccount(Account a) {
-		accountSerializer.updateAccount(a);
-	}
-	
-	public void deleteAccount(Account a) {
-		accountSerializer.deleteAccount(a);
-	}
-	
-	public void getAccount(Account a) {
-		accountSerializer.getAccount(a.getID());
-	}
-	
-	public ArrayList<Account> getAllAccounts() {
-		return accountSerializer.getAllAccount();
-	}
-	
-	public void updateTransaction(Transaction t) {
-		transactionSerializer.updateTransaction(t);
-	}
-	
-	public void deleteTransaction(Transaction t) {
-		transactionSerializer.deleteTransaction(t);
-	}
-	
-	public void getTransaction(Transaction t) {
-		transactionSerializer.getTransaction(t.getID());
-	}
-	
-	public ArrayList<Transaction> getAllTransactions() {
-		return transactionSerializer.getAllTransaction();
 	}
 	
 

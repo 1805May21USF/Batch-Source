@@ -8,8 +8,6 @@ import java.util.Vector;
 
 import com.revature.DAO.CustomerDAO;
 import com.revature.DAO.CustomerSerializer;
-import com.revature.comparators.ApplicationIdComparator;
-import com.revature.comparators.UserUsernameComparator;
 import com.revature.database.Database;
 import com.revature.validation.Validation;
 

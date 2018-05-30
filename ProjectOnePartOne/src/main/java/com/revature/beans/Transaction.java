@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Random;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 public class Transaction implements Serializable {
 	
 	private int ID;
@@ -19,11 +22,12 @@ public class Transaction implements Serializable {
 		Random rnd = new Random();
 		this.setID(100000 + rnd.nextInt(900000));
 		this.setDate(new Date());
-		this.setStatus("PENDING");
+		this.setStatus("APPROVED");
 		this.setAccount(a);
 		this.setAmount(am);
 		this.setBalance(b);
 		this.setType(t);
+		
 		
 	}
 	
@@ -31,7 +35,7 @@ public class Transaction implements Serializable {
 		Random rnd = new Random();
 		this.setID(100000 + rnd.nextInt(900000));
 		this.setDate(new Date());
-		this.setStatus("ACCEPTED");
+		this.setStatus("APPROVED");
 		this.setAccount(a);
 		this.setReciever(r);
 		this.setAmount(am);
