@@ -97,9 +97,13 @@ public class Customer
 	}
 	
 	//create a method so that a customer can apply for an account
-	public void apply() 
+	//returns an Application object
+	public Application apply() 
 	{
-		//a customer must at least 18 to open a bank account
+		//create an Application object
+		Application app = new Application(this.name, this.age, this.ss);
+		
+		return app;
 	}
 
 }

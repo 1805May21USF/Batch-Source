@@ -82,9 +82,14 @@ public class Account
 		//add amount to balance
 		balance = balance + amount;
 	}
-
-	
-	//TODO : 
-	//Maybe: create a method to view the balance of the account
+ 
+	//create a method to view Account information
+	public void printAccount() 
+	{
+		System.out.println("Balance: " + balance);
+		System.out.println("Account number: " + accountNumber);
+		System.out.println("Username: " + username);
+		System.out.println("Password: " + password);
+	}
 	
 }

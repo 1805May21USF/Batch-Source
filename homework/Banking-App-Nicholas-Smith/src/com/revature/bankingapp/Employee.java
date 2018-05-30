@@ -58,11 +58,28 @@ public class Employee
 	public void approve() 
 	{
 		//a customer will be approved as long as they are at least 18
+		//
 	}
 	
 	//create a method to deny account application
 	public void deny() 
 	{
 		//
+	}
+	
+	//create a method to read Application
+	//takes in an Application object
+	public void readApplication(Application app) 
+	{
+		int customerAge = app.getCustomerAge();
+		
+		if (customerAge >= 18) 
+		{
+			//approve the application
+		}
+		else 
+		{
+			//call the deny method
+		}
 	}
 }
