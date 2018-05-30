@@ -8,8 +8,10 @@ import com.revature.storage.Customer;
 import com.revature.storage.Employee;
 
 public class SignUp {
+	// Retrieves App's Scanner
 	private static Scanner scan = App.getScanner();
 	
+	// Launches the Customer sign up process
 	public void signUp() {
 		String input = "";
 		
@@ -193,15 +195,18 @@ public class SignUp {
 						}
 					}
 					
-					// Creates nd stores a default account for the user
+					// Creates and stores a default account for the user
 					Vector<Account> accounts = new Vector<>();
 					Account a = new Account("checking", "Personal Checking", 0, "none");
 					accounts.add(a);
 					// Creates a Customer object to represent the new customer
 					Customer c = new Customer(username, password, firstName, middleInitial, lastName, age, address, accounts);
 						
-					// Creates the Customer file
-					createCustomer(c);
+					// Creates the Customer file if it doesn't exist
+					if(!exists(username))
+						createCustomer(c);
+					else
+						System.out.println("Customer already exists!");
 					return;
 				}
 			}
@@ -211,6 +216,7 @@ public class SignUp {
 		return;
 	}
 	
+	// Launches the employee sign up process
 	public void employeeSignUp() {
 		String input = "";
 		
@@ -397,36 +403,47 @@ public class SignUp {
 					boolean emp = true;
 					
 					while(emp) {
+						// Requests a department name
 						System.out.println("Please enter department name: ");
 						
 						String dep = scan.nextLine();
 						
+						// Requests current salary
 						System.out.println("Please enter current monthly salary: ");
 						
 						try {
 							double pay = Double.parseDouble(scan.nextLine());
 							
+							// Executes if pay is negative
 							if(pay < 0)
 								System.out.println("Must have positive pay!");
 							else {
+								// Creates the new Employee
 								Employee e = new Employee(username, password, firstName, middleInitial, lastName, age, address,
 														  dep, pay);
 								
-								createEmployee(e);
+								// Tests if the Employee exists or not
+								if(!employeeExists(username))
+									createEmployee(e);
+								else
+									System.out.println("Employee already exists!");
 								return;
 							}
+						// Executes if a number isn't entered
 						}catch(NumberFormatException e) {
 							System.out.println("Please enter a number!");
 						}
 					}
 				}
 			}
+			// Prints if the username already exists
 			else
 				System.out.println("Username already in use");
 		}
 		return;
 	}
 	
+	// Tests if the Customer exists
 	boolean exists(String username) {
 		// Tests if the file exists
 		File file = new File("data/customers/" + username + ".cus");
@@ -437,20 +454,22 @@ public class SignUp {
 			return false;
 	}
 	
+	// Tests if the Employee exists
 	boolean employeeExists(String username) {
-		// Tests if the file exists
 		File file = new File("data/employees/" + username + ".emp");
-		// Returns true if the file exists false if it doesn't
+
 		if(file.exists())
 			return true;
 		else
 			return false;
 	}
 	
+	// Creates a new Customer file
 	void createCustomer(Customer c) {
 		App.serialize(c);
 	}
 	
+	// Creates a new Employee file
 	void createEmployee(Employee e) {
 		App.serialize(e);
 	}

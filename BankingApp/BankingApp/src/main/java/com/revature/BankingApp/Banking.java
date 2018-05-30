@@ -1220,6 +1220,7 @@ public class Banking {
 		}
 	}
 	
+	// Launches the employee sign up process
 	private void createEmployeeAccount() {
 		SignUp su = new SignUp();
 		su.employeeSignUp();
@@ -1424,9 +1425,11 @@ public class Banking {
 	private void approveAccount(Customer c, String account, String type, double amount, String shared) {
 		int size = c.getAccounts().size();
 		try {
+			// Creates the account and adds it to the Customer's file
 			Account newAccount = new Account(type, account, amount, shared);
 			c.getAccounts().addElement(newAccount);
 			
+			// Executes if c couldn't be serialized
 			if(!App.serialize(c))
 				throw new IOException();
 			
@@ -1445,6 +1448,7 @@ public class Banking {
 	private void denyAccount(Customer c, String deniedAccount, int account, double amount) {
 		System.out.println("Notice sent to + " + c.getUsername() + " about denial of account " + deniedAccount + " and $" + 
 						   " was put back into their account " + c.getAccounts().get(account).getName() + "!");
+		// Puts the amount into a user's account
 		deposit(c, account, amount);
 		log.info("Info:\n" + c.getUsername() + "'s request for account + " + account + " was denied\n");
 	}
@@ -1455,6 +1459,7 @@ public class Banking {
 			boolean flag = false;
 			String shared = null;
 			
+			// Tests if the account is shared
 			shared:
 			for(Account a : c.getAccounts()) {
 				if(!a.getShared().equals("none")) {
@@ -1464,7 +1469,9 @@ public class Banking {
 				}
 			}
 			
+			// Executes if the account isn't shared
 			if(flag)
+				// Executes if c couldn't be serialized
 				if(!App.serialize(c))
 					throw new IOException();
 			else
@@ -1479,9 +1486,11 @@ public class Banking {
 	// Commits changes to shared accounts
 	private static boolean commitSharedAccount(Customer c, String username) {
 		try {
+			// Retrieves the information of the second shared account holder
 			Customer c2 = App.deserializeCustomer(username);
 			int index = 0;
 			
+			// Links the shared account balance
 			shared:
 			for(Account a1 : c.getAccounts()) {
 				for(Account a2 : c2.getAccounts()) {
@@ -1493,6 +1502,7 @@ public class Banking {
 				}
 			}
 			
+			// Executes if c or 2 couldn't be serialized
 			if(!App.serialize(c))
 				throw new IOException();
 			if(App.serialize(c2))
@@ -1537,6 +1547,7 @@ public class Banking {
 			return c.getAccounts();
 	}
 	
+	// Stores lost transaction information
 	private static void lostTransaction(String username, String account, double amount) {
 		try {
 			File file = new File("data/requests/" + username + ".tra");
@@ -1545,6 +1556,7 @@ public class Banking {
 			if(!file.exists())
 				file.createNewFile();
 			
+			// Saves the lost transaction information
 			oos.writeObject("\n" + username + ":" + account + ":" + amount);
 			
 			// Prints the error information to the log file
@@ -1565,12 +1577,14 @@ public class Banking {
 		boolean flag = true;
 		
 		while(flag) {
+			// Asks the user if they're sure
 			System.out.println("Are you sure?");
 			System.out.println("(Y for yes, N for no): ");
 			
 			String input = scan.nextLine().toLowerCase();
 			
 			switch(input) {
+				// Returns true if y was entered, false if n was entered, and requests y or n if anything else is entered
 				case("y"): return true;
 				case("n"): return false;
 				default: System.out.println("Please enter y or n!");
@@ -1579,6 +1593,7 @@ public class Banking {
 		return true;
 	}
 	
+	// Starts the Customer account deletion process
 	private static Customer deleteCustomerAccount() {
 		while(true) {
 			System.out.println("Enter the username of the customer you want to delete: ");
@@ -1593,12 +1608,12 @@ public class Banking {
 		}
 	}
 	
+	// Deletes the Customer's file
 	private static void deleteAccount(Customer c) {
-		File file = new File("data/customers/" + c.getUsername() + ".cus");
-		
-		file.delete();
+		App.deleteCustomer(c);
 	}
 	
+	// Starts the Employee account deletion process
 	private static Employee deleteEmployeeAccount() {
 		while(true) {
 			System.out.println("Enter the username of the customer you want to delete: ");
@@ -1613,9 +1628,8 @@ public class Banking {
 		}
 	}
 	
+	// Deletes the Employee's file
 	private static void deleteAccount(Employee e) {
-		File file = new File("data/employees/" + e.getUsername() + ".cus");
-		
-		file.delete();
+		App.deleteEmployee(e);
 	}
 }
