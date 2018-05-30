@@ -12,7 +12,7 @@ public class CustomerUI {
 	private static final String CUSTOMER_DIR = "src\\Data\\Customers\\";
 	private static final String ACCOUNT_DIR = "src\\Data\\Accounts\\";
 	private static final String SAVINGS_DIR = "src\\Data\\Savings\\";
-	
+
 	//private static final String ACCOUNTS = "Accounts";
 	//private static final String SAVINGS = "Savings";
 
@@ -21,9 +21,12 @@ public class CustomerUI {
 	String account;
 	String savings;
 	String password;
-	
+
 	double accountFunds;
 	double savingsFunds;
+	
+	Account a;
+	Account s;
 
 	private boolean validUserName = false;
 
@@ -66,8 +69,8 @@ public class CustomerUI {
 					username = input;
 					Customer customer = deserialize(CUSTOMER_DIR, username);
 					initializeCustomer(customer);
-					Account a = deserializeAccount(ACCOUNT_DIR, account);
-					Account s = deserializeAccount(SAVINGS_DIR, savings);
+					this.a = deserializeAccount(ACCOUNT_DIR, account);
+					this.s = deserializeAccount(SAVINGS_DIR, savings);
 					initializeAccounts(a, s);
 					unlock();
 					validUserName = true;
@@ -80,7 +83,7 @@ public class CustomerUI {
 			}
 		}
 	}
-	
+
 	private void unlock() {
 		System.out.print("Please enter your password: ");
 		String input = Menu.in.next();
@@ -90,19 +93,53 @@ public class CustomerUI {
 	}
 
 	private void manageAccount() {
-		
+
 		System.out.println("Welcome to your account!");
-		
+
 		printCustomer();
-		
+
 		boolean exit = false;
-		
+
+		int selection;
+
+		double amount = 0;
+
 		while(!exit) {
-			
+			System.out.println("Account management: ");
+			System.out.println("1. Withdraw");
+			System.out.println("2. Deposit");
+			System.out.println("3. Transfer");
+
+			selection = Integer.parseInt(Menu.in.next());
+
+			switch(selection) {
+			case 1:
+				System.out.print("Which account are you withdrawing from? :(checking/savings)");
+				try {
+					if(Menu.in.next().equalsIgnoreCase("checking")) {
+						System.out.print("How much would you like to withdraw?: ");
+						amount = Integer.parseInt(Menu.in.next());
+						a.withdraw(amount);
+						System.out.print("Remaining balance: $");
+						System.out.println(a.getBalance());
+					} else if(Menu.in.next().equalsIgnoreCase("savings")) {
+						System.out.print("How much would you like to withdraw?: ");
+						s.withdraw(amount);
+						System.out.println("Remaining balance: $");
+						System.out.println(s.getBalance());
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			case 2:
+			case 3:
+			default:
+
+			}
 		}
 	}
-	
-	
+
+
 
 	private Customer deserialize(String dir, String name) {
 		File file = new File(dir + name + ".txt");
@@ -129,7 +166,7 @@ public class CustomerUI {
 		return null;
 
 	}
-	
+
 	private Account deserializeAccount(String dir, String name) {
 		File file = new File(dir + name + ".txt");
 		//File file = new File("src\\Data\\Customers\\" + username + ".txt");
@@ -154,7 +191,7 @@ public class CustomerUI {
 
 		return null;
 	}
-	
+
 	private void initializeAccounts(Account a, Account s) {
 		accountFunds = a.getBalance();
 		savingsFunds = s.getBalance();
