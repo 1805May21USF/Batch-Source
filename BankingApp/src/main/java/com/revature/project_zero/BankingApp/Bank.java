@@ -31,9 +31,9 @@ public class Bank {
 		System.out.println("===========================================");
 		
 		System.out.println("Welcome");
-		System.out.println("A: Check balance");
-		System.out.println("B: Deposit");
-		System.out.println("C: Withdraw");
+		System.out.println("B: Check balance");
+		System.out.println("D: Deposit");
+		System.out.println("W: Withdraw");
 		System.out.println("E: Exit");
 		
 		do {
@@ -42,13 +42,13 @@ public class Bank {
 			
 			switch(c) {
 			
-			case 'A':
+			case 'B':
 				System.out.println("===========================================");
 				System.out.println("Your balance is: $" + cust1.getBalance());
 				System.out.println("===========================================");
 				break;
 				
-			case 'B':
+			case 'D':
 				System.out.println("===========================================");
 				System.out.println("Enter an amount to deposit: ");
 				double amount = input.nextDouble();
@@ -58,7 +58,7 @@ public class Bank {
 				System.out.println("===========================================");
 				break;
 				
-			case 'C':
+			case 'W':
 				System.out.println("===========================================");
 				System.out.println("Enter an amount to withdraw: ");
 				amount = input.nextDouble();
