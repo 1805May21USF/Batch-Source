@@ -1,6 +1,9 @@
 package com.bank.intro.login.customer;
 
 import java.io.File;
+import com.bank.data.get.*;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Customer {
@@ -13,7 +16,12 @@ public class Customer {
 		username = str;
 		Scanner input = new Scanner(System.in);
 		Loop1: while (true) {
-			System.out.println("Welcome back " + str + "!\nWhat would you like to do today?\n"
+			System.out.println("Welcome back " + str + "!\nAccounts Overview:");
+			int count = 0;
+			for (String t : getAccounts(username)) {
+				System.out.println("\tAccount " + count + " | Balance: " + t);
+			}
+			System.out.println("What would you like to do today?\n"
 					+ "1 - Withdraw from account\n2 - Deposit into account\n3 - Transfer funds between accounts\n"
 					+ "4 - Exit account");
 			switch (input.nextInt()) {
@@ -22,7 +30,6 @@ public class Customer {
 				break;
 			case 2:
 				break;
-
 			case 3:
 				break;
 			case 4:
@@ -32,6 +39,15 @@ public class Customer {
 				System.out.println("Error: Please try again.");
 			}
 		}
+	}
+	
+	
+
+	/* Return a String of accounts for the user. */
+	private ArrayList<String> getAccounts(String username) {
+		GetAccounts gt = new GetAccounts();
+		ArrayList<String> result = gt.getAccounts(username);
+		return result;
 	}
 
 	/* The getBalance method retrieves the current balance using the user name */

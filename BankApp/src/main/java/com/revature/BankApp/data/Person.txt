@@ -1,0 +1,7 @@
+FirstName,LastName,Username,Password,status,accountNo
+admin,admin,admin,adminpass,2,1527548684990
+admin,admin,admin,adminpass2,3,1527248684990
+timmy,Jones,timJones,12345,1,1527612988692
+timmy,Jones,timJones,12345,1,1527612988699
+Nathan,Evil,EvilNathan,12345,1,1527671905085
+Michael,Austin,mAustin,12345,-2,1527674574624

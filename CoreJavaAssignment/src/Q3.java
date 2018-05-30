@@ -1,4 +1,8 @@
+import static org.junit.Assert.assertEquals;
+
 import java.util.Scanner;
+
+import org.junit.jupiter.api.Test;
 
 public class Q3 {
 	/*
@@ -30,4 +34,11 @@ public class Q3 {
 		return str;
 	}
 
+	@Test
+	public void tester() {
+		String a = "hctawrevo";
+		String b = "overwch";
+		b = reverseString(b);
+		assertEquals(a, b);
+	}
 }

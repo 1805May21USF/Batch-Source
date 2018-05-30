@@ -6,9 +6,10 @@ import java.util.Scanner;
 public class CheckUser {
 
 	/*
-	 * This method opens the Person.txt and reads each line. Each line is converted
-	 * into a String array. We know that the user name and password array positions
-	 * at words[2] and words[3]
+	 * This method checks if the user is found in the Person.txt. The method opens
+	 * the Person.txt and reads each line. Each line is converted into a String
+	 * array. We know that the user name and password array positions at words[2]
+	 * and words[3]
 	 */
 	public boolean CheckIfUserValid(String username, String password) {
 		try {

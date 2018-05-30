@@ -24,13 +24,13 @@ public class RegisterNewAccountJoint {
 	Scanner input = new Scanner(System.in);
 
 	public RegisterNewAccountJoint() {
-		System.out.print("Thank you for choosing to apply for an account as a new user!");
+		System.out.print("Thank you for choosing to apply for an account as a new user! ");
 		/* Input the information for Person 1 */
 		LoopA: while (true) {
 			// LoopD is used to check if the name the user entered is valid.
 			LoopD: while (true) {
 				System.out.print(
-						"Please enter the necessary information " + " for each person. \n\tPerson 1's First Name: ");
+						"Please enter the necessary information " + "for each person. \n\tPerson 1's First Name: ");
 				newFirstName1 = input.next();
 				if (CheckNameIfValid(newFirstName1)) {
 					break LoopD;
@@ -40,7 +40,7 @@ public class RegisterNewAccountJoint {
 			}
 			// LoopB is used to check if the name the user entered is valid
 			LoopB: while (true) {
-				System.out.print("\tPlease enter your last name: ");
+				System.out.print("\tPerson 1's Last Name: ");
 				newLastName1 = input.next();
 				if (CheckNameIfValid(newLastName1)) {
 					break LoopB;
