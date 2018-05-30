@@ -69,7 +69,7 @@ public class EmployeeApproveApplications {
 		} catch (Exception ex) {
 			System.out.println("Exception was caught at accessing Person.txt: " + ex.getMessage());
 		}
-		System.out.println("Approval succeeded for " + );
+		System.out.println("Approval succeeded.");
 	}
 
 	/* Returns the user's account number from the value that they entered. */
