@@ -317,7 +317,6 @@ public class Messages {
 				}
 			}
 		}
-		System.out.println(output);
 		return output;
 	}
 	
