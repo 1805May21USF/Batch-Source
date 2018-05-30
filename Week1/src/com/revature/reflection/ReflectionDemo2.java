@@ -14,6 +14,8 @@ public class ReflectionDemo2 {
 				int modifiers =methods[i].getModifiers();
 				if(Modifier.isPublic(modifiers)) {
 					System.out.println(" "+ methods[i].getName());
+				}else if(Modifier.isPrivate(modifiers)) {
+					System.out.println(" "+ methods[i].getName());
 				}
 			}
 		}catch(Exception e) {
