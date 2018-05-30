@@ -1,0 +1,10 @@
+
+Info:
+Account Personal Checking belonging to thomasLhad $4000.0 deposited into it by thomasL, making the total amount in the account $4000.0
+
+Info:
+Account Personal Checking belonging to thomasLhad $123.45 withdrawn from it by thomasL, making the total amount in the account $3876.55
+
+Error:
+thomasL couldn't request a new account
+
