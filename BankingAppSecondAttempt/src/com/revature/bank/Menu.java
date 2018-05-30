@@ -3,11 +3,8 @@ package com.revature.bank;
 import java.util.Scanner;
 
 public class Menu {
-
-	public static Scanner in = new Scanner(System.in);
-	Bank bank = new Bank();
-
-	private boolean exit = false;
+	
+	static Scanner in = new Scanner(System.in);
 
 	private void initializeMenu() {
 		createMenu();
@@ -15,18 +12,9 @@ public class Menu {
 
 	private void createMenu() {
 		printHeader();
-
-		while(!exit) {
-			int selection = getSelection();
-			performSelection(selection);
-		}
-	}
-
-	private void printHeader() {
-		System.out.println("+---------------------------------+");
-		System.out.println("|--Welcome to Bank of Roll Tide!--|");
-		System.out.println("+---------------------------------+");
-		System.out.println();
+		
+		int selection = getSelection();
+		performSelection(selection);
 	}
 
 	private int getSelection() {
@@ -61,17 +49,17 @@ public class Menu {
 
 		return selection;
 	}
-
+	
 	private void performSelection(int selection) {
 		switch (selection) {
-		case 1:
-			AccountCreation newAccount = new AccountCreation();
-			newAccount.initializeAccount();
+		case 1: 
+			CreateCustomerAccount cca = new CreateCustomerAccount();
+			cca.createAccount();
 			break;
 		case 2: // Login
 		case 3:
 			System.out.println("Thank you for choosing Bank of Roll Tide! Have a great day!");
-			exit = true;
+			System.exit(0);
 			break;
 		case 9: // Employee login
 		case 0: // Admin login
@@ -79,6 +67,13 @@ public class Menu {
 			System.out.println("An unknown error has occurred. Please contact the Bank of Roll Tide support team.");
 			System.exit(1);
 		}
+	}
+
+	private void printHeader() {
+		System.out.println("+---------------------------------+");
+		System.out.println("|--Welcome to Bank of Roll Tide!--|");
+		System.out.println("+---------------------------------+");
+		System.out.println();
 	}
 
 	public static void main(String[] args) {

@@ -75,14 +75,14 @@ public class AccountCreation {
 
 		}
 
-		addAccount(firstName, lastName, userName, password, accountType, initialDeposit);
+		createAccount(firstName, lastName, userName, password, accountType, initialDeposit);
 	}
 
 	public void initializeAccount() {
 		createAccount();
 	}
 
-	private void addAccount(String firstName, String lastName, 
+	private void createAccount(String firstName, String lastName, 
 			String userName, String password, String accountType, double initialDeposit) {
 
 		String accountNumber = generateAccountNumber();
@@ -134,11 +134,11 @@ public class AccountCreation {
 		Scanner fileIn = null;
 		ArrayList<String> usernames = new ArrayList<>();
 
-		File file = new File(CUSTOMERS_FILE_NAME);
+		File file = new File(fileName);
 
 		if(file.exists()) {
 			try {
-				fileIn = new Scanner(new File(CUSTOMERS_FILE_NAME));
+				fileIn = new Scanner(new File(fileName));
 			} catch (FileNotFoundException e) {
 				printException();
 			}

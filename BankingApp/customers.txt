@@ -2,3 +2,4 @@ bobross420:ross:bob:password1
 raider69:jenkins:leeroy:dragon
 jameson42:jameson:james:bestpassword
 bobross69:ross:bob:asdfjkl;
+janedoe1:doe:jane:bestpassword420
