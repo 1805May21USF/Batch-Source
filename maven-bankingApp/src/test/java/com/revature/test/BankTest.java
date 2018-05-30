@@ -13,6 +13,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.revature.main.Account;
+import com.revature.main.Bank;
+
 class BankTest{
 	
 	private Scanner in;
@@ -64,7 +67,7 @@ class BankTest{
 		
 		try {
 		while(in.hasNext()) {
-			dummyList.add(new Account(in.next(),in.nextDouble()));
+			dummyList.add(new Account(in.nextInt(),in.next(),in.next(),in.nextDouble()));
 			
 		}
 		}
@@ -72,16 +75,28 @@ class BankTest{
 			System.out.println("Noting There" );
 		}
 		finally {
-			
-		Assert.assertEquals(00000001), actual);
-		Assert.assertEquals("Karen", dummyList.get(0).getName());
-		Assert.assertEquals("Bob", dummyList.get(1).getName());
+		//Assert.assertEquals(1, actual);
+		Assert.assertEquals("Karen", dummyList.get(0).getAccountHolder1());
+		Assert.assertEquals("Bob", dummyList.get(1).getAccountHolder1());
 		Assert.assertEquals(2, dummyList.size());
-		
+		System.out.println(dummyList.size());
 		}
 		Assert.assertEquals(true , fileOpen);
 		
 	}
+	
+		@Test
+		void retrieveAccount() {
+			
+			Scanner input = new Scanner(System.in);
+			System.out.println("Enter your account number");
+			int myInt = input.nextInt();
+			Account acc = dummyList.get(0);
+			//System.out.println(acc);
+			int id = acc.getAccountID();
+			
+			assertEquals(2, id);
+		}
 
 	
 	

@@ -17,8 +17,8 @@ class AccountTest {
 	}
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void credit(){ 
+		//Account one = Account.
 	}
 
 }
