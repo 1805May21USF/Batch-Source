@@ -11,13 +11,8 @@ public class customerInterface {
 	public customerInterface(Customer customer) {
 		// TODO Auto-generated constructor stub
 		this.account = new Account();
-		//ArrayList<Customer> cus = DS.deserialize("src/main/java/project1/filename.ser");
 		this.arrList = account.accountList;
 		this.customer = customer;
-//		for(Customer cus : arrList){
-//			if(cus.getUserName().equals(userName))
-//				this.customer = cus;
-//		}
 	}
 	
 	public void createJointAccount(String userName){

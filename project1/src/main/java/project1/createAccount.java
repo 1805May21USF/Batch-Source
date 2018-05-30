@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
+//import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class createAccount {
 	
@@ -14,6 +16,7 @@ public class createAccount {
 	static DoSerialization DS;
 	Customer customer;
 	ArrayList<Customer> c = new ArrayList();
+	static Logger log = Logger.getLogger(createAccount.class.getName());
 	/*
 	 * A Constructor for the Bank class
 	 */
@@ -36,6 +39,7 @@ public class createAccount {
 		Random rand = new Random();
 		System.out.println("");
 		System.out.println("Hi Welcome to JLukim Federal Credit Union (JFCU)");
+		//log.info("Hi Welcome to JLukim Federal Credit Union (JFCU)");
 		System.out.println("Enter 1: To open an account");
 		System.out.println("      2: To sign in as a customer");
 		System.out.println("      3: To sign in as an employee");
@@ -165,7 +169,7 @@ public class createAccount {
 		break;
 		case "2": System.out.println("");
 		  		  System.out.println("Deposit: ");
-		  		  System.out.println("Enter the amount you wish to deposit: ");
+		  		  System.out.print("Enter the amount you wish to deposit: ");
 		  		  int deposit = sc.nextInt();
 		  		  if(deposit < 0) {
 					  System.out.println( deposit + " is not a valid withdraw number. Do you want to withdraw instead");
@@ -228,12 +232,59 @@ public class createAccount {
 		}
 	}
 	
-	public static void employeeSignIn(Scanner sc){
+	public void employeeSignIn(Scanner sc){
 		System.out.println("");
 		System.out.println("Welcome Back Employee: ");
 		System.out.println("Enter 1: To view employee information");
-		System.out.println("      2: To edit employee information");
+		System.out.print("      2: To edit employee information: ");
 		String choice = sc.next();
+		
+		switch(choice){
+			case "1": System.out.println("Enter the username of the account you want to view");
+					  String name = sc.next();
+					  Customer c = DS.deserialize(name);
+					  if(c == null) {
+						  System.out.println(name + " does not exist in our database");
+						  employeeSignIn(sc);
+					  }else {
+						  System.out.println(c);
+					  }
+			case "2": System.out.print("Enter the username of the account you want to edit: ");
+			  		  String username = sc.next();
+			  		  Customer c1 = DS.deserialize(username);
+			  		  if(c1 == null) {
+						  System.out.println(username + " does not exist in our database");
+						  employeeSignIn(sc);
+					  }else {
+						  System.out.println("");
+						  System.out.println("Enter 1: To edit account number");
+						  System.out.print("Enter 2: To edit account balance: ");
+						  choice = sc.next();
+						  editInfo(choice, sc, c1);
+						  Intro();
+					  }
+		}
+	}
+	
+	public void editInfo(String choice, Scanner sc, Customer c) {
+		switch(choice) {
+		case "1": System.out.println("");
+				  System.out.println("Enter Value");
+				  String value = sc.next();
+				  c.setAccountNumber(value);
+				  System.out.println("Successfully modified account number to " + value);
+				  DS.serialize(c);
+		case "2": System.out.println("");
+		  		  System.out.println("Enter Value");
+		          int value2 = sc.nextInt();
+				  if(value2 < 0) {
+					  System.out.println(value2 + " is not a valid input");
+					  editInfo(choice, sc, c);
+				  }
+		          c.setAccountBalance(value2);
+				  System.out.println("Successfully modified account balance to " + value2);
+		          DS.serialize(c);
+		}
 	}
 	
 	public Customer checkUserName(String userName, String password){

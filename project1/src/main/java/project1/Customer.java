@@ -132,10 +132,12 @@ public class Customer extends Account{
 	
 	@Override
 	public String toString() {
-		return "\nfirstName: " + firstName +
-		"\nlastName: " + lastName +
-		"\nuserName: " + userName +
-		"\nPassword: " + password;
+		return "\nFirstName: " + firstName +
+		"\nLastName: " + lastName +
+		"\nUsername: " + userName +
+		"\nPassword: " + password +
+		"\nAccount Number: " + accountNumber +
+		"\nAccount Balance: " + accountBalance ;
 //		return "Customer [firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName + ", password="
 //				+ password;
 	}
