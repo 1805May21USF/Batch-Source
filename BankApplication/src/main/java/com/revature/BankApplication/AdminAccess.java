@@ -1,5 +1,7 @@
 package com.revature.BankApplication;
 
+import java.util.Scanner;
+
 public class AdminAccess {
 
 	
@@ -11,5 +13,15 @@ public class AdminAccess {
 	
 	public void displayInfo() {
 		System.out.println("Welcome to the Admin Page");
+		Scanner in = new Scanner(System.in);
+		
+	}
+	
+	public void viewCustomers() {
+		
+	}
+	
+	public void viewAccounts() {
+		
 	}
 }

@@ -57,6 +57,7 @@ public class CustomerAccess {
 			break;
 		case 3:
 			transfer();
+			break;
 		case 4:
 			addAcc();
 			break;
