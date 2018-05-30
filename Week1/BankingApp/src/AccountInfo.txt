@@ -2,8 +2,8 @@
 0000001:1:loggedOut:loggedOut:loggedOut:0
 }
 {
-}
 0000002:0:tester:test:password:0
+}
 {
 3847109:0:Jacob:Jacob1990:jacobrules:595
 }
@@ -12,4 +12,10 @@
 }
 {
 1129682:2:Valorie:vinewine:2drunk2spurious:8000
+}
+{
+9774672:0:jkfldasj;:kdjasklf;d:dasfkjls;:0.0
+}
+{
+5312390:0:joe:joeeo:fdkjkfd:0.0
 }
