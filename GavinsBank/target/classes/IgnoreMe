@@ -1,0 +1,155 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class BankMe implements Serializable{
+
+	static Scanner input = new Scanner(System.in);
+	static Logger logger =LogManager.getLogger(BankMe.class);
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int rank;
+	private String user;
+	private static BankMe instance;
+	
+	ArrayList<Admin> Admins;
+	ArrayList<Customer> Customers;
+	ArrayList<Employee> Employees;
+	ArrayList<Account> Accounts;
+	ArrayList<BankPerson> Persons;
+	
+	private BankMe() {
+		rank = 0;
+		user = null;
+	}
+	
+	
+	public void changeUser() {
+		//TODO 
+		
+		
+		
+	}
+	
+	public static BankMe startBank() {
+		  
+		if(instance == null)
+			instance = new BankMe();
+		
+		return instance;
+	}
+	
+	public void createCustomerAccount() {
+		//TODO
+		
+		
+	}
+	
+	public void resetBank() {
+		Persons = new ArrayList<BankPerson>();
+		Accounts = new ArrayList<Account>();
+	}
+	
+	public void quit() {
+		try{
+	         FileOutputStream fosAdmins = new FileOutputStream("myAdmins");
+	         FileOutputStream fosEmployees = new FileOutputStream("myEmployees");
+	         FileOutputStream fosCustomers = new FileOutputStream("myCustomers");
+	         FileOutputStream fosAccounts = new FileOutputStream("myAccounts");
+	         FileOutputStream fosPersons = new FileOutputStream("myPersons");
+
+
+	         ObjectOutputStream oosAdmins = new ObjectOutputStream(fosAdmins);
+	         ObjectOutputStream oosEmployees = new ObjectOutputStream(fosEmployees);
+	         ObjectOutputStream oosCustomers = new ObjectOutputStream(fosCustomers);
+	         ObjectOutputStream oosAccounts = new ObjectOutputStream(fosAccounts);
+	         ObjectOutputStream oosPersons = new ObjectOutputStream(fosPersons);
+
+
+	         oosAdmins.writeObject(Admins);
+	         oosEmployees.writeObject(Employees);
+	         oosCustomers.writeObject(Customers);
+	         oosAccounts.writeObject(Accounts);	         
+	         oosPersons.writeObject(Persons);
+
+
+	         oosAdmins.close();
+	         fosAdmins.close();
+	         oosEmployees.close();
+	         fosEmployees.close();
+	         oosCustomers.close();
+	         fosCustomers.close();
+	         oosAccounts.close();
+	         fosAccounts.close();
+	         oosPersons.close();
+	         fosPersons.close();
+	       }catch(IOException ioe){
+	            ioe.printStackTrace();
+	        }
+	}
+	
+	public void initialize() {
+		 
+         try {
+        	 FileInputStream fisAdmins = new FileInputStream("myAdmins");
+        	 FileInputStream fisEmployees = new FileInputStream("myEmployees");
+        	 FileInputStream fisCustomers = new FileInputStream("myCustomers");
+        	 FileInputStream fisAccounts = new FileInputStream("myAccounts");
+        	 FileInputStream fisPersons = new FileInputStream("myPersons");
+             ObjectInputStream oisAdmins = new ObjectInputStream(fisAdmins);
+             ObjectInputStream oisEmployees = new ObjectInputStream(fisEmployees);
+             ObjectInputStream oisCustomers = new ObjectInputStream(fisCustomers);
+             ObjectInputStream oisAccounts = new ObjectInputStream(fisAccounts);
+             ObjectInputStream oisPersons = new ObjectInputStream(fisPersons);
+
+
+			Admins = (ArrayList) oisAdmins.readObject();
+			Employees  = (ArrayList) oisEmployees.readObject();
+			Customers = (ArrayList) oisCustomers.readObject();
+			Accounts  = (ArrayList) oisAccounts.readObject();
+			Persons  = (ArrayList<BankPerson>) oisPersons.readObject();
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	
+	public static void main(String[] args) {
+		
+
+		BankMe Bank = BankMe.startBank();
+		
+		
+		Bank.initialize();
+	//	Bank.resetBank();
+		Bank.Persons.add(new Admin("test3","pass"));
+	//	Bank.Persons.add(new Employee("test2","pass"));
+	//	Bank.Admins.add(new Admin("test3","pass"));
+		
+		System.out.println(Bank.Persons);
+		
+		
+
+		
+		Bank.quit();
+	}
+
+
+
+}
