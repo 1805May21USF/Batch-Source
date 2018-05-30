@@ -10,7 +10,7 @@ import java.util.Scanner;
  * @author Nicholas Smith
  *
  */
-public class Driver
+public class Bank
 {
 
 	/**
