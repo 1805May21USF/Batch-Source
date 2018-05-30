@@ -52,4 +52,17 @@ public class Employee
 	{
 		c1.printCustomer();
 	}
+	
+	
+	//create a method to approve account application
+	public void approve() 
+	{
+		//a customer will be approved as long as they are at least 18
+	}
+	
+	//create a method to deny account application
+	public void deny() 
+	{
+		//
+	}
 }

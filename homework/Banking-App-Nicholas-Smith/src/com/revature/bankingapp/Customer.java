@@ -14,13 +14,40 @@ public class Customer
 {
 	//instance variables
 	private String name;
-	private int socialSecurity;
+	private int ss;
+	private int age;
 	
-	//create a constructor for Customer that takes 2 arguments
-	public Customer(String n, int i) 
+	public String getName()
 	{
-		name = n;
-		setSocialSecurity(i);
+		return name;
+	}
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	public int getSs()
+	{
+		return ss;
+	}
+	public void setSs(int ss)
+	{
+		this.ss = ss;
+	}
+	public int getAge()
+	{
+		return age;
+	}
+	public void setAge(int age)
+	{
+		this.age = age;
+	}
+
+	//create a constructor for Customer that takes 3 arguments
+	public Customer(String name, int ss, int age)
+	{
+		this.name = name;
+		this.ss = ss;
+		this.age = age;
 	}
 	
 	//create a constructor for Customer that takes no arguments
@@ -30,22 +57,7 @@ public class Customer
 	}
 	
 	//getters and setters
-	public String getName()
-	{
-		return name;
-	}
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-	public int getSocialSecurity()
-	{
-		return socialSecurity;
-	}
-	public void setSocialSecurity(int socialSecurity)
-	{
-		this.socialSecurity = socialSecurity;
-	}
+	
 	
 
 	//create a method to transfer funds between accounts
@@ -80,7 +92,14 @@ public class Customer
 	{
 		//print to the console
 		System.out.println("Customer name: " + name);
-		System.out.println("Customer social security: " + socialSecurity);
+		System.out.println("Customer Social Security: " + ss);
+		System.out.println("Customer age: " + age);
+	}
+	
+	//create a method so that a customer can apply for an account
+	public void apply() 
+	{
+		//a customer must at least 18 to open a bank account
 	}
 
 }

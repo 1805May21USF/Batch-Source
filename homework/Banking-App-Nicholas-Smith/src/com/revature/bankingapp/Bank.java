@@ -86,14 +86,14 @@ public class Bank
 		System.out.println("");
 		
 		//Create a new Customer object
-		Customer c1 = new Customer("Nicholas Smith", 789881212);
-		Customer c2 = new Customer("Bob Dole", 412562);
-		Customer c3 = new Customer("Marry Joe", 7899754);
+		Customer c1 = new Customer("Nicholas Smith", 789881212, 23);
+		Customer c2 = new Customer("Bob Dole", 412562, 49);
+		Customer c3 = new Customer("Marry Joe", 7899754, 2);
 		
 		
 		
 		System.out.println("c1 name: " + c1.getName());
-		System.out.println("c1 social security: " + c1.getSocialSecurity());
+		System.out.println("c1 social security: " + c1.getSs());
 		
 		//line break
 		System.out.println("");
