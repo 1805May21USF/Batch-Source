@@ -24,7 +24,7 @@ public class CustomerUI {
 
 	double accountFunds;
 	double savingsFunds;
-	
+
 	Account a;
 	Account s;
 
@@ -100,7 +100,7 @@ public class CustomerUI {
 
 		boolean exit = false;
 
-		int selection;
+		int selection = 0;
 
 		double amount = 0;
 
@@ -110,28 +110,39 @@ public class CustomerUI {
 			System.out.println("2. Deposit");
 			System.out.println("3. Transfer");
 
+			try {
 			selection = Integer.parseInt(Menu.in.next());
+			} catch(Exception e) {
+				System.out.println("Please select a number.");
+			}
 
 			switch(selection) {
 			case 1:
 				System.out.print("Which account are you withdrawing from? :(checking/savings)");
-				try {
-					if(Menu.in.next().equalsIgnoreCase("checking")) {
-						System.out.print("How much would you like to withdraw?: ");
-						amount = Integer.parseInt(Menu.in.next());
-						a.withdraw(amount);
-						System.out.print("Remaining balance: $");
-						System.out.println(a.getBalance());
-					} else if(Menu.in.next().equalsIgnoreCase("savings")) {
-						System.out.print("How much would you like to withdraw?: ");
-						s.withdraw(amount);
-						System.out.println("Remaining balance: $");
-						System.out.println(s.getBalance());
+				boolean done = false;
+				while(!done) {
+					try {
+						if(Menu.in.next().equalsIgnoreCase("checking")) {
+							System.out.print("How much would you like to withdraw?: ");
+							amount = Integer.parseInt(Menu.in.next());
+							a.withdraw(amount);
+							System.out.print("Remaining balance: $");
+							System.out.println(a.getBalance());
+						} else if(Menu.in.next().equalsIgnoreCase("savings")) {
+							System.out.print("How much would you like to withdraw?: ");
+							s.withdraw(amount);
+							System.out.println("Remaining balance: $");
+							System.out.println(s.getBalance());
+						} else if(Menu.in.next().equalsIgnoreCase("done")) {
+							System.out.println("Exiting withdrawal menu.");
+							done = true;
+						}
+					} catch(Exception e) {
+						System.out.println("Please contact a bank administrator.");
 					}
-				} catch(Exception e) {
-					e.printStackTrace();
 				}
 			case 2:
+
 			case 3:
 			default:
 

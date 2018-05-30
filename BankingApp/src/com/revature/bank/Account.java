@@ -1,12 +1,14 @@
 package com.revature.bank;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
-	private int accountNumber;
 	private double balance;
 	
-	public Account(int accountNumber, double balance) {
-		this.accountNumber = accountNumber;
+	public Account(double balance) {
 		this.balance = balance;
 	}
 
@@ -17,5 +19,18 @@ public class Account {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
+	
+	public void deposit(double d) {
+		balance += d;
+	}
+	
+	public void withdraw(double w) {
+		balance -= w;
+	}
+	
+	/*public void printAccount() {
+		System.out.println("Account number: " + accountNumber);
+		System.out.println("Balance: " + balance);
+	}*/
 
 }
