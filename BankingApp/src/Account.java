@@ -1,16 +1,12 @@
 
-public  class Account {
+public  class Account implements AccountManager {
 	
-	private int accountID;
+	
 	private double balance;
-	private Account accountType;
+	private Account account;
 	
-	public int getAccountID() {
-		return accountID;
-	}
-	public void setAccountID(int accountID) {
-		this.accountID = accountID;
-	}
+	
+	
 	public double getBalance() {
 		return balance;
 	}
@@ -18,10 +14,23 @@ public  class Account {
 		this.balance = balance;
 	}
 	public Account getAccountType() {
-		return accountType;
+		return account;
 	}
-	public void setAccountType(Account accountType) {
-		this.accountType = accountType;
+	public void setAccountType(Account account) {
+		this.account = account;
+	}
+	
+	
+	
+	
+	public void deposit(double d) {
+		
+		account.setBalance(account.getBalance() + d);
+	}
+	
+	public void withdraw(double w) {
+		
+		account.setBalance(account.getBalance()+w);
 	}
 	
 	

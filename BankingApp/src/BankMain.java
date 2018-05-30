@@ -1,4 +1,5 @@
 import java.io.File;
+
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,32 +8,54 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-public class BankMain extends Account implements Serializable {
+public class BankMain extends Account implements Serializable, AccountManager {
 	
 	@SuppressWarnings("resource")
 	public static void main(String[] args)  throws IOException{
 		Customer c = new Customer();
+		Random rand = new Random();
+		Account a = new Account();
 		Scanner input = new Scanner(System.in);
-		String name = null;
-		String password = null;
-		for( int i = 1;i<=3;i++)
-		System.out.println(i +".Menu item #"+i);
-		System.out.println("0.Quit");
+		String name= "";
+		String password = "";
+		double initialAmount;
+		
+		
+		System.out.println("  Cloud Bank   ");
+		System.out.println("Press 1 to Register");
+		System.out.println( "Press 2 to Login");
+		System.out.println("Press 0 to quit ");
 		boolean quit = false;
 		int menuItem;
 		
 		do 
 		{
 			
-		System.out.println("Choose menu item:  ");
+		
 		menuItem = input.nextInt();
 		switch(menuItem) {
 		case 1 :
-			System.out.println("Are you a new customer? ");
-			c.ArrCustomer();
+			System.out.println("Please enter your desired username ");
+			name = input.next();
+			c.setUserName(name);
+			System.out.println("Please enter your desired password");
+			password = input.next();
+			c.setPassword(password);
+			System.out.println("What is your initial amount ?");
+			initialAmount = input.nextDouble();
+			a.setBalance(initialAmount);
+			int  n = rand.nextInt(50) + 1;
+			System.out.println("your account number is " + n);
+			c.setAccountID(n);
+			ArrayList<Customer> arr = new ArrayList<Customer>();
+			boolean isThere = true;
+			if (!isThere) {
+				arr.add(c);
+				}
 			break;
 		case 2 : 
 			System.out.println("Login");
@@ -51,9 +74,13 @@ public class BankMain extends Account implements Serializable {
 			break;
 		default: System.out.println(" Invalid choice");
 		}
-		
-		}while(!quit);
-	
+		}
+		while(!quit);
+		{
+			
 		System.out.println("Bye");
 	}
-}
+		}
+	}
+
+

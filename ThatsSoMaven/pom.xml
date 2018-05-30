@@ -12,6 +12,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<<<<<<< HEAD
 </properties>
 <dependencies>
 
@@ -28,3 +29,18 @@
 </dependencies>
  
  </project>
+=======
+  </properties>
+	<dependencies>
+	<!-- https://mvnrepository.com/artifact/org.junit/junit5-engine -->
+		<dependency>
+			<groupId>org.junit</groupId>
+			<artifactId>junit5-engine</artifactId>
+		<version>5.0.0-ALPHA</version>
+</dependency>
+	
+	</dependencies>
+	
+	
+</project>
+>>>>>>> 4540b24bf9211879678f4dac3b5952b44fb5cdce

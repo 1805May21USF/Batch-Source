@@ -5,6 +5,23 @@ public class Customer {
  private String lastName;
  private String userName;
  private String password;
+ private int accountID;
+
+ public Customer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+ 
+ public Customer(String firstname, String lastName, String username, String password, int accountID) {
+	 this.firstName = firstName;
+	 this.lastName = lastName;
+	 this.userName = username;
+	 this.password = password;
+	 this.accountID = accountID;
+	 
+ }
+
+
 public String getFirstName() {
 	return firstName;
 }
@@ -31,15 +48,19 @@ public void setPassword(String password) {
 }
 
 
-public void ArrCustomer() {
 
-ArrayList<String> arr = new ArrayList<String>();
-boolean isThere = true;
 
-if (!isThere) {
+ public int getAccountID() {
+	return accountID;
+}
 
-arr.add(getUserName());
-arr.add(getPassword());
+public void setAccountID(int accountID) {
+	this.accountID = accountID;
 }
+
+public void Customerinfo() {
+	
+ }
+ 
 }
-}
+
