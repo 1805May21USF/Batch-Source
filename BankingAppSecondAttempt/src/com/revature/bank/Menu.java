@@ -34,7 +34,7 @@ public class Menu {
 
 			try {
 
-				selection = Integer.parseInt(in.nextLine());
+				selection = Integer.parseInt(in.next());
 
 			} catch (NumberFormatException e) {
 				System.out.println("Selection must be a number.");
@@ -56,13 +56,16 @@ public class Menu {
 			CreateCustomerAccount cca = new CreateCustomerAccount();
 			cca.createAccount();
 			break;
-		case 2: // Login
-		case 3:
+		case 2: 
+			CustomerUI cui = new CustomerUI();
+			cui.login();
+			break;
+		case 3: // Employee login
+		case 4: // Admin login
+		case 0: 
 			System.out.println("Thank you for choosing Bank of Roll Tide! Have a great day!");
 			System.exit(0);
 			break;
-		case 9: // Employee login
-		case 0: // Admin login
 		default:
 			System.out.println("An unknown error has occurred. Please contact the Bank of Roll Tide support team.");
 			System.exit(1);
