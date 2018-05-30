@@ -21,137 +21,98 @@ public class Bank
 		//create a Scanner object to take user input
 		Scanner input = new Scanner(System.in);
 		
-		//create a Customer object
+		//how it will work:
+		//User applies for account
+		//Employee reads application
+		//Employee will approve or deny application
+		//If approved, customer registers for an account
+		//The customer can interact with Scanner now
+		
+		//Create some sample customers.
+		Customer cust1 = new Customer("Mike", 758331245, 41);
+		Customer cust2 = new Customer("Joe", 288471212, 16);
+		Customer cust3 = new Customer("Terry", 874251254, 21);
+		
+		//Create some sample employees.
+		Employee emp1 = new Employee("Malissa", 7889);
+		Employee emp2 = new Employee("Richard", 6121);
+		
+		//view customer information
+		//cust1.printCustomer();
+		//cust2.printCustomer();
+		//cust3.printCustomer();
+		
+		//Customers apply.
+		Application cust1App = cust1.apply();
+		Application cust2App = cust2.apply();
+		Application cust3App = cust3.apply();
+		
+		//Employees review the application.
+		emp1.readApplication(cust1App);
+		emp2.readApplication(cust2App);
+		emp1.readApplication(cust3App);
+		
+		//Mike and Terry can register because they are older than 18.
+		Account account1 = cust1.register("mike", "123");
+		Account account2 = cust2.register("terry", "truck");
+		
+		//Greet the user.
+		System.out.println("Welcome to Bank.");
+		
+		//Prompt user to enter user name.
+		System.out.println("Please enter username: ");
+		
+		String username1 = input.next();
+				
+		//Prompt user to enter password
+		System.out.println("Please enter password");
+		
+		String password1 = input.next();
+		
+		//Mike attempts to login. Use "mike" for username and "123" for password.
+		if(username1.equals(account1.getUsername()) && password1.equals(account1.getPassword()))
+		{
+			System.out.println("Hello " + cust1.getName());
+			
+			System.out.println("View balance: Press 1");
+			System.out.println("Deposit: Press 2");
+			System.out.println("Withdraw: Press 3");
+			System.out.println("Transfer: Press 4");
+			
+			//number is assigned to what Mike enters
+			int number = input.nextInt();
+			
+			if(number == 1) 
+			{
+				account1.printBalance();
+			}
+			if(number == 2) 
+			{
+				System.out.println("Enter amount: ");
+				double amount = input.nextDouble();
+				account1.deposit(amount);
+			}
+			if(number == 3) 
+			{
+				System.out.println("Enter amount: ");
+				double amount = input.nextDouble();
+				account1.withdraw(amount);
+			}
+			if(number == 4) 
+			{
+				System.out.println("Enter amount: ");
+				double amount = input.nextDouble();
+				cust1.transfer(account1, account2, amount);
+			}
+			
+
+		}
+		else 
+		{
+			System.out.println("Incorrect username and password. Goodbye.");
+		}
 		
 		
-		//welcome the user
-		System.out.println("Welcome to Green Bank.");
-		
-		//prompt the user to enter user name
-		System.out.println("Please enter user name:");
-		
-		//prompt the user to enter password
-		System.out.println("Please enter password:");
-		
-		//greet the customer
-		System.out.println("Hello customer");
-		
-		//line break
-		System.out.println("");
-		
-		
-		
-		//------- Account TESTING BEGIN  ---------
-		
-		//create a new Account object
-		Account a1 = new Account();
-		a1.setAccountNumber(1212);
-		a1.setBalance(500.25);
-		
-		double a1AN = a1.getAccountNumber();
-		double a1B = a1.getBalance();
-		
-		System.out.println("A1 account number: " + a1AN);
-		System.out.println("A1 balance: " + a1B);
-		
-		a1.deposit(40);
-		System.out.println("A1 balance: " + a1.getBalance());
-		
-		a1.withdraw(100.25);
-		System.out.println("A1 balance: " + a1.getBalance());
-		
-		
-		//line break
-		System.out.println("");
-		
-		//create a second Account object
-		Account a2 = new Account();
-		
-		//add a deposit to account 2
-		a2.deposit(300.50);
-		
-		//withdraw from account 2
-		a2.withdraw(100.50);
-		
-		System.out.println("A2 balance " + a2.getBalance());
-		
-		
-		//-----------Account TESTING END  -----------
-		
-		
-		
-		//---------- Customer TESTING BEGIN ----------
-		
-		//line break
-		System.out.println("");
-		
-		//Create a new Customer object
-		Customer c1 = new Customer("Nicholas Smith", 789881212, 23);
-		Customer c2 = new Customer("Bob Dole", 412562, 49);
-		Customer c3 = new Customer("Marry Joe", 7899754, 2);
-		
-		
-		
-		System.out.println("c1 name: " + c1.getName());
-		System.out.println("c1 social security: " + c1.getSs());
-		
-		//line break
-		System.out.println("");
-		
-		//view the balances of a1 and a2
-		System.out.println("a1 balance: " + a1.getBalance());
-		System.out.println("a2 balance: " + a2.getBalance());
-		
-		//test the transfer method
-		//transfer 45.85 dollars from a1 to a2
-		
-		c1.transfer(a1, a2, 35.25);
-		
-		//line break
-		System.out.println("");
-		
-		//print the new balances of a1 and a2
-		System.out.println("a1 balance: " + a1.getBalance());
-		System.out.println("a2 balance: " + a2.getBalance());
-		
-		
-		//-----------Customer TESTING END ------------
-		
-		
-		
-		//-------------General TESTING BEGIN -----------
-		
-		
-		//test the register method
-		Account a3 = c1.register("boo", "8989");
-		
-		System.out.println("user: " + a3.getUsername());
-		System.out.println("pass: " + a3.getPassword());
-		
-		//-------------General TESTING END --------------
-		
-		
-		//------------Employee TESTING BEGIN-------------------
-		
-		//line break
-		System.out.println("");
-		
-		//create a new employee object
-		Employee e1 = new Employee("Bob", 7989);
-		
-		System.out.println("e1 name: " + e1.getName());
-		System.out.println("e1 id: " + e1.getEmpID());
-		
-		//line break
-		System.out.println("");
-		e1.viewCustomer(c1);
-		e1.viewCustomer(c2);
-		e1.viewCustomer(c3);
-		
-		
-		//------------Employee TESTING ENDS--------------------
-		
-	
 	}
 
 }

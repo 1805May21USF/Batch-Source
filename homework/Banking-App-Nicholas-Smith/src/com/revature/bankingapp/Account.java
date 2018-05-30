@@ -92,4 +92,10 @@ public class Account
 		System.out.println("Password: " + password);
 	}
 	
+	//create a method to view balance
+	public void printBalance() 
+	{
+		System.out.println("Balance is: " + balance);
+	}
+	
 }

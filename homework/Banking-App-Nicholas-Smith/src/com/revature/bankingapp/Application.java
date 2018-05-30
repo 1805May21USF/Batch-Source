@@ -63,7 +63,6 @@ public class Application
 	//create a method to print the Application to the console
 	public void printApplication() 
 	{
-		
 		System.out.println("Customer name: " + customerName);
 		System.out.println("Customer age: " + customerAge);
 		System.out.println("Customer social security: " + customerSs);

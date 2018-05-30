@@ -56,10 +56,6 @@ public class Customer
 		//
 	}
 	
-	//getters and setters
-	
-	
-
 	//create a method to transfer funds between accounts
 	//takes Account object1, Account object 2, double amount
 	//returns nothing
