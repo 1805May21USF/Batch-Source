@@ -21,6 +21,10 @@ public class Bank implements Serializable {
 	public Bank() {
 		this.isOpen = true;
 	}
+	
+	/*
+	 *Simply instantiates a Database object and adds and employee and admin account 
+	 */
 	public void connect() {
 		d = new Database();
 		Employee e1 = new Employee("employee","employee","Employee","Employee");
@@ -30,6 +34,10 @@ public class Bank implements Serializable {
 		e2.makeAdmin();
 		d.updateEmployee(e2);
 	}
+	
+	/*
+	 * Starts the basic menu system and allows for three branches after login, customer, employee, and admin.
+	 */
 	public void start() {
 		this.connect();
 		int menu = 0;
@@ -64,7 +72,9 @@ public class Bank implements Serializable {
 			}
 		}
 	}
-	
+	/*
+	 * The welcome menu, allows the user to login or choose to create a new customer account.
+	 */
 	public void welcomeMenu() {
 		int selection;
 		System.out.flush();
@@ -99,6 +109,9 @@ public class Bank implements Serializable {
 		}
 	}
 	
+	/*
+	 * The new user menu, simply prompts the user for a username, password and name.
+	 */
 	public void newUserMenu() {
 		linebreak();
 		Scanner scanner = new Scanner(System.in);
