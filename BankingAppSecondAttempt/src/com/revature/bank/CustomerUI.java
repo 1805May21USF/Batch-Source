@@ -13,8 +13,8 @@ public class CustomerUI {
 	private static final String ACCOUNT_DIR = "src\\Data\\Accounts\\";
 	private static final String SAVINGS_DIR = "src\\Data\\Savings\\";
 	
-	private static final String ACCOUNTS = "Accounts";
-	private static final String SAVINGS = "Savings";
+	//private static final String ACCOUNTS = "Accounts";
+	//private static final String SAVINGS = "Savings";
 
 	String firstName;
 	String lastName;
@@ -66,9 +66,9 @@ public class CustomerUI {
 					username = input;
 					Customer customer = deserialize(CUSTOMER_DIR, username);
 					initializeCustomer(customer);
-					Account a = deserializeAccount(ACCOUNT_DIR, ACCOUNTS);
-					Account s = deserializeAccount(SAVINGS_DIR, SAVINGS);
-					//initializeAccounts(a, s);
+					Account a = deserializeAccount(ACCOUNT_DIR, account);
+					Account s = deserializeAccount(SAVINGS_DIR, savings);
+					initializeAccounts(a, s);
 					unlock();
 					validUserName = true;
 					break;
