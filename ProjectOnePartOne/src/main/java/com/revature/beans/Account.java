@@ -20,19 +20,58 @@ public class Account implements Serializable {
 		this.setBalance(b);
 		this.setSigner(s);
 		this.setCustomers(c);
-	}
-	
-	public boolean widthdraw(double amount) {
-		return true;
-	}
-	
-	public boolean transfer(double amount, Account a) {
-		return true;
+		this.transactions = new ArrayList<Transaction>();
 	}
 	public boolean deposit(double amount) {
+		Transaction t = new Transaction("DEPOSIT",this,amount,this.balance+amount);
+		this.balance = this.balance+amount;
+		this.transactions.add(t);
+		System.out.println("$" + amount + " deposited.");
 		return true;
 	}
+	public boolean canTransfer(double amount) {
+		if(this.balance-amount<0) {
+			System.out.println("The transfer failed, amount cannot be withdrawn.");
+			return false;
+		}
+		return true;
+	}
+	public boolean transfer(Account a, double am) {
+		if(canTransfer(am)) {
+			Transaction t = new Transaction("TRANSFER",this,a,am,this.balance-am);
+			this.balance = this.balance-am;
+			Transaction t2 = new Transaction("TRANSFER",a,this,am,a.getBalance()+am);
+			return true;
+		}
+		return false;
+	}
+	public boolean canWithdraw(double amount) {
+		if(this.balance-amount<0) {
+			System.out.println("The withdraw failed, amount cannot be withdrawn.");
+			return false;
+		}
+		return true;
+	}
+	public boolean withdraw(double amount) {
+		Transaction t = new Transaction("WITHDRAW",this,amount,this.balance-amount);
+		this.balance = this.balance-amount;
+		this.transactions.add(t);
+		System.out.println("$" + amount + " withdrawn.");
+		return true;
+	}
+	
+	public void closeAccount() {
+		this.setStatus("CLOSED");
+	}
+	
+	public String getStatus() {
+		return status;
+	}
 
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	public int getID() {
 		return ID;
 	}

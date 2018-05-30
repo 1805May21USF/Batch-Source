@@ -47,6 +47,9 @@ public class Database {
 	public Customer getCustomer(int ID) {
 		return customerSerializer.getCustomer(ID);
 	}
+	public Customer getLoadedCustomer(int ID) {
+		return customerSerializer.getLoadedCustomer(ID);
+	}
 	public ArrayList<Customer> getAllCustomers() {
 		return customerSerializer.getAllCustomer();
 	}

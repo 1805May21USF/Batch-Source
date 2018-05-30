@@ -30,29 +30,6 @@ public class Customer extends User implements Serializable {
 		this.accounts = new ArrayList<Account>();
 	}
 	
-	public boolean applicationApprove(Application a) {
-		int indx = Collections.binarySearch(applications, a, new ApplicationIdComparator());
-		if(indx < 0) {
-			return false;
-		}
-		else {
-			this.applications.get(indx).setApproval("APPROVED");
-			return true;
-		}
-	}
-	public boolean applicationDeny(Application a) {
-		int indx = Collections.binarySearch(applications, a, new ApplicationIdComparator());
-		if(indx < 0) {
-			return false;
-		}
-		else {
-			this.applications.get(indx).setApproval("DENIED");
-			return true;
-		}
-	}
-	
-	
-	
 	@Override
 	public String toString() {
 		return "Customer [fname=" + fname + ", lname=" + lname + ", applications=" + applications + ", accounts="
@@ -82,6 +59,14 @@ public class Customer extends User implements Serializable {
 
 	public void setApplications(ArrayList<Application> apps) {
 		this.applications = apps;
+	}
+	
+	public void addApplication(Application a) {
+		this.applications.add(a);
+	}
+	
+	public void addAccount(Account a) {
+		this.accounts.add(a);
 	}
 
 	public ArrayList<Account> getAccounts() {

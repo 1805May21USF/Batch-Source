@@ -49,4 +49,10 @@ public class Application implements Serializable{
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
+	@Override
+	public String toString() {
+		return "Application [ID=" + ID + ", signer=" + signer.ID + ", balance=" + balance + ", customers=" + customers.size()
+				+ ", approval=" + approval + "]";
+	}
+	
 }

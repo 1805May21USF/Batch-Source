@@ -31,28 +31,6 @@ public class Bank implements Serializable {
 		Employee e2 = new Employee("admin","admin","Admin","Admin");
 		e2.makeAdmin();
 		d.updateEmployee(e2);
-		
-		Customer c1 = new Customer("corwin","lester","Corwin","Lester");
-		
-		ArrayList<Customer> cs = new ArrayList<Customer>();
-		cs.add(c1);
-		
-		Account a = new Account(100.00,c1,cs);
-		ArrayList<Account> as = new ArrayList<Account>();
-		as.add(a);
-		
-		c1.setAccounts(as);
-		
-		ArrayList<Customer> csa = new ArrayList<Customer>();
-		cs.add(c1);
-		
-		Application ap = new Application(c1,0.0,csa);
-		ArrayList<Application> asa = new ArrayList<Application>();
-		asa.add(ap);
-		
-		c1.setApplications(asa);
-		
-		d.updateCustomer(c1);
 	}
 	public void start() {
 		this.connect();
@@ -80,7 +58,7 @@ public class Bank implements Serializable {
 						employeeMainMenu();
 						break;
 					}
-					if(currentUser.isCustomer()) {
+					if(currentUser.isAdmin()) {
 						adminMainMenu();
 						break;
 					}
@@ -255,7 +233,7 @@ public class Bank implements Serializable {
 					break;
 				}
 				case 3:{
-					accountSelectionMenu();
+					accountSelectionMenu(currentCustomer(this.currentUser));
 					break;
 				}
 				case 4:{
@@ -291,7 +269,7 @@ public class Bank implements Serializable {
 					break;
 				}
 				case 2:{
-					applicationSelectMenu();
+					applicationSelectMenu(currentCustomer(this.currentUser));
 					break;
 				}
 				case 3:{
@@ -330,9 +308,8 @@ public class Bank implements Serializable {
 			linebreak();
 			System.out.println("1. Change initial balance. ");
 			System.out.println("2. Add a joint customer.");
-			System.out.println("3. View open applications.");
-			System.out.println("4. Submit.");
-			System.out.println("5. Exit");
+			System.out.println("3. Submit.");
+			System.out.println("4. Exit");
 			int selection;
 			Scanner scanner = new Scanner(System.in);
 			selection = Integer.parseInt(scanner.nextLine());
@@ -363,12 +340,21 @@ public class Bank implements Serializable {
 					break;
 				}
 				case 3:{
+					System.out.println(a);
+					
+					ArrayList<Application> ab = currentCustomer(this.currentUser).getApplications();
+					ab.add(a);
+					currentCustomer(this.currentUser).setApplications(ab);
+					
+					
+					d.updateCustomer(currentCustomer(this.currentUser));
+					for(Customer c2: d.getAllCustomers()) {
+						System.out.println(c2);
+					}
+					inMenu=false;
 					break;
 				}
 				case 4:{
-					break;
-				}
-				case 6:{
 					inMenu=false;
 					break;
 				}
@@ -381,15 +367,9 @@ public class Bank implements Serializable {
 		}
 	}
 	
-	public void applicationViewMenu(int ID) {
+	public void applicationViewMenu(Application aa) {
 		boolean inMenu = true;
 		while(inMenu) {
-			Application aa = null;
-			for(Application a:d.getCustomer(this.currentUser.getID()).getApplications()) {
-				if(a.getID()==ID) {
-					aa = a;
-				}
-			}
 			linebreak();
 			System.out.println("Application #"+aa.getID());
 			linebreak();
@@ -429,7 +409,7 @@ public class Bank implements Serializable {
 		System.out.println("Username: " + c.getUserName());
 		System.out.println();
 	}
-	public void applicationSelectMenu() {
+	public void applicationSelectMenu(Customer c) {
 		boolean inMenu = true;
 		while(inMenu) {
 			linebreak();
@@ -438,24 +418,23 @@ public class Bank implements Serializable {
 			int selection;
 			Scanner scanner = new Scanner(System.in);
 			
-			Customer currentCustomer = d.getCustomer(this.currentUser.ID);
-			if(currentCustomer.getApplications().size()!=0) {
-				for(int i = 0;i<currentCustomer.getApplications().size();i++) {
-					System.out.println(i+1+". Application #" +currentCustomer.getApplications().get(i).getID());
+			if(c.getApplications().size()!=0) {
+				for(int i = 0;i<c.getApplications().size();i++) {
+					System.out.println(i+1+". Application #" +c.getApplications().get(i).getID());
 				}
-				System.out.println(currentCustomer.getApplications().size()+1 + ". Exit.");
+				System.out.println(c.getApplications().size()+1 + ". Exit.");
 				String input;
 				input = scanner.nextLine();
 				selection = Integer.parseInt(input);
 				
-				while(!(selection > 0 && selection < currentCustomer.getApplications().size()+2)) {
+				while(!(selection > 0 && selection < c.getApplications().size()+2)) {
 					System.out.println("That was not a selection!");
 					input = scanner.nextLine();
 					selection = Integer.parseInt(input);
 				}
-				if(selection < currentCustomer.getApplications().size()+1) {
+				if(selection < c.getApplications().size()+1) {
 					selection = selection-1;
-					applicationViewMenu(currentCustomer.getApplications().get(selection).getID());
+					applicationViewMenu(c.getApplications().get(selection));
 				}
 				
 			} else {
@@ -467,7 +446,7 @@ public class Bank implements Serializable {
 					inMenu = false;
 				}
 			}
-			if(selection == currentCustomer.getApplications().size()+1) {
+			if(selection == c.getApplications().size()+1) {
 				inMenu = false;
 			}
 			
@@ -476,7 +455,7 @@ public class Bank implements Serializable {
 		
 	}
 	
-	public void accountSelectionMenu() {
+	public void accountSelectionMenu(Customer c) {
 		boolean inMenu = true;
 		while(inMenu) {
 			
@@ -487,24 +466,26 @@ public class Bank implements Serializable {
 			int selection;
 			
 			
-			Customer currentCustomer = d.getCustomer(this.currentUser.ID);
-			if(currentCustomer.getAccounts().size()!=0) {
-				for(int i = 0;i<currentCustomer.getAccounts().size();i++) {
-					System.out.println(i+1+". Account #" +currentCustomer.getAccounts().get(i).getID());
+			if(c.getAccounts().size()!=0) {
+				for(int i = 0;i<c.getAccounts().size();i++) {
+					System.out.println(i+1+". Account #" +c.getAccounts().get(i).getID());
 				}
-				System.out.println(currentCustomer.getAccounts().size()+1 + ". Exit.");
+				System.out.println(c.getAccounts().size()+1 + ". Exit.");
 				String input;
 				input = scanner.nextLine();
 				selection = Integer.parseInt(input);
 				
-				while(!(selection > 0 && selection < currentCustomer.getAccounts().size()+2)) {
+				while(!(selection > 0 && selection < c.getAccounts().size()+2)) {
 					System.out.println("That was not a selection!");
 					input = scanner.nextLine();
 					selection = Integer.parseInt(input);
 				}
 				
+				if((selection<c.getAccounts().size()+1) &&selection>0) {
+					AccountMenu(c.getAccounts().get(selection-1),c);
+				}
 				
-				if(selection == currentCustomer.getAccounts().size()+1) {
+				if(selection == c.getAccounts().size()+1) {
 					inMenu = false;
 				}
 			} else {
@@ -586,7 +567,9 @@ public class Bank implements Serializable {
 					selection = Integer.parseInt(input);
 				}
 				
-				
+				if(selection<customers.size()+1) {
+					employeeCustomerViewMenu(customers.get(selection-1));
+				}
 				if(selection == customers.size()+1) {
 					inMenu = false;
 				}
@@ -601,6 +584,39 @@ public class Bank implements Serializable {
 			}
 		}
 	}
+	public void employeeCustomerViewMenu(Customer c) {
+		boolean inMenu = true;
+		while(inMenu) {
+			linebreak();
+			System.out.println("Customer #"+c.getID());
+			linebreak();
+			System.out.println("Name: "+c.getFname() + " " + c.getLname());
+			System.out.println("Username: " +c.getUserName());
+			System.out.println("1: Accounts");
+			System.out.println("2: Applications");
+			System.out.println("3. Exit");
+			
+			Scanner scanner = new Scanner(System.in);
+			String s = scanner.nextLine();
+			int selection = Integer.parseInt(s);
+			
+			switch(selection) {
+			case 1:
+				accountSelectionMenu(c);
+				break;
+			case 2:
+				applicationSelectMenu(c);
+				break;
+			case 3:
+				inMenu=false;
+				break;
+			default:
+				System.out.println("That was not a selection!");
+				break;
+			}
+		}
+	}
+
 	public void openApplicationsMenu() {
 		boolean inMenu = true;
 		while(inMenu) {
@@ -637,7 +653,9 @@ public class Bank implements Serializable {
 					selection = Integer.parseInt(input);
 				}
 				
-				
+				if(selection<openapplications.size()+1) {
+					employeeApplicationsView(openapplications.get(selection-1));
+				}
 				if(selection == openapplications.size()+1) {
 					inMenu = false;
 				}
@@ -652,23 +670,347 @@ public class Bank implements Serializable {
 			}
 		}
 	}
-	public void AccountMenu(Account a) {
+	public void employeeApplicationsView(Application a) {
+		boolean inMenu = true;
+		while(inMenu) {
+			linebreak();
+			System.out.println("Application #"+a.getID());
+			linebreak();
+			System.out.println("Status: "+a.getApproval());
+			System.out.println("Signer: "+a.getSigner());
+			System.out.println("Balance: " +a.getBalance());
+			System.out.print("Joint Customers: ");
+			for(Customer c:a.getCustomers()) {
+				System.out.println(c.getFname() + " " + c.getLname()+", ");
+			}
+			System.out.println();
+			Scanner scanner = new Scanner(System.in);
+			
+			System.out.println("1. Approve Application");
+			System.out.println("2. Deny Application");
+			System.out.println("3. Exit.");
+			
+			String s = scanner.nextLine();
+			int selection = Integer.parseInt(s);
+			switch(selection) {
+			case 1:
+				a.setApproval("APPROVED");
+				Account acc = new Account(a.getBalance(),a.getSigner(),a.getCustomers());
+				for(Customer c:a.getCustomers()) {
+					c.addAccount(acc);
+					d.updateCustomer(c);
+				}
+				a.getSigner().addAccount(acc);
+				d.updateCustomer(a.getSigner());
+				break;
+			case 2:
+				a.setApproval("DENIED");
+				d.updateCustomer(a.getSigner());
+				break;
+			case 3:
+				inMenu = false;
+				break;
+			}	
+			
+		}
+	}
+	public void AccountMenu(Account a,Customer c) {
 		boolean inMenu = true;
 		while(inMenu) {
 			linebreak();
 			System.out.println("Account #"+a.getID());
 			linebreak();
 			
-			System.out.println("1. Deposit");
-			System.out.println("2. Transfer");
-			System.out.println("3. Withdraw");
-			if(currentUser.isAdmin||currentUser.isEmployee) {
+			Scanner scanner = new Scanner(System.in);
+			String s;
+			
+			if(a.getStatus().equals("OPEN")&&currentUser.isCustomer()) {
+				System.out.println("ID: "+a.getID());
+				System.out.println("Balance: "+a.getBalance());
+				System.out.println("Signer: "+a.getSigner());
+				System.out.println("Status: "+a.getStatus());
 				
+				System.out.print("Joint Customers: ");
+				for(Customer c1:a.getCustomers()) {
+					System.out.print(c1.getFname() + " " + c1.getLname() + ", ");
+				}
+				
+				System.out.println("ID: "+a.getID());
+				System.out.println("1. Deposit.");
+				System.out.println("2. Transfer. ");
+				System.out.println("3. Widthdraw. ");
+				System.out.println("4. Transaction History");
+				System.out.println("5. Exit");
+				s=scanner.nextLine();
+				int input = Integer.parseInt(s);
+				
+				switch(input) {
+				case 1:
+					depositMenu(a,c);
+					break;
+				case 2:
+					transferMenu(a,c);
+					break;
+				case 3:
+					withdrawMenu(a,c);
+					break;
+				case 4:
+					transactionMenu(a);
+					break;
+				case 5:
+					inMenu = false;
+					break;
+				default:
+					System.out.println("That was not a valid choice!");
+				
+				}
+				
+			}
+			
+			
+			if(a.getStatus().equals("CLOSED")&&currentUser.isCustomer()) {
+				System.out.println("ID: "+a.getID());
+				System.out.println("Balance: "+a.getBalance());
+				System.out.println("Signer: "+a.getSigner());
+				System.out.println("Status: "+a.getStatus());
+				
+				System.out.print("Joint Customers: ");
+				for(Customer c1:a.getCustomers()) {
+					System.out.print(c1.getFname() + " " + c1.getLname() + ", ");
+				}
+				
+				System.out.println("ID: "+a.getID());
+				System.out.println("1. Transaction History");
+				System.out.println("2. Exit");
+				s=scanner.nextLine();
+				int input = Integer.parseInt(s);
+				
+				switch(input) {
+				case 1:
+					transactionMenu(a);
+					break;
+				case 2:
+					inMenu = false;
+					break;
+				default:
+					System.out.println("That was not a valid choice!");
+				
+				}
+				
+			}
+			
+			
+			
+			if(currentUser.isEmployee()) {
+				System.out.println("ID: "+a.getID());
+				System.out.println("Balance: "+a.getBalance());
+				System.out.println("Signer: "+a.getSigner());
+				System.out.println("Status: "+a.getStatus());
+				
+				System.out.print("Joint Customers: ");
+				for(Customer c1:a.getCustomers()) {
+					System.out.print(c1.getFname() + " " + c1.getLname() + ", ");
+				}
+				
+				System.out.println("1. Transaction History");
+				System.out.println("2. Exit");
+				s=scanner.nextLine();
+				int input = Integer.parseInt(s);
+				
+				switch(input) {
+				case 1:
+					transactionMenu(a);
+					break;
+				case 2:
+					inMenu=false;
+					break;
+				default:
+					System.out.println("That was not a valid choice!");
+				}
+			}
+			if(currentUser.isAdmin()) {
+				System.out.println("ID: "+a.getID());
+				System.out.println("Balance: "+a.getBalance());
+				System.out.println("Signer: "+a.getSigner());
+				System.out.println("Status: "+a.getStatus());
+				
+				System.out.print("Joint Customers: ");
+				for(Customer c1:a.getCustomers()) {
+					System.out.print(c1.getFname() + " " + c1.getLname() + ", ");
+				}
+				System.out.println();
+				System.out.println("1. Deposit.");
+				System.out.println("2. Transfer. ");
+				System.out.println("3. Widthdraw. ");
+				System.out.println("4. Transaction History");
+				System.out.println("5. Close");
+				System.out.println("6. Exit");
+				s=scanner.nextLine();
+				int input = Integer.parseInt(s);
+				
+				switch(input) {
+				case 1:
+					depositMenu(a,c);
+					break;
+				case 2:
+					transferMenu(a,c);
+					break;
+				case 3:
+					withdrawMenu(a,c);
+					break;
+				case 4:
+					transactionMenu(a);
+					break;
+				case 5:
+					a.closeAccount();
+					d.updateCustomer(c);
+					for(Customer cs: a.getCustomers()) {
+						d.updateCustomer(cs);
+					}
+					break;
+				case 6:
+					inMenu = false;
+					break;
+				}
 			}
 		}
 	}
 	public void adminMainMenu() {
 		
+
+		boolean loggedIn = true;
+		
+		while(loggedIn) {
+			
+			int selection;
+			linebreak();
+			System.out.println("Welcome!");
+			linebreak();
+			System.out.println("1. Customer Information");
+			System.out.println("2. Open Applications");
+			System.out.println("3. Exit");
+				
+			Scanner scanner = new Scanner(System.in);
+			selection = Integer.parseInt(scanner.nextLine());
+			switch(selection) {
+				case 1:{
+					allCustomerInformationMenu();
+					break;
+				}
+				case 2:{
+					openApplicationsMenu();
+					break;
+				}
+				case 3:{
+					loggedIn = false;
+					currentUser = null;
+					this.setBankView(0);
+					break;
+				}
+				default:{
+					System.out.flush();
+					System.out.println("That wasn't a menu choice!");
+					break;
+				}
+			}
+		}
+		
+	}
+	public void depositMenu(Account a,Customer c) {
+		boolean inMenu = true;
+		while(inMenu) {
+			Scanner scanner = new Scanner(System.in);
+			String s = new String();
+			double amount = 0;
+			int ID = 0;
+			
+			do{
+					System.out.println("Enter Amount (Include $): ");
+					s = scanner.nextLine();
+					amount = dollarToDouble(s);
+			}
+			while(!Validation.isDollar(s));
+			
+			a.deposit(amount);
+			d.updateCustomer(c);
+			for(Customer cs:a.getCustomers()) {
+				d.updateCustomer(cs);
+			}
+			inMenu=false;
+		}
+	}
+	
+	public void withdrawMenu(Account a,Customer c) {
+		boolean inMenu = true;
+		while(inMenu) {
+			Scanner scanner = new Scanner(System.in);
+			String s = new String();
+			double amount = 0;
+			int ID = 0;
+			
+			do{
+					System.out.println("Enter Amount (Include $): ");
+					s = scanner.nextLine();
+					amount = dollarToDouble(s);
+			}
+			while(!Validation.isDollar(s)|!a.canWithdraw(amount));
+			
+			a.withdraw(amount);
+			d.updateCustomer(c);
+			for(Customer cs:a.getCustomers()) {
+				d.updateCustomer(cs);
+			}
+			inMenu=false;
+		}
+	}
+	public void transferMenu(Account a,Customer c) {
+		boolean inMenu = true;
+		while(inMenu) {
+			Scanner scanner = new Scanner(System.in);
+			String s = new String();
+			double amount = 0;
+			int ID = 0;
+			
+			do{
+					System.out.println("Enter Amount (Include $): ");
+					s = scanner.nextLine();
+					amount = dollarToDouble(s);
+			}
+			while(!Validation.isDollar(s)|!a.canTransfer(amount));
+			do {
+					System.out.println("Enter Account Number #:");
+					s = scanner.nextLine();
+					ID = Integer.parseInt(s);
+			}while(!isAccount(ID));
+			
+			a.transfer(getAccount(ID),amount);
+			d.updateCustomer(c);
+			for(Customer cs:a.getCustomers()) {
+				d.updateCustomer(cs);
+			}
+			for(Customer c1:getAccount(ID).getCustomers()) {
+				d.updateCustomer(c1);
+			}
+			inMenu=false;
+		}
+	}
+	public void transactionMenu(Account a) {
+		boolean inMenu = true;
+		while(inMenu) {
+			linebreak();
+			System.out.println("Transaction History");
+			linebreak();
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("1. Exit.");
+			for(Transaction t:a.getTransactions()) {
+				System.out.println(t);
+			}
+			String s = scanner.nextLine();
+			int selection = Integer.parseInt(s);
+			if(selection == 1) {
+				inMenu=false;
+			}
+		}
 	}
 	private static void linebreak() {
 		String linebreak = "==========================================";
@@ -683,7 +1025,6 @@ public class Bank implements Serializable {
 		this.isOpen = isOpen;
 	}
 
-
 	public int getBankView() {
 		return bankView;
 	}
@@ -693,7 +1034,35 @@ public class Bank implements Serializable {
 	}
 	
 	public double dollarToDouble(String s) {
-		String d = s.substring(1, s.length()-1);
+		String d = s.substring(1, s.length());
 		return Double.parseDouble(d);
+	}
+	
+	public boolean isAccount(int ID) {		
+		ArrayList<Customer> customers = d.getAllCustomers();
+		
+		for(Customer c:customers) {
+			for(Account a:c.getAccounts()) {
+				if(a.getID()==ID) {
+					return true;
+				}
+			}
+		}
+		System.out.println("The account does not exits!");
+		return false;
+	}
+	public Account getAccount(int ID) {
+		ArrayList<Customer> customers = d.getAllCustomers();
+		for(Customer c:customers) {
+			for(Account a:c.getAccounts()) {
+				if(a.getID()==ID) {
+					return a;
+				}
+			}
+		}
+		return null;
+	}
+	public Customer currentCustomer(User c) {
+		return d.getLoadedCustomer(this.currentUser.getID());
 	}
 }

@@ -1,9 +1,10 @@
 package com.revature.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Random;
 
-public class Transaction {
+public class Transaction implements Serializable {
 	
 	private int ID;
 	private Date date;
@@ -22,6 +23,7 @@ public class Transaction {
 		this.setAccount(a);
 		this.setAmount(am);
 		this.setBalance(b);
+		this.setType(t);
 		
 	}
 	
@@ -29,12 +31,20 @@ public class Transaction {
 		Random rnd = new Random();
 		this.setID(100000 + rnd.nextInt(900000));
 		this.setDate(new Date());
-		this.setStatus("PENDING");
+		this.setStatus("ACCEPTED");
 		this.setAccount(a);
 		this.setReciever(r);
 		this.setAmount(am);
 		this.setBalance(b);
-		
+		this.setType(t);
+	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "Transaction [ID=" + ID + ", date=" + date + ", status=" + status + ", type=" + type + ", account="
+				+ account + ", reciever=" + reciever + ", amount=" + amount + ", balance=" + balance + "]";
 	}
 
 	public int getID() {

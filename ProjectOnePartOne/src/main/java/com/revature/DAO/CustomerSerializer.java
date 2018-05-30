@@ -39,10 +39,19 @@ public class CustomerSerializer implements CustomerDAO {
 		return null;
 	}
 	
+	public Customer getLoadedCustomer(int ID) {
+		for(Customer customer: this.customers) {
+			if(ID == customer.getID()) {
+				return customer;
+			}
+		}
+		return null;
+	}
+	
 	public Customer getCustomerByUsername(String username) {
 		loadFromFile();
 		for(Customer customer: this.customers) {
-			System.out.println("Searching :" +customer.getUserName() + username);
+			//System.out.println("Searching :" +customer.getUserName() + username);
 			if(username.equals(customer.getUserName())) {
 				return customer;
 			}
@@ -84,7 +93,7 @@ public class CustomerSerializer implements CustomerDAO {
 			
 			this.customers = (ArrayList<Customer>) objectInputStream.readObject();
 			for(Customer i:this.customers) {
-				System.out.println(i);
+				//System.out.println(i);
 			}
 
 			objectInputStream.close();
@@ -92,6 +101,7 @@ public class CustomerSerializer implements CustomerDAO {
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
 		} catch (IOException e) {
+			e.printStackTrace();
 			System.out.println("Could not read from file!");
 		} catch (ClassNotFoundException e) {
 			System.out.println("The data in the file was not the class provided!");
@@ -111,6 +121,7 @@ public class CustomerSerializer implements CustomerDAO {
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
 		} catch (IOException e) {
+			e.printStackTrace();
 			System.out.println("Couldn't write to file!");
 		}
 	}
