@@ -1,6 +1,5 @@
 package revature_homwork1;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.nio.file.Paths;
