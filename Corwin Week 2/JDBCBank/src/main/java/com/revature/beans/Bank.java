@@ -7,13 +7,10 @@ import java.util.Scanner;
 import java.util.Vector;
 
 import com.revature.DAO.CustomerDAO;
-import com.revature.DAO.CustomerSerializer;
-import com.revature.database.Database;
 import com.revature.validation.Validation;
 
-public class Bank implements Serializable {
-	
-	private Database d;
+public class Bank {
+	/*
 	private boolean isOpen = false;
 	private int bankView = 0;
 	private User currentUser;
@@ -22,9 +19,6 @@ public class Bank implements Serializable {
 		this.isOpen = true;
 	}
 	
-	/*
-	 *Simply instantiates a Database object and adds and employee and admin account 
-	 */
 	public void connect() {
 		d = new Database();
 		Employee e1 = new Employee("employee","employee","Employee","Employee");
@@ -35,9 +29,6 @@ public class Bank implements Serializable {
 		d.updateEmployee(e2);
 	}
 	
-	/*
-	 * Starts the basic menu system and allows for three branches after login, customer, employee, and admin.
-	 */
 	public void start() {
 		this.connect();
 		int menu = 0;
@@ -72,9 +63,6 @@ public class Bank implements Serializable {
 			}
 		}
 	}
-	/*
-	 * The welcome menu, allows the user to login or choose to create a new customer account.
-	 */
 	public void welcomeMenu() {
 		int selection;
 		System.out.flush();
@@ -109,10 +97,6 @@ public class Bank implements Serializable {
 		}
 	}
 	
-	/*
-	 * The new user menu, simply prompts the user for a username, password and name. Performs
-	 * basic input validation.
-	 */
 	public void newUserMenu() {
 		linebreak();
 		Scanner scanner = new Scanner(System.in);
@@ -184,9 +168,6 @@ public class Bank implements Serializable {
 		this.setBankView(3);
 	}
 	
-	/*
-	 * The login menu, prompts the user for a username and password.
-	 */
 	public void loginMenu() {
 		linebreak();
 		String username;
@@ -222,9 +203,6 @@ public class Bank implements Serializable {
 		
 	}
 	
-	/*
-	 * The main menu for the customer menu branch.
-	 */
 	public void customerMainMenu() {
 		boolean loggedIn = true;
 		
@@ -270,10 +248,7 @@ public class Bank implements Serializable {
 			}
 		}
 	}
-	/*
-	 * The customer application menu, allows for the customer to open new applications and add
-	 * other users for joint accounts. Applications must be approved by an employee or admin.
-	 */
+	
 	public void applicationMainMenu() {
 		boolean inMenu = true;
 		while(inMenu) {
@@ -308,10 +283,7 @@ public class Bank implements Serializable {
 		}
 		
 	}
-	/*
-	 * The open application customer menu. Allows the user to fill in the information required to 
-	 * open an application.
-	 */
+	
 	public void openApplicationMenu() {
 		boolean inMenu = true;
 		Application a = new Application(d.getCustomer(this.currentUser.getUserName()), 0.00, new ArrayList<Customer>());
@@ -1091,4 +1063,5 @@ public class Bank implements Serializable {
 	public Customer currentCustomer(User c) {
 		return d.getLoadedCustomer(this.currentUser.getID());
 	}
+	*/
 }

@@ -24,7 +24,10 @@ public class CustomerDAOImpl implements CustomerDAO{
 
 	@Override
 	public Customer findCustomerByUsername(String username) throws SQLException {
-		
+		Connection conn = cf.getConnection();
+		String sql = "SELECT * FROM JBDCBANK_CUSTOMER WHERE USERNAME=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		return null;
 		
 	}
 

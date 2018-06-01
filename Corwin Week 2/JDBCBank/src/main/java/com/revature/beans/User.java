@@ -12,6 +12,12 @@ public abstract class User implements Serializable {
 		protected boolean isEmployee = false;
 		protected boolean isCustomer = true;
 		
+		public User(String username,String passWord) {
+			this.setID(0);
+			
+			this.setUserName(username);
+			this.setPassWord(passWord);
+		}
 		public User(int i, String username,String passWord) {
 			this.setID(i);
 			
