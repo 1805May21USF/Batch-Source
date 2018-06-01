@@ -1,0 +1,76 @@
+--2.0 SQL Queries
+
+--2.1 SELECT
+--Select all records from the Employee table
+SELECT * 
+FROM EMPLOYEE;
+
+--Select all records from the Employee table where last name is 'King'
+SELECT * 
+FROM EMPLOYEE
+WHERE LASTNAME = 'King';
+
+--Select all records from the Employee table where fist name is Andrew and REPORTISTO is NULL
+SELECT *
+FROM EMPLOYEE
+WHERE FIRSTNAME = 'Andrew' AND REPORTSTO IS NULL;
+
+--2.2 ORDER BY
+--Select all albums in Album table and sort result set in descending order by title
+SELECT TITLE
+FROM ALBUM
+ORDER BY TITLE DESC;
+
+--Select first name from Customer and sort result set in ascending order by city
+SELECT FIRSTNAME
+FROM CUSTOMER
+ORDER BY CITY ASC;
+
+--2.3 INSERT INTO
+
+--2.4 UPDATE
+
+--2.5 LIKE
+
+--2.6 BETWEEN
+
+--2.7 DELETE
+
+--3.0 SQL Functions
+
+--3.1 System Defined Functions
+--TO_CHAR(CURRENT_DATE, 'HH24:MI:SS');
+
+--3.2 System Defined Aggregate Functions
+
+--3.3 User Defined Scalar Functions
+
+--3.4 User Defined Table Valued Functions
+
+--4.0 Stored Procedures
+
+--4.1 Basic Stored Procedure
+
+--4.2 Stored Procedure Input Parameters
+
+--4.3 Stored Procedure Output Parameters
+
+--5.0 Transactions
+
+--6.0 Triggers
+
+--6.1 AFTER/FOR
+
+--7.0 JOINS
+
+--7.1 INNER
+
+--7.2 OUTER
+
+--7.3 RIGHT
+
+--7.4 CROSS
+
+--7.5 SELF
+
+--END--
