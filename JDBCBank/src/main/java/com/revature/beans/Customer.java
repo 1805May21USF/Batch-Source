@@ -12,14 +12,6 @@ public class Customer extends User implements Serializable {
 	private ArrayList<Application> applications;
 	private ArrayList<Account> accounts;
 	
-	public Customer(String u,String p,String f, String l) {
-		super(u,p);
-		this.fname = f;
-		this.lname = l;
-		this.applications = new ArrayList<Application>();
-		this.accounts = new ArrayList<Account>();
-	}
-	
 	public Customer(int i,String u,String p,String f, String l) {
 		super(i,u,p);
 		this.fname = f;

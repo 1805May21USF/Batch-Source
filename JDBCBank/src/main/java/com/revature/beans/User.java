@@ -12,14 +12,6 @@ public abstract class User implements Serializable {
 		protected boolean isEmployee = false;
 		protected boolean isCustomer = true;
 		
-		public User(String username,String passWord) {
-			Random rnd = new Random();
-			this.setID(100000 + rnd.nextInt(900000));
-			
-			this.setUserName(username);
-			this.setPassWord(passWord);
-		}
-		
 		public User(int i, String username,String passWord) {
 			this.setID(i);
 			
