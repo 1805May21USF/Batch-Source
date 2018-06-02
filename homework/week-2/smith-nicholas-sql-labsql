@@ -27,6 +27,15 @@ FROM CUSTOMER
 ORDER BY CITY ASC;
 
 --2.3 INSERT INTO
+--Insert two new records into Genre table
+INSERT INTO GENRE (GENREID, NAME)
+VALUES (26, 'Psychobilly');
+INSERT INTO GENRE (GENREID, NAME)
+VALUES (27, 'Shoegaze');
+
+--Insert two new records into Employee table
+
+--Insert two new records into Customer table
 
 --2.4 UPDATE
 
