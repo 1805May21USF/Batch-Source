@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import com.revature.DAO.CustomerDAO;
 import com.revature.beans.Customer;
+import com.revature.beans.Employee;
 import com.revature.util.ConnFactory;
 
 public class CustomerDAOImpl implements CustomerDAO{
@@ -18,16 +19,34 @@ public class CustomerDAOImpl implements CustomerDAO{
 
 	@Override
 	public Customer findCustomer(int ID) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conn = cf.getConnection();
+		String sql = "SELECT * FROM JDBCBANK_CUSTOMER WHERE CUSTOMER_ID = ? ";
+		CallableStatement ps = conn.prepareCall(sql);
+		ps.setInt(1, ID);
+		ResultSet rs = ps.executeQuery();
+		
+		Customer s = null;
+		while(rs.next()) {
+			s = new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+		}
+		conn.close();
+		return s;
 	}
 
 	@Override
 	public Customer findCustomerByUsername(String username) throws SQLException {
 		Connection conn = cf.getConnection();
-		String sql = "SELECT * FROM JBDCBANK_CUSTOMER WHERE USERNAME=?;";
-		PreparedStatement ps = conn.prepareStatement(sql);
-		return null;
+		String sql = "SELECT * FROM JDBCBANK_CUSTOMER WHERE USERNAME=? ";
+		CallableStatement ps = conn.prepareCall(sql);
+		ps.setString(1, username);
+		ResultSet rs = ps.executeQuery();
+		Customer s = null;
+		
+		while(rs.next()) {
+			s = new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+		}
+		conn.close();
+		return s;
 		
 	}
 
@@ -37,13 +56,14 @@ public class CustomerDAOImpl implements CustomerDAO{
 		Connection conn = cf.getConnection();
 		
 		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM JDBCBANK_CUSTOMER;");
+		ResultSet rs = stmt.executeQuery("SELECT * FROM JDBCBANK_CUSTOMER");
 		Customer s = null;
 		
 		while(rs.next()) {
 			s = new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
 			customerList.add(s);
 		}
+		conn.close();
 		return customerList;
 	}
 
@@ -59,6 +79,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 		ps.setString(3, customer.getFname());
 		ps.setString(4, customer.getLname());
 		ps.execute();
+		conn.close();
 	}
 
 	@Override
@@ -72,11 +93,17 @@ public class CustomerDAOImpl implements CustomerDAO{
 		call.setString(4, customer.getFname());
 		call.setString(5, customer.getFname());
 		call.execute();
+		conn.close();
 	}
 
 	@Override
 	public void deleteCustomer(Customer customer) throws SQLException {
-		// TODO Auto-generated method stub
+		Connection conn = cf.getConnection();
+		String sql = "{call delete_customer(?)";
+		CallableStatement ps = conn.prepareCall(sql);
+		ps.setInt(1, customer.getID());
+		ps.execute();
+		conn.close();
 		
 	}
 

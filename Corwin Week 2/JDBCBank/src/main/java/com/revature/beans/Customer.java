@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class Customer extends User implements Serializable {
+public class Customer extends User{
 	
 	private String fname;
 	private String lname;
+	
 	private ArrayList<Application> applications;
 	private ArrayList<Account> accounts;
 	

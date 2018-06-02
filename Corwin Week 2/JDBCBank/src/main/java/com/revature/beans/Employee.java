@@ -2,7 +2,7 @@ package com.revature.beans;
 
 import java.io.Serializable;
 
-public class Employee extends User implements Serializable {
+public class Employee extends User{
 	
 	private String fname;
 	private String lname;

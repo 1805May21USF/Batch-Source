@@ -7,10 +7,12 @@ import java.util.Scanner;
 import java.util.Vector;
 
 import com.revature.DAO.CustomerDAO;
+import com.revature.util.Datastore;
 import com.revature.validation.Validation;
 
 public class Bank {
-	/*
+
+	private Datastore d;
 	private boolean isOpen = false;
 	private int bankView = 0;
 	private User currentUser;
@@ -20,13 +22,7 @@ public class Bank {
 	}
 	
 	public void connect() {
-		d = new Database();
-		Employee e1 = new Employee("employee","employee","Employee","Employee");
-		e1.makeEmployee();
-		d.updateEmployee(e1);
-		Employee e2 = new Employee("admin","admin","Admin","Admin");
-		e2.makeAdmin();
-		d.updateEmployee(e2);
+		d = d.getInstance();
 	}
 	
 	public void start() {
@@ -73,7 +69,12 @@ public class Bank {
 		System.out.println("3. Exit");
 			
 		Scanner scanner = new Scanner(System.in);
+		try {
 		selection = Integer.parseInt(scanner.nextLine());
+		} catch(NumberFormatException e) {
+			System.out.println("You selection was not a number!");
+			selection = -1;
+		}
 			
 		switch(selection) {
 			case 1:{
@@ -138,11 +139,9 @@ public class Bank {
 			fname=scanner.nextLine();
 		}
 		Customer c = new Customer(username,password,fname,lname);
-		System.out.println(d.getCustomer(username));
-		
-		if(d.getCustomer(username) != null) {
+		if(d.getCustomerByUsername(username) != null) {
 			
-			System.out.println("That username is alr1eady taken!");
+			System.out.println("That username is already taken!");
 			
 			do{ 
 				System.out.println("New Username:");
@@ -159,10 +158,11 @@ public class Bank {
 				}
 				c = new Customer(username,password,fname,lname);
 			
-			}while( d.getCustomer(username) != null);
+			}while( d.getCustomerByUsername(username) != null);
 		}
+		d.addCustomer(c);l.x
 		currentUser = c;
-		d.updateCustomer(c);
+		d.addCustomer(c);
 		linebreak();
 		
 		this.setBankView(3);
@@ -182,23 +182,24 @@ public class Bank {
 		password = scanner.nextLine();
 		linebreak();
 		
-		if(d.getCustomer(username)!=null) {
-			if(d.getCustomer(username).getPassWord().equals(password)) {
+		try {
+			if(d.getCustomerByUsername(username).getPassWord().equals(password)) {
 				System.out.println("Logged in");
 				this.setBankView(3);
-				this.currentUser = d.getCustomer(username);
+				this.currentUser = d.getCustomerByUsername(username);
 			}
-		}
-		
-		else if(d.getEmployee(username)!=null) {
-			if(d.getEmployee(username).getPassWord().equals(password)) {
-				System.out.println("Logged in");
-				this.setBankView(3);
-				this.currentUser = d.getEmployee(username);
+		}catch(NullPointerException e) {
+			try {
+				if(d.getEmployeeByUsername(username).getPassWord().equals(password)) {
+					System.out.println("Logged in");
+					this.setBankView(3);
+					this.currentUser = d.getEmployeeByUsername(username);
+				}
+			}catch(NullPointerException ee) {
+				System.out.println("Incorrect username or password.");
+				this.setBankView(0);
 			}
-		}
-		else {
-			this.setBankView(0);
+			
 		}
 		
 	}
@@ -218,7 +219,12 @@ public class Bank {
 			System.out.println("4. Exit");
 				
 			Scanner scanner = new Scanner(System.in);
-			selection = Integer.parseInt(scanner.nextLine());
+			try {
+				selection = Integer.parseInt(scanner.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("You selection was not a number!");
+					selection = -1;
+				}
 			switch(selection) {
 				case 1:{
 					applicationMainMenu();
@@ -260,7 +266,12 @@ public class Bank {
 			System.out.println("3. Exit");
 			int selection;
 			Scanner scanner = new Scanner(System.in);
-			selection = Integer.parseInt(scanner.nextLine());
+			try {
+				selection = Integer.parseInt(scanner.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("You selection was not a number!");
+					selection = -1;
+				}
 			switch(selection) {
 				case 1:{
 					openApplicationMenu();
@@ -286,9 +297,9 @@ public class Bank {
 	
 	public void openApplicationMenu() {
 		boolean inMenu = true;
-		Application a = new Application(d.getCustomer(this.currentUser.getUserName()), 0.00, new ArrayList<Customer>());
+		Application a = new Application(0.00, "PENDING");
 		ArrayList<Customer> c = a.getCustomers();
-		c.add(d.getCustomer(this.currentUser.getUserName()));
+		c.add(d.getCustomerByUsername(this.currentUser.getUserName()));
 		a.setCustomers(c);
 		
 		while(inMenu) {
@@ -296,7 +307,7 @@ public class Bank {
 			System.out.println("Apply For An Account!");
 			linebreak();
 			
-			System.out.println("Signer: "+a.getSigner().getFname() + " " + a.getSigner().getLname());
+			System.out.println("Signer: "+a.getCustomers().get(0).getFname() + " " + a.getCustomers().get(0).getLname());
 			System.out.println("Initial Balance: $" + a.getBalance());
 			System.out.print("Joint Customers: ");
 			for(Customer i:a.getCustomers()) {
@@ -310,7 +321,12 @@ public class Bank {
 			System.out.println("4. Exit");
 			int selection;
 			Scanner scanner = new Scanner(System.in);
-			selection = Integer.parseInt(scanner.nextLine());
+			try {
+				selection = Integer.parseInt(scanner.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("You selection was not a number!");
+					selection = -1;
+				}
 			switch(selection) {
 				case 1:{
 					double balance = 0.00;
@@ -328,26 +344,19 @@ public class Bank {
 					String input;
 					System.out.println("Enter a customer ID number");
 					input = scanner.nextLine();
-					if(d.getCustomer(Integer.parseInt(input))==null){
+					if(d.getCustomerById(Integer.parseInt(input))==null){
 						do {
 							System.out.println("Enter a customer ID number");
 							input = scanner.nextLine();
-						}while(d.getCustomer(Integer.parseInt(input))==null);
+						}while(d.getCustomerById(Integer.parseInt(input))==null);
 					}
-					a.getCustomers().add(d.getCustomer(Integer.parseInt(input)));
+					a.getCustomers().add(d.getCustomerById(Integer.parseInt(input)));
 					break;
 				}
 				case 3:{
-					System.out.println(a);
-					
-					ArrayList<Application> ab = currentCustomer(this.currentUser).getApplications();
-					ab.add(a);
-					currentCustomer(this.currentUser).setApplications(ab);
-					
-					
-					d.updateCustomer(currentCustomer(this.currentUser));
-					for(Customer c2: d.getAllCustomers()) {
-						System.out.println(c2);
+					d.addApplication(a);
+					for(Customer customer:c) {
+						d.addCustomerToApplication(customer,d.getApplicationByFingerprint(a.getFingerprint()));
 					}
 					inMenu=false;
 					break;
@@ -372,7 +381,7 @@ public class Bank {
 			System.out.println("Application #"+aa.getID());
 			linebreak();
 			System.out.println("Status: "+aa.getApproval());
-			System.out.println("Signer: "+aa.getSigner());
+			System.out.println("Signer: "+aa.getCustomers().get(0));
 			System.out.println("Balance: " +aa.getBalance());
 			System.out.print("Joint Customers: ");
 			for(Customer c:aa.getCustomers()) {
@@ -383,13 +392,21 @@ public class Bank {
 			
 			System.out.println("1. Exit.");
 			
-			String s = scanner.nextLine();
-			
-			int input = Integer.parseInt(s);
+			int input = -1;
+			try {
+				input = Integer.parseInt(scanner.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("You selection was not a number!");
+					input = -1;
+				}
 			while(input!=1) {
 				System.out.println("That was not a valid choice!");
-				s = scanner.nextLine();
-				input = Integer.parseInt(s);
+				try {
+					input = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						input = -1;
+					}
 			}
 			inMenu = false;
 			
@@ -400,7 +417,7 @@ public class Bank {
 		System.out.println("Information");
 		linebreak();
 		
-		Customer c = d.getCustomer(currentUser.ID);
+		Customer c = d.getCustomerById(currentUser.ID);
 		
 		System.out.println("ID:" + c.getID());
 		System.out.println("Name: "+c.getFname() + " " + c.getLname());
@@ -421,14 +438,21 @@ public class Bank {
 					System.out.println(i+1+". Application #" +c.getApplications().get(i).getID());
 				}
 				System.out.println(c.getApplications().size()+1 + ". Exit.");
-				String input;
-				input = scanner.nextLine();
-				selection = Integer.parseInt(input);
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				
 				while(!(selection > 0 && selection < c.getApplications().size()+2)) {
 					System.out.println("That was not a selection!");
-					input = scanner.nextLine();
-					selection = Integer.parseInt(input);
+					try {
+						selection = Integer.parseInt(scanner.nextLine());
+						} catch(NumberFormatException e) {
+							System.out.println("You selection was not a number!");
+							selection = -1;
+						}
 				}
 				if(selection < c.getApplications().size()+1) {
 					selection = selection-1;
@@ -438,8 +462,12 @@ public class Bank {
 			} else {
 				System.out.println("You have no applications!");
 				System.out.println("1. Exit.");
-				String input = scanner.nextLine();
-				selection = Integer.parseInt(input);
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				if(selection == 1) {
 					inMenu = false;
 				}
@@ -463,34 +491,46 @@ public class Bank {
 			Scanner scanner = new Scanner(System.in);
 			int selection;
 			
+			ArrayList<Account> accounts = c.getAccounts();
 			
-			if(c.getAccounts().size()!=0) {
-				for(int i = 0;i<c.getAccounts().size();i++) {
-					System.out.println(i+1+". Account #" +c.getAccounts().get(i).getID());
+			if(accounts.size()!=0) {
+				for(int i = 0;i<accounts.size();i++) {
+					System.out.println(i+1+". Account #" +accounts.get(i).getID());
 				}
-				System.out.println(c.getAccounts().size()+1 + ". Exit.");
-				String input;
-				input = scanner.nextLine();
-				selection = Integer.parseInt(input);
+				System.out.println(accounts.size()+1 + ". Exit.");
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				
-				while(!(selection > 0 && selection < c.getAccounts().size()+2)) {
+				while(!(selection > 0 && selection < accounts.size()+2)) {
 					System.out.println("That was not a selection!");
-					input = scanner.nextLine();
-					selection = Integer.parseInt(input);
+					try {
+						selection = Integer.parseInt(scanner.nextLine());
+						} catch(NumberFormatException e) {
+							System.out.println("You selection was not a number!");
+							selection = -1;
+						}
 				}
 				
-				if((selection<c.getAccounts().size()+1) &&selection>0) {
-					AccountMenu(c.getAccounts().get(selection-1),c);
+				if((selection<accounts.size()+1) &&selection>0) {
+					accountMenu(accounts.get(selection-1),c);
 				}
 				
-				if(selection == c.getAccounts().size()+1) {
+				if(selection == accounts.size()+1) {
 					inMenu = false;
 				}
 			} else {
 				System.out.println("You have no accounts!");
 				System.out.println("1. Exit.");
-				String input = scanner.nextLine();
-				selection = Integer.parseInt(input);
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				if(selection == 1) {
 					inMenu = false;
 				}
@@ -513,7 +553,12 @@ public class Bank {
 			System.out.println("3. Exit");
 				
 			Scanner scanner = new Scanner(System.in);
-			selection = Integer.parseInt(scanner.nextLine());
+			try {
+				selection = Integer.parseInt(scanner.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("You selection was not a number!");
+					selection = -1;
+				}
 			switch(selection) {
 				case 1:{
 					allCustomerInformationMenu();
@@ -548,21 +593,28 @@ public class Bank {
 			Scanner scanner = new Scanner(System.in);
 			int selection;
 			
-			ArrayList<Customer> customers = d.getAllCustomers();
+			ArrayList<Customer> customers = d.getCustomers();
 			
 			if(customers.size()!=0) {
 				for(int i = 0;i<customers.size();i++) {
 					System.out.println(i+1+". Customer #" +customers.get(i).getID());
 				}
 				System.out.println(customers.size()+1 + ". Exit.");
-				String input;
-				input = scanner.nextLine();
-				selection = Integer.parseInt(input);
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				
 				while(!(selection > 0 && selection < customers.size()+2)) {
 					System.out.println("That was not a selection!");
-					input = scanner.nextLine();
-					selection = Integer.parseInt(input);
+					try {
+						selection = Integer.parseInt(scanner.nextLine());
+						} catch(NumberFormatException e) {
+							System.out.println("You selection was not a number!");
+							selection = -1;
+						}
 				}
 				
 				if(selection<customers.size()+1) {
@@ -574,8 +626,12 @@ public class Bank {
 			} else {
 				System.out.println("There are no customers!");
 				System.out.println("1. Exit.");
-				String input = scanner.nextLine();
-				selection = Integer.parseInt(input);
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				if(selection == 1) {
 					inMenu = false;
 				}
@@ -596,7 +652,13 @@ public class Bank {
 			
 			Scanner scanner = new Scanner(System.in);
 			String s = scanner.nextLine();
-			int selection = Integer.parseInt(s);
+			int selection = -1;
+			try {
+				selection = Integer.parseInt(scanner.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("You selection was not a number!");
+					selection = -1;
+				}
 			
 			switch(selection) {
 			case 1:
@@ -625,7 +687,7 @@ public class Bank {
 			Scanner scanner = new Scanner(System.in);
 			int selection;
 			
-			ArrayList<Customer> customers = d.getAllCustomers();
+			ArrayList<Customer> customers = d.getCustomers();
 			ArrayList<Application> openapplications = new ArrayList<Application>();
 			
 			for(Customer c:customers) {
@@ -641,14 +703,21 @@ public class Bank {
 					System.out.println(i+1+". Application #" +openapplications.get(i).getID());
 				}
 				System.out.println(openapplications.size()+1 + ". Exit.");
-				String input;
-				input = scanner.nextLine();
-				selection = Integer.parseInt(input);
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				
 				while(!(selection > 0 && selection < openapplications.size()+2)) {
 					System.out.println("That was not a selection!");
-					input = scanner.nextLine();
-					selection = Integer.parseInt(input);
+					try {
+						selection = Integer.parseInt(scanner.nextLine());
+						} catch(NumberFormatException e) {
+							System.out.println("You selection was not a number!");
+							selection = -1;
+						}
 				}
 				
 				if(selection<openapplications.size()+1) {
@@ -660,8 +729,12 @@ public class Bank {
 			} else {
 				System.out.println("There are no open applications!");
 				System.out.println("1. Exit.");
-				String input = scanner.nextLine();
-				selection = Integer.parseInt(input);
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				if(selection == 1) {
 					inMenu = false;
 				}
@@ -675,7 +748,7 @@ public class Bank {
 			System.out.println("Application #"+a.getID());
 			linebreak();
 			System.out.println("Status: "+a.getApproval());
-			System.out.println("Signer: "+a.getSigner());
+			System.out.println("Signer: "+a.getCustomers().get(0));
 			System.out.println("Balance: " +a.getBalance());
 			System.out.print("Joint Customers: ");
 			for(Customer c:a.getCustomers()) {
@@ -687,23 +760,30 @@ public class Bank {
 			System.out.println("1. Approve Application");
 			System.out.println("2. Deny Application");
 			System.out.println("3. Exit.");
-			
-			String s = scanner.nextLine();
-			int selection = Integer.parseInt(s);
+			int selection = -1;
+			try {
+				selection = Integer.parseInt(scanner.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("You selection was not a number!");
+					selection = -1;
+				}
 			switch(selection) {
 			case 1:
 				a.setApproval("APPROVED");
-				Account acc = new Account(a.getBalance(),a.getSigner(),a.getCustomers());
+				d.updateApplication(a);
+				Account acc = new Account(a.getBalance(),"OPEN");
 				for(Customer c:a.getCustomers()) {
 					c.addAccount(acc);
-					d.updateCustomer(c);
 				}
-				a.getSigner().addAccount(acc);
-				d.updateCustomer(a.getSigner());
+				d.addAccount(acc);
+				acc = d.getAccountByFingerprint(acc.getFingerprint());
+				for(Customer c:a.getCustomers()) {
+					d.addCustomerToAccount(c, acc);
+				}
 				break;
 			case 2:
 				a.setApproval("DENIED");
-				d.updateCustomer(a.getSigner());
+				d.updateApplication(a);
 				break;
 			case 3:
 				inMenu = false;
@@ -712,7 +792,7 @@ public class Bank {
 			
 		}
 	}
-	public void AccountMenu(Account a,Customer c) {
+	public void accountMenu(Account a,Customer c) {
 		boolean inMenu = true;
 		while(inMenu) {
 			linebreak();
@@ -725,7 +805,7 @@ public class Bank {
 			if(a.getStatus().equals("OPEN")&&currentUser.isCustomer()) {
 				System.out.println("ID: "+a.getID());
 				System.out.println("Balance: "+a.getBalance());
-				System.out.println("Signer: "+a.getSigner());
+				System.out.println("Signer: "+a.getCustomers().get(0));
 				System.out.println("Status: "+a.getStatus());
 				
 				System.out.print("Joint Customers: ");
@@ -739,10 +819,15 @@ public class Bank {
 				System.out.println("3. Widthdraw. ");
 				System.out.println("4. Transaction History");
 				System.out.println("5. Exit");
-				s=scanner.nextLine();
-				int input = Integer.parseInt(s);
+				int selection = -1;
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				
-				switch(input) {
+				switch(selection) {
 				case 1:
 					depositMenu(a,c);
 					break;
@@ -769,7 +854,7 @@ public class Bank {
 			if(a.getStatus().equals("CLOSED")&&currentUser.isCustomer()) {
 				System.out.println("ID: "+a.getID());
 				System.out.println("Balance: "+a.getBalance());
-				System.out.println("Signer: "+a.getSigner());
+				System.out.println("Signer: "+a.getCustomers().get(0));
 				System.out.println("Status: "+a.getStatus());
 				
 				System.out.print("Joint Customers: ");
@@ -780,10 +865,15 @@ public class Bank {
 				System.out.println("ID: "+a.getID());
 				System.out.println("1. Transaction History");
 				System.out.println("2. Exit");
-				s=scanner.nextLine();
-				int input = Integer.parseInt(s);
+				int selection = -1;
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				
-				switch(input) {
+				switch(selection) {
 				case 1:
 					transactionMenu(a);
 					break;
@@ -802,7 +892,7 @@ public class Bank {
 			if(currentUser.isEmployee()) {
 				System.out.println("ID: "+a.getID());
 				System.out.println("Balance: "+a.getBalance());
-				System.out.println("Signer: "+a.getSigner());
+				System.out.println("Signer: "+a.getCustomers().get(0));
 				System.out.println("Status: "+a.getStatus());
 				
 				System.out.print("Joint Customers: ");
@@ -812,10 +902,15 @@ public class Bank {
 				
 				System.out.println("1. Transaction History");
 				System.out.println("2. Exit");
-				s=scanner.nextLine();
-				int input = Integer.parseInt(s);
+				int selection = -1;
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				
-				switch(input) {
+				switch(selection) {
 				case 1:
 					transactionMenu(a);
 					break;
@@ -829,7 +924,7 @@ public class Bank {
 			if(currentUser.isAdmin()) {
 				System.out.println("ID: "+a.getID());
 				System.out.println("Balance: "+a.getBalance());
-				System.out.println("Signer: "+a.getSigner());
+				System.out.println("Signer: "+a.getCustomers().get(0));
 				System.out.println("Status: "+a.getStatus());
 				
 				System.out.print("Joint Customers: ");
@@ -843,10 +938,15 @@ public class Bank {
 				System.out.println("4. Transaction History");
 				System.out.println("5. Close");
 				System.out.println("6. Exit");
-				s=scanner.nextLine();
-				int input = Integer.parseInt(s);
+				int selection = -1;
+				try {
+					selection = Integer.parseInt(scanner.nextLine());
+					} catch(NumberFormatException e) {
+						System.out.println("You selection was not a number!");
+						selection = -1;
+					}
 				
-				switch(input) {
+				switch(selection) {
 				case 1:
 					depositMenu(a,c);
 					break;
@@ -861,9 +961,9 @@ public class Bank {
 					break;
 				case 5:
 					a.closeAccount();
-					d.updateCustomer(c);
+					d.addCustomer(c);
 					for(Customer cs: a.getCustomers()) {
-						d.updateCustomer(cs);
+						d.addCustomer(cs);
 					}
 					break;
 				case 6:
@@ -889,7 +989,12 @@ public class Bank {
 			System.out.println("3. Exit");
 				
 			Scanner scanner = new Scanner(System.in);
-			selection = Integer.parseInt(scanner.nextLine());
+			try {
+				selection = Integer.parseInt(scanner.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("You selection was not a number!");
+					selection = -1;
+				}
 			switch(selection) {
 				case 1:{
 					allCustomerInformationMenu();
@@ -930,9 +1035,9 @@ public class Bank {
 			while(!Validation.isDollar(s));
 			
 			a.deposit(amount);
-			d.updateCustomer(c);
+			d.addCustomer(c);
 			for(Customer cs:a.getCustomers()) {
-				d.updateCustomer(cs);
+				d.addCustomer(cs);
 			}
 			inMenu=false;
 		}
@@ -954,9 +1059,9 @@ public class Bank {
 			while(!Validation.isDollar(s)|!a.canWithdraw(amount));
 			
 			a.withdraw(amount);
-			d.updateCustomer(c);
+			d.addCustomer(c);
 			for(Customer cs:a.getCustomers()) {
-				d.updateCustomer(cs);
+				d.addCustomer(cs);
 			}
 			inMenu=false;
 		}
@@ -982,12 +1087,12 @@ public class Bank {
 			}while(!isAccount(ID));
 			
 			a.transfer(getAccount(ID),amount);
-			d.updateCustomer(c);
+			d.addCustomer(c);
 			for(Customer cs:a.getCustomers()) {
-				d.updateCustomer(cs);
+				d.addCustomer(cs);
 			}
 			for(Customer c1:getAccount(ID).getCustomers()) {
-				d.updateCustomer(c1);
+				d.addCustomer(c1);
 			}
 			inMenu=false;
 		}
@@ -1003,8 +1108,13 @@ public class Bank {
 			for(Transaction t:a.getTransactions()) {
 				System.out.println(t);
 			}
-			String s = scanner.nextLine();
-			int selection = Integer.parseInt(s);
+			int selection = -1;
+			try {
+				selection = Integer.parseInt(scanner.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("You selection was not a number!");
+					selection = -1;
+				}
 			if(selection == 1) {
 				inMenu=false;
 			}
@@ -1037,7 +1147,7 @@ public class Bank {
 	}
 	
 	public boolean isAccount(int ID) {		
-		ArrayList<Customer> customers = d.getAllCustomers();
+		ArrayList<Customer> customers = d.getCustomers();
 		
 		for(Customer c:customers) {
 			for(Account a:c.getAccounts()) {
@@ -1050,7 +1160,7 @@ public class Bank {
 		return false;
 	}
 	public Account getAccount(int ID) {
-		ArrayList<Customer> customers = d.getAllCustomers();
+		ArrayList<Customer> customers = d.getCustomers();
 		for(Customer c:customers) {
 			for(Account a:c.getAccounts()) {
 				if(a.getID()==ID) {
@@ -1061,7 +1171,6 @@ public class Bank {
 		return null;
 	}
 	public Customer currentCustomer(User c) {
-		return d.getLoadedCustomer(this.currentUser.getID());
+		return d.getCustomerById(this.currentUser.getID());
 	}
-	*/
 }

@@ -3,7 +3,7 @@ package com.revature.beans;
 import java.io.Serializable;
 import java.util.Random;
 
-public abstract class User implements Serializable {
+public abstract class User{
 
 		protected int ID;
 		protected String userName;

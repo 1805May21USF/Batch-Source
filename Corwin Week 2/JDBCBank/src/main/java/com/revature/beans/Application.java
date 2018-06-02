@@ -4,38 +4,34 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Application implements Serializable{
+public class Application{
 	
 	private int ID;
-	private Customer signer;
+	private int fingerprint;
 	private double balance;
-	private ArrayList<Customer> customers;
 	private String approval;
-	public Application(Customer s,double b,ArrayList<Customer> c) {
-		Random rnd = new Random();
-		this.setID(100000 + rnd.nextInt(900000));
+	
+	private ArrayList<Customer> customers;
+	
+	public Application(double b,String a) {
+		Random random = new Random();
+		this.setFingerprint(100000000 + random.nextInt(900000000));
 		this.setBalance(b);
-		this.setSigner(s);
-		this.setCustomers(c);
-		this.setApproval("PENDING");
+		this.setApproval(a);
+		this.customers = new ArrayList<Customer>();
 	}
-	public ArrayList<Customer> getCustomers() {
-		return customers;
-	}
-	public void setCustomers(ArrayList<Customer> customers) {
-		this.customers = customers;
+	public Application(int ID,int f,double b,String a) {
+		this.setID(ID);
+		this.setFingerprint(f);
+		this.setBalance(b);
+		this.setApproval(a);
+		this.customers = new ArrayList<Customer>();
 	}
 	public String getApproval() {
 		return approval;
 	}
 	public void setApproval(String a) {
 		this.approval = a;
-	}
-	public Customer getSigner() {
-		return signer;
-	}
-	public void setSigner(Customer signer) {
-		this.signer = signer;
 	}
 	public int getID() {
 		return ID;
@@ -51,8 +47,50 @@ public class Application implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Application [ID=" + ID + ", signer=" + signer.ID + ", balance=" + balance + ", customers=" + customers.size()
-				+ ", approval=" + approval + "]";
+		return "Application [ID=" + ID + ", balance=" + balance+", approval=" + approval + "]";
+	}
+	
+	public boolean removeCustomer(Customer c) {
+		int toremove = -1;
+		for(int i = 0;i<this.getCustomers().size();i++) {
+			if(this.getCustomers().get(i).ID==c.getID()) {
+				toremove = i;
+			}
+		}
+		if(toremove != -1) {
+			this.getCustomers().remove(toremove);
+			System.out.println("Customer #"+c.getID()+" was removed from Application #"+this.getID());
+			return true;
+		}
+		System.out.println("Customer #"+c.getID()+" was not a customer with Application #"+this.getID());
+		return false;
+	}
+	public boolean addCustomer(Customer c) {
+		int toremove = -1;
+		for(int i = 0;i<this.getCustomers().size();i++) {
+			if(this.getCustomers().get(i).ID==c.getID()) {
+				toremove = i;
+			}
+		}
+		if(toremove == -1) {
+			this.getCustomers().add(c);
+			System.out.println("Customer #"+c.getID()+" add to Application #"+this.getID());
+			return true;
+		}
+		System.out.println("Customer #"+c.getID()+" was already on Application #"+this.getID());
+		return false;
+	}
+	public ArrayList<Customer> getCustomers() {
+		return customers;
+	}
+	public void setCustomers(ArrayList<Customer> customers) {
+		this.customers = customers;
+	}
+	public int getFingerprint() {
+		return fingerprint;
+	}
+	public void setFingerprint(int fingerprint) {
+		this.fingerprint = fingerprint;
 	}
 	
 }
