@@ -23,7 +23,6 @@ public class Bank implements Serializable {
 	final static Logger logger = Logger.getLogger(Bank.class);
 
 	
-	public HashMap<String,User> users = new HashMap<String, User>();
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -63,7 +62,7 @@ public class Bank implements Serializable {
 
 		while (true) {
 			//Display user prompt
-		System.out.print("\n$" + b.currentUser.balance+ ":" + b.currentUser.loginInfo.keySet()+"~");
+		System.out.print("\n$" + b.currentUser.getBalance()+ ":" + b.currentUser.getLoginInfo().keySet()+"~");
 
 		String command = sc.nextLine().trim();
 		switch (command) {
@@ -74,12 +73,12 @@ public class Bank implements Serializable {
 				System.out.println("Please type your password:");
 				String password = sc.nextLine();
 			
-				if (b.users.get(username)== null || !b.users.get(username).active) {
+				if (b.users.get(username)== null || !b.users.get(username).isActive()) {
 					System.err.println("Username not valid!");
 					continue;
 				}
 					
-					if(b.users.get(username).loginInfo.get(username).equals(password)) {
+					if(b.users.get(username).getLoginInfo().get(username).equals(password)) {
 						b.currentUser = b.users.get(username);
 					}else {
 						System.err.println("Password is not valid!");
@@ -104,7 +103,7 @@ public class Bank implements Serializable {
 				username = sc.nextLine().trim();
 				System.out.println("Please type the Joint User's password:");
 				password = sc.nextLine();
-				b.currentUser.loginInfo.put(username, password);
+				b.currentUser.getLoginInfo().put(username, password);
 				break;
 			case "kill":
 				System.out.println("Please type the username:");
@@ -118,13 +117,13 @@ public class Bank implements Serializable {
 				username = null;
 				double ammount = 0.0;
 				//only offer the user name option if we are an admin
-				if (b.currentUser.admin) {
+				if (b.currentUser.isAdmin()) {
 				System.out.println("Please enter the source account:");
 				username = sc.nextLine().trim();
 				}
 						
 				if (username == null ||username.length() == 0) {
-					username = (String) b.currentUser.loginInfo.keySet().toArray()[0];
+					username = (String) b.currentUser.getLoginInfo().keySet().toArray()[0];
 				}
 				System.out.println("Please type the destination account:");
 				User src = b.users.get(username); 
@@ -158,7 +157,7 @@ public class Bank implements Serializable {
 				}catch(InputMismatchException e) {
 					
 				}
-				b.currentUser.balance += ammount;
+				b.currentUser.setBalance(b.currentUser.getBalance() + ammount);
 				break;
 			case "withdraw":
 				System.out.println("Please type the ammount:");
@@ -171,10 +170,10 @@ public class Bank implements Serializable {
 					}catch(InputMismatchException e) {
 						
 					}
-				b.currentUser.balance -= ammount;
+				b.currentUser.setBalance(b.currentUser.getBalance() - ammount);
 				break;
 			case "approve":
-				if(!b.currentUser.admin) {
+				if(!b.currentUser.isAdmin()) {
 					System.err.println("Error! You don't have permission to do this.");
 				}
 				System.out.println("Please type the username:");
@@ -184,16 +183,16 @@ public class Bank implements Serializable {
 					System.err.println("Error! Account not found.");
 					break;
 				}
-				user.active=true;
+				user.setActive(true);
 				
 				break;
 			case "info":
 			case "help":
 			case "?":
 			case "status":
-				System.out.println("Hello, " + b.currentUser.loginInfo.keySet() + ". Your admin status is " + b.currentUser.admin );
+				System.out.println("Hello, " + b.currentUser.getLoginInfo().keySet() + ". Your admin status is " + b.currentUser.isAdmin() );
 				System.out.println("Your commands are: login create addJointUser kill transfer withdraw deposit exitAndCommit");
-				if (b.currentUser.admin) {
+				if (b.currentUser.isAdmin()) {
 					System.out.println("Your admin commands are: approve\nUsers are:");
 					for (User u : b.users.values()) {
 						System.out.println(u.toString());
@@ -206,16 +205,16 @@ public class Bank implements Serializable {
 				logins = new HashMap<>();
 				logins.put("admin","");
 				b.addUser(logins, true, true);
-				b.users.get("admin").active=true;
+				b.users.get("admin").setActive(true);
 				logins = new HashMap<>();
 				logins.put("potato","");
 				b.addUser(logins, false, false);
-				b.users.get("potato").active=true;
+				b.users.get("potato").setActive(true);
 
 				logins = new HashMap<>();
 				logins.put("carrot","");
 				b.addUser(logins, false, false);
-				b.users.get("carrot").active=true;
+				b.users.get("carrot").setActive(true);
 
 				break;
 			case "exit":
@@ -259,63 +258,67 @@ public class Bank implements Serializable {
 		for (String name : logins.keySet()) {
 			if(users.containsKey(name)) {
 				//error, name already taken
-				logger.warn("Oh dude! " + currentUser.loginInfo.keySet() + " just tried to make a user named " + name + " when that is someone else's name brah.");
+				logger.warn("Oh dude! " + currentUser.getLoginInfo().keySet() + " just tried to make a user named " + name + " when that is someone else's name brah.");
 				return false;
 			}
 		}
 		}
 		//make the new user! Admins make users instantly approved!
-		User newUser = new User(admin, logins,currentUser.admin, 0.0);
+		User newUser = new User(admin, logins,currentUser.isAdmin(), 0.0);
 		for (String name : logins.keySet()) {
 			users.put(name,newUser);
 		}
-		logger.info(currentUser.loginInfo.keySet() + " just made the user " + newUser.loginInfo.keySet() + ". Radical!");
+		logger.info(currentUser.getLoginInfo().keySet() + " just made the user " + newUser.getLoginInfo().keySet() + ". Radical!");
 		return true;
 		
 		
 	}
 	public boolean deleteUser(String name){
-		if(!currentUser.admin && !currentUser.loginInfo.containsKey(name)) {
-			logger.warn("Dude, " + currentUser.loginInfo.keySet() + " just tottally tried to kill " + name + "'s account without being an admin. Not cool man.");
+		/* TODO redo!
+		if(!currentUser.isAdmin() && !currentUser.getLoginInfo().containsKey(name)) {
+			logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to kill " + name + "'s account without being an admin. Not cool man.");
 			return false;
 		}
 		if(!users.containsKey(name)) {
 		//error, name not taken
-			logger.warn("Dude, " + currentUser.loginInfo.keySet() + " just tottally tried to kill " + name + " when that is not a valid name. You ok brah?");
+			logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to kill " + name + " when that is not a valid name. You ok brah?");
 
 			return false;
 		}
+		//*/
 		User toRemove = users.get(name);
-		for (String alias  : toRemove.loginInfo.keySet()) {
-			logger.info(currentUser.loginInfo.keySet() + " is killing " + name + ". Man what is the world comeing to brah?");
+		for (String alias  : toRemove.getLoginInfo().keySet()) {
+			logger.info(currentUser.getLoginInfo().keySet() + " is killing " + name + ". Man what is the world comeing to brah?");
 			users.remove(alias);
 		}
 		return true;
 		
 	}
 	public boolean transfer(User src, User dest, double ammount){
-		if (!(src == currentUser || currentUser.admin)) {
-			logger.warn("Dude, " + currentUser.loginInfo.keySet() + " just tottally tried to move " + ammount + " from "+ src.loginInfo.keySet() + " to " + dest.loginInfo.keySet() + " But they arn't, like, in charge or anything.");
+		/* TODO redo!
+		if (!(src == currentUser || currentUser.isAdmin())) {
+			logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to move " + ammount + " from "+ src.getLoginInfo().keySet() + " to " + dest.getLoginInfo().keySet() + " But they arn't, like, in charge or anything.");
 			return false;
 		}
-		if(!(src.balance-ammount >=0.0) ) {
-			logger.warn("Dude, " + currentUser.loginInfo.keySet() + " just tottally tried to move " + ammount + " from "+ src.loginInfo.keySet() + " to " + dest.loginInfo.keySet() + " But they don't have the clams, brah.");
+		if(!(src.getBalance()-ammount >=0.0) ) {
+			logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to move " + ammount + " from "+ src.getLoginInfo().keySet() + " to " + dest.getLoginInfo().keySet() + " But they don't have the clams, brah.");
 
 			return false;
 		}
-		if (!dest.active && !src.active) {
-			logger.warn("Dude, " + currentUser.loginInfo.keySet() + " just tottally tried to move " + ammount + " from "+ src.loginInfo.keySet() + " to " + dest.loginInfo.keySet() + " But someone isn't active... DUDE!");
+		if (!dest.isActive() && !src.isActive()) {
+			logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to move " + ammount + " from "+ src.getLoginInfo().keySet() + " to " + dest.getLoginInfo().keySet() + " But someone isn't active... DUDE!");
 			
 			return false;
 		}
 		if (ammount<=0) {
-			logger.warn("Dude, " + currentUser.loginInfo.keySet() + " just tottally tried to move " + ammount + " from "+ src.loginInfo.keySet() + " to " + dest.loginInfo.keySet() + ". Ya gotta give valid numbers man!");
+			logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to move " + ammount + " from "+ src.getLoginInfo().keySet() + " to " + dest.getLoginInfo().keySet() + ". Ya gotta give valid numbers man!");
 			
 			return false;
 		}
-		src.balance = src.balance - ammount;
-		dest.balance += ammount;
-		logger.info("Dude, " + currentUser.loginInfo.keySet() + " just moved " + ammount + " from "+ src.loginInfo.keySet() + " to " + dest.loginInfo.keySet() + ". That's economy brah, green changing hands.");
+		/*/
+		src.setBalance(src.getBalance() - ammount);
+		dest.setBalance(dest.getBalance() + ammount);
+		logger.info("Dude, " + currentUser.getLoginInfo().keySet() + " just moved " + ammount + " from "+ src.getLoginInfo().keySet() + " to " + dest.getLoginInfo().keySet() + ". That's economy brah, green changing hands.");
 		return true;
 	}
 

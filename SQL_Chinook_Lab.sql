@@ -420,27 +420,107 @@ Task – Create a transaction nested within a stored procedure that inserts a ne
 CREATE OR REPLACE PROCEDURE transactionInvoiceDel (
 ivID in number) AS
  BEGIN
-select customer.firstname||' ' ||customer.lastname into cname from CUSTOMER where customerID = idnum;
-select CUSTOMER.COMPANY into company from CUSTOMER where CUSTOMERID=idnum;
- DBMS_OUTPUT.PUT_LINE(cname || ' works at ' || company);
-end getCompAndName;
+DELETE FROM invoiceline WHERE invoiceid = ivID;
+DELETE FROM invoice WHERE invoiceid = ivID;
+
+
+end transactionInvoiceDel;
 /
-execute transactionInvoiceDel(3);
-DELETE FROM invoiceline where
-WHERE
-    invoiceid = ANY (
-        SELECT
-            invoiceid
-        FROM
-            invoice
-        WHERE
-            customerid = (
-                SELECT
-                    customerid
-                FROM
-                    customer
-                WHERE
-                    firstname = 'Robert'
-                    AND lastname = 'Walter'
-            )
-    );
+SET TRANSACTION NAME 'invoice_delete';
+execute transactionInvoiceDel(111);
+commit;
+
+
+
+CREATE OR REPLACE PROCEDURE addBob AS
+ BEGIN
+ SET TRANSACTION NAME 'adding_bob';
+insert into CUSTOMER Values(    88989,
+    'RANDO',
+    'ULTRABOB!',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    'JUNKEMAIL.COM',
+    NULL
+);
+commit;
+end addBob;
+/
+execute addBob;
+
+
+
+
+
+
+/*    
+6.0 Triggers
+In this section you will create various kinds of triggers that work when certain DML statements are executed on a table.
+6.1 AFTER/FOR
+Task - Create an after insert trigger on the employee table fired after a new record is inserted into the table.
+Task – Create an after update trigger on the album table that fires after a row is inserted in the table
+Task – Create an after delete trigger on the customer table that fires after a row is deleted from the table.
+*/
+set serveroutput on;
+
+CREATE or replace TRIGGER alertNewEmployee
+AFTER INSERT ON EMPLOYEE
+FOR EACH ROW
+BEGIN
+ DBMS_OUTPUT.PUT_LINE('WE ARE ADDING EMPLOYEE!');
+
+END;
+/
+CREATE or replace TRIGGER alertAlbumTable
+AFTER UPDATE ON ALBUM
+FOR EACH ROW
+BEGIN
+ DBMS_OUTPUT.PUT_LINE('WE ARE UPDATEING ALBUM!');
+
+END;
+/
+
+CREATE or replace TRIGGER ALERTDELETECUSTOMER
+AFTER DELETE ON CUSTOMER
+FOR EACH ROW
+BEGIN
+ DBMS_OUTPUT.PUT_LINE('WE ARE DELETING A CUSTOMER!');
+
+END;
+/
+/*
+7.0 JOINS
+In this section you will be working with combining various tables through the use of joins. You will work with outer, inner, right, left, cross, and self joins.
+7.1 INNER
+Task – Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId.
+*/
+SELECT * FROM CUSTOMER JOIN INVOICE ON CUSTOMER.CUSTOMERID = INVOICE.CUSTOMERID; 
+/*
+7.2 OUTER
+Task – Create an outer join that joins the customer and invoice table, specifying the CustomerId, firstname, lastname, invoiceId, and total.
+*/
+SELECT  CUSTOMER.CUSTOMERID, firstname, lastname, INVOICE.INVOICEID, total FROM CUSTOMER FULL OUTER JOIN INVOICE ON CUSTOMER.CUSTOMERID = INVOICE.CUSTOMERID; 
+/*
+7.3 RIGHT
+Task – Create a right join that joins album and artist specifying artist name and title.
+*/
+SELECT ARTIST.NAME, ALBUM.TITLE FROM ALBUM RIGHT JOIN ARTIST ON ALBUM.artistid = ARTIST.ARTISTID;
+
+/*
+7.4 CROSS
+Task – Create a cross join that joins album and artist and sorts by artist name in ascending order.
+*/
+SELECT * FROM ALBUM CROSS JOIN ARTIST ORDER BY ARTIST.NAME ASC;
+
+
+/*
+7.5 SELF
+Task – Perform a self-join on the employee table, joining on the reportsto column.
+*/
+SELECT * FROM EMPLOYEE JOIN EMPLOYEE ON EMPLOYEE.EMPLOYEEID = EMPLOYEE.REPORTSTO;
