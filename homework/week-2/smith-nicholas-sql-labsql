@@ -34,6 +34,20 @@ INSERT INTO GENRE (GENREID, NAME)
 VALUES (27, 'Shoegaze');
 
 --Insert two new records into Employee table
+INSERT INTO EMPLOYEE (EMPLOYEEID, LASTNAME, FIRSTNAME, TITLE, REPORTSTO, BIRTHDATE, HIREDATE,
+ADDRESS, CITY, STATE, COUNTRY, POSTALCODE, PHONE, FAX, EMAIL)
+VALUES (9, 'Reznor', 'Trent', 'IT Staff', 6, '17-MAY-65', '21-APR-05',
+'455 Lakeview Drive SW', 'Brooks', 'AB', 'Canada', 'T1K 2Z9', '+1 (403)-789-1212',
+'+1 (403)-789-8452', 'trent@chinookcorp.com');
+
+INSERT INTO EMPLOYEE (EMPLOYEEID, LASTNAME, FIRSTNAME, TITLE, REPORTSTO, BIRTHDATE, HIREDATE,
+ADDRESS, CITY, STATE, COUNTRY, POSTALCODE, PHONE, FAX, EMAIL)
+VALUES (10, 'Macdonald', 'Norm', 'IT Staff', 6, '17-OCT-59', '27-MAY-05',
+'279 Snowy Hill Road SW', 'Brooks', 'AB', 'Canada', 'T1J 3X8', '+1 (403)-848-2188',
+'+1 (403)-848-6224', 'norm@chinookcorp.com');
+
+DELETE FROM EMPLOYEE
+WHERE EMPLOYEEID = 10;
 
 --Insert two new records into Customer table
 
