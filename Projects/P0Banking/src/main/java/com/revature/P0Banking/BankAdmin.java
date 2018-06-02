@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BankAdmin extends Partner implements Serializable{
+public class BankAdmin extends Partner{
 	private static final long serialVersionUID = 1L;
 	
 	public BankAdmin(String name,String username, String password) {
