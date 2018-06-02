@@ -17,7 +17,7 @@ WHERE FIRSTNAME = 'Andrew' AND REPORTSTO IS NULL;
 
 --2.2 ORDER BY
 --Select all albums in Album table and sort result set in descending order by title
-SELECT TITLE
+SELECT *
 FROM ALBUM
 ORDER BY TITLE DESC;
 
@@ -58,12 +58,46 @@ VALUES (61, 'Dale', 'Dillinger', 'Plastic Omnium', '445 Broad Street', 'Chattano
 'USA', '37422', '+1 (423)-454-8964', '+1 (423)-454-4731', 'ddillinger@yahoo.com', 4);
 
 --2.4 UPDATE
+--Update Aaron Mitchell in Customer table to Robert Walter
+UPDATE CUSTOMER
+SET FIRSTNAME = 'Robert', LASTNAME = 'Walter'
+WHERE CUSTOMERID = '32';
+
+--Update name of artist in the Artist table “Creedence Clearwater Revival” to “CCR”	
+UPDATE ARTIST
+SET NAME = 'CCR'
+WHERE ARTISTID = 76;
 
 --2.5 LIKE
+--Select all invoices with a billing address like “T%” 
+SELECT *
+FROM INVOICE
+WHERE BILLINGADDRESS LIKE 'T%';
 
 --2.6 BETWEEN
+--Select all invoices that have a total between 15 and 50
+SELECT *
+FROM INVOICE
+WHERE TOTAL BETWEEN 15.00 AND 50.00;
+
+--Select all employees hired between 1st of June 2003 and 1st of March 2004
+SELECT *
+FROM EMPLOYEE
+WHERE HIREDATE BETWEEN '01-JUN-03' AND '01-MAR-04';
 
 --2.7 DELETE
+--Delete a record in Customer table where the name is Robert Walter
+--Delete records from INVOICELINE where INVOICEID are specific numbers from 50-342
+DELETE FROM INVOICELINE
+WHERE INVOICEID IN (50, 61, 116, 245, 268, 290, 342);
+
+--Delete child dependencies from the INVOICE table where CUSTOMERID = 32
+DELETE FROM INVOICE
+WHERE CUSTOMERID = 32;
+
+--Delete Robert Walter. His CUSTOMERID is 32.
+DELETE FROM CUSTOMER
+WHERE CUSTOMERID = 32;
 
 --3.0 SQL Functions
 
