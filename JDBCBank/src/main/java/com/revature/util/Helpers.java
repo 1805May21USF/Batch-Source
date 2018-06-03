@@ -9,9 +9,15 @@ import com.revature.beans.CustomerAccount;
 import com.revature.daoimpl.CustomerAccountDAOImpl;
 import com.revature.driver.Driver;
 
+/*
+ * Provides helper functionality.
+ */
 public class Helpers {
 	private static Scanner sc = Driver.sc;
 	
+	/*
+	 * Determines if a username already exists in the database.
+	 */
 	public static boolean usernameExists(String username) {
 		CustomerAccountDAOImpl cadi = new CustomerAccountDAOImpl();
 		List<CustomerAccount> customerAccounts = null;
@@ -28,6 +34,9 @@ public class Helpers {
 		return false;
 	}
 	
+	/*
+	 * Retrieves a valid number amount from the user.
+	 */
 	public static float getValidAmount() {
 		float amt;
 		

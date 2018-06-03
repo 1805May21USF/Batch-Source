@@ -1,5 +1,8 @@
 package com.revature.beans;
 
+/*
+ * Customer Account Bean
+ */
 public class CustomerAccount {
 	private int user_ID;
 	private String username;

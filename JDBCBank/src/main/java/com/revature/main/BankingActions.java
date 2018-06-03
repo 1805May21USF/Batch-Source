@@ -13,6 +13,9 @@ import com.revature.daoimpl.CustomerAccountDAOImpl;
 import com.revature.driver.Driver;
 import com.revature.util.Helpers;
 
+/*
+ * Provides main banking functionalities.
+ */
 public class BankingActions {
 	private static Scanner sc = Driver.sc;
 	private static BankAccountDAOImpl badi = Driver.badi;
@@ -20,7 +23,7 @@ public class BankingActions {
 	private static NumberFormat formatter = new DecimalFormat("#0.00");
 	
 	/*
-	 * Provides customers with appropriate options.
+	 * Provides customers with account options.
 	 */
 	public static void userOptions(CustomerAccount cus) {
 		while (true) {
@@ -47,6 +50,9 @@ public class BankingActions {
 		}
 	}
 	
+	/*
+	 * Provides customers with main banking functionalities with their bank account.
+	 */
 	private static void customerOption(int bankAccountID, CustomerAccount cus) {
 		while (true) {
 			System.out.println("1. Check Balance\n2. Withdraw\n3. Deposit\n4. Close Account\n-1 Exit");
@@ -76,12 +82,18 @@ public class BankingActions {
 		}
 	}
 	
+	/*
+	 * Displays the current bank account's balance.
+	 */
 	private static void optionBalance(BankAccount acc) {
 		float balance = 0.0f;
 		balance = acc.getBalance();
 		System.out.println("Balance: " + formatter.format(balance));
 	}
 
+	/*
+	 * Deletes the current bank account if the balance is 0.
+	 */
 	private static boolean optionClose(BankAccount acc) {
 		float balance = 0.0f;
 		balance = acc.getBalance();
@@ -100,6 +112,9 @@ public class BankingActions {
 		return false;
 	}
 
+	/*
+	 * Returns a bank account by ID.
+	 */
 	private static BankAccount getBankAccount(int bankAccountID) {
 		BankAccount acc = null;
 		try {
@@ -111,6 +126,9 @@ public class BankingActions {
 		return acc;
 	}
 	
+	/*
+	 * Allows customers to deposit funds into their bank account.
+	 */
 	private static void optionDeposit(BankAccount acc) {
 		float amt = Helpers.getValidAmount();
 		if (amt == -1)
@@ -129,6 +147,9 @@ public class BankingActions {
 				" Deposited: " + formatter.format(amt));
 	}
 
+	/*
+	 * Allows customers to withdraw funds from their bank account.
+	 */
 	private static void optionWithdraw(BankAccount acc) {
 		float amt = Helpers.getValidWithdrawAmount(acc);
 		if (amt == -1)
@@ -147,6 +168,9 @@ public class BankingActions {
 				" Withdrew: " + formatter.format(amt));
 	}
 
+	/*
+	 * Allows customers to choose what bank account they want to interact with.
+	 */
 	private static int selectAnAccount(CustomerAccount cus) {
 		List<BankAccount> bankAccounts = null;
 		try {
@@ -181,6 +205,9 @@ public class BankingActions {
 		}
 	}
 	
+	/*
+	 * Allows customers to display their personal account info.
+	 */
 	private static void viewPersonalInfo(CustomerAccount cus) {
 		System.out.println("Name: " + cus.getFirstname() + " " + cus.getLastname());
 		System.out.println("Username: " + cus.getUsername());
@@ -192,6 +219,9 @@ public class BankingActions {
 		}
 	}
 
+	/*
+	 * Displays admin options.
+	 */
 	public static void AdminOptions() {
 		while (true) {
 			System.out.println("1. Select A Bank Account\n2. Delete A Customer Account\n3. Create A Customer Account\n-1 Exit");
@@ -210,10 +240,16 @@ public class BankingActions {
 		}
 	}
 
+	/*
+	 * Allows the admin to create a new customer account.
+	 */
 	private static void optionAdminCreate() {
 		Driver.optionRegister();
 	}
-
+	
+	/*
+	 * Allows the admin to delete a customer account.
+	 */
 	private static void optionAdminDelete() {
 		System.out.println("Please select a user account by username:\n-1 Exit ");
 		String user = sc.nextLine();
@@ -237,6 +273,9 @@ public class BankingActions {
 		}
 	}
 
+	/*
+	 * Allows the admin to select a customer account to view/edit.
+	 */
 	private static void optionAdminSelect() {
 		System.out.println("Please select a user account by username:\n-1 Exit ");
 		String user = sc.nextLine();

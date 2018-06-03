@@ -13,6 +13,9 @@ import com.revature.daoimpl.CustomerAccountDAOImpl;
 import com.revature.main.BankingActions;
 import com.revature.util.Helpers;
 
+/*
+ * Main driver for the banking app.
+ */
 public class Driver {
 	public final static Scanner sc = new Scanner(System.in);
 	public final static CustomerAccountDAOImpl cadi = new CustomerAccountDAOImpl();
@@ -43,6 +46,9 @@ public class Driver {
     	System.out.println("Closed.");
 	}
 	
+	/*
+	 * Grants admin access if the correct password is inputed.
+	 */
 	private static void optionAdmin() {
 		String password = getPassword();
 		if (password.equals("pass")) {

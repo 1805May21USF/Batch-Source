@@ -12,6 +12,9 @@ import com.revature.beans.CustomerAccount;
 import com.revature.dao.CustomerAccountDAO;
 import com.revature.util.ConnFactory;
 
+/*
+ * Implementation of the customer account DAO.
+ */
 public class CustomerAccountDAOImpl implements CustomerAccountDAO {
 	public static ConnFactory cf = ConnFactory.getInstance();
 	

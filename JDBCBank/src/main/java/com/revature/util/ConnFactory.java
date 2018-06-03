@@ -8,6 +8,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/*
+ * Creates new singleton connections to the database.
+ */
 public class ConnFactory {
 	private static ConnFactory cf = new ConnFactory();
 	

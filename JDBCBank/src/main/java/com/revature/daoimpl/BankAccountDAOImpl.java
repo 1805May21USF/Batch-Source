@@ -12,9 +12,12 @@ import com.revature.beans.BankAccount;
 import com.revature.dao.BankAccountDAO;
 import com.revature.util.ConnFactory;
 
+/*
+ * Implementation of the bank account DAO.
+ */
 public class BankAccountDAOImpl implements BankAccountDAO {
 	public static ConnFactory cf = ConnFactory.getInstance();
-	
+
 	@Override
 	public List<BankAccount> getBankAccounts() throws SQLException {
 		List<BankAccount> bankAccounts = new ArrayList<BankAccount>();

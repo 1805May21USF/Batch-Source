@@ -1,5 +1,8 @@
 package com.revature.beans;
 
+/*
+ * Bank Account Bean
+ */
 public class BankAccount {
 	private int bank_account_ID;
 	private float balance;
