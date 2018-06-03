@@ -14,10 +14,15 @@ import com.revature.util.ConnFactory;
 
 public class ImpUserDAO implements UserDAO{
 	public static ConnFactory cf = ConnFactory.getInstance();
-
+	
+	/*
+	 * Name: insertUser()
+	 * Input:String firstname, String lastname, String username, String password
+	 * Output:None
+	 * Description: Calls procedure to create a user account in SQL Table USERS
+	 */
 	@Override
 	public void insertUser(String firstname, String lastname, String username, String password) throws SQLException {
-		// TODO Auto-generated method stub
 		Connection conn = cf.getConnection();
 		
 		String sql = "{call INSERTUSER(?,?,?,?)";
@@ -28,8 +33,15 @@ public class ImpUserDAO implements UserDAO{
 		call.setString(3, username);
 		call.setString(4, password);
 		call.execute();
+		conn.close();
 	}
 
+	/*
+	 * Name: getUserByCredentials()
+	 * Input:String username, String password
+	 * Output:User
+	 * Description: Calls prepared statement to get a user account by username and password in SQL Table USERS
+	 */
 	@Override
 	public User getUserByCredentials(String username, String password) throws SQLException {
 		User usr = new User();
@@ -46,9 +58,16 @@ public class ImpUserDAO implements UserDAO{
 			usr.setUsername(rs.getString(4));
 			usr.setPassword(rs.getString(5));
 		}
+		conn.close();
 		return usr;
 	}
 	
+	/*
+	 * Name: getUserByUsername()
+	 * Input:String username
+	 * Output:User
+	 * Description: Calls prepared statement to get a user account by username in SQL Table USERS
+	 */
 	@Override
 	public User getUserByUsername(String username) throws SQLException {
 		User usr = new User();
@@ -64,9 +83,16 @@ public class ImpUserDAO implements UserDAO{
 			usr.setUsername(rs.getString(4));
 			usr.setPassword(rs.getString(5));
 		}
+		conn.close();
 		return usr;
 	}
-
+	
+	/*
+	 * Name: getUserList()
+	 * Input:None
+	 * Output:List<User>
+	 * Description: Calls prepared statement to get all users in SQL Table USERS
+	 */
 	@Override
 	public List<User> getUserList() throws SQLException {
 		// TODO Auto-generated method stub
@@ -85,9 +111,16 @@ public class ImpUserDAO implements UserDAO{
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+		conn.close();
 		return userList;
 	}
 
+	/*
+	 * Name: deleteUser()
+	 * Input:String username
+	 * Output:None
+	 * Description: Calls procedure to delete a user account in SQL Table USERS
+	 */
 	@Override
 	public void deleteUser(String username) throws SQLException {
 		// TODO Auto-generated method stub
@@ -97,9 +130,16 @@ public class ImpUserDAO implements UserDAO{
 		
 		CallableStatement call = conn.prepareCall(sql);
 		call.setString(1, username);
-		call.execute();	
+		call.execute();
+		conn.close();
 	}
-
+	
+	/*
+	 * Name: updateUser()
+	 * Input: User
+	 * Output:None
+	 * Description: Calls procedure to update a user account in SQL Table USERS
+	 */
 	@Override
 	public void updateUser(User u) throws SQLException {
 		Connection conn = cf.getConnection();
@@ -113,5 +153,6 @@ public class ImpUserDAO implements UserDAO{
 		call.setString(4, u.getUsername());
 		call.setString(5, u.getPassword());
 		call.execute();
+		conn.close();
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import com.revature.beans.User;
 
 public interface UserDAO {
+	/*******Abstract Methods********************/
 	public abstract void insertUser(String firstname, String lastname, String username, String password) throws SQLException;
 	public abstract void deleteUser(String username) throws SQLException;
 	public abstract void updateUser(User u) throws SQLException;

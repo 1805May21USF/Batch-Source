@@ -15,6 +15,7 @@ public class User {
 	private String password;
 	private static ImpBankAccountDAO ibad = new ImpBankAccountDAO();
 
+	/******Constructors************************/
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -28,6 +29,13 @@ public class User {
 		this.password = password;
 	}
 	
+	/*********Methods*************************/
+	/*
+	 * Name: promptUser()
+	 * Input:None
+	 * Output:None
+	 * Description: Provides actions a user can do.
+	 */
 	public void promptUser() {
 		int pick = -1;
 		while(pick != 5) {
@@ -52,6 +60,12 @@ public class User {
 		}
 	}
 	
+	/*
+	 * Name: selectUserActions()
+	 * Input:int pick
+	 * Output:None
+	 * Description: Selects the action a user takes
+	 */
 	public void selectUserActions(int pick) throws SQLException, BadInputException {
 		switch(pick) {
 		//view accounts
@@ -60,7 +74,7 @@ public class User {
 				break;
 			//access accounts
 			case 2:
-				BankAccount acct = this.selectAccount();
+				BankAccount acct = this.selectBankAccount();
 				acct.promptBankAccountActions();
 				break;
 			//create account
@@ -74,6 +88,12 @@ public class User {
 		}
 	}
 	
+	/*
+	 * Name: viewAccounts()
+	 * Input:None
+	 * Output:None
+	 * Description: Prints out personal information and account info of user.
+	 */
 	public void viewAccounts() throws SQLException {
 		System.out.println("Name: "+this.getFirstname()+" "+this.getLastname());
 		System.out.println("Username: "+this.getUsername());
@@ -81,18 +101,30 @@ public class User {
 		List<BankAccount> accts = ibad.getUserBankAccounts(this.getId());
 		int i = 1;
 		for(BankAccount acct: accts) {
-			System.out.println(i+") "+acct.getAccountid()+": $"+String.format("%.2f", acct.getBalance()));
+			System.out.println(i+") Account-"+acct.getAccountid()+": $"+String.format("%.2f", acct.getBalance()));
 			i++;
 		}
 	}
 	
+	/*
+	 * Name: createBankAccount
+	 * Input:None
+	 * Output:None
+	 * Description: Adds a bank account to user account
+	 */
 	public void createBankAccount() throws SQLException {
 		ibad.createBankAccount(this.id);
 		System.out.println("You have added a bank account.");
 	}
 	
+	/*
+	 * Name: deleteBankAccount
+	 * Input:None
+	 * Output:None
+	 * Description: Deletes a bank account from user account
+	 */
 	public void deleteBankAccount() throws SQLException, NumberFormatException, BadInputException {
-		BankAccount acct = this.selectAccount();
+		BankAccount acct = this.selectBankAccount();
 		if(acct.getBalance() != 0.00f) {
 			System.out.println("Bank account still has funds.");
 			throw new BadInputException();
@@ -103,7 +135,13 @@ public class User {
 		}
 	}
 	
-	public BankAccount selectAccount() throws SQLException, BadInputException {
+	/*
+	 * Name: selectBankAccount
+	 * Input:None
+	 * Output:BankAccount
+	 * Description: User is able to select a bank account to access
+	 */
+	public BankAccount selectBankAccount() throws SQLException, BadInputException {
 		System.out.println("Select an account to access: ");
 		List<BankAccount> accts = ibad.getUserBankAccounts(this.id);
 		int i = 1;
@@ -121,6 +159,7 @@ public class User {
 		}
 	}
 	
+	/*******Getters and Setter********************/
 	public String getUsername() {
 		return username;
 	}

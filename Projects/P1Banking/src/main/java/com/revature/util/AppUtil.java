@@ -13,12 +13,19 @@ import com.revature.exceptions.NullUserException;
 import com.revature.implementdao.ImpUserDAO;
 
 public class AppUtil {
-
+	/****Constructors************/
 	public AppUtil() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
+	/****Methods*****************/
+	/*
+	 * Name: getCredentials()
+	 * Input:None
+	 * Output:String[]
+	 * Description: Receives username and password from user
+	 */
 	public static String[] getCredentials() {
 		System.out.print("Username: ");
     	String username = App.sc.nextLine();
@@ -30,6 +37,12 @@ public class AppUtil {
     	return cred;
 	}
 	
+	/*
+	 * Name: login()
+	 * Input:String[] cred
+	 * Output:User
+	 * Description: Utility method that gets the user object account through username and password
+	 */
 	public static User login(String [] cred) throws SQLException, NullUserException, FileNotFoundException, IOException {
 		String username = cred[0];
 		String password = cred[1];
@@ -44,9 +57,15 @@ public class AppUtil {
 		}
 	}
 	
+	/*
+	 * Name: checkSuperUser
+	 * Input:String username, String password
+	 * Output:boolean
+	 * Description: Checks if username and password is for SuperUser account
+	 */
 	public static boolean checkSuperUser(String username, String password) throws FileNotFoundException, IOException {
 		Properties prop = new Properties();
-		prop.load(new FileReader("database.properties"));
+		prop.load(new FileReader("admin.properties"));
 		//check if admin first
 		if(username.equals(prop.getProperty("superusr")) && password.equals(prop.getProperty("superpass"))) {
 			return true;
@@ -55,6 +74,12 @@ public class AppUtil {
 		}
 	}
 	
+	/*
+	 * Name: checkForMatch
+	 * Input:String username
+	 * Output:boolean
+	 * Description: Checks if username matches any in SQL Table USERS
+	 */
 	public static boolean checkForMatch(String username) throws SQLException {
 		ImpUserDAO iud = new ImpUserDAO();
 		List<User> users = iud.getUserList();
@@ -65,6 +90,13 @@ public class AppUtil {
 		}
 		return false;
 	}
+	
+	/*
+	 * Name: register
+	 * Input:None
+	 * Output:None
+	 * Description: Registers an account
+	 */
 	public static void register() throws SQLException {
 		System.out.print("Username: ");
     	String username = App.sc.nextLine();

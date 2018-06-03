@@ -12,6 +12,7 @@ public class BankAccount {
 	private int userid;
 	private static final ImpBankAccountDAO ibad = new ImpBankAccountDAO();
 
+	/******Constructors************************/
 	public BankAccount(int accountid, float balance, int userid) {
 		super();
 		this.accountid = accountid;
@@ -19,6 +20,13 @@ public class BankAccount {
 		this.userid = userid;
 	}
 	
+	/*********Methods*************************/
+	/*
+	 * Name: promptBankAccountActions()
+	 * Input:None
+	 * Output:None
+	 * Description: Provides actions a user can do inside their bank account.
+	 */
 	public void promptBankAccountActions() {
 		int pick = -1;
 		while(pick != 4){
@@ -50,13 +58,20 @@ public class BankAccount {
 		}
 	}
 	
-	private void viewBalance() {
+	/*
+	 * Name: viewBalance()
+	 * Input:None
+	 * Output:None
+	 * Description: Account method that allows user to see balance
+	 */
+	public void viewBalance() {
 		System.out.print("Account-"+this.getAccountid()+" has: $");
 		System.out.printf("%.2f\n",this.getBalance());
 	}
+	
 	/*
 	 * Name: withdraw
-	 * Input:double amount
+	 * Input:float amount
 	 * Output:None
 	 * Description: Public account method that allows user to withdraw money from account instance
 	 */
@@ -65,11 +80,14 @@ public class BankAccount {
 			System.out.println("\nThe amount exceeded what you have.");
 			throw new BadInputException();
 		}
-		else if(amount < 0) {throw new BadInputException();}
+		else if(amount < 0) {
+			throw new BadInputException();
+		}
 		else {
 			this.setBalance(this.getBalance()-amount);
 			ibad.updateBankAccount(this);
 			String money = String.format("%.2f", amount);
+			System.out.println("You withdrew "+money+" from the account.");
 			App.log.info("Account-"+this.getAccountid()+" withdrew: $"+money);
 		}
 	}
@@ -85,10 +103,11 @@ public class BankAccount {
 		this.setBalance(this.getBalance()+amount);
 		ibad.updateBankAccount(this);
 		String money = String.format("%.2f", amount);
+		System.out.println("You have deposited "+money+" into the account.");
 		App.log.info("Account-"+this.getAccountid()+" deposited: $"+money);
 	}
 	
-	
+	/*******Getters and Setter********************/
 	public int getAccountid() {
 		return accountid;
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import com.revature.beans.BankAccount;
 
 public interface BankAccountDAO {
+	/*******Abstract Methods********************/
 	public abstract void createBankAccount(int userid) throws SQLException;
 	public abstract void updateBankAccount(BankAccount b) throws SQLException;
 	public abstract void deleteBankAccount(int accountid) throws SQLException;

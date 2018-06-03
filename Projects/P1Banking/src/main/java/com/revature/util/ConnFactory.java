@@ -21,7 +21,12 @@ public class ConnFactory {
 		}
 		return cf;
 	}
-	
+	/*
+	 * Name: getConnection()
+	 * Input:None
+	 * Output:Connection
+	 * Description: Creates a connection to server
+	 */
 	public Connection getConnection() {
 		Connection conn = null;
 		//getConnection(url, user, password)

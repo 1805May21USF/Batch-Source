@@ -45,6 +45,7 @@ class BankAccountTest {
 		int newsize = ibad.getBankAccountList().size();
 		ibad.deleteBankAccount(ibad.getUserBankAccounts(u.getId()).get(0).getAccountid());
 		iud.deleteUser(username);
+		conn.close();
 		assertTrue(newsize>oldsize);
 	}
 	
@@ -68,6 +69,7 @@ class BankAccountTest {
 		}
 		ibad.deleteBankAccount(ibad.getUserBankAccounts(u.getId()).get(0).getAccountid());
 		iud.deleteUser(username);
+		conn.close();
 		assertTrue(bankAccountList.size()>0);
 	}
 	
@@ -92,6 +94,7 @@ class BankAccountTest {
 		}
 		ibad.deleteBankAccount(ibad.getUserBankAccounts(u.getId()).get(0).getAccountid());
 		iud.deleteUser(username);
+		conn.close();
 		assertTrue(bankAccountList.size()>0);
 	}
 	
@@ -113,11 +116,13 @@ class BankAccountTest {
 		call.execute();
 		iud.deleteUser(username);
 		int newsize = ibad.getBankAccountList().size();
+		conn.close();
 		assertTrue(newsize<oldsize);
 	}
 	
 	@Test
 	void testBankUpdate() throws SQLException {
+		float amount = 30.00f;
 		Connection conn = cf.getConnection();
 		ImpUserDAO iud = new ImpUserDAO();
 		iud.insertUser(firstname, lastname, username, password);
@@ -129,11 +134,15 @@ class BankAccountTest {
 		
 		CallableStatement call = conn.prepareCall(sql);
 		call.setInt(1, ibad.getUserBankAccounts(u.getId()).get(0).getAccountid());
-		call.setFloat(2, 30.00f);
+		call.setFloat(2, amount);
 		call.setInt(3, u.getId());
 		call.execute();
+		
+		assertTrue(ibad.getUserBankAccounts(u.getId()).get(0).getBalance()==amount);
+		
 		ibad.deleteBankAccount(ibad.getUserBankAccounts(u.getId()).get(0).getAccountid());
 		iud.deleteUser(username);
+		conn.close();
 	}
 
 }
