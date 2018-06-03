@@ -8,16 +8,18 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
 public class Bank implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3066544662705509838L;
 	public static final String dataFile="data.bin";
 	public transient User currentUser = User.defaultUser;
 	final static Logger logger = Logger.getLogger(Bank.class);
@@ -25,6 +27,7 @@ public class Bank implements Serializable {
 	
 
 	public static void main(String[] args) {
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		Bank b = new Bank();
 		
@@ -73,17 +76,27 @@ public class Bank implements Serializable {
 				System.out.println("Please type your password:");
 				String password = sc.nextLine();
 			
-				if (b.users.get(username)== null || !b.users.get(username).isActive()) {
+			try {
+				if (User.getUser(username)== null || !User.getUser(username).isActive()) {
 					System.err.println("Username not valid!");
 					continue;
 				}
+				} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				}
 					
-					if(b.users.get(username).getLoginInfo().get(username).equals(password)) {
-						b.currentUser = b.users.get(username);
-					}else {
-						System.err.println("Password is not valid!");
-						continue;
-					}		
+			try {
+				if(User.getUser(username).getLoginInfo().get(username).equals(password)) {
+					b.currentUser = User.getUser(username);
+				}else {
+					System.err.println("Password is not valid!");
+					continue;
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}		
 				break;	
 			case "create":
 				System.out.println("Please type the username:");
@@ -126,8 +139,15 @@ public class Bank implements Serializable {
 					username = (String) b.currentUser.getLoginInfo().keySet().toArray()[0];
 				}
 				System.out.println("Please type the destination account:");
-				User src = b.users.get(username); 
-				User dest = b.users.get(sc.nextLine().trim());
+			User src = null;
+			User dest = null;
+			try {
+				src = User.getUser(username);
+				dest = User.getUser(sc.nextLine().trim());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} 
 				System.out.println("Please type the ammount:");
 
 				try {
@@ -178,7 +198,13 @@ public class Bank implements Serializable {
 				}
 				System.out.println("Please type the username:");
 
-				User user = b.users.get(sc.nextLine().trim());
+			User user = null;
+			try {
+				user = User.getUser(sc.nextLine().trim());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				if (user == null) {
 					System.err.println("Error! Account not found.");
 					break;
@@ -194,7 +220,7 @@ public class Bank implements Serializable {
 				System.out.println("Your commands are: login create addJointUser kill transfer withdraw deposit exitAndCommit");
 				if (b.currentUser.isAdmin()) {
 					System.out.println("Your admin commands are: approve\nUsers are:");
-					for (User u : b.users.values()) {
+					for (User u : User.getUsers()) {
 						System.out.println(u.toString());
 					}
 				}
@@ -205,17 +231,22 @@ public class Bank implements Serializable {
 				logins = new HashMap<>();
 				logins.put("admin","");
 				b.addUser(logins, true, true);
-				b.users.get("admin").setActive(true);
+			try {
+				User.getUser("admin").setActive(true);
+		
 				logins = new HashMap<>();
 				logins.put("potato","");
 				b.addUser(logins, false, false);
-				b.users.get("potato").setActive(true);
+				User.getUser("potato").setActive(true);
 
 				logins = new HashMap<>();
 				logins.put("carrot","");
 				b.addUser(logins, false, false);
-				b.users.get("carrot").setActive(true);
-
+				User.getUser("carrot").setActive(true);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				break;
 			case "exit":
 				 try
@@ -255,42 +286,60 @@ public class Bank implements Serializable {
 	}
 		public boolean addUser(HashMap<String, String> logins,boolean admin, boolean forceOverride){
 		if(!forceOverride) {
-		for (String name : logins.keySet()) {
-			if(users.containsKey(name)) {
+		/*
+			for (String name : logins.keySet()) {
+			if(User.getUser(name) != null) {
 				//error, name already taken
 				logger.warn("Oh dude! " + currentUser.getLoginInfo().keySet() + " just tried to make a user named " + name + " when that is someone else's name brah.");
 				return false;
 			}
 		}
+		*/
 		}
 		//make the new user! Admins make users instantly approved!
-		User newUser = new User(admin, logins,currentUser.isAdmin(), 0.0);
-		for (String name : logins.keySet()) {
-			users.put(name,newUser);
+		User newUser = null;
+		try {
+			newUser = new User(admin, logins,currentUser.isAdmin(), 0.0);
+		} catch (SQLException | NotPermittedException e) {
+			logger.warn("Oh dude! " + currentUser.getLoginInfo().keySet() + " just tried to make a user when that is someone else's name brah.");
+			//e.printStackTrace();
+			return false;
 		}
+	
 		logger.info(currentUser.getLoginInfo().keySet() + " just made the user " + newUser.getLoginInfo().keySet() + ". Radical!");
 		return true;
 		
 		
 	}
 	public boolean deleteUser(String name){
-		/* TODO redo!
 		if(!currentUser.isAdmin() && !currentUser.getLoginInfo().containsKey(name)) {
 			logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to kill " + name + "'s account without being an admin. Not cool man.");
 			return false;
 		}
-		if(!users.containsKey(name)) {
-		//error, name not taken
-			logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to kill " + name + " when that is not a valid name. You ok brah?");
+		try {
+			if(!(User.getUser(name) == null)) {
+			//error, name not taken
+				logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to kill " + name + " when that is not a valid name. You ok brah?");
 
+				return false;
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 			return false;
 		}
-		//*/
-		User toRemove = users.get(name);
-		for (String alias  : toRemove.getLoginInfo().keySet()) {
-			logger.info(currentUser.getLoginInfo().keySet() + " is killing " + name + ". Man what is the world comeing to brah?");
-			users.remove(alias);
+
+		User toRemove = null;
+		try {
+			toRemove = User.getUser(name);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			return false;
 		}
+		for (String alias  : toRemove.getLoginInfo().keySet()) {
+			logger.info(currentUser.getLoginInfo().keySet() + " is killing " + alias + ". Man what is the world comeing to brah?");
+		}
+		toRemove.setActive(false);
+
 		return true;
 		
 	}

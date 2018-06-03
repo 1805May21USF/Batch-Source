@@ -1,21 +1,33 @@
 package com.revature.project0;
 
 import java.io.Serializable;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
-import com.revature.beans.Superhero;
 import com.revature.util.ConnFactory;
 
 public class User implements Serializable, UserDAO{
-	public static ConnFactory cf =ConnFactory.getInstance();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4758392937390992554L;
 
-	public static User defaultUser = getUsers().get(0);
+	public static ConnFactory cf =ConnFactory.getInstance();
+	
+	public static User defaultUser;
+	static {
+		defaultUser = getUsers().get(0);
+
+
+	}
 	//private boolean admin = false;
 	//private HashMap<String, String> loginInfo = new HashMap<String, String>() ;
 	//private boolean active = false;
@@ -24,43 +36,173 @@ public class User implements Serializable, UserDAO{
 	
 	public boolean isAdmin() {
 		//return admin;
+		Connection conn = cf.getConnection();
+		String[] primaryKeys = new String[1];
+		primaryKeys[0] = "USERID";
+		String sql = "select ADMIN from BANKUSERS where USERID= ?";
+		try {
+		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
+		ps.setInt(1, this.UserID);
+		ResultSet rs;
+
+			rs = ps.executeQuery();
+		
+		return rs.getBoolean(1);
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	public void setAdmin(boolean admin) {
 		//this.admin = admin;
+		//return admin;
+		Connection conn = cf.getConnection();
+		String[] primaryKeys = new String[1];
+		primaryKeys[0] = "USERID";
+		String sql = "update BANKUSERS set ADMIN = ? where USERID= ?";
+		try {
+		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
+		ps.setBoolean(1, admin);
+		ps.setInt(2, this.UserID);
+		assert(!ps.execute());
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	public HashMap<String, String> getLoginInfo() {
+	public  HashMap<String, String> getLoginInfo() {
 		//return loginInfo;
+		Connection conn = cf.getConnection();
+		String[] primaryKeys = new String[1];
+		primaryKeys[0] = "USERID";
+		String sql = "select ADMIN from BANKUSERS where USERID= ?";
+		try {
+		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
+		ps.setInt(1, this.UserID);
+		ResultSet rs;
+
+			rs = ps.executeQuery();
+		HashMap<String, String> logins = new HashMap<>();
+		while( rs.next()) {
+			logins.put(rs.getString(1), rs.getString(2));
+		}
+		return logins;
+		} catch (SQLException e) {
+			System.err.println("failed to get login info for user " + this.UserID);
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
-	public void setLoginInfo(HashMap<String, String> loginInfo) {
-		//this.loginInfo = loginInfo;
-	}
+
 	public boolean isActive() {
 		//return active;
+		Connection conn = cf.getConnection();
+		String[] primaryKeys = new String[1];
+		primaryKeys[0] = "USERID";
+		String sql = "select ACTIVE from BANKUSERS where USERID= ?";
+		try {
+		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
+		ps.setInt(1, this.UserID);
+		ResultSet rs;
+
+			rs = ps.executeQuery();
+		
+		return rs.getBoolean(1);
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	public void setActive(boolean active) {
 		//this.active = active;
+		Connection conn = cf.getConnection();
+		String[] primaryKeys = new String[1];
+		primaryKeys[0] = "USERID";
+		String sql = "update BANKUSERS set ACTIVE = ? where USERID= ?";
+		try {
+		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
+		ps.setBoolean(1, active);
+		ps.setInt(2, this.UserID);
+		assert(!ps.execute());
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public double getBalance() {
 		//return balance;
+		Connection conn = cf.getConnection();
+		String[] primaryKeys = new String[1];
+		primaryKeys[0] = "USERID";
+		String sql = "select BALANCE from BANKUSERS where USERID= ?";
+		try {
+		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
+		ps.setInt(1, this.UserID);
+		ResultSet rs;
+
+			rs = ps.executeQuery();
+		
+		return rs.getDouble(1);
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0.0;
 	}
 	public void setBalance(double balance) {
 		//this.balance = balance;
+		Connection conn = cf.getConnection();
+		String[] primaryKeys = new String[1];
+		primaryKeys[0] = "USERID";
+		String sql = "update BANKUSERS set BALANCE = ? where USERID= ?";
+		try {
+		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
+		ps.setDouble(1, balance);
+		ps.setInt(2, this.UserID);
+		assert(!ps.execute());
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//THIS IS THE TRUE CONSTRUCTOR
 	private User(int userID) {
 		this.UserID=userID;
 	}
 	//THESE ARE PSUDOCONSTRUCTORS FOR BACKWARDS COMPATIBILITY
-	private User(boolean admin,String username, String password, boolean active, double balance) {
-		super();
-		/*
-		this.admin = admin;
-		this.loginInfo.put(username, password);
-		this.active = active;
-		this.balance = balance;
-		*/
-	}
-	public User(boolean admin, HashMap<String,String> logins, boolean active, double balance) {
+
+	public User(boolean admin, HashMap<String,String> logins, boolean active, double balance) throws SQLException, NotPermittedException{
 		super();
 		/*
 		this.admin = admin;
@@ -68,7 +210,46 @@ public class User implements Serializable, UserDAO{
 		this.active = active;
 		this.balance = balance;
 		*/
+		Connection conn = cf.getConnection();
+		conn.createStatement().execute("SET TRANSACTION NAME 'insertUser'");
+
+		String sql = "{call INSERTUSER(?, ?, ?)";
+		CallableStatement call = conn.prepareCall(sql);
+		call.setBoolean(1, admin);
+		call.setBoolean(2, active);
+		call.setDouble(3, balance);
+		assert(call.execute());
+		UserID =call.getResultSet().getInt(1);
+		//create the user's login info
+		
+		for (Entry<String, String> pair : logins.entrySet()) {
+			if (!addAlias(pair.getKey(), pair.getValue())) {
+				//ABORT!
+				conn.createStatement().execute("ROLLBACK");
+				throw new NotPermittedException("Error! Username is in use, or has problem!");
+			}
+		}
 	}
+	public boolean addAlias(String username, String password) {
+		//create the user's login info
+		Connection conn = cf.getConnection();
+		
+		String loginInsert = "{call INSERTLOGIN(?, ?, ?)";
+		try {		
+		CallableStatement insertCall = conn.prepareCall(loginInsert);
+				insertCall.setInt(1, UserID);
+			
+					insertCall.setString(2,username);
+				
+				insertCall.setString(3, password);
+				assert(!insertCall.execute());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public boolean equals(Object u) {
 		if (u instanceof User) {
@@ -84,22 +265,38 @@ public class User implements Serializable, UserDAO{
 		return "User [UserID=" + UserID + ", isAdmin()=" + isAdmin() + ", getLoginInfo()=" + getLoginInfo()
 				+ ", isActive()=" + isActive() + ", getBalance()=" + getBalance() + "]";
 	}
-	@Override
-	public void createUser(String userName) throws SQLException, NotPermittedException {
-		// TODO Auto-generated method stub
-		
-	}
-	public static List<User> getUsers() throws SQLException {
+	
+	public static List<User> getUsers() {
 		List<User> userList = new ArrayList<>();
-
+		try {
 		Connection conn = cf.getConnection();
 		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM BANKUSERS");
+		ResultSet rs;
+
+			rs = stmt.executeQuery("SELECT * FROM BANKUSERS");
+	
 		User user= null;
 		while(rs.next()) {
 			user = new User(rs.getInt(1));
 			userList.add(user);
 			
-		}		return null;
+		}	
+		} catch (SQLException e) {
+			System.err.println("ERROR! Failed to get the BANKUSERS table. Sorry, but this problem is unrecoverable.");
+			e.printStackTrace();
+		}
+		return userList;
+	}
+	public static User getUser(String username) throws SQLException {
+		//prepared statement
+			Connection conn = cf.getConnection();
+			String[] primaryKeys = new String[1];
+			primaryKeys[0] = "USERID";
+			String sql = "select USERID from LOGINS where LOGINS.USERNAME = ?";
+			PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
+			ps.setString(1, username);
+			ResultSet rs = ps.executeQuery();
+			return new User(rs.getInt(1));
+			
 	}
 }
