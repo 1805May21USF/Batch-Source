@@ -27,7 +27,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 		
 		while(rs.next()) {
 			s = new Transaction(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),
-					rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getDouble(8),rs.getDouble(9));
+					rs.getInt(5),rs.getInt(6),rs.getDouble(7),rs.getDouble(8));
 		}
 		conn.close();
 		return s;
@@ -44,7 +44,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 		
 		while(rs.next()) {
 			s = new Transaction(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),
-					rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getDouble(8),rs.getDouble(9));
+					rs.getInt(5),rs.getInt(6),rs.getDouble(7),rs.getDouble(8));
 			TransactionList.add(s);
 		}
 		conn.close();
@@ -52,27 +52,37 @@ public class TransactionDAOImpl implements TransactionDAO{
 	}
 
 	@Override
-	public void createTransaction(Transaction Transaction) throws SQLException {
+	public void createTransaction(Transaction transaction) throws SQLException {
 		// TODO Auto-generated method stub
 		Connection conn = cf.getConnection();
-		String sql = "{call add_transaction(?,?,?,?,?,?,?,?)";
+		String sql = "{call add_transaction(?,?,?,?,?,?,?)";
 		
 		CallableStatement ps = conn.prepareCall(sql);
-		ps.setDouble(1, Transaction.getBalance());
-		ps.setString(1, Transaction.getStatus());
+		ps.setString(1, transaction.getDate());
+		ps.setString(2, transaction.getStatus());
+		ps.setString(3, transaction.getType());
+		ps.setInt(4, transaction.getFrom_account_id());
+		ps.setInt(5, transaction.getTo_account_id());
+		ps.setDouble(6, transaction.getAmount());
+		ps.setDouble(7, transaction.getBalance());
 		ps.execute();
 		conn.close();
 	}
 
 	@Override
-	public void updateTransaction(Transaction Transaction) throws SQLException {
+	public void updateTransaction(Transaction transaction) throws SQLException {
 		Connection conn = cf.getConnection();
 		String sql = "{call update_transaction(?,?,?,?,?,?,?,?)";
-		CallableStatement call = conn.prepareCall(sql);
-		call.setInt(1, Transaction.getID());
-		call.setDouble(1, Transaction.getBalance());
-		call.setString(1, Transaction.getStatus());
-		call.execute();
+		CallableStatement ps = conn.prepareCall(sql);
+		ps.setInt(1,transaction.getID());
+		ps.setString(2, transaction.getDate());
+		ps.setString(3, transaction.getStatus());
+		ps.setString(4, transaction.getType());
+		ps.setInt(5, transaction.getFrom_account_id());
+		ps.setInt(6, transaction.getTo_account_id());
+		ps.setDouble(6, transaction.getAmount());
+		ps.setDouble(7, transaction.getBalance());
+		ps.execute();
 		conn.close();
 	}
 

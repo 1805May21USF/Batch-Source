@@ -146,13 +146,13 @@ public class Bank {
 			do{ 
 				System.out.println("New Username:");
 				username = scanner.nextLine();
-				while(!Validation.validateUsername(fname)) {
+				while(!Validation.validateUsername(username)) {
 					System.out.println("That is not a valid username!");
 					fname=scanner.nextLine();
 				}
 				System.out.println("New Password: ");
 				password = scanner.nextLine();
-				while(!Validation.validatePassword(fname)) {
+				while(!Validation.validatePassword(password)) {
 					System.out.println("That is not a valid password!");
 					fname=scanner.nextLine();
 				}
@@ -160,9 +160,8 @@ public class Bank {
 			
 			}while( d.getCustomerByUsername(username) != null);
 		}
-		d.addCustomer(c);l.x
-		currentUser = c;
 		d.addCustomer(c);
+		currentUser = d.getCustomerByUsername(c.getUserName());
 		linebreak();
 		
 		this.setBankView(3);
@@ -417,7 +416,7 @@ public class Bank {
 		System.out.println("Information");
 		linebreak();
 		
-		Customer c = d.getCustomerById(currentUser.ID);
+		Customer c = d.getCustomerById(this.currentUser.ID);
 		
 		System.out.println("ID:" + c.getID());
 		System.out.println("Name: "+c.getFname() + " " + c.getLname());
@@ -550,7 +549,8 @@ public class Bank {
 			linebreak();
 			System.out.println("1. Customer Information");
 			System.out.println("2. Open Applications");
-			System.out.println("3. Exit");
+			System.out.println("3. Create Customer. ");
+			System.out.println("4. Exit");
 				
 			Scanner scanner = new Scanner(System.in);
 			try {
@@ -569,6 +569,69 @@ public class Bank {
 					break;
 				}
 				case 3:{
+					
+					String fname;
+					String lname;
+					String username;
+					String password;
+					
+					System.out.println("Create A New User");
+					linebreak();
+					System.out.println("What is the customer's first name?");
+					fname = scanner.nextLine();
+					
+					while(!(Validation.validateName(fname))) {
+						System.out.println(fname.length());
+						System.out.println("That is not a valid name!");
+						fname=scanner.nextLine();
+					}
+					
+					System.out.println("What is the customer's last name?");
+					lname = scanner.nextLine();
+					
+					while(!Validation.validateName(lname)) {
+						System.out.println("That is not a valid name!");
+						fname=scanner.nextLine();
+					}
+					
+					System.out.println("New Username:");
+					username = scanner.nextLine();
+					while(!Validation.validateUsername(username)) {
+						System.out.println("That is not a valid username!");
+						fname=scanner.nextLine();
+					}
+					System.out.println("New Password: ");
+					password = scanner.nextLine();
+					while(!Validation.validatePassword(password)) {
+						System.out.println("That is not a valid password!");
+						fname=scanner.nextLine();
+					}
+					Customer c = new Customer(username,password,fname,lname);
+					if(d.getCustomerByUsername(username) != null) {
+						
+						System.out.println("That username is already taken!");
+						
+						do{ 
+							System.out.println("New Username:");
+							username = scanner.nextLine();
+							while(!Validation.validateUsername(username)) {
+								System.out.println("That is not a valid username!");
+								fname=scanner.nextLine();
+							}
+							System.out.println("New Password: ");
+							password = scanner.nextLine();
+							while(!Validation.validatePassword(password)) {
+								System.out.println("That is not a valid password!");
+								fname=scanner.nextLine();
+							}
+							c = new Customer(username,password,fname,lname);
+						
+						}while( d.getCustomerByUsername(username) != null);
+					}
+					d.addCustomer(c);
+					break;
+				}
+				case 4:{
 					loggedIn = false;
 					currentUser = null;
 					this.setBankView(0);
@@ -648,10 +711,11 @@ public class Bank {
 			System.out.println("Username: " +c.getUserName());
 			System.out.println("1: Accounts");
 			System.out.println("2: Applications");
-			System.out.println("3. Exit");
+			System.out.println("3. Edit Customer Information");
+			System.out.println("4. Delete Customer.");
+			System.out.println("5. Exit");
 			
 			Scanner scanner = new Scanner(System.in);
-			String s = scanner.nextLine();
 			int selection = -1;
 			try {
 				selection = Integer.parseInt(scanner.nextLine());
@@ -668,6 +732,13 @@ public class Bank {
 				applicationSelectMenu(c);
 				break;
 			case 3:
+				editCustomer(c);
+				break;
+			case 4:
+				d.deleteCustomer(c);
+				inMenu=false;
+				break;
+			case 5:
 				inMenu=false;
 				break;
 			default:
@@ -817,8 +888,9 @@ public class Bank {
 				System.out.println("1. Deposit.");
 				System.out.println("2. Transfer. ");
 				System.out.println("3. Widthdraw. ");
-				System.out.println("4. Transaction History");
-				System.out.println("5. Exit");
+				System.out.println("4. Transaction History. ");
+				System.out.println("5. Delete Account. ");
+				System.out.println("6. Exit");
 				int selection = -1;
 				try {
 					selection = Integer.parseInt(scanner.nextLine());
@@ -841,6 +913,17 @@ public class Bank {
 					transactionMenu(a);
 					break;
 				case 5:
+					if(a.getBalance()==0) {
+						d.deleteAccount(a);			
+						c.removeAccount(a);
+						System.out.println("Account deleted");
+						inMenu=false;
+					}
+					else {
+						System.out.println("This account is not empty and cannot be deleted!");
+					}
+					break;
+				case 6:
 					inMenu = false;
 					break;
 				default:
@@ -1034,11 +1117,12 @@ public class Bank {
 			}
 			while(!Validation.isDollar(s));
 			
-			a.deposit(amount);
-			d.addCustomer(c);
-			for(Customer cs:a.getCustomers()) {
-				d.addCustomer(cs);
-			}
+			Transaction t = new Transaction(d.toString(),"APPROVED","DEPOSIT",
+					a.getID(),0, amount,a.getBalance()+amount);
+			
+			d.addTransaction(t);
+			a.deposit(amount,t);
+			d.updateAccount(a);
 			inMenu=false;
 		}
 	}
@@ -1056,14 +1140,21 @@ public class Bank {
 					s = scanner.nextLine();
 					amount = dollarToDouble(s);
 			}
-			while(!Validation.isDollar(s)|!a.canWithdraw(amount));
+			while(!Validation.isDollar(s));
 			
-			a.withdraw(amount);
-			d.addCustomer(c);
-			for(Customer cs:a.getCustomers()) {
-				d.addCustomer(cs);
+			if(a.canWithdraw(amount)) {
+				Transaction t = new Transaction(d.toString(),"APPROVED","WITHDRAW",
+						a.getID(),0, amount,a.getBalance()-amount);
+				
+				d.addTransaction(t);
+				a.withdraw(amount,t);
+				a.addTransaction(t);
+				d.updateAccount(a);
+				inMenu=false;
 			}
-			inMenu=false;
+			else {
+				inMenu=false;
+			}
 		}
 	}
 	public void transferMenu(Account a,Customer c) {
@@ -1079,21 +1170,35 @@ public class Bank {
 					s = scanner.nextLine();
 					amount = dollarToDouble(s);
 			}
-			while(!Validation.isDollar(s)|!a.canTransfer(amount));
+			while(!Validation.isDollar(s));
 			do {
 					System.out.println("Enter Account Number #:");
 					s = scanner.nextLine();
 					ID = Integer.parseInt(s);
 			}while(!isAccount(ID));
 			
-			a.transfer(getAccount(ID),amount);
-			d.addCustomer(c);
-			for(Customer cs:a.getCustomers()) {
-				d.addCustomer(cs);
+			if(a.canTransfer(amount)) {
+				Transaction t1 = new Transaction(d.toString(),"APPROVED","TRANSFER",
+						a.getID(),ID, amount,a.getBalance()-amount);
+				Transaction t2 = new Transaction(d.toString(),"APPROVED","TRANSFER",
+						a.getID(),ID, amount,a.getBalance()+amount);
+				
+				d.addTransaction(t1);
+				d.addTransaction(t2);
+				a.transfer(amount,t1);
+				Account acc = d.getAccountById(ID);
+				acc.receiveTransfer(amount);
+				a.addTransaction(t1);
+				acc.addTransaction(t2);
+				d.updateAccount(a);
+				d.updateAccount(acc);
+				inMenu=false;
 			}
-			for(Customer c1:getAccount(ID).getCustomers()) {
-				d.addCustomer(c1);
+			else {
+				inMenu=false;
 			}
+
+			
 			inMenu=false;
 		}
 	}
@@ -1117,6 +1222,82 @@ public class Bank {
 				}
 			if(selection == 1) {
 				inMenu=false;
+			}
+		}
+	}
+	
+	public void editCustomer(Customer c) {
+		boolean inMenu = true;
+		while(inMenu) {
+			System.out.println("1. Edit First Name. ");
+			System.out.println("2. Edit Last Name. ");
+			System.out.println("3. Edit Username. ");
+			System.out.println("4. Edit Password. ");
+			System.out.println("5. Exit. ");
+			
+			Scanner scanner = new Scanner(System.in);
+			int selection = -1;
+			try {
+				selection = Integer.parseInt(scanner.nextLine());
+				} catch(NumberFormatException e) {
+					System.out.println("You selection was not a number!");
+					selection = -1;
+				}
+			switch(selection) {
+			case 1:
+				String fname;
+				System.out.println("What is the new first name?");
+				fname = scanner.nextLine();
+				
+				while(!(Validation.validateName(fname))) {
+					System.out.println(fname.length());
+					System.out.println("That is not a valid name!");
+					fname=scanner.nextLine();
+				}
+				c.setFname(fname);
+				d.updateCustomer(c);
+				break;
+			case 2:
+				String lname;
+				System.out.println("What is the new last name?");
+				lname = scanner.nextLine();
+				
+				while(!(Validation.validateName(lname))) {
+					System.out.println(lname.length());
+					System.out.println("That is not a valid name!");
+					lname=scanner.nextLine();
+				}
+				c.setLname(lname);
+				d.updateCustomer(c);
+				break;
+			case 3:
+				String username;
+				System.out.println("New Username:");
+				username = scanner.nextLine();
+				while(!Validation.validateUsername(username)) {
+					System.out.println("That is not a valid username!");
+					fname=scanner.nextLine();
+				}
+				c.setUserName(username);
+				d.updateCustomer(c);
+				break;
+			case 4:
+				String password;
+				System.out.println("New Password: ");
+				password = scanner.nextLine();
+				while(!Validation.validatePassword(password)) {
+					System.out.println("That is not a valid password!");
+					fname=scanner.nextLine();
+				}
+				c.setPassWord(password);
+				d.updateCustomer(c);
+				break;
+			case 5:
+				inMenu=false;
+				break;
+			default:
+				System.out.println("That was not a selection!");
+				break;
 			}
 		}
 	}
@@ -1173,4 +1354,5 @@ public class Bank {
 	public Customer currentCustomer(User c) {
 		return d.getCustomerById(this.currentUser.getID());
 	}
+	
 }

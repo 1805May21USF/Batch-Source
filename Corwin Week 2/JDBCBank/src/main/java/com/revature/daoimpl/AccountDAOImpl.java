@@ -85,8 +85,8 @@ public class AccountDAOImpl implements AccountDAO {
 		CallableStatement call = conn.prepareCall(sql);
 		call.setInt(1, account.getID());
 		call.setInt(2, account.getFingerprint());
-		call.setDouble(2, account.getBalance());
-		call.setString(3, account.getStatus());
+		call.setDouble(3, account.getBalance());
+		call.setString(4, account.getStatus());
 		call.execute();
 		conn.close();
 	}

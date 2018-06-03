@@ -68,6 +68,20 @@ public class Customer extends User{
 	public void addAccount(Account a) {
 		this.accounts.add(a);
 	}
+	
+	public boolean removeAccount(Account a) {
+		int toremove = -1;
+		for(int i = 0;i<this.getAccounts().size();i++) {
+			if(this.getAccounts().get(i).getID()==a.getID()) {
+				toremove = i;
+			}
+		}
+		if(toremove>0) {
+			this.getAccounts().remove(toremove);
+			return true;
+		}
+		return false;
+	}
 
 	public ArrayList<Account> getAccounts() {
 		return this.accounts;

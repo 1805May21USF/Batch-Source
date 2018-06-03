@@ -1,7 +1,9 @@
 package com.revature.beans;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 
 public class Account{
@@ -30,11 +32,10 @@ public class Account{
 		this.customers = new ArrayList<Customer>();
 		this.transactions = new ArrayList<Transaction>();
 	}
-	public boolean deposit(double amount) {
-		//Transaction t = new Transaction("DEPOSIT",this,amount,this.balance+amount);
+	public boolean deposit(double amount,Transaction t) {
 		this.balance = this.balance+amount;
-		//
 		System.out.println("$" + amount + " deposited.");
+		this.addTransaction(t);
 		return true;
 	}
 	public boolean canTransfer(double amount) {
@@ -44,15 +45,17 @@ public class Account{
 		}
 		return true;
 	}
-	public boolean transfer(Account a, double am) {
+	public boolean transfer(double am,Transaction t) {
 		if(canTransfer(am)) {
-			//Transaction t = new Transaction("TRANSFER",this,a,am,this.balance-am);
 			this.balance = this.balance-am;
-			//
-			//Transaction t2 = new Transaction("TRANSFER",a,this,am,a.getBalance()+am);
+			this.addTransaction(t);
 			return true;
 		}
 		return false;
+	}
+	public boolean receiveTransfer(double am) {
+		this.balance = this.balance+am;
+		return true;
 	}
 	public boolean canWithdraw(double amount) {
 		if(this.balance-amount<0) {
@@ -61,7 +64,7 @@ public class Account{
 		}
 		return true;
 	}
-	public boolean withdraw(double amount) {
+	public boolean withdraw(double amount,Transaction t) {
 		//Transaction t = new Transaction("WITHDRAW",this,amount,this.balance-amount);
 		this.balance = this.balance-amount;
 		//this.transactions.add(t);

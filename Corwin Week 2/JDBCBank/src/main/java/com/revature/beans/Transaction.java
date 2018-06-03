@@ -18,7 +18,7 @@ public class Transaction{
 	private double amount;
 	private double balance;
 	
-	public Transaction(String d,String s,String t,int f,int to,int a, double am, double b) {
+	public Transaction(String d,String s,String t,int f,int to,double am, double b) {
 		this.setDate(d);
 		this.setStatus(s);
 		this.setType(t);
@@ -26,12 +26,11 @@ public class Transaction{
 		this.setTo_account_id(to);
 		this.setAmount(am);
 		this.setBalance(b);
-		this.setType(t);
 		
 		
 	}
 
-	public Transaction(int ID, String d,String s,String t,int f,int to,int a, double am, double b) {
+	public Transaction(int ID, String d,String s,String t,int f,int to,double am, double b) {
 		this.setID(ID);
 		this.setDate(d);
 		this.setStatus(s);
@@ -40,7 +39,6 @@ public class Transaction{
 		this.setTo_account_id(to);
 		this.setAmount(am);
 		this.setBalance(b);
-		this.setType(t);
 		
 		
 	}
