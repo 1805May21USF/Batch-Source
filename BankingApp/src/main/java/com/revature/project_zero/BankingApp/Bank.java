@@ -63,7 +63,6 @@ public class Bank {
 				System.out.println("Enter an amount to withdraw: ");
 				amount = input.nextDouble();
 				cust1.withdraw(amount);
-				System.out.println("You have succesfully withdrawn $" + amount);
 				System.out.println("Your new balance is: $" + cust1.getBalance());
 				System.out.println("===========================================");
 				break;

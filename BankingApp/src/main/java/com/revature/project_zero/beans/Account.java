@@ -17,6 +17,7 @@ public class Account implements Serializable{
 	public void withdraw(double amount) {
 		if(amount <= balance) {
 			balance = balance - amount;
+			System.out.println("You have succesfully withdrawn $" + amount);
 		}else {
 			System.out.println("Insufficient funds");
 		}
