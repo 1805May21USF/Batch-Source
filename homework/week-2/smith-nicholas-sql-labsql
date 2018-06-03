@@ -102,7 +102,55 @@ WHERE CUSTOMERID = 32;
 --3.0 SQL Functions
 
 --3.1 System Defined Functions
+--Create a function that returns the current time.
+--Create a function that returns the length of name in MEDIATYPE table
 --TO_CHAR(CURRENT_DATE, 'HH24:MI:SS');
+
+--create a function called 'get_time'
+CREATE OR REPLACE FUNCTION get_time
+--return a char variable
+RETURN CHAR IS 
+--create CHAR variable named sys_time 
+--it is assigned to the current time
+sys_time CHAR (20) := TO_CHAR(CURRENT_DATE, 'HH24:MI:SS');
+BEGIN
+--return sys_time
+RETURN sys_time;
+END;
+/
+--test the get_time function
+SELECT get_time
+FROM DUAL;
+
+--Create a function that returns the length of name in MEDIATYPE table
+--Takes in the media type id number
+--Will return the length of the name of media type
+CREATE OR REPLACE FUNCTION get_name_length(media_id NUMBER)
+--return an INT variable
+RETURN NUMBER IS 
+--create an INT variable named name_length
+--it is assigned to the length of the NAME in the MEDIATYPE table
+--create a variable to store the name of the mediatype
+media_name VARCHAR2(120);
+name_length NUMBER;
+BEGIN
+--select the NAME column
+SELECT NAME 
+INTO media_name
+FROM MEDIATYPE 
+WHERE MEDIATYPEID = media_id;
+--from the MEDIATYPE table
+--return name_length 
+
+--assign name_length to the length of the media name
+name_length := LENGTH(media_name);
+RETURN name_length;
+END;
+/
+
+--Test the get_name_length function
+SELECT get_name_length(5)
+FROM DUAL;
 
 --3.2 System Defined Aggregate Functions
 
