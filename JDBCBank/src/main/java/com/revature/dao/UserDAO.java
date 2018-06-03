@@ -11,8 +11,9 @@ public interface UserDAO {
 	
 	public abstract User retrieveUser(String userName) throws SQLException;
 	
-	public abstract void updateUser() throws SQLException;
+	public abstract void updateUser(String userName, 
+			String newPassword) throws SQLException;
 	
-	public abstract void deleteUser() throws SQLException;
+	public abstract void deleteUser(String userName) throws SQLException;
 	
 }

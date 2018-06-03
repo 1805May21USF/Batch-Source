@@ -41,7 +41,8 @@ public class UserDAOImpl implements UserDAO {
 		Connection conn = cf.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(
-				"SELECT * FROM USER_ACCOUNT WHERE user_account.USERNAME = '" + userName + "'");
+				"SELECT * FROM USER_ACCOUNT WHERE"
+				+ " USERNAME = '" + userName + "'");
 		User user = null;
 
 		if (rs.next()) {
@@ -55,14 +56,41 @@ public class UserDAOImpl implements UserDAO {
 		return null;
 	}
 
+	/*
+	 * Updates the password for an account
+	 */
 	@Override
-	public void updateUser() {
-
+	public void updateUser(String userName,
+			String newPassword) throws SQLException {
+		Connection conn = cf.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(
+				"SELECT * FROM USER_ACCOUNT "
+				+ "WHERE USERNAME = '" + userName + "'");
+		
+		if (rs.next()) {
+			String[] primaryKeys = new String[1];
+			primaryKeys[0] = "USER_ID";
+			String sql =
+					"UPDATE USER_ACCOUNT SET PASS_WORD = '" + newPassword 
+					+ "' WHERE USERNAME = '" + userName + "'";
+			try {
+				PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("User does not exist");
+		}
 	}
 
 	@Override
-	public void deleteUser() {
-
+	public void deleteUser(String userName) throws SQLException {
+		Connection conn = cf.getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.execute("DELETE FROM USER_ACCOUNT"
+				+ " WHERE USERNAME = '" + userName + "'");
 	}
 
 }

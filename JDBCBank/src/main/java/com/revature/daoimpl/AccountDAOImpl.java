@@ -15,17 +15,18 @@ public class AccountDAOImpl implements AccountDAO {
 	public static ConnFactory cf = ConnFactory.getInstance();
 
 	@Override
-	public void createAccount(int accountNumber, double amount,
+	public void createAccount(int accountNumber, double balance,
 			String accountStatus, int userId) throws SQLException {
 		Connection conn = cf.getConnection();
 		String[] primaryKeys = new String[1];
 		primaryKeys[0] = "ACCOUNT_NUMBER";
-		String sql = "INSERT INTO BANK_ACCOUNT VALUES(ACCOUNTSEQ.NEXTVAL,?)"; //? is a placeholder
+		String sql = 
+				"INSERT INTO BANK_ACCOUNT VALUES(ACCOUNTSEQ.NEXTVAL,?,?,?,?)"; //? is a placeholder
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 			ps.setInt(1, accountNumber);
-			ps.setDouble(2, amount);
+			ps.setDouble(2, balance);
 			ps.setString(3, accountStatus);
 			ps.setInt(4, userId);
 			ps.executeUpdate();
@@ -58,10 +59,12 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
-	public void updateAccount() {
-		// TODO Auto-generated method stub
-		System.out.println("lol we stole ur muns");
-
+	public void updateAccount(int accountNumber,
+			double amount) throws SQLException {
+		Connection conn = cf.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(
+				""); // TODO Finish query
 	}
 
 	@Override

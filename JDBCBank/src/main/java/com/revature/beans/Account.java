@@ -3,7 +3,7 @@ package com.revature.beans;
 public class Account {
 	
 	private int accountNumber;
-	private double amount;
+	private double balance;
 	private String accountStatus;
 	private int userId;
 	
@@ -11,10 +11,10 @@ public class Account {
 		super();
 	}
 
-	public Account(int accountNumber, double amount, String accountStatus, int userId) {
+	public Account(int accountNumber, double balance, String accountStatus, int userId) {
 		super();
 		this.accountNumber = accountNumber;
-		this.amount = amount;
+		this.balance = balance;
 		this.accountStatus = accountStatus;
 		this.userId = userId;
 	}
@@ -27,12 +27,12 @@ public class Account {
 		this.accountNumber = accountNumber;
 	}
 
-	public double getAmount() {
-		return amount;
+	public double getBalance() {
+		return balance;
 	}
 
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
 
 	public String getAccountStatus() {
@@ -53,7 +53,7 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Account [accountNumber=" + accountNumber + ", amount=" + amount + ", accountStatus=" + accountStatus
+		return "Account [accountNumber=" + accountNumber + ", amount=" + balance + ", accountStatus=" + accountStatus
 				+ ", userId=" + userId + "]";
 	}
 
