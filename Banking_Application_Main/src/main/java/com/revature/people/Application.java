@@ -103,7 +103,6 @@ public class Application extends Person{
 				default:
 			}
 			String banking_id = find_existing_account_baking_id(username);
-			System.out.println(banking_id);
 			if(!(banking_id == null)) {
 				List<Account> acc_list = new ArrayList<Account>();
 				Account acc = null;
@@ -116,7 +115,6 @@ public class Application extends Person{
 					acc = new Account(Integer.toString(rs.getInt(1)), rs.getInt(2), rs.getInt(3));
 					acc_list.add(acc);
 				}
-				
 				if (!(acc_list.size() == 0))
 					return true;
 			}
@@ -136,7 +134,6 @@ public class Application extends Person{
 			ResultSet rs;
 			rs = stmt.executeQuery("SELECT * FROM BANKING_ACCOUNTS WHERE USERNAME = '" + username + "'");
 			Customer app = null;
-			System.out.println("check");
 			while(rs.next()) {
 				app = new Customer(Integer.toString(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12),  Integer.toString(rs.getInt(13)));
 				customer_list.add(app);
@@ -144,7 +141,7 @@ public class Application extends Person{
 			if(!(customer_list.size() == 0)) {
 				for(Customer cust : customer_list) {
 					if(cust.getUsername().contains(username)) {
-						return cust.getBank_account_id();
+						return cust.getBanking_account_id();
 					} else {
 						return null;
 					}
@@ -158,7 +155,7 @@ public class Application extends Person{
 		return username;
 	}
 	
-	public static Customer find_existing_account(String username) {
+	public static Person find_existing_account(String username) {
 		try {
 			
 			Connection conn = cf.getConnection();
@@ -166,10 +163,10 @@ public class Application extends Person{
 			stmt = conn.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery("SELECT * FROM BANKING_ACCOUNTS WHERE USERNAME = '" + username + "'");
-			Customer app = null;
+			Person app = null;
 			
 			while(rs.next()) {
-				app = new Customer(Integer.toString(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12),  Integer.toString(rs.getInt(13)));
+				app = new Person(Integer.toString(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12),  Integer.toString(rs.getInt(13)));
 			}
 			
 			return app;

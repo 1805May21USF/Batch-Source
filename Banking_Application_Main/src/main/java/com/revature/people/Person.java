@@ -2,6 +2,8 @@ package com.revature.people;
 
 public class Person {
 
+	private String user_id;
+	private String banking_account_id;
 	private String first_name;
 	private String last_name;
 	private String address;
@@ -13,7 +15,7 @@ public class Person {
 	private String password;
 	private String SSN;
 	private String account_level;
-	
+	 
 	protected Person(String first_name, String last_name, String address, String city, String state, String zipcode, String username, String password, String phone, String SSN) {
 		this.first_name = first_name;
 		this.last_name = last_name;
@@ -32,6 +34,25 @@ public class Person {
 		this.username = username;
 		this.password = password;
 		this.account_level = account_level;
+	}
+
+	public Person(String user_id, String first_name, String last_name, String address, String city, String state,
+			String zipcode, String username, String password, String phone, String ssn, String account_level,
+			String banking_account_id) {
+		// TODO Auto-generated constructor stub
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.phone = phone;
+		this.username = username;
+		this.password = password;
+		this.SSN = ssn;
+		this.zipcode = zipcode;
+		this.user_id = user_id;
+		this.account_level = account_level;
+		this.banking_account_id = banking_account_id;
 	}
 
 	public String getAccount_level() {
@@ -57,6 +78,15 @@ public class Person {
 	public String getLast_name() {
 		return last_name;
 	}
+	
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public String getBanking_account_id() {
+		return banking_account_id;
+	}
+
 
 	public String getAddress() {
 		return address;

@@ -39,7 +39,6 @@ public class Messages {
 				  switch(input_integer) {
 				  	case 1:
 					    login();
-				  		repeat = false;
 				  		break;
 				  	case 2:
 				  		//Apply for a new application
@@ -86,7 +85,7 @@ public class Messages {
 				
 				String username = input.nextLine();
 				
-				System.out.println("\r Enter your password");
+				System.out.println("\rEnter your password");
 				
 				String password = input.nextLine();
 				
@@ -129,13 +128,13 @@ public class Messages {
 								for (Employee single_employee : employee_login) {
 									if (single_employee.getUsername().contains(username) && single_employee.getPassword().contains(password)) {
 										single_employee.logged_in();
+										repeat = false;
 										break;
 									}
 								}							
-								System.out.println("Error collecting all information, please try again!"); 
-								
 							} catch (SQLException e){
 								System.out.println("Error collecting all information, please try again!");
+								repeat = false;
 							}
 						} else if (person.getAccount_level().contains("Customer")) {
 							try {
@@ -153,28 +152,32 @@ public class Messages {
 
 									if (single_customer.getUsername().contains(username) && single_customer.getPassword().contains(password)) {
 										single_customer.logged_in();
+										repeat = false;
 										break;
 									}
 								}
-									System.out.println("Error collecting all information, please try again! d1"); 
 							} catch (SQLException e){
 								System.out.println("Error collecting all information, please try again! d");
+								repeat = false;
 							}
 						}
 					} else {
 						System.out.println("The account can not be found, if you think this was a mistake please call the business during normal banking hours with your claim #");
+						repeat = false;
 					}
 					
 				} else {
 					System.out.println( "There is no accounts in the database, if you think this was a mistake please call the business during normal banking hours with your claim #");
+					repeat = false;
 				}
 			} catch(SQLException e) {
 				System.out.println("Error: Having issues with the database. Please try again later!");
+				repeat = false;
 			}
 	    }
 	}
 	
-	private void take_information() throws SQLException {
+	public static void take_information() throws SQLException {
 		System.out.println("You want to apply to have an account with us, awesome!\r");
 		System.out.println("We are going to need some information from you!");
 		
@@ -196,7 +199,7 @@ public class Messages {
 		SSN = get_appplication_info_string("\rWhat is your Social Secuirty Number?", "SSN", "Please enter NINE numbers ONlY 0-9", "[^0-9]+");
 		
 		try {
-			Application app = new Application(first_name.trim(), last_name.trim(), address.trim(), city.trim(), state.trim(), zipcode.trim(), username.trim(), password.trim(), phone.trim(), SSN.trim(), "Pending", account_Type.trim());
+			Application app = new Application(first_name.trim().toLowerCase(), last_name.trim().toLowerCase(), address.trim().toLowerCase(), city.trim().toLowerCase(), state.trim().toLowerCase(), zipcode.trim(), username.trim().toLowerCase(), password.trim(), phone.trim(), SSN.trim(), "Pending", account_Type.trim());
 			String message = app.create_application();
 			System.out.println(message);
 		}
@@ -206,7 +209,7 @@ public class Messages {
 		}
 	}
 	
-	private String get_appplication_info_string(String message_info, String action, String error_info, String regex_patten) {
+	private static String get_appplication_info_string(String message_info, String action, String error_info, String regex_patten) {
 		Scanner input = new Scanner(System.in);
 		boolean repeat = true;
 		String output = null;
@@ -323,11 +326,10 @@ public class Messages {
 				}
 			}
 		}
-		System.out.println(output);
 		return output;
 	}
 	
-	private String check_for_length(String data, String action, int max, int min) {
+	private static String check_for_length(String data, String action, int max, int min) {
 		
 		if (data.length() <= max && data.length() >= min) {
 			if(action.contains("Password")) {
@@ -348,7 +350,7 @@ public class Messages {
         return m.find();
    }
 	
-	private void check_password(String data) {
+	private static void check_password(String data) {
 		Scanner input = new Scanner(System.in);
 		boolean repeat = true;
 		
@@ -365,7 +367,7 @@ public class Messages {
 		}
 	}
 	
-	private String check_for_username(String username_parm) {
+	private static String check_for_username(String username_parm) {
 		
 		try {
 
