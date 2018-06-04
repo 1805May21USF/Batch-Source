@@ -74,10 +74,8 @@ public class Application{
 		}
 		if(toremove == -1) {
 			this.getCustomers().add(c);
-			System.out.println("Customer #"+c.getID()+" add to Application #"+this.getID());
 			return true;
 		}
-		System.out.println("Customer #"+c.getID()+" was already on Application #"+this.getID());
 		return false;
 	}
 	public ArrayList<Customer> getCustomers() {

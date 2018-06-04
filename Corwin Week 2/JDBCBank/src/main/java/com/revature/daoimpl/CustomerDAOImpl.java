@@ -58,7 +58,6 @@ public class CustomerDAOImpl implements CustomerDAO{
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM JDBCBANK_CUSTOMER");
 		Customer s = null;
-		
 		while(rs.next()) {
 			s = new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
 			customerList.add(s);

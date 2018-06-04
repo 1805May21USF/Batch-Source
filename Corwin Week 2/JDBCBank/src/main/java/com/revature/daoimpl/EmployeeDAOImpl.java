@@ -26,7 +26,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		Employee s = null;
 		
 		while(rs.next()) {
-			s = new Employee(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+			s = new Employee(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6));
 		}
 		conn.close();
 		return s;
@@ -42,7 +42,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		Employee s = null;
 		
 		while(rs.next()) {
-			s = new Employee(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+			s = new Employee(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6));
 		}
 		conn.close();
 		return s;
@@ -59,7 +59,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		Employee s = null;
 		
 		while(rs.next()) {
-			s = new Employee(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+			s = new Employee(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6));
 			EmployeeList.add(s);
 		}
 		conn.close();

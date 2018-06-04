@@ -1,14 +1,19 @@
 package com.revature.beans;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
 
 import com.revature.DAO.CustomerDAO;
+import com.revature.exceptions.PasswordException;
 import com.revature.util.Datastore;
 import com.revature.validation.Validation;
+
+import oracle.sql.DATE;
 
 public class Bank {
 
@@ -181,24 +186,46 @@ public class Bank {
 		password = scanner.nextLine();
 		linebreak();
 		
+		boolean loggedIn = false;
 		try {
 			if(d.getCustomerByUsername(username).getPassWord().equals(password)) {
 				System.out.println("Logged in");
 				this.setBankView(3);
 				this.currentUser = d.getCustomerByUsername(username);
+				loggedIn = true;
+			}
+			else {
+				System.out.println("Not a user with valid password.");
 			}
 		}catch(NullPointerException e) {
-			try {
-				if(d.getEmployeeByUsername(username).getPassWord().equals(password)) {
-					System.out.println("Logged in");
-					this.setBankView(3);
-					this.currentUser = d.getEmployeeByUsername(username);
-				}
-			}catch(NullPointerException ee) {
-				System.out.println("Incorrect username or password.");
+			System.out.println("Not a user with valid password.");
+		}
+		
+		if(loggedIn == false) {
+		
+		try {
+			if(d.getEmployeeByUsername(username).getPassWord().equals(password)) {
+				System.out.println("Logged in");
+				this.setBankView(3);
+				this.currentUser = d.getEmployeeByUsername(username);
+				loggedIn = true;
+			}
+			else {
+				System.out.println("Not an employee with a valid password.");
 				this.setBankView(0);
 			}
-			
+		}catch(NullPointerException ee) {
+			System.out.println("Not an employee with a valid password.");
+			this.setBankView(0);
+		}}
+		
+		if(loggedIn == false) {
+			try {
+				throw new PasswordException();
+			} catch (PasswordException e) {
+				// TODO Auto-generated catch block
+				System.out.println("THIS WAS A CUSTOMER EXCEPTION: Failed to login!");
+			}
 		}
 		
 	}
@@ -876,7 +903,7 @@ public class Bank {
 			if(a.getStatus().equals("OPEN")&&currentUser.isCustomer()) {
 				System.out.println("ID: "+a.getID());
 				System.out.println("Balance: "+a.getBalance());
-				System.out.println("Signer: "+a.getCustomers().get(0));
+				System.out.println("Signer: "+a.getCustomers().get(0).getFname() + " "+ a.getCustomers().get(0).getLname());
 				System.out.println("Status: "+a.getStatus());
 				
 				System.out.print("Joint Customers: ");
@@ -916,7 +943,7 @@ public class Bank {
 					if(a.getBalance()==0) {
 						d.deleteAccount(a);			
 						c.removeAccount(a);
-						System.out.println("Account deleted");
+						System.out.println("Account deleted, PLEASE EXIT THE ACCOUNT MENU TO REFRESH!");
 						inMenu=false;
 					}
 					else {
@@ -937,7 +964,7 @@ public class Bank {
 			if(a.getStatus().equals("CLOSED")&&currentUser.isCustomer()) {
 				System.out.println("ID: "+a.getID());
 				System.out.println("Balance: "+a.getBalance());
-				System.out.println("Signer: "+a.getCustomers().get(0));
+				System.out.println("Signer: "+a.getCustomers().get(0).getFname() + " "+ a.getCustomers().get(0).getLname());
 				System.out.println("Status: "+a.getStatus());
 				
 				System.out.print("Joint Customers: ");
@@ -975,7 +1002,7 @@ public class Bank {
 			if(currentUser.isEmployee()) {
 				System.out.println("ID: "+a.getID());
 				System.out.println("Balance: "+a.getBalance());
-				System.out.println("Signer: "+a.getCustomers().get(0));
+				System.out.println("Signer: "+a.getCustomers().get(0).getFname() + " "+ a.getCustomers().get(0).getLname());
 				System.out.println("Status: "+a.getStatus());
 				
 				System.out.print("Joint Customers: ");
@@ -1007,7 +1034,7 @@ public class Bank {
 			if(currentUser.isAdmin()) {
 				System.out.println("ID: "+a.getID());
 				System.out.println("Balance: "+a.getBalance());
-				System.out.println("Signer: "+a.getCustomers().get(0));
+				System.out.println("Signer: "+a.getCustomers().get(0).getFname() + " "+ a.getCustomers().get(0).getLname());
 				System.out.println("Status: "+a.getStatus());
 				
 				System.out.print("Joint Customers: ");
@@ -1116,8 +1143,8 @@ public class Bank {
 					amount = dollarToDouble(s);
 			}
 			while(!Validation.isDollar(s));
-			
-			Transaction t = new Transaction(d.toString(),"APPROVED","DEPOSIT",
+			Date date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+			Transaction t = new Transaction(date.toString(),"APPROVED","DEPOSIT",
 					a.getID(),0, amount,a.getBalance()+amount);
 			
 			d.addTransaction(t);
@@ -1143,7 +1170,8 @@ public class Bank {
 			while(!Validation.isDollar(s));
 			
 			if(a.canWithdraw(amount)) {
-				Transaction t = new Transaction(d.toString(),"APPROVED","WITHDRAW",
+				Date date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+				Transaction t = new Transaction(date.toString(),"APPROVED","WITHDRAW",
 						a.getID(),0, amount,a.getBalance()-amount);
 				
 				d.addTransaction(t);
@@ -1178,9 +1206,11 @@ public class Bank {
 			}while(!isAccount(ID));
 			
 			if(a.canTransfer(amount)) {
-				Transaction t1 = new Transaction(d.toString(),"APPROVED","TRANSFER",
+				
+				Date date = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+				Transaction t1 = new Transaction(date.toString(),"APPROVED","TRANSFER",
 						a.getID(),ID, amount,a.getBalance()-amount);
-				Transaction t2 = new Transaction(d.toString(),"APPROVED","TRANSFER",
+				Transaction t2 = new Transaction(date.toString(),"APPROVED","TRANSFER",
 						a.getID(),ID, amount,a.getBalance()+amount);
 				
 				d.addTransaction(t1);

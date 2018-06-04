@@ -6,21 +6,34 @@ public class Employee extends User{
 	
 	private String fname;
 	private String lname;
+	private char isadmin;
 	
-	public Employee(String u, String p,String f,String l) {
+	public Employee(String u, String p,String f,String l,String c) {
 		super(u,p);
 		this.setFname(f);
 		this.setLname(l);
 		this.setEmployee(true);
 		this.setCustomer(false);
+		this.isadmin = c.charAt(0);
+		if(this.isadmin == 'Y') {
+			this.makeAdmin();
+		}
+		else {
+		}
 	}
 	
-	public Employee(int i,String u, String p,String f,String l) {
+	public Employee(int i,String u, String p,String f,String l,String c) {
 		super(i,u,p);
 		this.setFname(f);
 		this.setLname(l);
 		this.setEmployee(true);
 		this.setCustomer(false);
+		this.isadmin = c.charAt(0);
+		if(this.isadmin == 'Y') {
+			this.makeAdmin();
+		}
+		else {
+		}
 	}
 	
 	public void makeAdmin() {
@@ -63,6 +76,14 @@ public class Employee extends User{
 
 	public void setLname(String lname) {
 		this.lname = lname;
+	}
+
+	public char getIsadmin() {
+		return isadmin;
+	}
+
+	public void setIsadmin(char isadmin) {
+		this.isadmin = isadmin;
 	}
 
 }

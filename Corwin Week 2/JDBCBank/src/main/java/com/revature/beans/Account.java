@@ -111,10 +111,8 @@ public class Account{
 		}
 		if(toremove != -1) {
 			this.getCustomers().remove(toremove);
-			System.out.println("Customer #"+c.getID()+" was removed from Account #"+this.getID());
 			return true;
 		}
-		System.out.println("Customer #"+c.getID()+" was not a customer with Account #"+this.getID());
 		return false;
 	}
 	public boolean addCustomer(Customer c) {
@@ -126,10 +124,8 @@ public class Account{
 		}
 		if(toremove == -1) {
 			this.getCustomers().add(c);
-			System.out.println("Customer #"+c.getID()+" add to Account #"+this.getID());
 			return true;
 		}
-		System.out.println("Customer #"+c.getID()+" was already on Account #"+this.getID());
 		return false;
 	}
 	public void setCustomers(ArrayList<Customer> customers) {
