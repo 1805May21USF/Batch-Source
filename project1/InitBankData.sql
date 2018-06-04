@@ -1,34 +1,48 @@
+DROP TABLE BANKUSERSLOGINS;
+
 drop table BANKUSERS;
-DROP TABLE BANKUSERSLOGIN;
 CREATE TABLE BANKUSERS
 (
-    UserID NUMBER NOT NULL,
-    isAdmin NUMBER NOT NULL,
-    isActive NUMBER NOT NULL,
+    UserID INTEGER NOT NULL,
+    isAdmin INTEGER NOT NULL,
+    isActive INTEGER NOT NULL,
     Balance NUMBER NOT NULL,
 
     CONSTRAINT BANKUSERSpk PRIMARY KEY  (UserID)
 );
 CREATE TABLE BANKUSERSLOGINS
 (
-    UserID NUMBER NOT NULL,
-    USERNAME VARCHAR2(80) NOT NULL,
-    PASSWORD VARCHAR2(80) NOT NULL,
+    UserID INTEGER NOT NULL,
+    USERNAME VARCHAR2(80) UNIQUE NOT NULL,
+    PASSWD VARCHAR2(80),
     CONSTRAINT BANKUSERSLOGINSFK FOREIGN KEY  (UserID) REFERENCES BANKUSERS(UserID)
 );
 
 insert into bankUsers values(0,0,1,0.0);
 insert into bankUsersLogins values(0,'defaultUser', 'defaultUser');
+insert into bankUsers values(1,1,1,0.0);
+insert into bankUsersLogins values(1,'admin', 'admin');
+DROP SEQUENCE userIDSequence;
+CREATE SEQUENCE userIDSequence
+  MINVALUE 0
+  MAXVALUE 10000
+  START WITH 1000
+  INCREMENT BY 1
+  CACHE 20;
 
-CREATE OR REPLACE PROCEDURE getManagers (
-idnum in number) AS
-
+CREATE OR REPLACE FUNCTION INSERTUSER(isAdmin number, isActive number, balance NUMBER) RETURN NUMBER AS
+    resultID   NUMBER;
 BEGIN
-declare
- managers number;
- BEGIN
-select EMPLOYEE.reportsto into managers from EMPLOYEE  where EMPLOYEEID = idnum;
- DBMS_OUTPUT.PUT_LINE(managers || ' is the manager of number ' || idnum);
-end;
-end getManagers;
+resultID := userIDSequence.nextVAL;
+INSERT INTO BANKUSERS VALUES(resultID, isAdmin, isActive, balance);
+return(resultID);
+end INSERTUSER;
 /
+
+CREATE OR REPLACE PROCEDURE INSERTLOGIN( UserID NUMBER, USERNAME VARCHAR2,PASSWD VARCHAR2) AS
+ BEGIN
+insert into BANKUSERSLOGINS Values(UserID, USERNAME, PASSWD);
+end INSERTLOGIN;
+/
+
+

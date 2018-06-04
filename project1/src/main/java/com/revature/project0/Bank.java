@@ -30,7 +30,7 @@ public class Bank implements Serializable {
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		Bank b = new Bank();
-		
+		/*
 		if (Files.exists(Paths.get(dataFile))) {
 
 		  try
@@ -56,6 +56,8 @@ public class Bank implements Serializable {
 	            System.out.println("ClassNotFoundException is caught");
 	        }
 		}
+   */   
+
 		if (b.currentUser== null) {
 			b.currentUser= User.defaultUser;
 		}
@@ -77,7 +79,7 @@ public class Bank implements Serializable {
 				String password = sc.nextLine();
 			
 			try {
-				if (User.getUser(username)== null || !User.getUser(username).isActive()) {
+				if (User.getUser(username) == null || !User.getUser(username).isActive()) {
 					System.err.println("Username not valid!");
 					continue;
 				}
@@ -87,7 +89,12 @@ public class Bank implements Serializable {
 				}
 					
 			try {
-				if(User.getUser(username).getLoginInfo().get(username).equals(password)) {
+				User userToTest=User.getUser(username);
+				if (userToTest == null) {
+					System.err.println("Password is not valid!");
+					continue;
+				}
+				if((userToTest.getLoginInfo().get(username) == null && password.length() == 0 )|| (userToTest.getLoginInfo().get(username) != null && userToTest.getLoginInfo().get(username).equals(password))) {
 					b.currentUser = User.getUser(username);
 				}else {
 					System.err.println("Password is not valid!");
@@ -116,7 +123,7 @@ public class Bank implements Serializable {
 				username = sc.nextLine().trim();
 				System.out.println("Please type the Joint User's password:");
 				password = sc.nextLine();
-				b.currentUser.getLoginInfo().put(username, password);
+				b.currentUser.addAlias(username, password);
 				break;
 			case "kill":
 				System.out.println("Please type the username:");
@@ -124,6 +131,8 @@ public class Bank implements Serializable {
 				username = sc.nextLine().trim();
 				if (!b.deleteUser(username)) {
 					System.err.println("Error! You may not have admin access, or that account may not exsist.");
+				}else {
+					b.currentUser=User.defaultUser;
 				}
 				break;
 			case "transfer":
@@ -145,7 +154,7 @@ public class Bank implements Serializable {
 				src = User.getUser(username);
 				dest = User.getUser(sc.nextLine().trim());
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
+				System.err.println(e1.getMessage());
 				e1.printStackTrace();
 			} 
 				System.out.println("Please type the ammount:");
@@ -155,7 +164,8 @@ public class Bank implements Serializable {
 					sc.skip("\\s");
 
 				}catch(InputMismatchException e) {
-					
+					System.err.println(e.getMessage());
+					e.printStackTrace();
 				}
 			
 				if (src== null || dest == null) {
@@ -175,22 +185,32 @@ public class Bank implements Serializable {
 					ammount = sc.nextDouble();
 					sc.skip("\\s");
 				}catch(InputMismatchException e) {
-					
+					System.err.println(e.getMessage());
+					e.printStackTrace();
 				}
-				b.currentUser.setBalance(b.currentUser.getBalance() + ammount);
+				if(!b.currentUser.isAdmin() && 0> b.currentUser.getBalance() + ammount) {
+					System.err.println("Error! That would leave you with a negitive balance!\nYou don't have permission to do this.");
+				}else {
+					b.currentUser.setBalance(b.currentUser.getBalance() + ammount);
+				}
 				break;
 			case "withdraw":
 				System.out.println("Please type the ammount:");
 
 				ammount = 0.0;
-					ammount = sc.nextDouble();
-					sc.skip("\\s");
 					try {
 						ammount = sc.nextDouble();
+						sc.skip("\\s");
+
 					}catch(InputMismatchException e) {
-						
+						System.err.println(e.getMessage());
+						e.printStackTrace();
 					}
-				b.currentUser.setBalance(b.currentUser.getBalance() - ammount);
+					if(!b.currentUser.isAdmin() && 0> b.currentUser.getBalance() - ammount) {
+						System.err.println("Error! That would leave you with a negitive balance!\nYou don't have permission to do this.");
+					}else {
+						b.currentUser.setBalance(b.currentUser.getBalance() - ammount);
+					}
 				break;
 			case "approve":
 				if(!b.currentUser.isAdmin()) {
@@ -217,7 +237,7 @@ public class Bank implements Serializable {
 			case "?":
 			case "status":
 				System.out.println("Hello, " + b.currentUser.getLoginInfo().keySet() + ". Your admin status is " + b.currentUser.isAdmin() );
-				System.out.println("Your commands are: login create addJointUser kill transfer withdraw deposit exitAndCommit");
+				System.out.println("Your commands are: login create addJointUser kill transfer withdraw deposit exitAndCommit logout");
 				if (b.currentUser.isAdmin()) {
 					System.out.println("Your admin commands are: approve\nUsers are:");
 					for (User u : User.getUsers()) {
@@ -248,8 +268,11 @@ public class Bank implements Serializable {
 				e.printStackTrace();
 			}
 				break;
+			case "logout":
+				b.currentUser=User.defaultUser;
 			case "exit":
-				 try
+				/* 
+				try
 			        {   
 			            //Saving of object in a file
 			            FileOutputStream file = new FileOutputStream(dataFile);
@@ -269,6 +292,8 @@ public class Bank implements Serializable {
 			        {
 			            System.out.println("IOException caused us to fail to write the file to the disk");
 			        }
+			        */
+				
 				 	System.exit(0);
 			 
 				break;
@@ -300,9 +325,14 @@ public class Bank implements Serializable {
 		User newUser = null;
 		try {
 			newUser = new User(admin, logins,currentUser.isAdmin(), 0.0);
-		} catch (SQLException | NotPermittedException e) {
-			logger.warn("Oh dude! " + currentUser.getLoginInfo().keySet() + " just tried to make a user when that is someone else's name brah.");
+		} catch ( NotPermittedException e) {
+			logger.warn("Oh dude! " + currentUser.getLoginInfo().keySet() + " just tried to make a user named "+logins.keySet()+" when that is someone else's name brah.");
 			//e.printStackTrace();
+			return false;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
+			e.printStackTrace();
 			return false;
 		}
 	
@@ -317,7 +347,7 @@ public class Bank implements Serializable {
 			return false;
 		}
 		try {
-			if(!(User.getUser(name) == null)) {
+			if((User.getUser(name) == null)) {
 			//error, name not taken
 				logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to kill " + name + " when that is not a valid name. You ok brah?");
 
@@ -333,6 +363,8 @@ public class Bank implements Serializable {
 			toRemove = User.getUser(name);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
+			e.printStackTrace();
 			return false;
 		}
 		for (String alias  : toRemove.getLoginInfo().keySet()) {
@@ -344,7 +376,7 @@ public class Bank implements Serializable {
 		
 	}
 	public boolean transfer(User src, User dest, double ammount){
-		if (!(src == currentUser || currentUser.isAdmin())) {
+		if (!(src.equals(currentUser) || currentUser.isAdmin())) {
 			logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to move " + ammount + " from "+ src.getLoginInfo().keySet() + " to " + dest.getLoginInfo().keySet() + " But they arn't, like, in charge or anything.");
 			return false;
 		}

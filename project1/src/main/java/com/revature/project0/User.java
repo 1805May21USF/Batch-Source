@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +53,9 @@ public class User implements Serializable, UserDAO{
 		ResultSet rs;
 
 			rs = ps.executeQuery();
-		
+		if (!rs.next()) {
+			return false;
+		}
 		return rs.getBoolean(1);
 		
 		} catch (SQLException e) {
@@ -72,7 +75,7 @@ public class User implements Serializable, UserDAO{
 		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 		ps.setBoolean(1, admin);
 		ps.setInt(2, this.UserID);
-		assert(!ps.execute());
+		ps.executeUpdate();
 		
 		
 		} catch (SQLException e) {
@@ -85,7 +88,7 @@ public class User implements Serializable, UserDAO{
 		Connection conn = cf.getConnection();
 		String[] primaryKeys = new String[1];
 		primaryKeys[0] = "USERID";
-		String sql = "select USERNAME, PASSWORD from BANKUSERSLOGINS where USERID= ?";
+		String sql = "select USERNAME, PASSWD from BANKUSERSLOGINS where USERID= ?";
 		try {
 		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 		ps.setInt(1, this.UserID);
@@ -110,14 +113,16 @@ public class User implements Serializable, UserDAO{
 		Connection conn = cf.getConnection();
 		String[] primaryKeys = new String[1];
 		primaryKeys[0] = "USERID";
-		String sql = "select ACTIVE from BANKUSERS where USERID= ?";
+		String sql = "select ISACTIVE from BANKUSERS where USERID= ?";
 		try {
 		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 		ps.setInt(1, this.UserID);
 		ResultSet rs;
 
 			rs = ps.executeQuery();
-		
+			if (!rs.next()) {
+				return false;
+			}
 		return rs.getBoolean(1);
 		
 		} catch (SQLException e) {
@@ -131,12 +136,13 @@ public class User implements Serializable, UserDAO{
 		Connection conn = cf.getConnection();
 		String[] primaryKeys = new String[1];
 		primaryKeys[0] = "USERID";
-		String sql = "update BANKUSERS set ACTIVE = ? where USERID= ?";
+		String sql = "update BANKUSERS set ISACTIVE = ? where USERID= ?";
 		try {
 		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 		ps.setBoolean(1, active);
 		ps.setInt(2, this.UserID);
-		assert(!ps.execute());
+		ps.executeUpdate();
+
 		
 		
 		} catch (SQLException e) {
@@ -156,14 +162,16 @@ public class User implements Serializable, UserDAO{
 		ResultSet rs;
 
 			rs = ps.executeQuery();
-		
+		if (!rs.next()) {
+			return -666;
+		}
 		return rs.getDouble(1);
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return 0.0;
+		return -666;
 	}
 	public void setBalance(double balance) {
 		//this.balance = balance;
@@ -175,7 +183,7 @@ public class User implements Serializable, UserDAO{
 		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 		ps.setDouble(1, balance);
 		ps.setInt(2, this.UserID);
-		assert(!ps.execute());
+		ps.executeUpdate();
 		
 		
 		} catch (SQLException e) {
@@ -217,25 +225,27 @@ public class User implements Serializable, UserDAO{
 		this.balance = balance;
 		*/
 		Connection conn = cf.getConnection();
-		conn.createStatement().execute("SET TRANSACTION NAME 'insertUser'");
+		conn.createStatement().executeUpdate("SET TRANSACTION NAME 'insertUser'");
 
-		String sql = "{call INSERTUSER(?, ?, ?)";
+		String sql = "{? = call INSERTUSER(?, ?, ?)}";
 		CallableStatement call = conn.prepareCall(sql);
-		call.setBoolean(1, admin);
-		call.setBoolean(2, active);
-		call.setDouble(3, balance);
-		assert(call.execute());
-		UserID =call.getResultSet().getInt(1);
+	    call.registerOutParameter (1, Types.INTEGER);
+	    
+		call.setBoolean(2, admin);
+		call.setBoolean(3, active);
+		call.setDouble(4, balance);
+		call.executeUpdate();
+		UserID =call.getInt(1);
 		//create the user's login info
 		
 		for (Entry<String, String> pair : logins.entrySet()) {
 			if (!addAlias(pair.getKey(), pair.getValue())) {
 				//ABORT!
-				conn.createStatement().execute("ROLLBACK");
+				conn.createStatement().executeUpdate("ROLLBACK");
 				throw new NotPermittedException("Error! Username is in use, or has problem!");
 			}
 		}
-		conn.createStatement().execute("COMMIT");
+		conn.createStatement().executeUpdate("COMMIT");
 
 	}
 	
@@ -243,7 +253,7 @@ public class User implements Serializable, UserDAO{
 		//create the user's login info
 		Connection conn = cf.getConnection();
 		
-		String loginInsert = "{call INSERTLOGIN(?, ?, ?)";
+		String loginInsert = "{call INSERTLOGIN(?, ?, ?)}";
 		try {		
 		CallableStatement insertCall = conn.prepareCall(loginInsert);
 				insertCall.setInt(1, UserID);
@@ -251,7 +261,7 @@ public class User implements Serializable, UserDAO{
 					insertCall.setString(2,username);
 				
 				insertCall.setString(3, password);
-				assert(!insertCall.execute());
+				insertCall.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -300,14 +310,24 @@ public class User implements Serializable, UserDAO{
 			Connection conn = cf.getConnection();
 			String[] primaryKeys = new String[1];
 			primaryKeys[0] = "USERID";
-			String sql = "select USERID from LOGINS where LOGINS.USERNAME = ?";
+			String sql = "select USERID from BANKUSERSLOGINS where USERNAME = ?";
 			PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
+			
 			if(rs.next()) {
 				return new User(rs.getInt(1));
 			}
 			return null;
-			
+	}
+	public static void commitAndClose() {
+		Connection conn = cf.getConnection();
+		try {
+			conn.createStatement().executeUpdate("COMMIT");
+		} catch (SQLException e) {
+			System.err.println("FAILED TO COMMIT! OH GEEZ! " + e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 }

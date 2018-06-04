@@ -11,7 +11,7 @@ import oracle.jdbc.proxy.annotation.GetProxy;
 
 public class ConnFactory {
 	private static ConnFactory cf = new ConnFactory();
-
+	private static Connection con = null;
 	public static synchronized ConnFactory getInstance() {
 		if (cf == null) {
 			cf = new ConnFactory();
@@ -19,12 +19,19 @@ public class ConnFactory {
 		return cf;		
 	}
 	public Connection getConnection() {
-		Connection con = null;
+		try {
+			if( con != null&& !con.isClosed()) {
+				return con;
+			}
+		} catch (SQLException e1) {
+			System.err.println("ERROR! Failed to check if con is closed: " + e1.getMessage());
+			e1.printStackTrace();
+		}
 		Properties connectionProperties = new Properties();
 		try {
 			connectionProperties.load(new FileReader("database.properties"));
 			Class.forName(connectionProperties.getProperty("driver"));
-			System.out.println(" res is :"+ connectionProperties.getProperty("url")+ " " +connectionProperties.getProperty("user")+ " " +connectionProperties.getProperty("password"));
+			//System.out.println(" res is :"+ connectionProperties.getProperty("url")+ " " +connectionProperties.getProperty("user")+ " " +connectionProperties.getProperty("password"));
 
 			con=DriverManager.getConnection(connectionProperties.getProperty("url"),connectionProperties.getProperty("user"),connectionProperties.getProperty("password") );
 		} catch (IOException e) {
