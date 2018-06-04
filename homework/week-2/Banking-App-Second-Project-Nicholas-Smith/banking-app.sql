@@ -1,0 +1,45 @@
+SET serveroutput ON
+BEGIN
+DBMS_OUTPUT.PUT_LINE('HELLO WORLD');
+END;
+--Create tables for my banking application. 
+
+--Customer table
+CREATE TABLE BANK_CUSTOMER
+(
+USER_ID INT,
+FIRST_NAME VARCHAR2(40),
+LAST_NAME VARCHAR2(40),
+USER_NAME VARCHAR2(20),
+USER_PASSWORD VARCHAR2(20)
+);
+
+--Account table (Customer can have
+--multiple accounts.)
+CREATE TABLE BANK_ACCOUNT
+(
+BANK_ACCOUNT_ID INT,
+USER_ID INT, --foreign key
+BALANCE NUMBER --to get maximum precision 
+);
+
+--Create an EMPLOYEE_BANK table.
+CREATE TABLE BANK_EMPLOYEE
+(
+EMPLOYEEID INT,
+FIRSTNAME VARCHAR2(40),
+LASTNAME VARCHAR2(40)
+);
+
+--Use sequences to generate USER_ID and BANK_ACCOUNT_ID.
+CREATE SEQUENCE user_id_sequence
+MINVALUE 1
+START WITH 1000
+INCREMENT BY 1
+CACHE 10;
+
+CREATE SEQUENCE bank_account_id_sequence
+MINVALUE 1
+START WITH 1000000000
+INCREMENT BY 1
+CACHE 10;
