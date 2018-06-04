@@ -4,12 +4,10 @@ SET serveroutput ON;
 --Select all records from the Employee table
 SELECT * 
 FROM EMPLOYEE;
-
 --Select all records from the Employee table where last name is 'King'
 SELECT * 
 FROM EMPLOYEE
 WHERE LASTNAME = 'King';
-
 --Select all records from the Employee table where fist name is Andrew and REPORTISTO is NULL
 SELECT *
 FROM EMPLOYEE
@@ -104,7 +102,6 @@ WHERE CUSTOMERID = 32;
 --3.1 System Defined Functions
 --Create a function that returns the current time.
 --Create a function that returns the length of name in MEDIATYPE table
---TO_CHAR(CURRENT_DATE, 'HH24:MI:SS');
 
 --create a function called 'get_time'
 CREATE OR REPLACE FUNCTION get_time
@@ -322,9 +319,29 @@ END;
 /
 
 --6.0 Triggers
-
 --6.1 AFTER/FOR
+--Create an after insert trigger on the employee table fired after a new record is inserted into the table.
+CREATE OR REPLACE TRIGGER insert_on_employee
+AFTER INSERT ON EMPLOYEE
+BEGIN
+DBMS_OUTPUT.PUT_LINE('Employee record inserted');
+END;
+/
 
+--Create an after update trigger on the album table that fires after a row is inserted in the table.
+CREATE OR REPLACE TRIGGER insert_on_album
+AFTER INSERT ON ALBUM
+BEGIN
+DBMS_OUTPUT.PUT_LINE('Album record inserted');
+END;
+/
+--Create an after delete trigger on the customer table that fires after a row is deleted from the table.
+CREATE OR REPLACE TRIGGER delete_on_customer
+AFTER DELETE ON CUSTOMER
+BEGIN
+DBMS_OUTPUT.PUT_LINE('Customer record deleted');
+END;
+/
 --7.0 JOINS
 --7.1 INNER
 --Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId.
