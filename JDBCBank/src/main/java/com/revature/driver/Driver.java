@@ -12,7 +12,11 @@ import com.revature.DaoImpl.CustomerDaoImpl;
 import com.revature.beans.Account;
 import com.revature.beans.Customer;
 
-
+/**  
+ * Main Driver class that implements the user interface
+ * @param none
+ * @return none
+ */
 public class Driver {
 	static AccountDaoImpl ADI; 
 	static CustomerDaoImpl CDI; 
@@ -20,9 +24,18 @@ public class Driver {
 	List<Customer> customerList = new ArrayList<Customer>();
 	List<Account> accountList = new ArrayList<Account>();
 	
+	/**  
+	 * Constructor for the Driver class, Initializes the CustomerDaoImpl and AccountDaoImpl and
+	 * calls the Intro() method
+	 * @param none
+	 * @return none
+	 */
 	public Driver() {
+		//Initializes AccountDaoImpl and CustomerDaoImpl
 		this.ADI = new AccountDaoImpl();
 		this.CDI = new CustomerDaoImpl();
+		
+		//get all the user and their accounts and stores then in an ArrayList
 		try {
 			this.customerList = CDI.getCustomer();
 			this.accountList = ADI.getAccount();
@@ -30,15 +43,25 @@ public class Driver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//calling the Introduction method
 		Intro();
 	}
 	public Driver(String username) {
 		
 	}
 	
+	/**  
+	 * Prints the greeting message to the screen and prompts the user for input that
+	 * correlates with the given options
+	 * @param none
+	 * @return none
+	 */
 	public void Intro() {
-		Scanner sc = new Scanner(System.in);
+		//Initializing scanner and random
+		Scanner sc = new Scanner(System.in); 
 		Random rand = new Random();
+		
+		//Prompts the user and asks for a response
 		System.out.println("");
 		System.out.println("Hi Welcome to JLukim Federal Credit Union (JFCU)");
 		//logger.info("Hi Welcome to JLukim Federal Credit Union (JFCU)");
@@ -47,8 +70,10 @@ public class Driver {
 		System.out.print("      3: To exit: ");
 		String choice = sc.next();
 		
+		//Handling user response using a switch case`
 		switch(choice){
 		case "1": System.out.println("");
+				  //Calling the open account method that creates an account for a user
 				  openAccount(sc, rand);
 		break;
 		case "2": System.out.println("");
@@ -56,12 +81,15 @@ public class Driver {
 				  String user = sc.next();
 				  System.out.print("Please Enter Your Password: ");
 				  String password = sc.next();
+				  //Calling the sign in method that check "sign in" info and displays user interface
 				  signIn(user, password, sc);
 		break;
+		//to exit the application
 		case "3":System.out.println("");
 				 System.out.println("Thank you for visiting JLukim Federal Credit Union");
 				 System.exit(0);
 		break;
+		//to handle responses that are no acceptable
 		default: System.out.println("");
 				 System.out.println("\"" +choice + "\"" + " is not an acceptable input!");
 				 Intro();
@@ -69,6 +97,13 @@ public class Driver {
 		}
 	}
 	
+	/**  
+	 * Prompts the user for information and creates an account using the responses
+	 * correlates with the given options
+	 * @param sc: Scanner for getting user response
+	 * @param rand: to generate a random number for account number
+	 * @return none
+	 */ 
 	public void openAccount(Scanner sc, Random rand){
 		System.out.println("");
 		System.out.println("Opening an Account: ");
@@ -78,19 +113,27 @@ public class Driver {
 		String lastName = sc.next();
 		System.out.print("Enter Your User Name: ");
 		String userName = sc.next();
+		
+		//boolean checker to check if the user already has an account
 		boolean inDatabase  = checkUserName(userName, sc);
 		getUserName(inDatabase, userName, sc);
+		
 		System.out.print("Enter Your Password: ");
 		String password = sc.next();
 		System.out.print("Enter Initial Amount: ");
 		String amount = sc.next();
+		//checks if the response is a number
 		double checkedAmount = checkNumber(amount, sc);
 
 		Customer customer = null;
+		//Generates a random number 
 		int  accountNumber = rand.nextInt(10000) + 1;
 		try {
+			System.out.println("Creating...");
+			//Add account info to the accounts table
 			ADI.createAccount(checkedAmount, accountNumber);
 			Account myAccount = ADI.readAccount(userName, password, accountNumber);
+			//add user info to the users table
 			CDI.createCustomer(firstName, lastName, userName, password, 1, accountNumber, myAccount.getAccount_id());
 			customer = CDI.readCustomer(userName, password);
 		} catch (SQLException e) {
@@ -106,15 +149,24 @@ public class Driver {
 		Driver dr = new Driver();
 	}
 	
+	/**  
+	 * Confirms user input and direct user to a "userInterface" or "superUserInterface" 
+	 * depending on their status.
+	 * @param Username: the unique user name of the user
+	 * @param password: the user password
+	 * @param sc: scanner class for user input
+	 * @return none
+	 */
 	public void signIn(String Username, String Password, Scanner sc) {
 		Customer customer = checkUserName(Username, Password);
 		if(customer != null) {	
 			String[] args = {Username, Password};
-			if(customer.getStatus() == 3) {
+			//check user status and directs to respective interface: 
+			//A status of 3 is for the super user and 1 for an ordinary user
+			if(customer.getStatus() == 3) {			
 				superUserInterface(customer, Username, Password);
 			}else {
 				userInterface(customer, Username, Password);
-				//CustomerDriver.main(args, customer);
 			}
 		}else {
 			System.out.println("");
@@ -123,6 +175,12 @@ public class Driver {
 		}
 	}
 	
+	/**  
+	 * Checks for the user name in the customer list 
+	 * @param username: the unique user name of the user
+	 * @param sc: scanner class for user input
+	 * @return true if the user exists in the list or false otherwise
+	 */
 	public boolean checkUserName(String username, Scanner sc) {
 		for(Customer customer : customerList) {
 			if(customer.getUsername().equals(username)) {
@@ -132,6 +190,12 @@ public class Driver {
 		return false;
 	}
 	
+	/**  
+	 * Checks for the user name in the customer list 
+	 * @param username: the unique user name of the user
+	 * @param sc: scanner class for user input
+	 * @return true if the user exists in the list or false otherwise
+	 */
 	public String getUserName(boolean inDatabase, String Username, Scanner sc) {
 		String name = "";
 		if(inDatabase) {
@@ -204,13 +268,32 @@ public class Driver {
 					  System.out.println("Withdraw Error: not enough money in your account for this transaction");
 					  signIn(userName, password, sc);
 				  }else {
-					  System.out.println("Success! you have withdrawn $" + result + " from your account");
-					  System.out.println("Your account balance is $" + (newAmount));
 					  try {
-						ADI.updateAccount(userName, password, myAccount, newAmount);
+						  System.out.println("Withdrawing Amount...");
+						  ADI.updateAccount(userName, password, myAccount, newAmount);
+						  System.out.println("Success! you have withdrawn $" + result + " from your account");
+						  System.out.println("Your account balance is $" + (newAmount));
 					  } catch (SQLException e) {
 						  // TODO Auto-generated catch block
 						  e.printStackTrace();
+					  }
+					  
+					  if(newAmount == 0){
+						  System.out.println("");
+						  System.out.println("Would you like to close your account? Y/N ");
+						  String response = sc.next();
+						  if(response.equalsIgnoreCase("y")){
+				  			  try {
+				  				System.out.println("Deleting...");
+								CDI.deleteCustomer(userName);
+								ADI.deleteCustomer(customer.getAccountnumber());
+						  		System.out.println("Your account have been deleted. Goodbye!");
+						  		Intro();
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+				  		  }
 					  }
 					  signIn(userName, password, sc);
 				  }
@@ -228,9 +311,10 @@ public class Driver {
 					  System.out.println( deposit + " is not a valid withdraw number. Do you want to withdraw instead");
 				  	  signIn(userName, password, sc);
 				  }
-		  		  System.out.println("Success! you have deposited $" + res + " into your account");
+		  		  System.out.println("Depositing...");
 		  		  try {
 		  			  ADI.updateAccount(userName, password, myAccount, new_amount);
+			  		  System.out.println("Success! you have deposited $" + res + " into your account");
 		  		  } catch (SQLException e) {
 		  			  // TODO Auto-generated catch block
 		  			  e.printStackTrace();
@@ -290,6 +374,7 @@ public class Driver {
 				  double newAmount = checkNumber(amount, sc);
 				  Account acc = checkAccountNumber(num);
 				  try {
+					  System.out.println("Updating Account...");
 					  ADI.updateAccount(userName, password, acc, newAmount);
 				  } catch (SQLException e) {
 					  // TODO Auto-generated catch block
@@ -302,9 +387,14 @@ public class Driver {
 		  		  System.out.println("Enter the user name to delete: ");
 		  		  String name = sc.next();
 		  		  boolean isThere = checkUserName(name, sc);
+		  		  System.out.println("Enter the account number to delete");
+		  		  String answer = sc.next();
+		  		  int number = (int)checkNumber(answer, sc);
 		  		  if(isThere){
 		  			  try {
-						CDI.deleteCustomer(name, password);
+		  				System.out.println("Deleting Account...");
+						CDI.deleteCustomer(name);
+						ADI.deleteCustomer(number);
 				  		System.out.println("Account deleted Chief!");
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
@@ -318,6 +408,7 @@ public class Driver {
 		  		  String response = sc.next();
 		  		  if(response.equalsIgnoreCase("y")){
 		  			  try {
+		  				System.out.println("Deleting...");
 						CDI.deleteAllUsers();
 				  		System.out.println("All user accounts has been deleted chief!");
 					} catch (SQLException e) {

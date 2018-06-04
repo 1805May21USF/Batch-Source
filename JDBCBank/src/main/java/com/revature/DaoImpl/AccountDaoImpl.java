@@ -1,5 +1,6 @@
 package com.revature.DaoImpl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -88,6 +89,16 @@ public class AccountDaoImpl implements AccountDao {
 		PreparedStatement stmt = conn.prepareStatement(sql, primaryKeys);
 		stmt.setString(1, Username);
 		ResultSet rs = stmt.executeQuery();
+		conn.close();
+	}
+	
+	public void deleteCustomer(int accountNumber) throws SQLException{
+		Connection conn = cf.getConnection();
+		String sql = "{call deleteAccount(?)";
+		
+		CallableStatement call = conn.prepareCall(sql);
+		call.setInt(1, accountNumber);
+		call.execute();
 		conn.close();
 	}
 	

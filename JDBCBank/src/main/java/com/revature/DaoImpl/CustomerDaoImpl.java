@@ -89,7 +89,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
 	public void deleteCustomer(String Username, String Password) throws SQLException {
 		// TODO Auto-generated method stub
-		Customer customer = null;
+		//Customer customer = null;
 		Connection conn = cf.getConnection();
 		String[] primaryKeys = new String[1];
 		primaryKeys[0] = "User_id";
@@ -97,6 +97,16 @@ public class CustomerDaoImpl implements CustomerDao {
 		PreparedStatement stmt = conn.prepareStatement(sql, primaryKeys);
 		stmt.setString(1, Username);
 		ResultSet rs = stmt.executeQuery();
+		conn.close();
+	}
+	
+	public void deleteCustomer(String username) throws SQLException{
+		Connection conn = cf.getConnection();
+		String sql = "{call deleteUser(?)";
+		
+		CallableStatement call = conn.prepareCall(sql);
+		call.setString(1, username);
+		call.execute();
 		conn.close();
 	}
 	
