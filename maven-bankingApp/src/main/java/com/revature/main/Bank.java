@@ -98,7 +98,7 @@ public class Bank {
 		//select an account
 	
 	}
-	//checks whether the users credentials ar valid
+	//checks whether the users credentials are valid
 	private void checkCredintials(String username, String password) {
 		String user = username;
 		String pass = password;

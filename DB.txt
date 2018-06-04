@@ -1,0 +1,35 @@
+launch db
+oractle
+standard edition two
+only enable free tier
+DBInstance is your DB Name.
+Master userName- the usual
+
+revature-db-martink
+Availability Zone - can be used to get the best timezone
+//add rules for db access
+Security group
+Add Rule
+
+Referential Integrity
+Relationsips between tables remain constant
+All Foreign keys must match the correct values
+PKs- unique identifying column, cannot be null- never change a primary key
+
+Composit Key
+pk- compsed of multiple columns
+Surrogate key
+value generated soley for the purpose of being a pk
+
+natural key
+value that already exists in the table used as a pk
+
+foreign keys
+regerence to another table
+does not have to be a pk, but probably should be
+
+Normalization
+help keep all data related
+prevent data modification related errors & inconsistencies
+removing what we dont need and keeping what we do need
+simplify our queries
