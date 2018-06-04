@@ -109,7 +109,7 @@ WHERE CUSTOMERID = 32;
 --create a function called 'get_time'
 CREATE OR REPLACE FUNCTION get_time
 --return a char variable
-RETURN CHAR IS 
+RETURN CHAR AS 
 --create CHAR variable named sys_time 
 --it is assigned to the current time
 sys_time CHAR (20) := TO_CHAR(CURRENT_DATE, 'HH24:MI:SS');
@@ -127,7 +127,7 @@ FROM DUAL;
 --Will return the length of the name of media type
 CREATE OR REPLACE FUNCTION get_name_length(media_id NUMBER)
 --return an INT variable
-RETURN NUMBER IS 
+RETURN NUMBER AS 
 --create an INT variable named name_length
 --it is assigned to the length of the NAME in the MEDIATYPE table
 --create a variable to store the name of the mediatype
@@ -141,7 +141,6 @@ FROM MEDIATYPE
 WHERE MEDIATYPEID = media_id;
 --from the MEDIATYPE table
 --return name_length 
-
 --assign name_length to the length of the media name
 name_length := LENGTH(media_name);
 RETURN name_length;
@@ -153,14 +152,116 @@ SELECT get_name_length(5)
 FROM DUAL;
 
 --3.2 System Defined Aggregate Functions
+--Create a function that returns the average total of all invoices 
+CREATE OR REPLACE FUNCTION get_avg_inv_total
+RETURN NUMBER AS
+avg_inv_total NUMBER(10,2);
+BEGIN
+SELECT AVG(TOTAL)
+--store the average into avg_inv_total
+INTO avg_inv_total
+FROM INVOICE;
+RETURN avg_inv_total;
+END;
+/
+
+--Test the getget_avg_inv_total function
+SELECT get_avg_inv_total
+FROM DUAL;
+
+
+--Create a function that returns the most expensive track
+CREATE OR REPLACE FUNCTION get_max_track
+RETURN VARCHAR2 AS
+--create a variable to hold the track name
+track_name VARCHAR2(200);
+--create a variable to hold the price of the track
+track_price NUMBER(10,2);
+BEGIN
+--store the most expensive track price into track_price
+SELECT MAX(UNITPRICE)
+INTO track_price
+FROM TRACK;
+--store the track name with the most expensive price into track_name
+SELECT NAME
+INTO track_name
+FROM TRACK
+--only select the first row that matches the max price
+WHERE UNITPRICE = track_price AND ROWNUM = 1;
+
+RETURN track_name;
+END;
+/
+
+--Test the get_max_track function
+SELECT get_max_track
+FROM DUAL;
 
 --3.3 User Defined Scalar Functions
+--Create a function that returns the average price of invoiceline items in the invoiceline table
+CREATE OR REPLACE FUNCTION get_avg_invlin_price
+RETURN NUMBER AS
+--create a variable to hold the avg price
+avg_invlin_price NUMBER(10,2);
+BEGIN
+SELECT AVG (UNITPRICE)
+INTO avg_invlin_price
+FROM INVOICELINE;
+RETURN avg_invlin_price;
+END;
+/
+
+--Test the get_avg_invlin_price function
+SELECT get_avg_invlin_price
+FROM DUAL;
 
 --3.4 User Defined Table Valued Functions
+--create a function that returns all employees who are born after 1968.
+
+CREATE OR REPLACE FUNCTION get_employees
+RETURN SYS_REFCURSOR AS
+--create a variable that stores a sys_refcursor
+e_rc SYS_REFCURSOR;
+--create a variable that stores the year of birth
+year_of_birth_int INT;
+--create a variable that stores the EMPLOYEE BIRTHDATE
+year_of_birth_date DATE;
+BEGIN
+OPEN e_rc
+FOR SELECT *
+FROM EMPLOYEE
+WHERE BIRTHDATE >= '01-JAN-69';
+RETURN e_rc;
+END;
+/
+
+--Test the get_employees function.
+SELECT get_employees
+FROM DUAL;
 
 --4.0 Stored Procedures
 
 --4.1 Basic Stored Procedure
+--Create a stored procedure that selects the first and last names of all the employees.
+CREATE OR REPLACE PROCEDURE get_emp_first_last
+AS
+--Create a variable
+emp_name VARCHAR2(20);
+emp_name2 VARCHAR2(20);
+BEGIN
+SELECT FIRSTNAME
+INTO emp_name
+FROM EMPLOYEE;
+
+SELECT LASTNAME
+INTO emp_name2
+FROM EMPLOYEE;
+END;
+/
+
+--Test the get_emp_first_last function
+EXECUTE get_emp_first_last;
+
 
 --4.2 Stored Procedure Input Parameters
 
