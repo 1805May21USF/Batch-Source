@@ -3,10 +3,18 @@ package com.revature.bank;
 import java.util.Scanner;
 import java.sql.*;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
+
 public class Driver {
 	
-
-	public static void main(String[] args) {
+	public static Logger logger = Logger.getLogger(Driver.class);
+	
+	
+	public static void main(String[] args) throws SQLException{
+		
+		BasicConfigurator.configure();
 		
 		Scanner input = new Scanner(System.in);
 		
@@ -22,7 +30,7 @@ public class Driver {
 		
 		
 		Boolean again = true; //create a boolean for the do/while loop
-		String userWant =""; //this is to assign what the user wants to do either login or sign up
+		int userWant; //this is to assign what the user wants to do either login or sign up
 		
 		String takeUsername = "";
 		String takePassword ="";
@@ -30,15 +38,20 @@ public class Driver {
 		try 
 		{
 			//1. get a connection to a database
-			myConn = DriverManager.getConnection(url, user, password);			
+			myConn = DriverManager.getConnection(url, user, password);	
 			
-/*			//Creating a table for customers information
-			ps = myConn.prepareStatement("create table bank_customers(firstname varchar(13), lastname varchar(13), "
+			//----------------------------- Comment out after table has been created -----------------------------
+/*			
+			//Creating a table for customers information
+			ps = myConn.prepareStatement("create table if not exists bank_customers(firstname varchar(13), lastname varchar(13), "
 					+ "checkings number, savings number, username varchar(13), password varchar(13))");
 			ps.executeUpdate();
-			System.out.println("Table Created.");
+			System.out.println("Table Created.");*/
 			
-			//add to the table
+			//-----------------------------------------------------------------------------------------------------
+			
+			
+/*			//add to the table
 			ps2 = myConn.prepareStatement("insert into bank_customers(firstname, lastname, checkings, savings, username, password)"
 					+ " values(?,?,?,?,?,?)");
 			
@@ -49,31 +62,37 @@ public class Driver {
 			ps2.setString(5, "fee");
 			ps2.setString(6, "zero");
 			rs = ps2.executeQuery(); //this goes after the values have been entered. 
-			
-			System.out.println("Data inserted.");*/
+*/			
+			System.out.println("Data inserted.");
 			
 			UserType ut = new UserType();
 			
 			do 
 			{
-				System.out.print("Returning User/ Unregistered User/ Superuser ");
-				userWant = input.nextLine();
+				System.out.println("[1] Returning User");
+				System.out.println("[2] Unregistered User");
+				System.out.println("[3] Superuser");
+				System.out.println("[< 4] To Exit");
+
+				System.out.print("\nLoggin as: ");
+				userWant = input.nextInt();
 				
 				
-				if(userWant.equals("Returning User")) 
+				if(userWant == 1) 
 				{
 					System.out.print("Enter username: ");
-					takeUsername = input.nextLine();
+					takeUsername = input.next();
 					
 					System.out.print("Enter password: ");
-					takePassword = input.nextLine();
+					takePassword = input.next();
 					
 					if(takePassword.equals(UserType.registeredUserPassword(takeUsername)))
 					{
-						ut.userOptions();
+						ut.userOptions(takeUsername);
 					}
+
 				}
-				else if(userWant.equals("Unregistered User")) 
+				else if(userWant == 2) 
 				{
 					ps = myConn.prepareStatement("insert into bank_customers(firstname, lastname, checkings, savings, username, password)"
 							+ " values(?,?,?,?,?,?)");
@@ -103,18 +122,23 @@ public class Driver {
 					ps.setString(5, newusername);
 					ps.setString(6, newpassword);
 					
-					rs = ps.executeQuery();
-					System.out.println("\nYou've created a new account!\n");
+					System.out.println("\n"+newfirstname+", "+"You are now a registered user!");
 					
-					ut.userOptions();
+					rs = ps.executeQuery();
+					
+					ut.userOptions(newusername);
 				}
-				else if(userWant.equals("Superuser")) 
+				else if(userWant == 3) 
 				{
 					//call superuser object
+					
+					Superuser su = new Superuser();
+					su.superuse();
 				}
 				else 
 				{
 					System.out.println("Exiting ... ");
+					break;
 				}
 				
 			}
@@ -126,6 +150,8 @@ public class Driver {
 		{
 			e.printStackTrace();
 		}
+		
+		myConn.close();
 	}
 	
 	
