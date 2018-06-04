@@ -1,0 +1,453 @@
+--Question 2.1
+SELECT
+    *
+FROM
+    employee;
+
+SELECT
+    *
+FROM
+    employee e
+WHERE
+    e.lastname = 'King';
+
+SELECT
+    *
+FROM
+    employee e
+WHERE
+    e.firstname = 'Andrew'
+    AND e.reportsto IS NULL;
+
+--Question 2.2
+
+SELECT
+    *
+FROM
+    album
+ORDER BY
+    title DESC;
+
+SELECT
+    firstname
+FROM
+    customer
+ORDER BY
+    city;
+
+--Question 2.3
+
+INSERT INTO genre (
+    genreid,
+    name
+) VALUES (
+    26,
+    'Afrobeat'
+);
+
+INSERT INTO genre (
+    genreid,
+    name
+) VALUES (
+    27,
+    'Oghene'
+);
+
+INSERT INTO employee VALUES (
+    '16',
+    'Nwokocha',
+    'Kesiride',
+    'Chief',
+    '7',
+    '16-july-93',
+    '21-may-18',
+    '51 iweka rd',
+    'Onitsha',
+    'Anambra',
+    'Nigeria',
+    NULL,
+    '0802325578',
+    NULL,
+    NULL
+);
+
+INSERT INTO employee VALUES (
+    '17',
+    'Nwokocha',
+    'Esther',
+    'Chief',
+    '16',
+    NULL,
+    NULL,
+    '813 Tapestry cove',
+    'Pflugerville',
+    'Texas',
+    'USA',
+    NULL,
+    NULL,
+    NULL,
+    NULL
+);
+
+INSERT INTO customer VALUES (
+    '60',
+    'Kesiride',
+    'Nwokocha',
+    'Revature',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    'kesiride@gmail.com',
+    NULL
+);
+
+INSERT INTO customer VALUES (
+    '61',
+    'Nathan',
+    'Simpson',
+    'Revature',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    'nathan@gmail.com',
+    NULL
+);
+
+--Question 2.4
+
+DROP TABLE customer;
+
+UPDATE customer c
+SET
+    c.firstname = 'Robert',
+    c.lastname = 'Walter'
+WHERE
+    c.firstname = 'Aaron'
+    AND c.lastname = 'Mitchell';
+
+UPDATE artist a
+SET
+    name = 'ccr'
+WHERE
+    c.name = 'Creedence Clearwater Revival';
+
+--Question 2.5
+
+SELECT
+    *
+FROM
+    invoice i
+WHERE
+    i.billing_address = "T%";
+
+--Question 2.6
+
+SELECT
+    *
+FROM
+    invoice i
+WHERE
+    i.total >= 15
+    AND i.total <= 50;
+
+SELECT
+    *
+FROM
+    employees;
+
+--Question 2.7
+
+DELETE FROM invoiceline
+WHERE
+    inviceid IN (
+        SELECT
+            invoiceid
+        FROM
+            invoice
+        WHERE
+            customerid IN (
+                SELECT
+                    customerid
+                FROM
+                    customer
+                WHERE
+                    firstname = 'Robert'
+                    AND lastname = 'Walter'
+            )
+    );
+
+DELETE FROM invoice
+WHERE
+    custoemrid IN (
+        SELECT
+            customer
+        FROM
+            customer
+        WHERE
+            firstname = 'Robert'
+            AND lastname = 'Walter'
+    );
+
+DELETE FROM customer
+WHERE
+    firstname = 'Robert'
+    AND lastname = 'Walter';
+
+--Question 3.1
+
+CREATE OR REPLACE FUNCTION gettime RETURN VARCHAR2 AS
+    currenttime   VARCHAR(260);
+BEGIN
+    SELECT
+        TO_CHAR(SYSDATE,'HH24:MI:SS')
+    INTO currenttime
+    FROM
+        dual;
+
+    RETURN currenttime;
+END;
+/
+
+SELECT
+    gettime()
+FROM
+    dual;
+
+CREATE OR REPLACE FUNCTION getlength (
+    medianame IN VARCHAR2
+) RETURN NUMBER
+    AS
+BEGIN
+    RETURN length(medianame);
+END;
+/
+
+SELECT
+    getlength(name)
+FROM
+    mediatype;
+
+--Question 3.2
+
+CREATE OR REPLACE FUNCTION getaverage RETURN NUMBER AS
+    average   NUMBER(10,2);
+BEGIN
+    SELECT
+        AVG(total)
+    INTO average
+    FROM
+        invoice;
+
+    RETURN average;
+END;
+/
+
+SELECT
+    getaverage()
+FROM
+    dual;
+
+CREATE OR REPLACE FUNCTION mostexpensive RETURN NUMBER AS
+    expensive   NUMBER(10,2);
+BEGIN
+    SELECT
+        MAX(unitprice)
+    INTO expensive
+    FROM
+        track;
+
+    RETURN expensive;
+END;
+/
+
+SELECT
+    mostexpensive()
+FROM
+    dual;
+
+--Question 3.3
+
+CREATE OR REPLACE FUNCTION getprice RETURN NUMBER AS
+    avgprice   NUMBER(10,2);
+BEGIN
+    SELECT
+        AVG(unitprice)
+    INTO avgprice
+    FROM
+        invoiceline;
+
+    RETURN avgprice;
+END;
+/
+
+SELECT
+    getprice()
+FROM
+    dual;
+
+--Question 3.4
+
+CREATE OR REPLACE FUNCTION employee1968 (
+    s OUT SYS_REFCURSOR
+) RETURN VARCHAR2 AS
+    emp   VARCHAR2;
+BEGIN
+    OPEN s FOR SELECT
+        firstname,
+        lastname
+               FROM
+        employee
+               WHERE
+        EXTRACT(YEAR FROM birthdate) > 1968;
+
+    RETURN emp;
+END;
+/
+
+--4.1
+
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE PROCEDURE get_employees (
+    s OUT SYS_REFCURSOR
+)
+    IS
+BEGIN
+    OPEN s FOR SELECT
+        firstname,
+        lastname
+               FROM
+        employee;
+
+END;
+/
+
+DECLARE
+    s           SYS_REFCURSOR;
+    firstname   employee.firstname%TYPE;
+    lastname    employee.lastname%TYPE;
+BEGIN
+    get_employees(s);
+    LOOP
+        FETCH s INTO
+            firstname,
+            lastname;
+        EXIT WHEN s%notfound;
+        dbms_output.put_line(firstname
+                               || ' '
+                               || lastname);
+    END LOOP;
+
+    CLOSE s;
+END;
+/
+
+--Question 5
+
+CREATE PROCEDURE insert_into_customerzz (
+    c_customer_id   IN NUMBER,
+    c_first_name    IN VARCHAR2,
+    c_last_name     IN VARCHAR2,
+    c_email         IN VARCHAR2
+)
+    AS
+BEGIN
+    INSERT INTO customer (
+        customerid,
+        firstname,
+        lastname,
+        company,
+        address,
+        city,
+        state,
+        country,
+        postalcode,
+        phone,
+        fax,
+        email,
+        supportrepid
+    ) VALUES (
+        c_customer_id,
+        c_first_name,
+        c_last_name,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        c_email,
+        NULL
+    );
+
+END;
+/
+
+DECLARE BEGIN
+    insert_into_customerzz(62,'Kesiride','Nwokocha','kesiride@gmail.com');
+END;
+/
+
+--Question 7.1
+
+SELECT
+    customer.firstname,
+    customer.lastname,
+    invoice.invoiceid
+FROM
+    customer
+    INNER JOIN invoice ON customer.customerid = invoice.customerid;
+
+--Question 7.2
+
+SELECT
+    customer.customerid,
+    customer.firstname,
+    customer.lastname,
+    invoice.invoiceid,
+    invoice.total
+FROM
+    customer
+    FULL OUTER JOIN invoice ON customer.customerid = invoice.customerid;
+
+--Question 7.3
+
+SELECT
+    album.title,
+    artist.name
+FROM
+    album
+    RIGHT OUTER JOIN artist ON album.artistid = artist.artistid;
+
+--Question 7.4
+
+SELECT
+    *
+FROM
+    album
+    CROSS JOIN artist
+ORDER BY
+    artist.name ASC;
+
+--7.5 SELF
+
+SELECT
+    a.firstname,
+    a.lastname,
+    b.firstname,
+    b.lastname
+FROM
+    employee a,
+    employee b
+WHERE
+    a.reportsto = b.employeeid;
