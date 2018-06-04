@@ -1,0 +1,1083 @@
+select *
+/*
+2.1 Select all records from the Employee table
+*/
+SELECT *
+FROM employee;
+
+/*
+2.1 Select all records from the Employee table where last name is King.
+*/
+
+SELECT *
+FROM employee
+WHERE lastname = 'King';
+
+/*
+2.1 Select all records from the Employee table where first name is Andrew and REPORTSTO is NULL.
+*/
+
+SELECT *
+FROM employee
+WHERE firstname = 'Andrew' AND REPORTSTO IS NULL;
+
+/*
+ 2.2 Select all albums in Album table and sort result set in descending order by title.
+*/
+
+SELECT *
+FROM album
+ORDER BY title DESC;
+
+/*
+ 2.2  Select first name from Customer and sort result set in ascending order by city
+*/
+
+SELECT firstname
+FROM customer
+ORDER BY city;
+
+/*
+ 2.3  Insert two new records into Genre table
+*/
+
+INSERT INTO values (26,'Space Shows');
+INSERT INTO values (27,'EDM');
+
+/*
+ 2.3  Insert two new records into Genre table
+*/
+
+INSERT INTO employee VALUES (9, 'Wisniewski', 'Jonathan', 'CEO', 6, TO_DATE('04/02/1992', 'MM/DD/YYYY'), TO_DATE('6/12/2017', 'MM/DD/YYYY'),
+'1406 Meadowbrook Blvd', 'Stow', 'Ohio', 'United States of America', '44224', '(330) 607-7996', '+1 (623) 843-4523', 'jwisnie5@kent.edu');
+
+INSERT INTO employee VALUES (10, 'Green', 'Ryan', 'Janitor', 4, TO_DATE('04/17/1995', 'MM/DD/YYYY'), TO_DATE('6/19/2017', 'MM/DD/YYYY'),
+'1384 Meadowbrook Blvd', 'Stow', 'Ohio', 'United States of America', '44224', '(330) 523-5436', '+1 (623) 974-4562', 'ryan4@kent.edu');
+
+/*
+ 2.3  Insert two new records into Genre table
+*/
+
+INSERT INTO customer VALUES (60, 'Jonathan', 'Wisniewski', 'Telus', '8210 111 ST NW', 'Edmonton', 'AB', 'Canada', 'T6G 2C7', '+1 (780) 543-5473',
+'+1 (780) 854-5545', 'jwisnie5@kent.edu', 5);
+
+INSERT INTO customer VALUES (61, 'Bobby', 'Wisniewski', 'Telus', '8210 111 ST NW', 'Edmonton', 'AB', 'Canada', 'T6G 2C7', '+1 (780) 845-9843',
+'+1 (780) 847-6473', 'bobby@kent.edu', 5);
+
+/*
+ 2.4   Update Aaron Mitchell in Customer table to Robert Walter
+*/
+
+UPDATE customer
+SET firstname = 'Robert', lastname = 'Walter'
+WHERE firstname = 'Aaron' AND lastname = 'Mitchell';
+
+/*
+ 2.4   Update Aaron Mitchell in Customer table to Robert Walter
+*/
+
+UPDATE artist
+SET name = 'CCR'
+WHERE name = 'Creedence Clearwater Revival';
+
+/*
+ 2.5   Select all invoices with a billing address like “T%” 
+*/
+
+SELECT *
+FROM invoice
+WHERE BILLINGADDRESS LIKE 'T%';
+
+/*
+ 2.6   Select all invoices that have a total between 15 and 50 
+*/
+
+SELECT *
+FROM invoice
+WHERE total BETWEEN 15 AND 50;
+
+/*
+ 2.6  Select all employees hired between 1st of June 2003 and 1st of March 2004
+*/
+
+SELECT *
+FROM employee
+WHERE hiredate BETWEEN '01-JUN-2003' AND '01-MAR-2004';
+
+/*
+ 2.7 Task – Delete a record in Customer table where the name is Robert Walter (There may be constraints that rely on this, find out how to resolve them).
+*/
+
+DELETE FROM customer
+WHERE firstname = 'Robert' AND lastname = 'Walter';
+
+/*
+ 3.1 Task –  Create a function that returns the current time.
+*/
+create or replace function getCurrentTime
+return timestamp as
+  systime timestamp;
+begin
+  select sysdate
+    into systime
+    from dual;
+  return systime;
+end;
+/
+
+Select TO_CHAR(getCurrentTime, 'HH24:MI:SS')
+From dual;
+
+/*
+ 3.1 Task –  Create a function that returns the length of name in MEDIATYPE table
+*/
+
+create or replace function getLengthOfName
+(Media_id IN NUMBER)
+return VARCHAR as
+  length_of_name VARCHAR(50);
+begin
+  select name
+    into length_of_name
+    from MEDIATYPE
+    where MEDIATYPEID = Media_id;
+  return length(length_of_name);
+end;
+/
+
+select getLengthOfName(1)
+from MEDIATYPE;
+
+/*
+ 3.1 Task –  Create a function that returns the average total of all invoices 
+*/
+
+create or replace function getTotalInvoices
+return NUMBER as
+  Total__Avg_Invoices NUMBER(10,2);
+begin
+  select AVG(total) 
+    into Total__Avg_Invoices
+    from invoice;
+  return Total__Avg_Invoices;
+end;
+/
+Select getTotalInvoices from dual;
+
+/*
+ 3.2 Task –  Create a function that returns the most expensive track
+*/
+
+CREATE OR REPLACE FUNCTION getMostExpensive
+return NUMBER as Highest_Price NUMBER(10,2);
+BEGIN
+    select MAX(unitprice) 
+    into Highest_Price
+    from track;
+return Highest_Price;
+end;
+/
+
+Select getMostExpensive from dual;
+
+/*
+ 3.3 Task –  Create a function that returns the average price of invoiceline items in the invoiceline table 
+*/
+
+CREATE OR REPLACE FUNCTION getAveragePrice
+return NUMBER as Avg_Price NUMBER(10,2);
+BEGIN
+    select AVG(unitprice) 
+    into Avg_Price
+    from invoiceline;
+return Avg_Price;
+end;
+/
+
+Select getAveragePrice from dual;
+
+/*
+ 3.4 Task –  Create a function that returns all employees who are born after 1968
+*/
+SET SERVEROUTPUT ON;
+DECLARE
+names SYS_REFCURSOR;
+First_Name EMPLOYEE.FIRSTNAME%TYPE;
+Last_Name EMPLOYEE.LASTNAME%TYPE;
+BEGIN
+    get_First_Last(names);
+LOOP
+FETCH names INTO First_Name, Last_Name;
+EXIT WHEN names%NOTFOUND;
+DBMS_OUTPUT.PUT_LINE(First_Name || ' ' || Last_Name);
+END LOOP;
+CLOSE names;
+END;
+/
+
+SET SERVEROUTPUT ON;
+DECLARE
+S SYS_REFCURSOR;
+Young_Person_ID EMPLOYEE.EMPLOYEEID%TYPE;
+Birth_Date EMPLOYEE.BIRTHDATE%TYPE;
+BEGIN
+    get_birthdays(S);
+LOOP
+FETCH S INTO Young_Person_ID, Birth_Date;
+EXIT WHEN S%NOTFOUND;
+DBMS_OUTPUT.PUT_LINE(Young_Person_ID || ' ' || Birth_Date);
+END LOOP;
+CLOSE S;
+END;
+/
+
+CREATE OR REPLACE FUNCTION get_birthdays
+    return sys_refcursor
+as 
+    S sys_refcursor;
+begin
+    OPEN S FOR
+    SELECT EmployeeID, Birthdate
+    FROM employee
+    where TRUNC(birthdate) >= to_date('01-JAN-1968', 'DD-MM-YYYY');
+return S;
+end get_birthdays;
+
+/*
+ 4.1 Task – Create a stored procedure that selects the first and last names of all the employees.
+*/
+
+SET SERVEROUTPUT ON;
+DECLARE
+names SYS_REFCURSOR;
+First_Name EMPLOYEE.FIRSTNAME%TYPE;
+Last_Name EMPLOYEE.LASTNAME%TYPE;
+BEGIN
+    get_First_Last(names);
+LOOP
+FETCH names INTO First_Name, Last_Name;
+EXIT WHEN names%NOTFOUND;
+DBMS_OUTPUT.PUT_LINE(First_Name || ' ' || Last_Name);
+END LOOP;
+CLOSE names;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE get_First_Last(names OUT SYS_REFCURSOR)
+IS
+BEGIN
+OPEN names FOR
+SELECT FIRSTNAME, LASTNAME
+FROM employee;
+END;
+/
+/*
+ 4.2 Task – Create a stored procedure that updates the personal information of an employee.
+*/
+
+CREATE OR REPLACE PROCEDURE update_Employee
+(EMPLOYEE_ID IN EMPLOYEE.EMPLOYEEID%TYPE,
+LAST_NAME IN EMPLOYEE.LASTNAME%TYPE,
+FIRST_NAME IN EMPLOYEE.FIRSTNAME%TYPE,
+TITLE_CHANGE IN EMPLOYEE.TITLE%TYPE DEFAULT NULL,
+REPORTS_TO IN EMPLOYEE.REPORTSTO%TYPE DEFAULT NULL,
+BIRTH_DATE IN EMPLOYEE.BIRTHDATE%TYPE DEFAULT NULL,
+HIRE_DATE IN EMPLOYEE.HIREDATE%TYPE DEFAULT NULL,
+ADDRESS_CHANGE IN EMPLOYEE.ADDRESS%TYPE DEFAULT NULL,
+CITY_CHANGE IN EMPLOYEE.CITY%TYPE DEFAULT NULL,
+STATE_CHANGE IN EMPLOYEE.STATE%TYPE DEFAULT NULL,
+COUNTRY_CHANGE IN EMPLOYEE.COUNTRY%TYPE DEFAULT NULL,
+POSTAL_CODE IN EMPLOYEE.POSTALCODE%TYPE,
+PHONE_CHANGE IN EMPLOYEE.PHONE%TYPE DEFAULT NULL,
+FAX_CHANGE IN EMPLOYEE.FAX%TYPE DEFAULT NULL,
+EMAIL_CHANGE IN EMPLOYEE.EMAIL%TYPE DEFAULT NULL)
+IS
+BEGIN
+UPDATE EMPLOYEE
+SET EMPLOYEEID = EMPLOYEE_ID, LASTNAME = LAST_NAME, FIRSTNAME = FIRST_NAME, TITLE = TITLE_CHANGE,
+REPORTSTO = REPORTS_TO, BIRTHDATE = BIRTH_DATE, ADDRESS = ADDRESS_CHANGE, CITY = CITY_CHANGE,
+STATE = STATE_CHANGE, COUNTRY = COUNTRY_CHANGE, POSTALCODE = POSTAL_CODE, PHONE = PHONE_CHANGE,
+FAX = FAX_CHANGE, EMAIL = EMAIL_CHANGE;
+COMMIT;
+END;
+/
+
+EXECUTE update_Employee(10, 'Wisniewski', 'Jonathan', 'CEO', 1, '08-JAN-1992', '01-MAR-2018', '124 Fake Street', 'Stow', 'Ohio', 'United States', '44224', '(330) 607-7996', '+1 (330) 535-3424', 'jwisnie5@kent.edu');
+/*
+ 4.2 Task –  Create a stored procedure that returns the managers of an employee
+*/
+
+CREATE OR REPLACE PROCEDURE getAllMangers
+AS
+S SYS_REFCURSOR;
+BEGIN
+ open S for
+ SELECT *
+ FROM EMPLOYEE
+ WHERE TITLE LIKE '% Manager';
+ DBMS_SQL.RETURN_RESULT(S);
+END;
+/
+
+EXECUTE getAllMangers();
+
+/*
+ 4.3 Task –  Task – Create a stored procedure that returns the name and company of a customer.
+*/
+
+CREATE OR REPLACE PROCEDURE get_Company_Customer
+(CUSTOMER_ID in CUSTOMER.CUSTOMERID%TYPE)
+AS
+S SYS_REFCURSOR;
+BEGIN
+   open S for select FIRSTNAME, COMPANY from CUSTOMER WHERE CUSTOMER_ID = CUSTOMER.CUSTOMERID AND COMPANY IS NOT NULL;
+    DBMS_SQL.RETURN_RESULT(S);
+END;
+/
+
+EXECUTE get_Company_Customer(5);
+
+/*
+ 5.0 Task –  Task – Create a transaction that given a invoiceId will delete that invoice (There may be constraints that rely on this, find out how to resolve them).
+*/
+COMMIT;
+START TRANSACTION
+DELETE
+FROM INVOICELINE
+WHERE INVOICEID = 1;
+DELETE
+FROM INVOICE
+WHERE INVOICEID = 1;
+COMMIT;
+
+/*
+ 5.0 Task –  Task – Create a transaction nested within a stored procedure that inserts a new record in the Customer ).
+*/
+
+CREATE OR REPLACE PROCEDURE create_Customer
+(CUSTOMER_ID IN CUSTOMER.CUSTOMERID%TYPE,
+FIRST_NAME IN CUSTOMER.FIRSTNAME%TYPE,
+LAST_NAME IN CUSTOMER.FIRSTNAME%TYPE,
+COMPANY_CHANGE IN CUSTOMER.COMPANY%TYPE DEFAULT NULL,
+ADDRESS_CHANGE IN CUSTOMER.ADDRESS%TYPE DEFAULT NULL,
+CITY_CHANGE IN CUSTOMER.CITY%TYPE DEFAULT NULL,
+STATE_CHANGE IN CUSTOMER.STATE%TYPE DEFAULT NULL,
+COUNTRY_CHANGE IN CUSTOMER.COUNTRY%TYPE DEFAULT NULL,
+POSTAL_CODE IN CUSTOMER.POSTALCODE%TYPE DEFAULT NULL,
+PHONE_CHANGE IN CUSTOMER.PHONE%TYPE DEFAULT NULL,
+FAX_CHANGE IN CUSTOMER.FAX%TYPE DEFAULT NULL,
+EMAIL_CHANGE IN CUSTOMER.EMAIL%TYPE,
+SUPPORTREPID_CHANGE IN CUSTOMER.SUPPORTREPID%TYPE DEFAULT NULL)
+IS
+BEGIN
+INSERT INTO CUSTOMER
+VALUES (CUSTOMER_ID, FIRST_NAME, LAST_NAME, COMPANY_CHANGE, ADDRESS_CHANGE, CITY_CHANGE, STATE_CHANGE,
+COUNTRY_CHANGE, POSTAL_CODE, PHONE_CHANGE, FAX_CHANGE, EMAIL_CHANGE, SUPPORTREPID_CHANGE); 
+COMMIT;
+END;
+/
+
+EXECUTE create_Customer(62,'Steven', 'Tyler', 'Rockstar', '124 Fake Street', 'London', NULL, 'United Kingdom', 'SW1V 3EN', '+44 020 5343 9485', NULL, 'sdae@aol.com', 4)
+
+/*
+ 6.0 Task –   Create an after insert trigger on the employee table fired after a new record is inserted into the table.
+*/
+
+CREATE OR REPLACE TRIGGER after_Trigger_Album
+AFTER UPDATE
+    ON ALBUM
+    DECLARE
+    USERNAME VARCHAR(100);
+    The_Current_Time timestamp;
+    BEGIN
+   SELECT USER INTO USERNAME
+   FROM dual;
+   
+   SELECT TO_CHAR (SYSDATE, 'MM-DD-YYYY HH24:MI:SS') INTO The_Current_Time
+   FROM dual;
+   
+   DBMS_OUTPUT.PUT_LINE(USERNAME || ' inserted at ' || The_Current_Time);
+END;
+/
+
+INSERT INTO ALBUM
+VALUES (354, 'This is a filler title', 275);
+
+/*
+ 7.1 Task –   Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId.
+*/
+
+SELECT CUSTOMER.FIRSTNAME, CUSTOMER.LASTNAME, INVOICE.INVOICEID
+FROM INVOICE INNER JOIN CUSTOMER ON INVOICE.CUSTOMERID = CUSTOMER.CUSTOMERID;
+
+/*
+ 7.2 Task –    Create an outer join that joins the customer and invoice table, specifying the CustomerId, firstname, lastname, invoiceId, and total.
+*/
+
+SELECT CUSTOMER.FIRSTNAME, INVOICE.TOTAL, CUSTOMER.CUSTOMERID, CUSTOMER.LASTNAME, INVOICE.INVOICEID
+FROM CUSTOMER LEFT JOIN INVOICE ON CUSTOMER.CUSTOMERID = INVOICE.CUSTOMERID;
+
+/*
+7.3 - Create a right join that joins album and artist specifying artist name and title. 
+*/
+
+SELECT ARTIST.NAME, ALBUM.TITLE
+FROM ARTIST RIGHT JOIN ALBUM ON ARTIST.ARTISTID = ALBUM.ARTISTID;
+
+/*
+7.4 - Create a cross join that joins album and artist and sorts by artist name in ascending order.
+*/
+
+SELECT *
+FROM ARTIST CROSS JOIN ALBUM
+ORDER BY ARTIST.NAME;
+
+/*
+7.4 - Perform a self-join on the employee table, joining on the reportsto column.
+*/
+
+SELECT A.FIRSTNAME AS Employee , B.FIRSTNAME AS Their_Manager
+FROM EMPLOYEE A, EMPLOYEE B
+WHERE A.REPORTSTO = B.EMPLOYEEID;
+
+----------------------------------------------------------------------------------------------
+
+select *
+/*
+2.1 Select all records from the Employee table
+*/
+SELECT *
+FROM employee;
+
+/*
+2.1 Select all records from the Employee table where last name is King.
+*/
+
+SELECT *
+FROM employee
+WHERE lastname = 'King';
+
+/*
+2.1 Select all records from the Employee table where first name is Andrew and REPORTSTO is NULL.
+*/
+
+SELECT *
+FROM employee
+WHERE firstname = 'Andrew' AND REPORTSTO IS NULL;
+
+/*
+ 2.2 Select all albums in Album table and sort result set in descending order by title.
+*/
+
+SELECT *
+FROM album
+ORDER BY title DESC;
+
+/*
+ 2.2  Select first name from Customer and sort result set in ascending order by city
+*/
+
+SELECT firstname
+FROM customer
+ORDER BY city;
+
+/*
+ 2.3  Insert two new records into Genre table
+*/
+
+INSERT INTO values (26,'Space Shows');
+INSERT INTO values (27,'EDM');
+
+/*
+ 2.3  Insert two new records into Genre table
+*/
+
+INSERT INTO employee VALUES (9, 'Wisniewski', 'Jonathan', 'CEO', 6, TO_DATE('04/02/1992', 'MM/DD/YYYY'), TO_DATE('6/12/2017', 'MM/DD/YYYY'),
+'1406 Meadowbrook Blvd', 'Stow', 'Ohio', 'United States of America', '44224', '(330) 607-7996', '+1 (623) 843-4523', 'jwisnie5@kent.edu');
+
+INSERT INTO employee VALUES (10, 'Green', 'Ryan', 'Janitor', 4, TO_DATE('04/17/1995', 'MM/DD/YYYY'), TO_DATE('6/19/2017', 'MM/DD/YYYY'),
+'1384 Meadowbrook Blvd', 'Stow', 'Ohio', 'United States of America', '44224', '(330) 523-5436', '+1 (623) 974-4562', 'ryan4@kent.edu');
+
+/*
+ 2.3  Insert two new records into Genre table
+*/
+
+INSERT INTO customer VALUES (60, 'Jonathan', 'Wisniewski', 'Telus', '8210 111 ST NW', 'Edmonton', 'AB', 'Canada', 'T6G 2C7', '+1 (780) 543-5473',
+'+1 (780) 854-5545', 'jwisnie5@kent.edu', 5);
+
+INSERT INTO customer VALUES (61, 'Bobby', 'Wisniewski', 'Telus', '8210 111 ST NW', 'Edmonton', 'AB', 'Canada', 'T6G 2C7', '+1 (780) 845-9843',
+'+1 (780) 847-6473', 'bobby@kent.edu', 5);
+
+/*
+ 2.4   Update Aaron Mitchell in Customer table to Robert Walter
+*/
+
+UPDATE customer
+SET firstname = 'Robert', lastname = 'Walter'
+WHERE firstname = 'Aaron' AND lastname = 'Mitchell';
+
+/*
+ 2.4   Update Aaron Mitchell in Customer table to Robert Walter
+*/
+
+UPDATE artist
+SET name = 'CCR'
+WHERE name = 'Creedence Clearwater Revival';
+
+/*
+ 2.5   Select all invoices with a billing address like “T%” 
+*/
+
+SELECT *
+FROM invoice
+WHERE BILLINGADDRESS LIKE 'T%';
+
+/*
+ 2.6   Select all invoices that have a total between 15 and 50 
+*/
+
+SELECT *
+FROM invoice
+WHERE total BETWEEN 15 AND 50;
+
+/*
+ 2.6  Select all employees hired between 1st of June 2003 and 1st of March 2004
+*/
+
+SELECT *
+FROM employee
+WHERE hiredate BETWEEN '01-JUN-2003' AND '01-MAR-2004';
+
+/*
+ 2.7 Task – Delete a record in Customer table where the name is Robert Walter (There may be constraints that rely on this, find out how to resolve them).
+*/
+
+DELETE FROM customer
+WHERE firstname = 'Robert' AND lastname = 'Walter';
+
+/*
+ 3.1 Task –  Create a function that returns the current time.
+*/
+create or replace function getCurrentTime
+return timestamp as
+  systime timestamp;
+begin
+  select sysdate
+    into systime
+    from dual;
+  return systime;
+end;
+/
+
+Select TO_CHAR(getCurrentTime, 'HH24:MI:SS')
+From dual;
+
+/*
+ 3.1 Task –  Create a function that returns the length of name in MEDIATYPE table
+*/
+
+create or replace function getLengthOfName
+(Media_id IN NUMBER)
+return VARCHAR as
+  length_of_name VARCHAR(50);
+begin
+  select name
+    into length_of_name
+    from MEDIATYPE
+    where MEDIATYPEID = Media_id;
+  return length(length_of_name);
+end;
+/
+
+select getLengthOfName(1)
+from MEDIATYPE;
+
+/*
+ 3.1 Task –  Create a function that returns the average total of all invoices 
+*/
+
+create or replace function getTotalInvoices
+return NUMBER as
+  Total__Avg_Invoices NUMBER(10,2);
+begin
+  select AVG(total) 
+    into Total__Avg_Invoices
+    from invoice;
+  return Total__Avg_Invoices;
+end;
+/
+Select getTotalInvoices from dual;
+
+/*
+ 3.2 Task –  Create a function that returns the most expensive track
+*/
+
+CREATE OR REPLACE FUNCTION getMostExpensive
+return NUMBER as Highest_Price NUMBER(10,2);
+BEGIN
+    select MAX(unitprice) 
+    into Highest_Price
+    from track;
+return Highest_Price;
+end;
+/
+
+Select getMostExpensive from dual;
+
+/*
+ 3.3 Task –  Create a function that returns the average price of invoiceline items in the invoiceline table 
+*/
+
+CREATE OR REPLACE FUNCTION getAveragePrice
+return NUMBER as Avg_Price NUMBER(10,2);
+BEGIN
+    select AVG(unitprice) 
+    into Avg_Price
+    from invoiceline;
+return Avg_Price;
+end;
+/
+
+Select getAveragePrice from dual;
+
+/*
+ 3.4 Task –  Create a function that returns all employees who are born after 1968
+*/
+SET SERVEROUTPUT ON;
+DECLARE
+names SYS_REFCURSOR;
+First_Name EMPLOYEE.FIRSTNAME%TYPE;
+Last_Name EMPLOYEE.LASTNAME%TYPE;
+BEGIN
+    get_First_Last(names);
+LOOP
+FETCH names INTO First_Name, Last_Name;
+EXIT WHEN names%NOTFOUND;
+DBMS_OUTPUT.PUT_LINE(First_Name || ' ' || Last_Name);
+END LOOP;
+CLOSE names;
+END;
+/
+
+SET SERVEROUTPUT ON;
+DECLARE
+S SYS_REFCURSOR;
+Young_Person_ID EMPLOYEE.EMPLOYEEID%TYPE;
+Birth_Date EMPLOYEE.BIRTHDATE%TYPE;
+BEGIN
+    get_birthdays(S);
+LOOP
+FETCH S INTO Young_Person_ID, Birth_Date;
+EXIT WHEN S%NOTFOUND;
+DBMS_OUTPUT.PUT_LINE(Young_Person_ID || ' ' || Birth_Date);
+END LOOP;
+CLOSE S;
+END;
+/
+
+CREATE OR REPLACE FUNCTION get_birthdays
+    return sys_refcursor
+as 
+    S sys_refcursor;
+begin
+    OPEN S FOR
+    SELECT EmployeeID, Birthdate
+    FROM employee
+    where TRUNC(birthdate) >= to_date('01-JAN-1968', 'DD-MM-YYYY');
+return S;
+end get_birthdays;
+
+/*
+ 4.1 Task – Create a stored procedure that selects the first and last names of all the employees.
+*/
+
+SET SERVEROUTPUT ON;
+DECLARE
+names SYS_REFCURSOR;
+First_Name EMPLOYEE.FIRSTNAME%TYPE;
+Last_Name EMPLOYEE.LASTNAME%TYPE;
+BEGIN
+    get_First_Last(names);
+LOOP
+FETCH names INTO First_Name, Last_Name;
+EXIT WHEN names%NOTFOUND;
+DBMS_OUTPUT.PUT_LINE(First_Name || ' ' || Last_Name);
+END LOOP;
+CLOSE names;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE get_First_Last(names OUT SYS_REFCURSOR)
+IS
+BEGIN
+OPEN names FOR
+SELECT FIRSTNAME, LASTNAME
+FROM employee;
+END;
+/
+/*
+ 4.2 Task – Create a stored procedure that updates the personal information of an employee.
+*/
+
+CREATE OR REPLACE PROCEDURE update_Employee
+(EMPLOYEE_ID IN EMPLOYEE.EMPLOYEEID%TYPE,
+LAST_NAME IN EMPLOYEE.LASTNAME%TYPE,
+FIRST_NAME IN EMPLOYEE.FIRSTNAME%TYPE,
+TITLE_CHANGE IN EMPLOYEE.TITLE%TYPE DEFAULT NULL,
+REPORTS_TO IN EMPLOYEE.REPORTSTO%TYPE DEFAULT NULL,
+BIRTH_DATE IN EMPLOYEE.BIRTHDATE%TYPE DEFAULT NULL,
+HIRE_DATE IN EMPLOYEE.HIREDATE%TYPE DEFAULT NULL,
+ADDRESS_CHANGE IN EMPLOYEE.ADDRESS%TYPE DEFAULT NULL,
+CITY_CHANGE IN EMPLOYEE.CITY%TYPE DEFAULT NULL,
+STATE_CHANGE IN EMPLOYEE.STATE%TYPE DEFAULT NULL,
+COUNTRY_CHANGE IN EMPLOYEE.COUNTRY%TYPE DEFAULT NULL,
+POSTAL_CODE IN EMPLOYEE.POSTALCODE%TYPE,
+PHONE_CHANGE IN EMPLOYEE.PHONE%TYPE DEFAULT NULL,
+FAX_CHANGE IN EMPLOYEE.FAX%TYPE DEFAULT NULL,
+EMAIL_CHANGE IN EMPLOYEE.EMAIL%TYPE DEFAULT NULL)
+IS
+BEGIN
+UPDATE EMPLOYEE
+SET EMPLOYEEID = EMPLOYEE_ID, LASTNAME = LAST_NAME, FIRSTNAME = FIRST_NAME, TITLE = TITLE_CHANGE,
+REPORTSTO = REPORTS_TO, BIRTHDATE = BIRTH_DATE, ADDRESS = ADDRESS_CHANGE, CITY = CITY_CHANGE,
+STATE = STATE_CHANGE, COUNTRY = COUNTRY_CHANGE, POSTALCODE = POSTAL_CODE, PHONE = PHONE_CHANGE,
+FAX = FAX_CHANGE, EMAIL = EMAIL_CHANGE;
+COMMIT;
+END;
+/
+
+EXECUTE update_Employee(10, 'Wisniewski', 'Jonathan', 'CEO', 1, '08-JAN-1992', '01-MAR-2018', '124 Fake Street', 'Stow', 'Ohio', 'United States', '44224', '(330) 607-7996', '+1 (330) 535-3424', 'jwisnie5@kent.edu');
+/*
+ 4.2 Task –  Create a stored procedure that returns the managers of an employee
+*/
+
+CREATE OR REPLACE PROCEDURE getAllMangers
+AS
+S SYS_REFCURSOR;
+BEGIN
+ open S for
+ SELECT *
+ FROM EMPLOYEE
+ WHERE TITLE LIKE '% Manager';
+ DBMS_SQL.RETURN_RESULT(S);
+END;
+/
+
+EXECUTE getAllMangers();
+
+/*
+ 4.3 Task –  Task – Create a stored procedure that returns the name and company of a customer.
+*/
+
+CREATE OR REPLACE PROCEDURE get_Company_Customer
+(CUSTOMER_ID in CUSTOMER.CUSTOMERID%TYPE)
+AS
+S SYS_REFCURSOR;
+BEGIN
+   open S for select FIRSTNAME, COMPANY from CUSTOMER WHERE CUSTOMER_ID = CUSTOMER.CUSTOMERID AND COMPANY IS NOT NULL;
+    DBMS_SQL.RETURN_RESULT(S);
+END;
+/
+
+EXECUTE get_Company_Customer(5);
+
+/*
+ 5.0 Task –  Task – Create a transaction that given a invoiceId will delete that invoice (There may be constraints that rely on this, find out how to resolve them).
+*/
+COMMIT;
+START TRANSACTION
+DELETE
+FROM INVOICELINE
+WHERE INVOICEID = 1;
+DELETE
+FROM INVOICE
+WHERE INVOICEID = 1;
+COMMIT;
+
+/*
+ 5.0 Task –  Task – Create a transaction nested within a stored procedure that inserts a new record in the Customer ).
+*/
+
+CREATE OR REPLACE PROCEDURE create_Customer
+(CUSTOMER_ID IN CUSTOMER.CUSTOMERID%TYPE,
+FIRST_NAME IN CUSTOMER.FIRSTNAME%TYPE,
+LAST_NAME IN CUSTOMER.FIRSTNAME%TYPE,
+COMPANY_CHANGE IN CUSTOMER.COMPANY%TYPE DEFAULT NULL,
+ADDRESS_CHANGE IN CUSTOMER.ADDRESS%TYPE DEFAULT NULL,
+CITY_CHANGE IN CUSTOMER.CITY%TYPE DEFAULT NULL,
+STATE_CHANGE IN CUSTOMER.STATE%TYPE DEFAULT NULL,
+COUNTRY_CHANGE IN CUSTOMER.COUNTRY%TYPE DEFAULT NULL,
+POSTAL_CODE IN CUSTOMER.POSTALCODE%TYPE DEFAULT NULL,
+PHONE_CHANGE IN CUSTOMER.PHONE%TYPE DEFAULT NULL,
+FAX_CHANGE IN CUSTOMER.FAX%TYPE DEFAULT NULL,
+EMAIL_CHANGE IN CUSTOMER.EMAIL%TYPE,
+SUPPORTREPID_CHANGE IN CUSTOMER.SUPPORTREPID%TYPE DEFAULT NULL)
+IS
+BEGIN
+INSERT INTO CUSTOMER
+VALUES (CUSTOMER_ID, FIRST_NAME, LAST_NAME, COMPANY_CHANGE, ADDRESS_CHANGE, CITY_CHANGE, STATE_CHANGE,
+COUNTRY_CHANGE, POSTAL_CODE, PHONE_CHANGE, FAX_CHANGE, EMAIL_CHANGE, SUPPORTREPID_CHANGE); 
+COMMIT;
+END;
+/
+
+EXECUTE create_Customer(62,'Steven', 'Tyler', 'Rockstar', '124 Fake Street', 'London', NULL, 'United Kingdom', 'SW1V 3EN', '+44 020 5343 9485', NULL, 'sdae@aol.com', 4)
+
+/*
+ 6.0 Task –   Create an after insert trigger on the employee table fired after a new record is inserted into the table.
+*/
+
+CREATE OR REPLACE TRIGGER after_Trigger_Album
+AFTER UPDATE
+    ON ALBUM
+    DECLARE
+    USERNAME VARCHAR(100);
+    The_Current_Time timestamp;
+    BEGIN
+   SELECT USER INTO USERNAME
+   FROM dual;
+   
+   SELECT TO_CHAR (SYSDATE, 'MM-DD-YYYY HH24:MI:SS') INTO The_Current_Time
+   FROM dual;
+   
+   DBMS_OUTPUT.PUT_LINE(USERNAME || ' inserted at ' || The_Current_Time);
+END;
+/
+
+INSERT INTO ALBUM
+VALUES (354, 'This is a filler title', 275);
+
+/*
+ 7.1 Task –   Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId.
+*/
+
+SELECT CUSTOMER.FIRSTNAME, CUSTOMER.LASTNAME, INVOICE.INVOICEID
+FROM INVOICE INNER JOIN CUSTOMER ON INVOICE.CUSTOMERID = CUSTOMER.CUSTOMERID;
+
+/*
+ 7.2 Task –    Create an outer join that joins the customer and invoice table, specifying the CustomerId, firstname, lastname, invoiceId, and total.
+*/
+
+SELECT CUSTOMER.FIRSTNAME, INVOICE.TOTAL, CUSTOMER.CUSTOMERID, CUSTOMER.LASTNAME, INVOICE.INVOICEID
+FROM CUSTOMER LEFT JOIN INVOICE ON CUSTOMER.CUSTOMERID = INVOICE.CUSTOMERID;
+
+/*
+7.3 - Create a right join that joins album and artist specifying artist name and title. 
+*/
+
+SELECT ARTIST.NAME, ALBUM.TITLE
+FROM ARTIST RIGHT JOIN ALBUM ON ARTIST.ARTISTID = ALBUM.ARTISTID;
+
+/*
+7.4 - Create a cross join that joins album and artist and sorts by artist name in ascending order.
+*/
+
+SELECT *
+FROM ARTIST CROSS JOIN ALBUM
+ORDER BY ARTIST.NAME;
+
+/*
+7.4 - Perform a self-join on the employee table, joining on the reportsto column.
+*/
+
+SELECT A.FIRSTNAME AS Employee , B.FIRSTNAME AS Their_Manager
+FROM EMPLOYEE A, EMPLOYEE B
+WHERE A.REPORTSTO = B.EMPLOYEEID;
+
+----------------------------------------------------------------------------------------------
+
+/*
+Creating user_id on insert
+*/
+CREATE SEQUENCE USER_ID_SEQ START WITH 1;
+
+CREATE OR REPLACE TRIGGER USER_ID_bir 
+BEFORE INSERT ON BANKING_ACCOUNTS 
+FOR EACH ROW
+
+BEGIN
+  SELECT USER_ID_SEQ.NEXTVAL
+  INTO   :new.USER_ID
+  FROM   dual;
+END;
+/
+
+CREATE SEQUENCE BANK_ACCOUNT_ID_SEQ START WITH 1;
+
+CREATE OR REPLACE TRIGGER bank_account_id_bir 
+BEFORE INSERT ON BANKING_ACCOUNTS 
+FOR EACH ROW
+
+BEGIN
+  SELECT BANK_ACCOUNT_ID_SEQ.NEXTVAL
+  INTO   :new.BANK_ACCOUNT_ID
+  FROM   dual;
+END;
+/
+
+CREATE SEQUENCE APPLICATION_SEQ START WITH 1;
+
+CREATE OR REPLACE TRIGGER APPLICATION_BIR 
+BEFORE INSERT ON BANKING_APPLICATIONS 
+FOR EACH ROW
+
+BEGIN
+  SELECT APPLICATION_SEQ.NEXTVAL
+  INTO   :new.APPLICATION_ID
+  FROM   dual;
+END;
+/
+
+CREATE SEQUENCE CLAIM_NUMBER_SEQ START WITH 1;
+
+CREATE OR REPLACE TRIGGER CLAIM_NUMBER_BIR 
+BEFORE INSERT ON BANKING_APPLICATIONS 
+FOR EACH ROW
+
+BEGIN
+  SELECT CLAIM_NUMBER_SEQ.NEXTVAL
+  INTO   :new.CLAIM_NUMBER
+  FROM   dual;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE LOGIN_FEATURE(NAME IN VARCHAR2)
+AS
+BEGIN
+INSERT INTO SUPERHERO VALUES(USER_ID_SEQ.NEXTVAL, NAME);
+COMMIT;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE create_account
+(FIRST_NAME IN BANKING_ACCOUNTS.FIRST_NAME%TYPE,
+LAST_NAME IN BANKING_ACCOUNTS.LAST_NAME%TYPE,
+ADDRESS IN BANKING_ACCOUNTS.ADDRESS%TYPE,
+CITY IN BANKING_ACCOUNTS.CITY%TYPE,
+STATE IN BANKING_ACCOUNTS.STATE%TYPE,
+ZIPCODE IN BANKING_ACCOUNTS.ZIPCODE%TYPE,
+USERNAME IN BANKING_ACCOUNTS.USERNAME%TYPE,
+PASSWORD IN BANKING_ACCOUNTS.PASSWORD%TYPE,
+SSN IN BANKING_ACCOUNTS.SSN%TYPE,
+PHONE IN BANKING_ACCOUNTS.PHONE%TYPE,
+ACCOUNT_LEVEL IN BANKING_ACCOUNTS.ACCOUNT_LEVEL%TYPE)
+AS
+BEGIN
+INSERT INTO BANKING_ACCOUNTS
+(USER_ID, FIRST_NAME, LAST_NAME, ADDRESS, CITY, STATE, ZIPCODE, USERNAME, PASSWORD, PHONE, SSN, BANK_ACCOUNT_ID, ACCOUNT_LEVEL)
+VALUES (USER_ID_SEQ.NEXTVAL, FIRST_NAME, LAST_NAME, ADDRESS, CITY, STATE, ZIPCODE, USERNAME, PASSWORD,
+PHONE, SSN, BANK_ACCOUNT_ID_SEQ.NEXTVAL, ACCOUNT_LEVEL); 
+COMMIT;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE delete_account
+(APPLICATION_ID_INPUT IN BANKING_APPLICATIONS.APPLICATION_ID%TYPE)
+AS
+BEGIN
+DELETE FROM BANKING_APPLICATIONS
+WHERE APPLICATION_ID = APPLICATION_ID_INPUT;
+COMMIT;
+END;
+/
+
+
+CREATE OR REPLACE PROCEDURE create_checking_account
+(BANKING_ACCOUNT_ID IN CHECKING_ACCOUNTS.BANKING_ACCOUNT_ID%TYPE,
+BALANCE IN CHECKING_ACCOUNTS.BALANCE%TYPE)
+AS
+BEGIN
+INSERT INTO CHECKING_ACCOUNTS
+(BANKING_ACCOUNT_ID, BALANCE, PREVIOUS_TRANSACTION)
+VALUES (BANKING_ACCOUNT_ID, BALANCE, BALANCE); 
+COMMIT;
+END;
+/
+
+
+CREATE OR REPLACE PROCEDURE create_applications
+(FIRST_NAME IN BANKING_APPLICATIONS.FIRST_NAME%TYPE,
+LAST_NAME IN BANKING_APPLICATIONS.LAST_NAME%TYPE,
+ADDRESS IN BANKING_APPLICATIONS.ADDRESS%TYPE,
+CITY IN BANKING_APPLICATIONS.CITY%TYPE,
+STATE IN BANKING_APPLICATIONS.STATE%TYPE,
+ZIPCODE IN BANKING_APPLICATIONS.ZIPCODE%TYPE,
+USERNAME IN BANKING_APPLICATIONS.USERNAME%TYPE,
+PASSWORD IN BANKING_APPLICATIONS.PASSWORD%TYPE,
+SSN IN BANKING_APPLICATIONS.SSN%TYPE,
+PHONE IN BANKING_APPLICATIONS.PHONE%TYPE,
+STATUS IN BANKING_APPLICATIONS.STATUS%TYPE,
+ACCOUNT_TYPE IN BANKING_APPLICATIONS.ACCOUNT_TYPE%TYPE)
+AS
+BEGIN
+INSERT INTO BANKING_APPLICATIONS
+(APPLICATION_ID, FIRST_NAME, LAST_NAME, ADDRESS, CITY, STATE, ZIPCODE, USERNAME, PASSWORD, PHONE, SSN, STATUS, CLAIM_NUMBER, ACCOUNT_TYPE)
+VALUES (APPLICATION_SEQ.NEXTVAL, FIRST_NAME, LAST_NAME, ADDRESS, CITY, STATE, ZIPCODE, USERNAME, PASSWORD,
+PHONE, SSN, STATUS, CLAIM_NUMBER_SEQ.NEXTVAL, ACCOUNT_TYPE); 
+COMMIT;
+END;
+/
+
+
+  CREATE TABLE "JONATHANWISNIEWSKI"."BANKING_APPLICATIONS" 
+   ("APPLICATION_ID" NUMBER(15,0) NOT NULL ENABLE, 
+	"FIRST_NAME" VARCHAR2(15 BYTE) NOT NULL ENABLE, 
+	"LAST_NAME" VARCHAR2(25 BYTE) NOT NULL ENABLE, 
+	"ADDRESS" VARCHAR2(50 BYTE) NOT NULL ENABLE, 
+	"CITY" VARCHAR2(25 BYTE) NOT NULL ENABLE, 
+	"STATE" VARCHAR2(30 BYTE) NOT NULL ENABLE, 
+	"ZIPCODE" VARCHAR2(5 BYTE) NOT NULL ENABLE, 
+	"USERNAME" VARCHAR2(15 BYTE) NOT NULL ENABLE, 
+	"PASSWORD" VARCHAR2(15 BYTE) NOT NULL ENABLE, 
+	"PHONE" NUMBER(10,0) NOT NULL ENABLE, 
+	"SSN" NUMBER(9,0) NOT NULL ENABLE, 
+	"CLAIM_NUMBER" NUMBER(15,0) NOT NULL ENABLE, 
+	"STATUS" VARCHAR2(20 BYTE) NOT NULL ENABLE, 
+	"ACCOUNT_TYPE" VARCHAR2(20 BYTE) NOT NULL ENABLE
+   ) SEGMENT CREATION IMMEDIATE 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "JONATHANWISNIEWSKI"."APPLICATION_BIR" 
+BEFORE INSERT ON BANKING_APPLICATIONS 
+FOR EACH ROW
+
+BEGIN
+  SELECT APPLICATION_SEQ.NEXTVAL
+  INTO   :new.APPLICATION_ID
+  FROM   dual;
+END;
+
+/
+ALTER TRIGGER "JONATHANWISNIEWSKI"."APPLICATION_BIR" ENABLE;
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "JONATHANWISNIEWSKI"."APPLICATION_SEQ" 
+BEFORE INSERT ON BANKING_APPLICATIONS 
+FOR EACH ROW
+
+BEGIN
+  SELECT APPLICATION_SEQ.NEXTVAL
+  INTO   :new.APPLICATION_ID
+  FROM   dual;
+END;
+
+/
+ALTER TRIGGER "JONATHANWISNIEWSKI"."APPLICATION_SEQ" ENABLE;
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "JONATHANWISNIEWSKI"."CLAIM_NUMBER_SEQ" 
+BEFORE INSERT ON BANKING_APPLICATIONS 
+FOR EACH ROW
+
+BEGIN
+  SELECT CLAIM_NUMBER_SEQ.NEXTVAL
+  INTO   :new.CLAIM_NUMBER
+  FROM   dual;
+END;
+
+/
+
+/

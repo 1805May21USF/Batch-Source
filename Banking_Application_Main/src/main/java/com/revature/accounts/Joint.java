@@ -6,8 +6,8 @@ public class Joint extends Account{
 
 	private Customer joint_partner;
 	
-	protected Joint(int balance, int account_number) {
-		super(balance, account_number);
+	protected Joint(String banking_account_id, int balance, int previous_transaction) {
+		super(banking_account_id, balance, previous_transaction);
 	}
 	
 	protected void withdraw() {

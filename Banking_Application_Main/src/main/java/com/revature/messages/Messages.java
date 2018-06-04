@@ -2,17 +2,27 @@ package com.revature.messages;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.revature.accounts.Account;
 import com.revature.people.Application;
 import com.revature.people.Customer;
 import com.revature.people.Employee;
+import com.revature.people.Person;
+import com.revature.util.ConnFactory;
 
 public class Messages {
+	
+	public static ConnFactory cf = ConnFactory.getInstance();
+	
 	public void welcome_message() {
 		System.out.println("Thank you for visiting \"Big Corp Inc\", how can we help you?\r");
 		
@@ -33,15 +43,20 @@ public class Messages {
 				  		break;
 				  	case 2:
 				  		//Apply for a new application
-				  		take_information();
+					try {
+						take_information();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				  		System.out.println("\rYou are now being sent to the home screen.........\r");
 				  		break;
 				  	case 3:
 				  		boolean claim_number_boolean = false;
 				  		while (claim_number_boolean == false) {
-				  			System.out.println("Please enter your Username to search our database");
+				  			System.out.println("Please enter your claim # to search our database");
 				  			String username = input.nextLine();
-					  		String result = check_on_application(username);
+					  		String result = Application.check_on_application(username);
 					  		System.out.println(result);
 					  		
 					  		if(!result.contains("Oops"))
@@ -58,159 +73,122 @@ public class Messages {
 		}
 	}
 	
-	private void login() {
-		Employee employee = null;
-		Customer customer = null;
-		
-		Scanner input = new Scanner(System.in);
-		System.out.println("----Login in---\r");
-		System.out.println("1) Employee");
-		System.out.println("2) Customers");
-		String employee_customer = input.nextLine();
-		
-		boolean repeat = true;
-		
-		while(repeat == true) {
-			System.out.println("\rEnter in your username");
-			String username = input.nextLine();
-			
-			System.out.println("\rEnter in your password");
-			String password = input.nextLine();
-			
-			switch(employee_customer) {
-				case "1":
-					employee = login_employee(username, password);
-					if (employee != null) {
-						repeat = false;
-					} else {
-						login();
-					}
-					break;
-				case "2":
-					customer = login_customer(username, password);
-					if (customer != null) {
-						repeat = false;
-					} else {
-						login();
-					}
-				default :
-					System.out.println("Invalid entry, only type ONE or TWO.");
-			}
-		}
-		
-		if (employee instanceof Employee) {
-			employee.logged_in();
-		} else {
-			customer.logged_in();
-		}
-	}
-	public Employee login_employee(String temp_username, String temp_password) {
-		
-		try {
-		    String first_name = null, last_name = null, address = null, phone = null, username = null, password = null, ssn = null, account_level = null;
-					
-			//Accessing the file
-			Scanner output = new Scanner (new File("C:\\Users\\JonWi\\Documents\\Revature\\Repository\\Batch-Source\\Banking_Application_Main\\src\\main\\accounts\\employees\\" + temp_username + ".txt"));
-			
-			//While there is a next line
-			while (output.hasNext())
-			{
-				first_name = output.nextLine();
-				last_name = output.nextLine();
-				address = output.nextLine();
-				phone = output.nextLine();
-				username = output.nextLine();
-				password = output.nextLine();
-				ssn = output.nextLine();
-				account_level = output.nextLine();
-			}
-				output.close();
-			
-			Employee employee = new Employee(first_name, last_name, address, phone, username, password, ssn, account_level);
-			
-			return employee;
 
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	private Customer login_customer(String temp_username, String temp_password) {
-		
-		try {
-		    String first_name = null, last_name = null, address = null, phone = null, username = null, password = null, ssn = null;
-		    String account_type, status, claim_number;
-					
-			//Accessing the file
-			Scanner output = new Scanner (new File("C:\\Users\\JonWi\\Documents\\Revature\\Repository\\Batch-Source\\Banking_Application_Main\\src\\main\\accounts\\customers\\" + temp_username + ".txt"));
-			
-			//While there is a next line
-			while (output.hasNext())
-			{
-				first_name = output.nextLine();
-				last_name = output.nextLine();
-				address = output.nextLine();
-				phone = output.nextLine();
-				username = output.nextLine();
-				password = output.nextLine();
-				account_type = output.nextLine();
-				ssn = output.nextLine();
-			}
-				output.close();
-			
-				Customer customer = new Customer(first_name, last_name, address, phone, username, password, ssn);
+	private void login() {
+		boolean repeat = true;
+		while (repeat) {
+			try {			
+				Scanner input = new Scanner(System.in);
 				
-				return customer;
+				System.out.println("----Login in---\r");
 				
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	private String check_on_application(String term_username) {
-		try {
-		    String claim_number = "";
-		    String status = "";
-		    
-		    String first_name, last_name, address, phone, username, password, ssn, account_type;
+				System.out.println("Enter in a username");
+				
+				String username = input.nextLine();
+				
+				System.out.println("\r Enter your password");
+				
+				String password = input.nextLine();
+				
+				List<Person> login_account = new ArrayList<Person>();
+				Connection conn = cf.getConnection();
+				Statement stmt;
+				stmt = conn.createStatement();
+				ResultSet rs;
+				rs = stmt.executeQuery("SELECT USERNAME, PASSWORD, ACCOUNT_LEVEL FROM BANKING_ACCOUNTS");
+				Person person = null;
+				Person matched_person = null;
+
+				while(rs.next()) {
+					person = new Person( rs.getString("USERNAME"), rs.getString("PASSWORD"), rs.getString("ACCOUNT_LEVEL"));
+					login_account.add(person);
+				}
+				
+				if (!(login_account.isEmpty())) {
+					for (Person single_person : login_account) {
+						if (single_person.getUsername().contains(username) && single_person.getPassword().contains(password)) {
+							matched_person = single_person;
+							break;
+						}
+					}
+						
+					if (!(matched_person == null)) {
+						if(matched_person.getAccount_level().contains("Employee - Regular")) {
+							try {
+								Employee employee = null;
+								
+								rs = stmt.executeQuery("SELECT * FROM Banking_Accounts");
+								
+								List<Employee> employee_login = new ArrayList<Employee>();
+								
+								while(rs.next()) {
+									employee = new Employee( Integer.toString(rs.getInt(1)), rs.getString(2),  rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12), Integer.toString(rs.getInt(13)));
+									employee_login.add(employee);
+								}
+								
+								for (Employee single_employee : employee_login) {
+									if (single_employee.getUsername().contains(username) && single_employee.getPassword().contains(password)) {
+										single_employee.logged_in();
+										break;
+									}
+								}							
+								System.out.println("Error collecting all information, please try again!"); 
+								
+							} catch (SQLException e){
+								System.out.println("Error collecting all information, please try again!");
+							}
+						} else if (person.getAccount_level().contains("Customer")) {
+							try {
+								Customer customer = null;
+								rs = stmt.executeQuery("SELECT * FROM Banking_Accounts");
+								
+								List<Customer> customer_login = new ArrayList<Customer>();
+								
+								while(rs.next()) {
+									customer = new Customer( Integer.toString(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12), Integer.toString(rs.getInt(13)));
+									customer_login.add(customer);
+								}
+								
+								for (Customer single_customer : customer_login) {
+
+									if (single_customer.getUsername().contains(username) && single_customer.getPassword().contains(password)) {
+										single_customer.logged_in();
+										break;
+									}
+								}
+									System.out.println("Error collecting all information, please try again! d1"); 
+							} catch (SQLException e){
+								System.out.println("Error collecting all information, please try again! d");
+							}
+						}
+					} else {
+						System.out.println("The account can not be found, if you think this was a mistake please call the business during normal banking hours with your claim #");
+					}
 					
-			//Accessing the file
-			Scanner output = new Scanner (new File("C:\\Users\\JonWi\\Documents\\Revature\\Repository\\Batch-Source\\Banking_Application_Main\\src\\main\\applications\\" + term_username + ".txt"));
-			
-			//While there is a next line
-			while (output.hasNext())
-			{
-				first_name = output.nextLine();
-				last_name = output.nextLine();
-				address = output.nextLine();
-				phone = output.nextLine();
-				username = output.nextLine();
-				password = output.nextLine();
-				account_type = output.nextLine();
-				ssn = output.nextLine();
-				status = output.nextLine();
-				claim_number = output.nextLine();
+				} else {
+					System.out.println( "There is no accounts in the database, if you think this was a mistake please call the business during normal banking hours with your claim #");
+				}
+			} catch(SQLException e) {
+				System.out.println("Error: Having issues with the database. Please try again later!");
 			}
-				output.close();
-					
-			return "Your claim # is: " + claim_number + " and your application status is: " + status + ". If you have any question please call us!";
-		} catch (Exception e) {
-			return "Oops, looks like we could not access your file with you username. Try enetering it again, or contact our bank during normal business hours to talk to someone";
-		}
+	    }
 	}
 	
-	private void take_information() {
+	private void take_information() throws SQLException {
 		System.out.println("You want to apply to have an account with us, awesome!\r");
 		System.out.println("We are going to need some information from you!");
 		
-		String first_name, last_name, address, username, password, phone, SSN, account_Type;
+		String first_name, last_name, address, city, state, zipcode, phone, username, password, account_Type, SSN;
 		
 		first_name = get_appplication_info_string("\rWhat is your first name?", "First name", "Please enter in ONLY characters A-Z", "[^a-zA-Z]+");
 		last_name = get_appplication_info_string("\rWhat is your last name?", "Last name", "Please enter in ONLY characters A-Z", "[^a-zA-Z]+");
 		address = get_appplication_info_string("\rWhat is your address?", "Address", "Please enter in ONLY characters A-Z", "[^a-zA-Z]+");
+		city = get_appplication_info_string("\rWhat is your city?", "City", "Please enter in ONLY characters A-Z", "[^a-zA-Z]+");
+		state = get_appplication_info_string("\rWhat is your state?", "State", "Please enter in ONLY characters A-Z", "[^a-zA-Z]+");
+		zipcode = get_appplication_info_string("\rWhat is your zipcode?", "Zipcode", "Please enter in ONLY 5 numbers 0-9", "[^0-9]+");
+		phone = get_appplication_info_string("\rWhat is your phone number?", "Phone", "Please enter TEN numbers 0-9", "[^0-9]+"); 
 		username = get_appplication_info_string("\rWhat do you want your username to be?","Username", "Please enter in ONLY characters A-Z and 0-9", "[^a-zA-Z0-9]+"); // Have to do a file check
 		password = get_appplication_info_string("\rWhat do you want your password to be?", "Password", "Please enter in ONLY characters A-Z, 0-9", "[^a-zA-Z0-9]+"); 
-		phone = get_appplication_info_string("\rWhat is your phone number?", "Phone", "Please enter TEN numbers 0-9", "[^0-9]+"); 
 		account_Type = get_appplication_info_string("\rWhat type of account are you applying for today?\r" +
 		"1) Checking\r" +
 		"2) Savings\r" +
@@ -218,12 +196,13 @@ public class Messages {
 		SSN = get_appplication_info_string("\rWhat is your Social Secuirty Number?", "SSN", "Please enter NINE numbers ONlY 0-9", "[^0-9]+");
 		
 		try {
-			Application app = new Application(first_name.trim(), last_name.trim(), address.trim(), phone.trim(), username.trim(), password.trim(), account_Type.trim(), SSN.trim());
+			Application app = new Application(first_name.trim(), last_name.trim(), address.trim(), city.trim(), state.trim(), zipcode.trim(), username.trim(), password.trim(), phone.trim(), SSN.trim(), "Pending", account_Type.trim());
 			String message = app.create_application();
 			System.out.println(message);
 		}
-		catch (Exception e) {
-			System.out.println("Oops, looks like we could not create your file! Please contact our bank during normal business hours to talk to someone");
+		catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Error: Having issues with the database. Please try again later!");
 		}
 	}
 	
@@ -282,6 +261,33 @@ public class Messages {
 							repeat = true;
 						}
 						break;
+					case "City":
+						String city = check_for_length(output, action, 25, 2);
+						if (city.isEmpty() ) {
+							repeat = false;
+						} else {
+							System.out.println(city);
+							repeat = true;
+						}
+						break;
+					case "State":
+						String state = check_for_length(output, action, 30, 4);
+						if (state.isEmpty() ) {
+							repeat = false;
+						} else {
+							System.out.println(state);
+							repeat = true;
+						}
+						break;
+					case "Zipcode":
+						String zipcode = check_for_length(output, action, 5, 5);
+						if (zipcode.isEmpty() ) {
+							repeat = false;
+						} else {
+							System.out.println(zipcode);
+							repeat = true;
+						}
+						break;
 					case "Phone":
 						String phone = check_for_length(output, action, 10, 10);
 						if (phone.isEmpty() ) {
@@ -317,6 +323,7 @@ public class Messages {
 				}
 			}
 		}
+		System.out.println(output);
 		return output;
 	}
 	

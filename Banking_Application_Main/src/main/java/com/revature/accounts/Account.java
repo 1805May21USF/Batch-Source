@@ -1,18 +1,27 @@
 package com.revature.accounts;
 
-public abstract class Account {
+public class Account {
 	
 	private int balance;
-	private int account_number;
-	
-	protected Account(int balance, int account_number) {
+	private String banking_account_id;
+	private int previous_transaction;
+
+	public Account(String banking_account_id, int balance, int previous_transaction) {
 		this.balance = balance;
-		this.account_number = account_number;
+		this.banking_account_id = banking_account_id;
+		this.previous_transaction = previous_transaction;
+	}
+	
+	protected int getBalance() {
+		return balance;
 	}
 
-	abstract void withdraw();
-	
-	abstract void deposit();
-	
-	abstract void transfer_funds();
+	protected String getBanking_account_id() {
+		return banking_account_id;
+	}
+
+	protected int getPrevious_transaction() {
+		return previous_transaction;
+	}
+
 }
