@@ -17,8 +17,8 @@ public class Users {
 	String DOB;
 	int usertypeid;
 	String createddate;
-	int userstatusid;
-	
+	int userstatusid; 
+	// User type 2 = customer. User status 1 = active.
 	
 	public int GetUserID(String usern, String passw) {
 		// Retrieve UserID
@@ -40,6 +40,8 @@ public class Users {
 				//System.out.println("USER ID: " + result.getInt("USER_ID"));
 				userid_GetUserID = result.getInt("USER_ID");
 			}
+			
+			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -73,6 +75,8 @@ public class Users {
 				//System.out.println("USER TYPE: " + this.usertypeid);
 			}
 			
+			stmt.close();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -102,9 +106,12 @@ public class Users {
 				System.out.println("User " + this.username + " does not exist.");
 				usern_exists = false;
 			}
+			
+			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		
 		if(usern_exists == true) {
 			return true;
@@ -157,6 +164,8 @@ public class Users {
 				System.out.println("User " + this.username + " and password combo does not exist.");
 				usern_pass_exists = false;
 			}
+			
+			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -218,14 +227,15 @@ public class Users {
 				System.out.println("Failed to create user.");
 			}
 			
+			stmt.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		 
+
 		
 		
-		// User type 2 = customer. User status 1 = active.
 		
 	}
 	

@@ -219,8 +219,7 @@ public class MainDriver
                 			 System.out.println("3. DELETE ACCOUNT");
                 			 System.out.println("4. DEPOSIT");
                 			 System.out.println("5. WITHDRAW");
-                			 System.out.println("6. TRANSFER");
-                			 System.out.println("7. LOGOUT");
+                			 System.out.println("6. LOGOUT");
                 			 System.out.println("Enter number: ");
                 			 int options = scan.nextInt();
                 			 System.out.println("Selected: " + options);
@@ -314,6 +313,14 @@ public class MainDriver
                 			 				a.ViewAccount();
                 			 				delAccBool = false;
                 			 			}
+                			 			else {
+                			 				System.out.println("Account must have a 0 balance to delete.");
+                			 				try {
+												Thread.sleep(3000);
+											} catch (InterruptedException e) {
+												e.printStackTrace();
+											}
+                			 			}
                 			 		}
             			 		}
         			 		 	
@@ -327,41 +334,69 @@ public class MainDriver
                 			 }
                 			// 4. DEPOSIT
             			 	 else if(options == 4) {
-            			 		 a.SetAccount(u.userid);
-            			 		 a.ViewAccount();
-            			 		 System.out.println("Enter amount to deposit: ");
-            			 		 Scanner scanDep = new Scanner(System.in);
-            			 		 double dep = 0.00;
-            			 		 dep = scanDep.nextDouble();
-            			 		 System.out.println("Deposit Amount Entered: " + dep);
             			 		 
-            			 		 System.out.println("Enter account number to deposit to.");
+            			 		 boolean depControl = true;
             			 		 
-            			 		 int accountNum = 0;
-            			 		 Scanner scanAcc = new Scanner(System.in);
-            			 		 accountNum = scanAcc.nextInt();
-            			 		 System.out.println("Account Number Entered: " + accountNum);
-            			 		 
-            			 		 
-            			 		 boolean accNumExists = false;
-        			 			
-            			 		a.SetAccount(u.userid);
-            			 		
-            			 		 for(int i = 0; i < a.accountid.size(); i++) {
-            			 			 if(a.accountid.get(i).equals(accountNum)) {
-        			 					accNumExists = true;
-        			 					System.out.println("Account number exists.");
-            			 			 }
+            			 		 while(depControl == true) {
+            			 			 
+            			 			a.SetAccount(u.userid);
+               			 		 a.ViewAccount();
+               			 		 System.out.println("Enter amount to deposit: ");
+               			 		 Scanner scanDep = new Scanner(System.in);
+               			 		 double dep = 0.00;
+               			 		 dep = scanDep.nextDouble();
+               			 		 System.out.println("Deposit Amount Entered: " + dep);
+               			 		 
+               			 		 if(dep <= 0 || dep > 5000) {
+               			 			 System.out.println("Deposit must be greater than 0 and must be less than or equal to 5000.");
+               			 			 
+               			 			 try {
+										Thread.sleep(3000);
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+               			 			 
+               			 			 continue;
+               			 		 }
+               			 		 System.out.println("Enter account number to deposit to.");
+               			 		 
+               			 		 int accountNum = 0;
+               			 		 Scanner scanAcc = new Scanner(System.in);
+               			 		 accountNum = scanAcc.nextInt();
+               			 		 System.out.println("Account Number Entered: " + accountNum);
+               			 		 
+               			 		 
+               			 		 boolean accNumExists = false;
+           			 			
+               			 		a.SetAccount(u.userid);
+               			 		
+               			 		 for(int i = 0; i < a.accountid.size(); i++) {
+               			 			 if(a.accountid.get(i).equals(accountNum)) {
+           			 					accNumExists = true;
+           			 					System.out.println("Account number exists.");
+               			 			 }
+               			 		 }
+           			 			
+               			 		 // If account number exists, deposit
+               			 		 if(accNumExists == true) {
+               			 			System.out.println("Begin deposit.");
+               			 			a.Deposit(accountNum, u.userid, dep);
+           			 				a.SetAccount(u.userid);
+           			 				a.ViewAccount();
+           			 				depControl = false;
+               			 		 }
+               			 		 else {
+               			 			 System.out.println("Account doesn't exist.");
+               			 			 
+               			 			 try {
+										Thread.sleep(3000);
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+               			 		 }
             			 		 }
-        			 			
-            			 		 // If account number exists, deposit
-            			 		 if(accNumExists == true) {
-            			 			System.out.println("Begin depsoit.");
-            			 			a.Deposit(accountNum, u.userid, dep);
-        			 				a.SetAccount(u.userid);
-        			 				a.ViewAccount();
-        			 				
-        			 			}
+            			 		 
             			 		
             			 		try {
             			 			System.out.println("Returning to BANK OPTIONS MENU.");
@@ -372,42 +407,69 @@ public class MainDriver
 								}
             			 	 }
                 			// 5. WITHDRAW
+                			 
                 			 else if(options == 5) {
-                				 a.SetAccount(u.userid);
-	           			 		 a.ViewAccount();
-	           			 		 System.out.println("Enter amount to withdraw: ");
-	           			 		 Scanner scanWith= new Scanner(System.in);
-	           			 		 double with = 0.00;
-	           			 		 with = scanWith.nextDouble();
-	           			 		 System.out.println("Withdrawal Amount Entered: " + with);
-	           			 		 
-	           			 		 System.out.println("Enter account number to withdraw from.");
-	           			 		 
-	           			 		 int accountNum = 0;
-	           			 		 Scanner scanAcc = new Scanner(System.in);
-	           			 		 accountNum = scanAcc.nextInt();
-	           			 		 System.out.println("Account Number Entered: " + accountNum);
-	           			 		 
-	           			 		 
-	           			 		 boolean accNumExists = false;
-	       			 			
-	           			 		a.SetAccount(u.userid);
-	           			 		
-	           			 		 for(int i = 0; i < a.accountid.size(); i++) {
-	           			 			 if(a.accountid.get(i).equals(accountNum)) {
-	       			 					accNumExists = true;
-	       			 					System.out.println("Account number exists.");
-	           			 			 }
-	           			 		 }
-	       			 			
-	           			 		 // If account number exists, withdraw
-	           			 		 if(accNumExists == true) {
-	           			 			System.out.println("Begin withdrawal.");
-	           			 			a.Withdraw(accountNum, u.userid, with);
-	       			 				a.SetAccount(u.userid);
-	       			 				a.ViewAccount();
-	       			 				
-	       			 			}
+                				 
+                				 boolean withControl = true;
+            			 		 
+            			 		 while(withControl == true) {
+            			 			a.SetAccount(u.userid);
+	   	           			 		 a.ViewAccount();
+	   	           			 		 System.out.println("Enter amount to withdraw: ");
+	   	           			 		 Scanner scanWith= new Scanner(System.in);
+	   	           			 		 double with = 0.00;
+	   	           			 		 with = scanWith.nextDouble();
+	   	           			 		 System.out.println("Withdrawal Amount Entered: " + with);
+	   	           			 		 
+		   	           			 	 if(with <= 0 || with > 500) {
+	               			 			 System.out.println("Withdrawal must not be greater than 0 and must be less than equal to 500.");
+	               			 			 
+	               			 			 try {
+											Thread.sleep(3000);
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+										}
+	               			 			 
+	               			 			 continue;
+	               			 		 }
+	   	           			 		 System.out.println("Enter account number to withdraw from.");
+	   	           			 		 
+	   	           			 		 int accountNum = 0;
+	   	           			 		 Scanner scanAcc = new Scanner(System.in);
+	   	           			 		 accountNum = scanAcc.nextInt();
+	   	           			 		 System.out.println("Account Number Entered: " + accountNum);
+	   	           			 		 
+	   	           			 		 
+	   	           			 		 boolean accNumExists = false;
+	   	       			 			
+	   	           			 		 a.SetAccount(u.userid);
+	   	           			 		
+	   	           			 		 for(int i = 0; i < a.accountid.size(); i++) {
+	   	           			 			 if(a.accountid.get(i).equals(accountNum)) {
+	   	       			 					accNumExists = true;
+	   	       			 					System.out.println("Account number exists.");
+	   	           			 			 }
+	   	           			 		 }
+	   	       			 			
+	   	           			 		 // If account number exists, withdraw
+	   	           			 		 if(accNumExists == true) {
+	   	           			 			System.out.println("Begin withdrawal.");
+	   	           			 			a.Withdraw(accountNum, u.userid, with);
+	   	       			 				a.SetAccount(u.userid);
+	   	       			 				a.ViewAccount();
+	   	       			 				withControl = false;
+	   	       			 			}
+		   	           			 	else {
+	              			 			 System.out.println("Account doesn't exist.");
+	              			 			 
+	              			 			 try {
+											Thread.sleep(3000);
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+	              			 		 }
+            			 		 }
            			 		 
 	           			 		try {
 	           			 			System.out.println("Returning to BANK OPTIONS MENU.");
@@ -418,10 +480,7 @@ public class MainDriver
 									}
             			 	 }
             			 	 else if(options == 6) {
-            			 		// 6. TRANSFER
-            			 	 }
-            			 	 else if(options == 7) {
-            			 		// 7. LOGOUT
+            			 		// 6. LOGOUT
             			 		System.out.println("Thank You. Goodbye. EXITING BANK OPTIONS PAGE.");
             	        		bankOptions = false;
             			 	 }
