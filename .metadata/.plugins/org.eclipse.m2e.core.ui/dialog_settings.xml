@@ -4,10 +4,12 @@
 	</section>
 	<section name="MavenProjectWizardArtifactPage">
 		<list key="groupId">
+			<item value="com.revature"/>
 		</list>
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="BankAppFinal"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
@@ -57,6 +59,9 @@
 	</section>
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\Bank"/>
+			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\HeroJDBC"/>
+			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
@@ -69,16 +74,10 @@
 	</section>
 	<section name="Maven2ProjectWizardArchifactPage">
 		<list key="package">
-			<item value="com.revature.BankApp"/>
-			<item value="com.BankProject"/>
 		</list>
 		<list key="groupId">
-			<item value="com.revature"/>
-			<item value="com"/>
 		</list>
 		<list key="artifactId">
-			<item value="BankApp"/>
-			<item value="BankProject"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>

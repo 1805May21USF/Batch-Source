@@ -48,7 +48,7 @@ public class EmployeeViewOpenApplications {
 				String t = input.next();
 				t = t.replace(',', ' ');
 				String[] words = t.split("\\s+");
-				//Words 4 from Person.txt is 
+				//Words 4 from Person.txt is status
 				if (words[4].equals("0")) {
 					accounts.add(words[0] + " " + words[1]);
 				}
