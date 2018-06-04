@@ -41,13 +41,13 @@ public class Menu {
 				selection = Integer.parseInt(in.next());
 				validInputType = true;
 			} catch (NumberFormatException e) {
-				System.out.println("Selection must be a number");
+				System.out.println("Selection must be a number.\n");
 			}
 
 			if (selection >= 0 && selection <= 4) {
 				validSelection = true;
 			} else {
-				System.out.println("Please select a number within range.");
+				System.out.println("Please select a number within range.\n");
 			}
 
 			/*try {

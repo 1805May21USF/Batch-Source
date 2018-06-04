@@ -57,7 +57,8 @@ public class AccountDAOImpl implements AccountDAO {
 					rs.getString(3), rs.getInt(4));
 			accountList.add(acct);
 		} 
-
+		
+		conn.close();
 		return accountList;
 	}
 	
@@ -65,8 +66,7 @@ public class AccountDAOImpl implements AccountDAO {
 	 * Retrieves a specific account
 	 */
 	@Override
-	public List<Account> retrieveAccount(int accountNumber) throws SQLException{
-		List<Account> accountList = new ArrayList<>();
+	public Account retrieveAccount(int accountNumber) throws SQLException{
 
 		Connection conn = cf.getConnection();
 		Statement stmt = conn.createStatement();
@@ -79,10 +79,12 @@ public class AccountDAOImpl implements AccountDAO {
 			//System.out.println("This user has an account");
 			acct = new Account(rs.getInt(1), rs.getDouble(2),
 					rs.getString(3), rs.getInt(4));
-			accountList.add(acct);
+			
+			conn.close();
+			return acct;
 		} 
 
-		return accountList;
+		return null;
 	}
 
 	@Override
@@ -102,6 +104,7 @@ public class AccountDAOImpl implements AccountDAO {
 			accountList.add(acct);
 		} 
 
+		conn.close();
 		return accountList;
 	}
 
@@ -118,13 +121,14 @@ public class AccountDAOImpl implements AccountDAO {
 			String[] primaryKeys = new String[1];
 			primaryKeys[0] = "ACCOUNT_NUMBER";
 			String sql =
-					"UDPATE BANK_ACCOUNT SET BALANCE = "+ amount
+					"UPDATE BANK_ACCOUNT SET BALANCE = "+ amount
 					+ " WHERE ACCOUNT_NUMBER = " + accountNumber;
 			try {
 				PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				System.out.println("Bank account not found.");
+				e.printStackTrace();
 			}
 		}
 		conn.close();

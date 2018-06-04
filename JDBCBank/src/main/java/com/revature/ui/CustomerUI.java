@@ -1,13 +1,19 @@
 package com.revature.ui;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.InputMismatchException;
+import java.util.List;
 
+import com.revature.beans.Account;
 import com.revature.beans.User;
 import com.revature.daoimpl.AccountDAOImpl;
 import com.revature.daoimpl.UserDAOImpl;
 import com.revature.driver.Driver;
 
 public class CustomerUI {
+	
+	DecimalFormat df = new DecimalFormat("$#.00");
 
 	private static final int PENDING = 0;
 	private static final int CUSTOMER = 1;
@@ -40,7 +46,7 @@ public class CustomerUI {
 	private void verifyCredentials(String inputUser) {
 		User tempUser = null;
 
-		System.out.println("Please wait...");
+		System.out.println("Logging in. Please wait...");
 
 		try {
 			tempUser = udi.retrieveUser(inputUser);
@@ -94,7 +100,7 @@ public class CustomerUI {
 			validInputType = false;
 			validSelection = false;
 
-			System.out.println("Customer console");
+			System.out.println("\nCustomer Console");
 
 			System.out.println("\t1. View account balances");
 			System.out.println("\t2. Make a deposit");
@@ -125,13 +131,17 @@ public class CustomerUI {
 	private void menuSelection(int selection) {
 		switch (selection) {
 		case 1:
+			System.out.println("Retrieving accounts...");
 			viewAccounts();
+			customerMenu();
 			break;
 		case 2:
-			//make a deposit
+			depositAccount();
+			customerMenu();
 			break;
 		case 3:
-			//withdraw from account
+			withdrawAccount();
+			customerMenu();
 			break;
 		case 4:
 			//transfer funds
@@ -146,7 +156,243 @@ public class CustomerUI {
 	}
 
 	private void viewAccounts() {
+		List<Account> accounts = null;
 
+		System.out.println("\nAccounts");
+
+		try {
+			accounts = adi.retrieveUserAccounts(user.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		for (Account a : accounts) {
+			if (a.getAccountStatus().equals("OPEN")) {
+				System.out.println("\t" + a.toCustomerString());
+			}
+		}
+		System.out.println();
+	}
+
+	private void depositAccount() {
+		viewAccounts();
+
+		List<Account> accounts = null;
+
+		System.out.println("Which account would you like to deposit to?");
+		int acctNum = 0;
+		boolean isValidAccount = false;
+
+		while (!isValidAccount) {
+			System.out.print("Account number: ");
+			try {
+				acctNum = Integer.parseInt(Menu.in.next());
+			} catch (Exception e) {
+				System.out.println("Account number must be an integer.");
+			}
+
+			try {
+				accounts = adi.retrieveUserAccounts(user.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			for (Account a : accounts) {
+				if (a.getAccountNumber() == acctNum) {
+					isValidAccount = true;
+				}
+			}
+
+			if (!isValidAccount) {
+				System.out.println("Account does not exist.");
+			}
+		}
+
+		double deposit = 0;
+
+		if(isValidAccount) {
+			boolean isValidAmount = false;
+
+			while(!isValidAmount) {
+				System.out.print("Amount to deposit: ");
+				try {
+					deposit = Menu.in.nextDouble();
+				} catch (InputMismatchException e) {
+					System.out.println("Deposit must be a number value.");
+					Menu.in.next();
+				}
+				if (deposit <= 0.0) {
+					System.out.println("Deposit must be a positive value.");
+				} else {
+					isValidAmount = true;
+				}
+			}
+		}
+
+		Account depositAcct = null;
+		String beforeBalance = null;
+		String afterBalance = null;
+		try {
+			depositAcct = adi.retrieveAccount(acctNum);
+			beforeBalance = depositAcct.toBalanceString();
+			adi.updateAccount(acctNum, depositAcct.getBalance() + deposit);
+			depositAcct = adi.retrieveAccount(acctNum);
+			afterBalance = depositAcct.toBalanceString();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("You have deposited " 
+				+ df.format(deposit));
+		System.out.println("Previous balance: " + beforeBalance);
+		System.out.println("Current balance: " + afterBalance);
+	}
+	
+	private void withdrawAccount() {
+		viewAccounts();
+
+		List<Account> accounts = null;
+
+		System.out.println("Which account would you like to withdraw from?");
+		int acctNum = 0;
+		boolean isValidAccount = false;
+
+		while (!isValidAccount) {
+			System.out.print("Account number: ");
+			try {
+				acctNum = Integer.parseInt(Menu.in.next());
+			} catch (Exception e) {
+				System.out.println("Account number must be an integer.");
+			}
+
+			try {
+				accounts = adi.retrieveUserAccounts(user.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			for (Account a : accounts) {
+				if (a.getAccountNumber() == acctNum) {
+					isValidAccount = true;
+				}
+			}
+
+			if (!isValidAccount) {
+				System.out.println("Account does not exist.");
+			}
+		}
+
+		double withdraw = 0;
+		double acctBalance = 0;
+		Account withdrawAcct = null;
+
+		if(isValidAccount) {
+			boolean isValidAmount = false;
+			
+			System.out.println("Retrieving account information...\n");
+			try {
+				acctBalance = adi.retrieveAccount(acctNum).getBalance();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+
+			while(!isValidAmount) {
+				System.out.print("Amount to withdraw: ");
+				try {
+					withdraw = Menu.in.nextDouble();
+				} catch (InputMismatchException e) {
+					System.out.println("Withdraw must be a number value.");
+					Menu.in.next();
+				}
+				if (withdraw <= 0.0) {
+					System.out.println("Withdraw must be a positive value.");
+				} else if (withdraw > acctBalance) {
+					System.out.println("Insufficient funds.");
+				} else {
+					isValidAmount = true;
+				}
+			}
+		}
+
+		String beforeBalance = null;
+		String afterBalance = null;
+		try {
+			withdrawAcct = adi.retrieveAccount(acctNum);
+			beforeBalance = withdrawAcct.toBalanceString();
+			adi.updateAccount(acctNum, withdrawAcct.getBalance() - withdraw);
+			withdrawAcct = adi.retrieveAccount(acctNum);
+			afterBalance = withdrawAcct.toBalanceString();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("You withdrew " 
+				+ df.format(withdraw));
+		System.out.println("Previous balance: " + beforeBalance);
+		System.out.println("Current balance: " + afterBalance);
+	}
+	
+	private void transferFunds() {
+		viewAccounts();
+
+		List<Account> accounts = null;
+		int acctNum1 = 0;
+		int acctNum2 = 0;
+		
+		System.out.println("Which account are you transferring from?");
+		
+		boolean isValidAccount1 = false;
+
+		while (!isValidAccount1) {
+			System.out.print("Account number: ");
+			try {
+				acctNum1 = Integer.parseInt(Menu.in.next());
+			} catch (Exception e) {
+				System.out.println("Account number must be an integer.");
+			}
+
+			try {
+				accounts = adi.retrieveUserAccounts(user.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			for (Account a : accounts) {
+				if (a.getAccountNumber() == acctNum1) {
+					isValidAccount1 = true;
+				}
+			}
+
+			if (!isValidAccount1) {
+				System.out.println("Account does not exist.");
+			}
+		}
+		
+		System.out.println("Which account are you transferring to?");
+		
+		boolean isValidAccount2 = false;
+
+		while (!isValidAccount2) {
+			System.out.print("Account number: ");
+			try {
+				acctNum2 = Integer.parseInt(Menu.in.next());
+			} catch (Exception e) {
+				System.out.println("Account number must be an integer.");
+			}
+
+			try {
+				accounts = adi.retrieveUserAccounts(user.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			for (Account a : accounts) {
+				if (a.getAccountNumber() == acctNum1) {
+					isValidAccount2 = true;
+				}
+			}
+
+			if (!isValidAccount2) {
+				System.out.println("Account does not exist.");
+			}
+		}
 	}
 
 	private void manageAccounts() {
@@ -160,7 +406,7 @@ public class CustomerUI {
 			validInputType = false;
 			validSelection = false;
 
-			System.out.println("Account Manager");
+			System.out.println("\nAccount Manager");
 			System.out.println("\t1. Create account");
 			System.out.println("\t2. Close account");
 			System.out.println("\t0. Return to user menu");
@@ -183,8 +429,9 @@ public class CustomerUI {
 
 		boolean validAmount = false;
 		if (selection == 1) {
+			System.out.println("Account Creation");
 			while (!validAmount) {
-				System.out.println("Initial deposit: ");
+				System.out.print("\nInitial deposit: ");
 				try {
 					amount = Menu.in.nextDouble();
 				} catch (NumberFormatException e) {
@@ -200,21 +447,10 @@ public class CustomerUI {
 
 		switch (selection) {
 		case 1:
-			try {
-				System.out.println("Creating account...");
-				
-				int beforeSize = adi.retrieveAccount(user.getId()).size();
-				adi.createAccount(amount, DEFAULT_ACCT_STATUS, user.getId());
-				
-				if (adi.retrieveUserAccounts(user.getId()).size() > beforeSize) {
-					System.out.println("Account successfully created.\n");
-				}
-			} catch (SQLException e) {
-				System.out.println("Unable to create account.");
-			}
+			createAccount(amount);
 			manageAccounts();
 		case 2:
-			// Close account
+			// close account
 			break;
 		case 0:
 			System.out.println();
@@ -222,6 +458,21 @@ public class CustomerUI {
 			break;
 		default:
 			System.out.println("Something went wrong in the account manager");
+		}
+	}
+
+	private void createAccount(double amount) {
+		try {
+			System.out.println("\nCreating account...");
+
+			int beforeSize = adi.retrieveUserAccounts(user.getId()).size();
+			adi.createAccount(amount, DEFAULT_ACCT_STATUS, user.getId());
+
+			if (adi.retrieveUserAccounts(user.getId()).size() > beforeSize) {
+				System.out.println("Account successfully created.\n");
+			}
+		} catch (SQLException e) {
+			System.out.println("Unable to create account.");
 		}
 	}
 }

@@ -13,7 +13,7 @@ public interface AccountDAO {
 	public abstract List<Account> retrieveUserAccounts(
 			int userId) throws SQLException;
 	
-	public abstract List<Account> retrieveAccount(
+	public abstract Account retrieveAccount(
 			int accountNumber) throws SQLException;
 	
 	public abstract List<Account> retrieveAllAccounts() throws SQLException;

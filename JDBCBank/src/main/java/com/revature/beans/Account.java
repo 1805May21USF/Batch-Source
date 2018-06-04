@@ -1,11 +1,15 @@
 package com.revature.beans;
 
+import java.text.DecimalFormat;
+
 public class Account {
 	
 	private int accountNumber;
 	private double balance;
 	private String accountStatus;
 	private int userId;
+	
+	DecimalFormat df = new DecimalFormat("$#.00");
 	
 	public Account() {
 		super();
@@ -55,6 +59,14 @@ public class Account {
 	public String toString() {
 		return "Account [accountNumber=" + accountNumber + ", amount=" + balance + ", accountStatus=" + accountStatus
 				+ ", userId=" + userId + "]";
+	}
+	
+	public String toCustomerString() {
+		return "Acct#: " + accountNumber + "---------- " + df.format(balance);
+	}
+	
+	public String toBalanceString() {
+		return df.format(balance);
 	}
 
 }
