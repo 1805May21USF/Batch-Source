@@ -1,1 +1,2 @@
 
+2018-06-04 16:01:38 INFO  TransactionDAOImpl:37 - Logging initialized.
