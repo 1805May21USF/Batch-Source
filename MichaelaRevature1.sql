@@ -357,8 +357,7 @@ BEGIN
 END;
 /
 
---6.1.3
---hold the deleted customers in a seperate table
+
 CREATE TABLE NONCUSTOMERS(
 CUSTOMERID NUMBER,
 FIRSTNAME VARCHAR(20),
