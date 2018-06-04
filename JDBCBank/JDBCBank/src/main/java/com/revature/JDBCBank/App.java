@@ -52,6 +52,7 @@ public class App
 	    					try {
 	    						customerMenu(c);
 	    					}catch(SQLException e) {
+	    						e.printStackTrace();
 	    						System.out.println("System is down! Please try again later!");
 	    					}
 	    				}
@@ -67,6 +68,7 @@ public class App
 	    					try {
 	    						employeeMenu(emp);
 	    					}catch(SQLException e) {
+	    						e.printStackTrace();
 	    						System.out.println("System is down! Please try again later!");
 	    					}
 	    				}
@@ -80,6 +82,7 @@ public class App
 	        				try {
 	        					adminMenu();
 	        				}catch(SQLException e) {
+	        					e.printStackTrace();
 	        					System.out.println("System is down! Please try again later!");
 	        				}
 	        			}
@@ -301,6 +304,9 @@ public class App
 								viewAccount = null;
 							}
 	    				}
+	    				commands.clear();
+						commands.addAll(menu);
+	    				break;
 					case("logout"):
 						flag = false;
 	    				break;

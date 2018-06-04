@@ -54,7 +54,7 @@ public class AccountDAOImpl implements AccountDAO {
 			
 		// Puts the retrieved accounts into the list
 		while(rs.next()) {
-			Account a = new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5));
+			Account a = new Account(rs.getInt(1), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getInt(6));
 				
 			accountList.add(a);
 		}
@@ -80,7 +80,7 @@ public class AccountDAOImpl implements AccountDAO {
 			
 		// Puts the retrieved accounts into the list
 		while(rs.next()) {
-			Account a = new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5));
+			Account a = new Account(rs.getInt(1), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getInt(6));
 				
 			accountList.add(a);
 		}
@@ -97,7 +97,7 @@ public class AccountDAOImpl implements AccountDAO {
 		ArrayList<Account> accountList = new ArrayList<>();
 		Connection conn = cf.getConnection();
 				
-		String sql = "SELECT * FROM BANK_ACCOUNT WHERE CUSTOMER ID = ? OR SHAREDID = ?";
+		String sql = "SELECT * FROM BANK_ACCOUNT WHERE CUSTOMERID = ? OR SHARED_ACCOUNT = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 				
 		stmt.setInt(1, argOne);
@@ -107,7 +107,7 @@ public class AccountDAOImpl implements AccountDAO {
 				
 		// Puts the retrieved accounts into the list
 		while(rs.next()) {
-			Account a = new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5));
+			Account a = new Account(rs.getInt(1), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getInt(6));
 					
 			accountList.add(a);
 		}
@@ -192,60 +192,56 @@ public class AccountDAOImpl implements AccountDAO {
 	public void withdraw(int id, double amount) throws SQLException{
 		// Opens a connection to the database and prepares the necessary statement to withdraw money from the account
 		Connection conn = cf.getConnection();
-		String sql = "UPDATE ACCOUNT SET BALANCE = BALANCE - ? WHERE ACCOUNTID = ?";
+		String sql = "{call WITHDRAW_BANK_ACCOUNT(?, ?)";
 		
 		// Updates the account money was withdrawn from
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setDouble(1, amount);
-		stmt.setInt(2, id);
-		stmt.executeUpdate();
+		CallableStatement stmt = conn.prepareCall(sql);
+		stmt.setInt(1, id);
+		stmt.setDouble(2, amount);
+		stmt.execute();
 		
 		// Closes the database connection
 		conn.close();
 		
-		log.info("Info:\nSuccessfully withdrew $" + amount + " from account number " + id + "\n");
+		log.info("Info:\nSuccessfully withdrew from account number " + id + ", new total is $" + amount + "\n");
 	}
 	
 	// Deposits a provided amount of money into a provided account
 	public void deposit(int id, double amount) throws SQLException{
 		// Opens a connection to the database and prepares the necessary statement to deposit money into the account
 		Connection conn = cf.getConnection();
-		String sql = "UPDATE ACCOUNT SET BALANCE = BALANCE + ? WHERE ACCOUNTID = ?";
+		String sql = "{call DEPOSIT_BANK_ACCOUNT(?, ?)";
 		
 		// Updates the account money was deposited into
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setDouble(1, amount);
-		stmt.setInt(2, id);
-		stmt.executeUpdate();
+		CallableStatement stmt = conn.prepareCall(sql);
+		stmt.setInt(1, id);
+		stmt.setDouble(2, amount);
+		stmt.execute();
 		
 		// Closes the database connection
 		conn.close();
 		
-		log.info("Info:\nSuccessfully deposited $" + amount + " from account number " + id + "\n");
+		log.info("Info:\nSuccessfully deposited into account number " + id + ", which has a new balance of $" + amount + "\n");
 	}
 	
 	// Transfers a provided amount of money from the first account provided to the second account provided
-	public void transfer(int idOne, int idTwo, double amount) throws SQLException{
+	public void transfer(int idOne, int idTwo, double amountOne, double amountTwo) throws SQLException{
 		// Creates a connection to the database and prepares the necessary sql statements to transfer money from one account to the other
 		Connection conn = cf.getConnection();
-		String sqlOne = "UPDATE ACCOUNT SET BALANCE = BALANCE - ? WHERE ACCOUNTID = ?";
-		String sqlTwo = "UPDATE ACCOUNT SET BALANCE = BALANCE + ? WHERE ACCOUNTID = ?";
+		String sqlOne = "{call TRANSFER_BANK_ACCOUNT(?, ?, ?, ?)";
 		
 		// Updates the account where money is being transfered from
-		PreparedStatement stmtOne = conn.prepareStatement(sqlOne);
-		stmtOne.setDouble(1, amount);
-		stmtOne.setInt(2, idOne);
-		stmtOne.executeUpdate();
-		
-		// Updates the account money is being transfered to
-		PreparedStatement stmtTwo = conn.prepareStatement(sqlTwo);
-		stmtTwo.setDouble(1, amount);
-		stmtTwo.setInt(2, idTwo);
-		stmtTwo.executeUpdate();
+		CallableStatement stmt = conn.prepareCall(sqlOne);
+		stmt.setInt(1, idOne);
+		stmt.setDouble(2, amountOne);
+		stmt.setInt(3, idTwo);
+		stmt.setDouble(4, amountTwo);
+		stmt.execute();
 		
 		// Closes the database connection
 		conn.close();
 		
-		log.info("Info:\nSuccessfully transferred $" + amount + " from account number " + idOne + " into account number " + idTwo + "\n");
+		log.info("Info:\nSuccessfully transferred from account number " + idOne + ", now with a total balance of $" + amountOne + " into account number " + idTwo + 
+				 ", now with a total balance of $" + amountTwo + "\n");
 	}
 }

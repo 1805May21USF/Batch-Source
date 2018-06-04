@@ -18,7 +18,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 	public void addTransaction(Transaction t) throws SQLException {
 		// Retrieves the connection and provides the sql code to be executed
 		Connection conn = cf.getConnection();
-		String sql = "{call INSERT_BANK_TRANSACTION(?, ?, ?, ?)";
+		String sql = "{call CREATE_BANK_TRANSACTION(?, ?, ?, ?, ?)";
 				
 		// Instantiates a CallableStatement to insert a new transaction
 		CallableStatement call = conn.prepareCall(sql);
@@ -29,8 +29,8 @@ public class TransactionDAOImpl implements TransactionDAO{
 		call.setString(5, t.getType());
 		call.execute();
 				
-				// Closes the database connection
-				conn.close();
+		// Closes the database connection
+		conn.close();
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 		ArrayList<Transaction> transactions = new ArrayList<>();
 		Connection conn = cf.getConnection();
 		
-		String sql = "SELECT * FROM TRANSACTION WHERE CUSTOMERID = ?";
+		String sql = "SELECT * FROM BANK_TRANSACTION WHERE CUSTOMERID = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		
@@ -48,7 +48,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 		
 		// Puts the retrieved employees into the list
 		while(rs.next()) {
-			Transaction t = new Transaction(rs.getInt(0), rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getString(5));
+			Transaction t = new Transaction(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDouble(5), rs.getString(6));
 			
 			transactions.add(t);
 		}
@@ -63,7 +63,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 		ArrayList<Transaction> transactions = new ArrayList<>();
 		Connection conn = cf.getConnection();
 		
-		String sql = "SELECT * FROM TRANSACTION WHERE CUSTOMERID = ? AND TYPE = ?";
+		String sql = "SELECT * FROM BANK_TRANSACTION WHERE CUSTOMERID = ? AND TYPE = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		
@@ -74,7 +74,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 		
 		// Puts the retrieved employees into the list
 		while(rs.next()) {
-			Transaction t = new Transaction(rs.getInt(0), rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getString(5));
+			Transaction t = new Transaction(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDouble(5), rs.getString(6));
 			
 			transactions.add(t);
 		}

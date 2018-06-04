@@ -1,7 +1,1 @@
 
-Info:
-Successfully created customer test
-
-Info:
-Successfully created account number -1 named personal for customer number + 157
-

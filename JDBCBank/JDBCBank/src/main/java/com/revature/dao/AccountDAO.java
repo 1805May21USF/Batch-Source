@@ -12,5 +12,5 @@ public interface AccountDAO {
 	public abstract void closeAccount(int id) throws SQLException;
 	public abstract void withdraw(int id, double amount) throws SQLException;
 	public abstract void deposit(int id, double amount) throws SQLException;
-	public abstract void transfer(int idOne, int idTwo, double amount) throws SQLException;
+	public abstract void transfer(int idOne, int idTwo, double amountOne, double amountTwo) throws SQLException;
 }

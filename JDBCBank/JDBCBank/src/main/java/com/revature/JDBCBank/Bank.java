@@ -73,7 +73,7 @@ public class Bank {
 							throw new OverdraftException(accounts.get(index).getName());
 						}
 						else {
-							adi.withdraw(accounts.get(index).getId(), amount);
+							adi.withdraw(accounts.get(index).getId(), accounts.get(index).getBalance() - amount);
 							TransactionDAOImpl tdi = new TransactionDAOImpl();
 							tdi.addTransaction(new Transaction(0, c.getId(), accounts.get(index).getId(), 0, amount, "WITHDRAWAL"));
 							break inputLoop;
@@ -137,9 +137,9 @@ public class Bank {
 							throw new InvalidInputException();
 						}
 						else {
-							adi.deposit(accounts.get(index).getId(), amount);
+							adi.deposit(accounts.get(index).getId(), accounts.get(index).getBalance() + amount);
 							TransactionDAOImpl tdi = new TransactionDAOImpl();
-							tdi.addTransaction(new Transaction(0, c.getId(), 0, accounts.get(index).getId(), amount, "DEPOSIT"));
+							tdi.addTransaction(new Transaction(0, c.getId(), 1, accounts.get(index).getId(), amount, "DEPOSIT"));
 							break inputLoop;
 						}
 					}catch(InvalidInputException e) {
@@ -280,7 +280,7 @@ public class Bank {
 								else if(amount > accounts.get(i).getBalance())
 									throw new OverdraftException(accounts.get(i).getName());
 								else {
-									adi.transfer(indexOne, indexTwo, amount);
+									adi.transfer(indexOne, indexTwo, accounts.get(i).getBalance() - amount, accounts.get(j).getBalance() + amount);
 									TransactionDAOImpl tdi = new TransactionDAOImpl();
 									tdi.addTransaction(new Transaction(0, c.getId(), accounts.get(i).getId(), accounts.get(j).getId(), amount, "TRANSFER"));
 									break inputLoop;
@@ -547,7 +547,7 @@ public class Bank {
 						System.out.println(c.getUsername() + " : " + t.getAmount() + " : " + t.getType());
 					}
 					break;
-				case("c"):
+				case("C"):
 					break inputLoop;
 				default: System.out.println("Please enter one of the options listed!");
 			}
