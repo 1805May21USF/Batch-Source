@@ -71,7 +71,7 @@ public class CustomerTools
 		//execute the query
 		rs = ps2.executeQuery();
 		
-		//close the connection, prepared statement, and result set
+		//close the connection, prepared statements, and result set
 		conn.close();
 		ps.close();
 		rs.close();
