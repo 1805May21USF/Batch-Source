@@ -1,11 +1,17 @@
 package com.revature.daoimpl;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Properties;
+
+import org.apache.log4j.Category;
+import org.apache.log4j.PropertyConfigurator;
 
 import com.revature.DAO.TransactionDAO;
 import com.revature.beans.Account;
@@ -15,7 +21,27 @@ import com.revature.util.ConnFactory;
 public class TransactionDAOImpl implements TransactionDAO{
 
 	public static ConnFactory cf = ConnFactory.getInstance();
-
+	
+	private String properties = "Log4j.properties";
+	private Category log;
+	
+	public TransactionDAOImpl() {
+		Properties logProperties = new Properties();
+		log = Category.getInstance(this.getClass());
+		
+		 try
+		    {
+		      // load our log4j properties / configuration file
+		      logProperties.load(new FileInputStream(properties));
+		      PropertyConfigurator.configure(logProperties);
+		      log.info("Logging initialized.");
+		    }
+		    catch(IOException e)
+		    {
+		      throw new RuntimeException("Unable to load logging property " + properties);
+		    }
+	}
+	
 	@Override
 	public Transaction findTransaction(int ID) throws SQLException {
 		Connection conn = cf.getConnection();
@@ -67,6 +93,9 @@ public class TransactionDAOImpl implements TransactionDAO{
 		ps.setDouble(7, transaction.getBalance());
 		ps.execute();
 		conn.close();
+		
+		log.info("Transaction #"+transaction.getID() + ", From Account #"+transaction.getFrom_account_id()+", To Account #"+
+		transaction.getTo_account_id()+", of Type: "+transaction.getType() +", Amount: " + transaction.getAmount() + ", Final Balance: "+transaction.getBalance());
 	}
 
 	@Override
@@ -84,6 +113,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 		ps.setDouble(7, transaction.getBalance());
 		ps.execute();
 		conn.close();
+		log.info("Transaction updated in database.");
 	}
 
 	@Override
@@ -93,6 +123,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 		CallableStatement ps = conn.prepareCall(sql);
 		ps.setInt(1, Transaction.getID());
 		ps.execute();
-		conn.close();	
+		conn.close();
+		log.info("Transaction deleted.");
 	}
 }

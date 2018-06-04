@@ -1,0 +1,4 @@
+2018-06-04 12:37:10 INFO  TransactionDAOImpl:37 - Logging initialized.
+2018-06-04 12:37:30 INFO  TransactionDAOImpl:97 - Transaction #0, From Account #1001, To Account #0, of Type: DEPOSIT, Amount: 500.0, Final Balance: 1600.0
+2018-06-04 12:43:21 INFO  TransactionDAOImpl:97 - Transaction #0, From Account #1001, To Account #0, of Type: DEPOSIT, Amount: 500.0, Final Balance: 2600.0
+2018-06-04 12:59:35 INFO  TransactionDAOImpl:37 - Logging initialized.
