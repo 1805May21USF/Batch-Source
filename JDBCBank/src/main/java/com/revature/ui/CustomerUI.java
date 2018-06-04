@@ -13,7 +13,7 @@ import com.revature.driver.Driver;
 
 public class CustomerUI {
 	
-	DecimalFormat df = new DecimalFormat("$#.00");
+	DecimalFormat df = new DecimalFormat("$#0.00");
 
 	private static final int PENDING = 0;
 	private static final int CUSTOMER = 1;
@@ -136,15 +136,22 @@ public class CustomerUI {
 			customerMenu();
 			break;
 		case 2:
+			System.out.println("Retrieving accounts...");
+			viewAccounts();
 			depositAccount();
 			customerMenu();
 			break;
 		case 3:
+			System.out.println("Retrieving accounts...");
+			viewAccounts();
 			withdrawAccount();
 			customerMenu();
 			break;
 		case 4:
-			//transfer funds
+			System.out.println("Retrieving accounts...");
+			viewAccounts();
+			transferFunds();
+			customerMenu();
 			break;
 		case 5:
 			manageAccounts();
@@ -174,7 +181,6 @@ public class CustomerUI {
 	}
 
 	private void depositAccount() {
-		viewAccounts();
 
 		List<Account> accounts = null;
 
@@ -189,9 +195,12 @@ public class CustomerUI {
 			} catch (Exception e) {
 				System.out.println("Account number must be an integer.");
 			}
+			
+			System.out.println("Verifying account...");
 
 			try {
 				accounts = adi.retrieveUserAccounts(user.getId());
+				System.out.println("Account verified.");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -231,6 +240,9 @@ public class CustomerUI {
 		Account depositAcct = null;
 		String beforeBalance = null;
 		String afterBalance = null;
+		
+		System.out.println("Processing deposit...\n");
+		
 		try {
 			depositAcct = adi.retrieveAccount(acctNum);
 			beforeBalance = depositAcct.toBalanceString();
@@ -247,7 +259,6 @@ public class CustomerUI {
 	}
 	
 	private void withdrawAccount() {
-		viewAccounts();
 
 		List<Account> accounts = null;
 
@@ -262,9 +273,12 @@ public class CustomerUI {
 			} catch (Exception e) {
 				System.out.println("Account number must be an integer.");
 			}
+			
+			System.out.println("Verifying account...");
 
 			try {
 				accounts = adi.retrieveUserAccounts(user.getId());
+				System.out.println("Account verified.");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -287,7 +301,6 @@ public class CustomerUI {
 		if(isValidAccount) {
 			boolean isValidAmount = false;
 			
-			System.out.println("Retrieving account information...\n");
 			try {
 				acctBalance = adi.retrieveAccount(acctNum).getBalance();
 			} catch (SQLException e1) {
@@ -314,6 +327,9 @@ public class CustomerUI {
 
 		String beforeBalance = null;
 		String afterBalance = null;
+		
+		System.out.println("Processing withdrawal...\n");
+		
 		try {
 			withdrawAcct = adi.retrieveAccount(acctNum);
 			beforeBalance = withdrawAcct.toBalanceString();
@@ -330,32 +346,46 @@ public class CustomerUI {
 	}
 	
 	private void transferFunds() {
-		viewAccounts();
 
 		List<Account> accounts = null;
-		int acctNum1 = 0;
-		int acctNum2 = 0;
 		
-		System.out.println("Which account are you transferring from?");
+		int withdrawAcctNum = 0;
+		int depositAcctNum = 0;
 		
 		boolean isValidAccount1 = false;
+		boolean isValidAccount2 = false;
+		boolean isValidAmount = false;
+		
+		double transferAmount = 0;
+		double withdrawAcctBalance = 0;
+		Account withdrawAcct = null;
+		Account depositAcct = null;
+		
+		String withdrawBeforeBalance = null;
+		String withdrawAfterBalance = null;
+		String depositBeforeBalance = null;
+		String depositAfterBalance = null;
+		
+		System.out.println("Which account are you transferring from?");
 
 		while (!isValidAccount1) {
 			System.out.print("Account number: ");
 			try {
-				acctNum1 = Integer.parseInt(Menu.in.next());
+				withdrawAcctNum = Integer.parseInt(Menu.in.next());
 			} catch (Exception e) {
 				System.out.println("Account number must be an integer.");
 			}
 
 			try {
+				System.out.println("Verifying account...");
 				accounts = adi.retrieveUserAccounts(user.getId());
+				System.out.println("Account verified.\n");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
 			for (Account a : accounts) {
-				if (a.getAccountNumber() == acctNum1) {
+				if (a.getAccountNumber() == withdrawAcctNum) {
 					isValidAccount1 = true;
 				}
 			}
@@ -366,25 +396,25 @@ public class CustomerUI {
 		}
 		
 		System.out.println("Which account are you transferring to?");
-		
-		boolean isValidAccount2 = false;
 
 		while (!isValidAccount2) {
 			System.out.print("Account number: ");
 			try {
-				acctNum2 = Integer.parseInt(Menu.in.next());
+				depositAcctNum = Integer.parseInt(Menu.in.next());
 			} catch (Exception e) {
 				System.out.println("Account number must be an integer.");
 			}
 
 			try {
+				System.out.println("Verifying account...");
 				accounts = adi.retrieveUserAccounts(user.getId());
+				System.out.println("Account verified.\n");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
 			for (Account a : accounts) {
-				if (a.getAccountNumber() == acctNum1) {
+				if (a.getAccountNumber() == depositAcctNum) {
 					isValidAccount2 = true;
 				}
 			}
@@ -393,6 +423,63 @@ public class CustomerUI {
 				System.out.println("Account does not exist.");
 			}
 		}
+		
+		try {
+			withdrawAcctBalance = adi.retrieveAccount(withdrawAcctNum).getBalance();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		System.out.println("How much are you transferring?");
+		while(!isValidAmount) {
+			System.out.print("Amount to transfer: ");
+			try {
+				transferAmount = Menu.in.nextDouble();
+			} catch (InputMismatchException e) {
+				System.out.println("Withdraw must be a number value.");
+				Menu.in.next();
+			}
+			if (transferAmount <= 0.0) {
+				System.out.println("Withdraw must be a positive value.");
+			} else if (transferAmount > withdrawAcctBalance) {
+				System.out.println("Insufficient funds.");
+			} else {
+				isValidAmount = true;
+			}
+		}
+		
+		System.out.println("\nProcessing transfer...");
+		
+		try {
+			withdrawAcct = adi.retrieveAccount(withdrawAcctNum);
+			withdrawBeforeBalance = withdrawAcct.toBalanceString();
+			adi.updateAccount(withdrawAcctNum, withdrawAcct
+					.getBalance() - transferAmount);
+			withdrawAcct = adi.retrieveAccount(withdrawAcctNum);
+			withdrawAfterBalance = withdrawAcct.toBalanceString();
+			
+			depositAcct = adi.retrieveAccount(depositAcctNum);
+			depositBeforeBalance = depositAcct.toBalanceString();
+			adi.updateAccount(depositAcctNum, depositAcct
+					.getBalance() + transferAmount);
+			depositAcct = adi.retrieveAccount(depositAcctNum);
+			depositAfterBalance = depositAcct.toBalanceString();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("You transferred " 
+				+ df.format(transferAmount));
+		
+		System.out.println("\nPrevious withdraw "
+				+ "account balance: " + withdrawBeforeBalance);
+		System.out.println("Previous deposit "
+				+ "account balance: " + depositBeforeBalance);
+		
+		System.out.println("\nCurrent withdraw "
+				+ "account balance: " + withdrawAfterBalance);
+		System.out.println("Current withdraw "
+				+ "account balance: " + depositAfterBalance);
 	}
 
 	private void manageAccounts() {

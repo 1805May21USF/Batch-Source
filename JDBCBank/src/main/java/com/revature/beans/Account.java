@@ -9,7 +9,7 @@ public class Account {
 	private String accountStatus;
 	private int userId;
 	
-	DecimalFormat df = new DecimalFormat("$#.00");
+	DecimalFormat df = new DecimalFormat("$#0.00");
 	
 	public Account() {
 		super();
