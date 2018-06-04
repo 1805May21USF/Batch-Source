@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 import com.revature.beans.Messages;
 import com.revature.daoimpl.BankAdminDAOImpl;
+import com.revature.daoimpl.CheckUsernameDAOImpl;
 import com.revature.daoimpl.GetUserInfoDAOImpl;
+import com.revature.impl.CheckPassword;
 
 public class BankAdmin {
 	private String username;
@@ -114,7 +116,7 @@ public class BankAdmin {
 					t = t.replace(',', ' ');
 					String[] words = t.split("\\s+");
 					System.out.println(accountCount5++ + " - " + words[0] + " " + words[1] + " | Account Number: "
-							+ words[2] + " | Balance: " + words[3]);
+							+ words[2] + " | Status: " + words[4] + " | Balance: " + words[3]);
 					listOfAccountNumbers5.add(words[2]);
 				}
 				System.out.print(
@@ -129,11 +131,13 @@ public class BankAdmin {
 						getError();
 						break;
 					} else {
+
 						String accountNo5 = listOfAccountNumbers5.get(Integer.parseInt(option5));
 						System.out.println(
 								"Enter the what information you would like to edit:\n\t1 - First Name \n\t2 - Last Name"
-										+ " \n\t3 - Username \n\t4 - Password \n\t5 - Status\n\t6 - Account Number");
+										+ " \n\t3 - Status\n\t4 - Exit to previous menu");
 						switch (input.next()) {
+						// Update first name method
 						case "1":
 							String newFirstName = "";
 							LoopA: while (true) {
@@ -143,31 +147,87 @@ public class BankAdmin {
 									break LoopA;
 								} else {
 									errorNameMessage();
+									break;
 								}
 							}
 							System.out.println(
 									"Please confirm that you want to change the first name: \n\t1 - Yes!\n\t2 - No!");
-
 							switch (input.next()) {
 							case "1":
-								getWithdrawProcess(accountNo, newBalance + "");
-								System.out.println("Withdrawal successful!");
+								if (editInfo(accountNo5, newFirstName, 1)) {
+									System.out.println("Updating first name successful!");
+									return;
+								} else {
+									System.out.println("Updating first name failed!");
+								}
+
 							case "2":
 								break;
 							default:
 								getError();
 							}
 							break;
+						// Case 2 : Update last name method
 						case "2":
+							String newLastName = "";
+							LoopA: while (true) {
+								System.out.println("Please enter the new last name: ");
+								newLastName = input.next();
+								if (CheckNameIfValid(newLastName)) {
+									break LoopA;
+								} else {
+									errorNameMessage();
+								}
+							}
+							System.out.println(
+									"Please confirm that you want to change the last name: \n\t1 - Yes!\n\t2 - No!");
+							switch (input.next()) {
+							case "1":
+								if (editInfo(accountNo5, newLastName, 2)) {
+									System.out.println("Updating last name successful!");
+								} else {
+									System.out.println("Updating last name failed!");
+								}
+
+							case "2":
+								break;
+							default:
+								getError();
+							}
 							break;
+						// Case 3 - Edit a person's status
 						case "3":
+							String newStatus = "";
+							LoopA: while (true) {
+								System.out.println(
+										"Please enter an updated status: ( 1 - Customer status, 2 - Employee status, 3 - Admin status)");
+								newStatus = input.next();
+								if (checkIfDigit(newStatus) && Integer.parseInt(newStatus) >= 1
+										&& Integer.parseInt(newStatus) <= 3) {
+									break LoopA;
+								} else {
+									errorNameMessage();
+								}
+							}
+							System.out.println(
+									"Please confirm that you want to change the status: \n\t1 - Yes!\n\t2 - No!");
+							switch (input.next()) {
+							case "1":
+								if (editInfo(accountNo5, newStatus, 3)) {
+									System.out.println("Updating status successful!");
+								} else {
+									System.out.println("Updating status failed!");
+								}
+
+							case "2":
+								break;
+							default:
+								getError();
+							}
 							break;
+						// Case 4 - Return to previous menu
 						case "4":
-							break;
-						case "5":
-							break;
-						case "6":
-							break;
+							return;
 						default:
 							getError();
 							break;
@@ -181,7 +241,6 @@ public class BankAdmin {
 						} else {
 							System.out.println(
 									"Please confirm that you want to withdraw from this account: \n\t1 - Yes, withdraw from account\n\t2 - No!");
-
 							switch (input.next()) {
 							case "1":
 								getWithdrawProcess(accountNo5, newBalance5 + "");
@@ -212,7 +271,7 @@ public class BankAdmin {
 					t = t.replace(',', ' ');
 					String[] words = t.split("\\s+");
 					System.out.println(accountCount++ + " - " + words[0] + " " + words[1] + " | Account Number: "
-							+ words[2] + " | Balance: " + words[3]);
+							+ words[2] + " | Balance: " + df.format(Double.parseDouble(words[3])));
 					listOfAccountNumbers2.add(words[2]);
 				}
 				System.out.print("\nEnter the account to withdraw from: ");
@@ -225,25 +284,28 @@ public class BankAdmin {
 						String accountNo = listOfAccountNumbers2.get(Integer.parseInt(option));
 						System.out.println("Enter the amount you would like to withdraw: ");
 						String amountWithdraw = input.next();
-						double newBalance = Double.parseDouble(getBalance(accountNo))
-								- Double.parseDouble(amountWithdraw);
-						if (newBalance < 0) {
-							getError();
-							break;
-						} else {
-							System.out.println(
-									"Please confirm that you want to withdraw from this account: \n\t1 - Yes, withdraw from account\n\t2 - No!");
+						try {
+							double newBalance = Double.parseDouble(getBalance(accountNo))
+									- Double.parseDouble(amountWithdraw);
+							if (newBalance < 0) {
+								throw new OverDraftException("Error: Amount entered will cause an overdraft! Please try again!");
+							} else {
+								System.out.println(
+										"Please confirm that you want to withdraw from this account: \n\t1 - Yes, withdraw from account\n\t2 - No!");
 
-							switch (input.next()) {
-							case "1":
-								getWithdrawProcess(accountNo, newBalance + "");
-								System.out.println("Withdrawal successful!");
-							case "2":
-								break;
-							default:
-								getError();
+								switch (input.next()) {
+								case "1":
+									getWithdrawProcess(accountNo, newBalance + "");
+									System.out.println("Withdrawal successful!");
+								case "2":
+									break;
+								default:
+									getError();
+								}
+
 							}
-
+						} catch (OverDraftException ex) {
+							System.out.println(ex.getMessage());
 						}
 					}
 				} else {
@@ -361,13 +423,7 @@ public class BankAdmin {
 	 * user entered is valid.
 	 */
 	private boolean CheckNameIfValid(String str) {
-		boolean flag = false;
-		for (int i = 0; i < str.length(); i++) {
-			if (str.toUpperCase().charAt(i) >= 'A' && str.toUpperCase().charAt(i) <= 'Z') {
-				flag = true;
-			}
-		}
-		return flag;
+		return str.matches("[A-Z]*");
 	}
 
 	/*
@@ -408,5 +464,34 @@ public class BankAdmin {
 
 	private String getBalance(String acc) {
 		return new GetUserInfoDAOImpl().getUserBalance(acc);
+	}
+
+	private boolean editInfo(String account, String newInfo, int editPosition) {
+		return new BankAdminDAOImpl().BankAdminViewAndEditAccountInfo(account, newInfo, editPosition);
+	}
+
+	/*
+	 * A method that calls onto the class CheckUsername to check if the user name
+	 * exists in the database.
+	 */
+	private boolean checkUsername(String str) {
+		return new CheckUsernameDAOImpl().checkUsername(str);
+	}
+
+	/*
+	 * A method that calls onto the class CheckPassword to check if the pass word
+	 * the user entered is valid. The requirements can be changed in the
+	 * CheckPassword class.
+	 */
+	private boolean checkPassword(String str) {
+		CheckPassword chk = new CheckPassword();
+		return (chk.CheckPasswordIfValid(str));
+	}
+}
+
+class OverDraftException extends Exception {
+	public OverDraftException(String s) {
+		// Call constructor of parent Exception
+		super(s);
 	}
 }

@@ -63,7 +63,7 @@ public class RegisterReturningAccount {
 		exitMessage();
 	}
 
-	// Return to the user that there was no matching username or password
+	// Return to the user that there was no matching user name or password
 	private void errorUnableToFindUsernameOrPassword() {
 		System.out.println(new Messages().getErrorUsernameOrPasswordMessage());
 	}

@@ -18,54 +18,67 @@ public class RegisterNewAccount {
 	private String newLastName;
 	private String newUsername;
 	private String newPassword;
-	// private int status;
-	// private int accountNumber;
 
 	public RegisterNewAccount() {
 		Scanner input = new Scanner(System.in);
-		welcomeMessage();
-		// LoopA is used to check if the name the user entered is valid.
-		LoopA: while (true) {
-			firstNameMessage();
-			newFirstName = input.next();
-			if (CheckNameIfValid(newFirstName)) {
-				break LoopA;
-			} else {
-				errorNameMessage();
-			}
-		}
-		// LoopB is used to check if the name the user entered is valid
-		LoopB: while (true) {
-			lastNameMessage();
-			newLastName = input.next();
-			if (CheckNameIfValid(newLastName)) {
-				break LoopB;
-			} else {
-				errorNameMessage();
-			}
-		}
-		// Check if the user name already exists in the database
-
-		Loop2: while (true) {
-			usernameMessage();
-			newUsername = input.next();
-			if (checkUsername(newUsername)) {
-				errorUsernameMessage();
-			} else {
-				passwordMessage();
-				Loop3: while (true) {
-					newPassword = input.next();
-					if (!checkPassword(newPassword)) {
-						errorPasswordMessage();
-					} else {
-						break Loop3;
-					}
+		Loop1: while (true) {
+			welcomeMessage();
+			// LoopA is used to check if the name the user entered is valid.
+			LoopA: while (true) {
+				firstNameMessage();
+				newFirstName = input.next();
+				if (CheckNameIfValid(newFirstName)) {
+					break LoopA;
+				} else {
+					errorNameMessage();
 				}
-				break Loop2;
+			}
+			// LoopB is used to check if the name the user entered is valid
+			LoopB: while (true) {
+				lastNameMessage();
+				newLastName = input.next();
+				if (CheckNameIfValid(newLastName)) {
+					break LoopB;
+				} else {
+					errorNameMessage();
+				}
+			}
+			// Check if the user name already exists in the database
+
+			Loop2: while (true) {
+				usernameMessage();
+				newUsername = input.next();
+				if (checkUsername(newUsername)) {
+					errorUsernameMessage();
+				} else {
+					passwordMessage();
+					Loop3: while (true) {
+						newPassword = input.next();
+						if (!checkPassword(newPassword)) {
+							errorPasswordMessage();
+						} else {
+							break Loop3;
+						}
+					}
+					break Loop2;
+				}
+			}
+			confirmMessage(newFirstName, newLastName, newUsername, newPassword);
+
+			switch (input.next()) {
+			case "1":
+				break Loop1;
+			case "2":
+				break;
+			case "3":
+				return;
+			default:
+				getError();
 			}
 		}
+
 		new RegisterNewAccount(newFirstName, newLastName, newUsername, newPassword);
-	
+
 		exitMessage();
 	}
 
@@ -143,13 +156,7 @@ public class RegisterNewAccount {
 	 * user entered is valid.
 	 */
 	private boolean CheckNameIfValid(String str) {
-		boolean flag = false;
-		for (int i = 0; i < str.length(); i++) {
-			if (str.toUpperCase().charAt(i) >= 'A' && str.toUpperCase().charAt(i) <= 'Z') {
-				flag = true;
-			}
-		}
-		return flag;
+		return str.matches("[A-Z]*");
 	}
 
 	/*
@@ -168,5 +175,19 @@ public class RegisterNewAccount {
 	private boolean checkPassword(String str) {
 		CheckPassword chk = new CheckPassword();
 		return (chk.CheckPasswordIfValid(str) && !(str.equals(newUsername)));
+	}
+
+	private void confirmMessage(String newFirstName12, String newLastName12, String newUsername12,
+			String newPassword12) {
+		System.out.print("Is the following information correct?\n\tFirst Name: " + newFirstName12 + "\n\tLast Name: "
+				+ newLastName12 + "\n\tUsername: " + newUsername12 + "\n\tPassword: " + newPassword12
+				+ "\n1 - Yes, the information above is correct. Continue to Person 2.\n2 - No, I would"
+				+ " like to go back and re-enter the information.\n3 - Exit to Main Menu.\n"
+				+ "\nPlease enter a number on what you would like to do next: ");
+
+	}
+
+	private static void getError() {
+		System.out.print(new Messages().getIntroError());
 	}
 }

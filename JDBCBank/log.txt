@@ -1,0 +1,3 @@
+2018-06-04 13:15:33 INFO  Customer:79 - 1528055320706 has withdrawn 5 from their account.
+2018-06-04 13:23:04 INFO  Customer:79 - 1528055320706 has withdrawn $100 from their account.
+2018-06-04 13:26:32 INFO  Customer:79 - 1528055320706 has withdrawn $105.25 from their account.

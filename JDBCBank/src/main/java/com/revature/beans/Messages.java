@@ -45,7 +45,7 @@ public class Messages {
 		errorNameMessage = "Error: A name does not contain numbers or symbols. Please try again.";
 		errorUsernameOrPasswordMessage = "We're sorry. We were unable to find your username or password. Would you like to try again? \n\t1 - retry\n\t2 - exit";
 		customerPrompt = "What would you like to do today?\n"
-				+ "\t1 - Withdraw from account\n\t2 - Deposit into account\n\t3 - Transfer funds between accounts Note: You must own more than one account\n"
+				+ "\t1 - Withdraw from account\n\t2 - Deposit into account\n\t3 - Transfer funds between accounts **Note: You must own more than one account\n"
 				+ "\t4 - Delete account\n\t5 - Exit account";
 		employeePrompt = "What would you like to do today?\n"
 				+ "\t1 - Approve/deny open applications\n\t2 - View customer info\n\t3 - Exit account";

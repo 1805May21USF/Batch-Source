@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.beans.Messages;
 import com.revature.daoimpl.CustomerDAOImpl;
 import com.revature.daoimpl.GetUserInfoDAOImpl;
@@ -11,6 +13,7 @@ import com.revature.daoimpl.GetUserInfoDAOImpl;
 public class Customer {
 	private String username;
 	protected DecimalFormat df = new DecimalFormat("$###,###,##0.00");
+	private static Logger log = Logger.getLogger(Customer.class.getName());
 
 	public Customer(String str) {
 		Scanner input = new Scanner(System.in);
@@ -53,42 +56,49 @@ public class Customer {
 								+ "\nEnter 'exit' into the console if you would like to exit the withdraw process.");
 						amount = input.next();
 						if (amount.contains("exit")) {
-							return;
+							break;
 						}
 						// Check if the user input is a digit. If it is, then the new balance is
 						// calculated to be updated in the database.
 						if (checkIfDigit(amount)) {
-							newBalance = Double.parseDouble(
-									getBalanceFromAccountNumber(actualAccountValue[Integer.parseInt(account)]))
-									- Double.parseDouble(amount);
-							if (newBalance <= 0) {
-								getError();
-							} else {
-								break;
+							try {
+								newBalance = Double.parseDouble(
+										getBalanceFromAccountNumber(actualAccountValue[Integer.parseInt(account)]))
+										- Double.parseDouble(amount);
+								if (newBalance <= 0) {
+									throw new OverDraftException(
+											"Error: Amount entered will cause an overdraft! Please try again.");
+								} else {
+									System.out.println(
+											"Please confirm that you want to withdraw from this account: \n\t1 - Yes, withdraw from account\n\t2 - No!");
+
+									switch (input.next()) {
+									case "1":
+										new CustomerDAOImpl().CustomerWithdraw(username,
+												actualAccountValue[Integer.parseInt(account)], newBalance + "");
+										log.info(actualAccountValue[Integer.parseInt(account)] + " has withdrawn $"
+												+ amount + " from their account.");
+										break LoopB;
+									case "2":
+										break;
+									default:
+										getError();
+									}
+								}
+							} catch (OverDraftException ex) {
+								System.out.println(ex.getMessage());
 							}
+
 						} else {
 							getError();
 						}
 
 					}
-					System.out.println(
-							"Please confirm that you want to withdraw from this account: \n\t1 - Yes, withdraw from account\n\t2 - No!");
-
-					switch (input.next()) {
-					case "1":
-						new CustomerDAOImpl().CustomerWithdraw(username, actualAccountValue[Integer.parseInt(account)],
-								newBalance + "");
-						break;
-					case "2":
-						break;
-					default:
-						getError();
-					}
 
 				}
 
 			case "2":
-				System.out.println("Which account would you like to deposit from?");
+				System.out.println("Which account would you like to deposit to?");
 				String account2 = input.next();
 				if (Integer.parseInt(account2) > accountNum) {
 					getError();
@@ -111,6 +121,7 @@ public class Customer {
 							newBalance = Double.parseDouble(
 									getBalanceFromAccountNumber(actualAccountValue[Integer.parseInt(account2)]))
 									+ Double.parseDouble(amount2);
+
 							break;
 						} else {
 							getError();
@@ -123,6 +134,7 @@ public class Customer {
 					case "1":
 						new CustomerDAOImpl().CustomerDeposit(username, actualAccountValue[Integer.parseInt(account2)],
 								newBalance + "");
+						System.out.println("Deposit was successful!");
 						break;
 					case "2":
 						break;
@@ -187,7 +199,7 @@ public class Customer {
 	}
 
 	private boolean checkIfDigit(String t) {
-		return t.matches("[0-9]*");
+		return t.matches("[0-9]*\\.*[0-9]*");
 	}
 
 	private ArrayList<String> getUserAccountAndBalanceNumbers(String username) {
@@ -212,5 +224,12 @@ public class Customer {
 
 	private static void deleteUserAccount(String accountNumber) {
 		new CustomerDAOImpl().CustomerCancelAccount(accountNumber);
+	}
+}
+
+class OverDraftException extends Exception {
+	public OverDraftException(String s) {
+		// Call constructor of parent Exception
+		super(s);
 	}
 }

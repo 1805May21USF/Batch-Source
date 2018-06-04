@@ -157,7 +157,6 @@ public class RegisterNewAccountJoint {
 				+ "\n1 - Yes, the information above is correct. Continue to Person 2.\n2 - No, I would"
 				+ " like to go back and re-enter the information.\n3 - Exit to Main Menu.\n"
 				+ "\nPlease enter a number on what you would like to do next: ");
-
 	}
 
 	/* Welcomes the user with a greeting on their selection. */
@@ -219,13 +218,7 @@ public class RegisterNewAccountJoint {
 	 * user entered is valid.
 	 */
 	private boolean CheckNameIfValid(String str) {
-		boolean flag = false;
-		for (int i = 0; i < str.length(); i++) {
-			if (str.toUpperCase().charAt(i) >= 'A' && str.toUpperCase().charAt(i) <= 'Z') {
-				flag = true;
-			}
-		}
-		return flag;
+		return str.matches("[A-Z]*");
 	}
 
 	private static void getError() {

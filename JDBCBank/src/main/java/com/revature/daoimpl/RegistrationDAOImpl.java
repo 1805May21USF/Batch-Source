@@ -1,5 +1,6 @@
 package com.revature.daoimpl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 //import java.sql.ResultSet;
@@ -17,25 +18,25 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 		Connection conn = cf.getConnection();
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement("Insert into person values (bankseq.nextval,?,?,?,?,?,?)");
-			pstmt.setString(1, firstName);
-			pstmt.setString(2, lastName);
-			pstmt.setString(3, username);
-			pstmt.setString(4, password);
-			pstmt.setInt(5, 0);
-			pstmt.setString(6, tempAccountNumber);
-			pstmt.executeQuery();
+			CallableStatement cStmt = conn.prepareCall("{call insertperson(?,?,?,?,?,?)}");
+			cStmt.setString(1, firstName);
+			cStmt.setString(2, lastName);
+			cStmt.setString(3, username);
+			cStmt.setString(4, password);
+			cStmt.setInt(5, 0);
+			cStmt.setString(6, tempAccountNumber);
+			cStmt.executeQuery();
 		} catch (Exception ex) {
 			System.out.println("Error caught at registering for user into Person database at RegistrationDAOImpl: "
 					+ ex.getMessage());
 		}
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement("Insert into personaccounts values (?,?,?)");
-			pstmt.setString(1, tempAccountNumber);
-			pstmt.setString(2, username);
-			pstmt.setString(3, "0.00");
-			pstmt.executeQuery();
+			CallableStatement cstmt = conn.prepareCall("{call insertpersonacc(?,?,?)}");
+			cstmt.setString(1, tempAccountNumber);
+			cstmt.setString(2, username);
+			cstmt.setString(3, "0.00");
+			cstmt.executeQuery();
 		} catch (Exception ex) {
 			System.out.println("Error caught at registering for user into PersonAccounts at RegistrationDAOImpl: "
 					+ ex.getMessage());
@@ -57,7 +58,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			pstmt.setInt(5, 0);
 			pstmt.setString(6, tempAccountNumber);
 			pstmt.executeQuery();
-			
+
 			PreparedStatement pstmt2 = conn.prepareStatement("Insert into person values (bankseq.nextval,?,?,?,?,?,?)");
 			pstmt2.setString(1, firstName2);
 			pstmt2.setString(2, lastName2);
@@ -67,8 +68,9 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			pstmt2.setString(6, tempAccountNumber);
 			pstmt2.executeQuery();
 		} catch (Exception ex) {
-			System.out.println("Error caught at registering for joint user into Person database at RegistrationDAOImpl: "
-					+ ex.getMessage());
+			System.out
+					.println("Error caught at registering for joint user into Person database at RegistrationDAOImpl: "
+							+ ex.getMessage());
 		}
 
 		try {
@@ -77,7 +79,7 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			pstmt.setString(2, username1);
 			pstmt.setString(3, "0.00");
 			pstmt.executeQuery();
-			
+
 			PreparedStatement pstmt2 = conn.prepareStatement("Insert into personaccounts values (?,?,?)");
 			pstmt2.setString(1, tempAccountNumber);
 			pstmt2.setString(2, username2);

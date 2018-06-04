@@ -15,7 +15,7 @@ public interface BankAdminDAO {
 
 	public abstract void BankAdminDenyApplication(String account);
 
-	public abstract ArrayList<String> BankAdminViewAndEditAccountInfo(String account, int editPosition);
+	public abstract boolean BankAdminViewAndEditAccountInfo(String account, String newInfo,  int editPosition);
 
 	public abstract void BankAdminWithdraw(String account, String amount);
 

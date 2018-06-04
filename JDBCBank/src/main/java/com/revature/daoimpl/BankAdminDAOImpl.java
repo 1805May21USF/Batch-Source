@@ -20,7 +20,7 @@ public class BankAdminDAOImpl implements BankAdminDAO {
 			stmt.executeQuery(queryString);
 			conn.close();
 		} catch (Exception ex) {
-			System.out.println("Error caught at EmployeeApproveApplication from EmployeeDAOImpl: " + ex.getMessage());
+			System.out.println("Error caught at EmployeeApproveApplication from BankAdminDAOImpl: " + ex.getMessage());
 		}
 
 	}
@@ -34,7 +34,7 @@ public class BankAdminDAOImpl implements BankAdminDAO {
 			stmt.executeQuery(queryString);
 			conn.close();
 		} catch (Exception ex) {
-			System.out.println("Error caught at EmployeeApproveApplication from EmployeeDAOImpl: " + ex.getMessage());
+			System.out.println("Error caught at EmployeeApproveApplication from BankAdminDAOImpl: " + ex.getMessage());
 		}
 
 	}
@@ -53,34 +53,67 @@ public class BankAdminDAOImpl implements BankAdminDAO {
 			}
 			conn.close();
 		} catch (Exception ex) {
-			System.out.println("Error caught at ListOfOpenApplications in EmployeeDAOImpl: " + ex.getMessage());
+			System.out.println("Error caught at ListOfOpenApplications in BankAdminDAOImpl: " + ex.getMessage());
 		}
 		return results;
 	}
 
 	/*
-	 * t1 - First Name \n\t2 - Last Name" + " \n\t3 - User name \n\t4 - Password
-	 * \n\t5 - Status\n\t6 - Account Number
+	 * t1 - First Name \n\t2 - Last Name" + " \n\t3 - Status
 	 */
 	@Override
-	public ArrayList<String> BankAdminViewAndEditAccountInfo(String account, int editPosition) {
+	public boolean BankAdminViewAndEditAccountInfo(String account, String newInfo, int editPosition) {
+		Connection conn = cf.getConnection();
 		switch (editPosition) {
+		// Case 1 : update first name
 		case 1:
-			break;
+			try {
+				Statement stmt = conn.createStatement();
+				String queryString = "update person set firstname = '" + newInfo + "' where accountid = '" + account
+						+ "'";
+				stmt.executeQuery(queryString);
+				// getString(1) = First Name, getString(2) = Last Name, getString(3) = AccountID
+				conn.close();
+				return true;
+			} catch (Exception ex) {
+				System.out.println(
+						"Error caught at updating first name BankAdminViewAndEditAccountInfo in BankAdminDAOImpl: "
+								+ ex.getMessage());
+			}
+			return false;
+		// Case 2 : update last name
 		case 2:
-			break;
+			try {
+				Statement stmt = conn.createStatement();
+				String queryString = "update person set lastname = '" + newInfo + "' where accountid = '" + account
+						+ "'";
+				stmt.executeQuery(queryString);
+				conn.close();
+				return true;
+			} catch (Exception ex) {
+				System.out.println(
+						"Error caught at updating last name at BankAdminViewAndEditAccountInfo in BankAdminDAOImpl: "
+								+ ex.getMessage());
+			}
+			return false;
+		// Case 3 : Update status
 		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		case 6:
-			break;
+			try {
+				Statement stmt = conn.createStatement();
+				String queryString = "update person set status = '" + newInfo + "' where accountid = '" + account + "'";
+				stmt.executeQuery(queryString);
+				conn.close();
+				return true;
+			} catch (Exception ex) {
+				System.out.println(
+						"Error caught at updating status at BankAdminViewAndEditAccountInfo in BankAdminDAOImpl: "
+								+ ex.getMessage());
+			}
+			return false;
 		default:
 			System.out.println("Error caught in Editing Info at BankAdminDAOImpl! ");
 		}
-		return null;
+		return false;
 	}
 
 	@Override
@@ -125,7 +158,7 @@ public class BankAdminDAOImpl implements BankAdminDAO {
 			stmt.executeQuery(queryString);
 
 		} catch (Exception ex) {
-			System.out.println("Error caught at CustomerCancelAccount in CustomerDAOImpl: " + ex.getMessage());
+			System.out.println("Error caught at BankAdminCancelAccount in BankAdminDAOImpl: " + ex.getMessage());
 		}
 
 	}
@@ -136,18 +169,39 @@ public class BankAdminDAOImpl implements BankAdminDAO {
 		Connection conn = cf.getConnection();
 		try {
 			Statement stmt = conn.createStatement();
-			String queryString = "select  person.FIRSTNAME, person.lastname, person.ACCOUNTID, personaccounts.balance "
+			String queryString = "select  person.FIRSTNAME, person.lastname, person.ACCOUNTID, personaccounts.balance, person.status "
 					+ "FROM person INNER JOIN personaccounts ON person.username = personaccounts.username";
 			ResultSet rst = stmt.executeQuery(queryString);
 			// getString(1) = First Name, getString(2) = Last Name, getString(3) =
-			// AccountID, getString(4) = Balance
+			// AccountID, getString(4) = Balance, getString(5) = status
 			while (rst.next()) {
-				results.add(
-						rst.getString(1) + "," + rst.getString(2) + "," + rst.getString(3) + "," + rst.getString(4));
+				String status = "";
+				//
+				switch (rst.getString(5)) {
+				case "-1":
+					status = "Denied";
+					break;
+				case "0":
+					status = "Open";
+					break;
+				case "1":
+					status = "Customer";
+					break;
+				case "2":
+					status = "Employee";
+					break;
+				case "3":
+					status = "Admin";
+					break;
+				default:
+					status = "Open";
+				}
+				results.add(rst.getString(1) + "," + rst.getString(2) + "," + rst.getString(3) + "," + rst.getString(4)
+						+ "," + status);
 			}
 			conn.close();
 		} catch (Exception ex) {
-			System.out.println("Error caught at ListOfOpenApplications in EmployeeDAOImpl: " + ex.getMessage());
+			System.out.println("Error caught at ListOfOpenApplications in BankAdminDAOImpl: " + ex.getMessage());
 		}
 		return results;
 	}
