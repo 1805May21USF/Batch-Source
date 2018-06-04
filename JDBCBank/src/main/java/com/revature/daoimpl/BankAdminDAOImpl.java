@@ -58,18 +58,37 @@ public class BankAdminDAOImpl implements BankAdminDAO {
 		return results;
 	}
 
+	/*
+	 * t1 - First Name \n\t2 - Last Name" + " \n\t3 - User name \n\t4 - Password
+	 * \n\t5 - Status\n\t6 - Account Number
+	 */
 	@Override
-	public ArrayList<String> BankAdminViewAndEditAccountInfo() {
-		// TODO Auto-generated method stub
+	public ArrayList<String> BankAdminViewAndEditAccountInfo(String account, int editPosition) {
+		switch (editPosition) {
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		default:
+			System.out.println("Error caught in Editing Info at BankAdminDAOImpl! ");
+		}
 		return null;
 	}
 
 	@Override
-	public void BankAdminWithdraw(String username, String account, String amount) {
+	public void BankAdminWithdraw(String account, String newAmount) {
 		Connection conn = cf.getConnection();
 		try {
 			Statement stmt = conn.createStatement();
-			String queryString = "update personaccounts set balance = '" + amount + "' where accountid = '" + account
+			String queryString = "update personaccounts set balance = '" + newAmount + "' where accountid = '" + account
 					+ "'";
 			stmt.executeQuery(queryString);
 
@@ -79,20 +98,35 @@ public class BankAdminDAOImpl implements BankAdminDAO {
 	}
 
 	@Override
-	public void BankAdminDeposit(String username, String account, String amount) {
+	public void BankAdminDeposit(String account, String newAmount) {
+		Connection conn = cf.getConnection();
+		try {
+			Statement stmt = conn.createStatement();
+			String queryString = "update personaccounts set balance = '" + newAmount + "' where accountid = '" + account
+					+ "'";
+			stmt.executeQuery(queryString);
+		} catch (Exception ex) {
+			System.out.println("Error caught at BankAdminDeposit in BankAdminDAOImpl: " + ex.getMessage());
+		}
+	}
+
+	@Override
+	public void BankAdminTransfer(String username, String account, String newAmount) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void BankAdminTransfer(String username, String account, String amount) {
-		// TODO Auto-generated method stub
+	public void BankAdminCancelAccount(String account) {
+		Connection conn = cf.getConnection();
+		try {
+			Statement stmt = conn.createStatement();
+			String queryString = "delete from person where accountid = '" + account + "'";
+			stmt.executeQuery(queryString);
 
-	}
-
-	@Override
-	public void BankAdminCancelAccount(String username) {
-		// TODO Auto-generated method stub
+		} catch (Exception ex) {
+			System.out.println("Error caught at CustomerCancelAccount in CustomerDAOImpl: " + ex.getMessage());
+		}
 
 	}
 
@@ -105,9 +139,11 @@ public class BankAdminDAOImpl implements BankAdminDAO {
 			String queryString = "select  person.FIRSTNAME, person.lastname, person.ACCOUNTID, personaccounts.balance "
 					+ "FROM person INNER JOIN personaccounts ON person.username = personaccounts.username";
 			ResultSet rst = stmt.executeQuery(queryString);
-			// getString(1) = First Name, getString(2) = Last Name, getString(3) = AccountID, getString(4) = Balance
+			// getString(1) = First Name, getString(2) = Last Name, getString(3) =
+			// AccountID, getString(4) = Balance
 			while (rst.next()) {
-				results.add(rst.getString(1) + "," + rst.getString(2) + "," + rst.getString(3) + "," + rst.getString(4));
+				results.add(
+						rst.getString(1) + "," + rst.getString(2) + "," + rst.getString(3) + "," + rst.getString(4));
 			}
 			conn.close();
 		} catch (Exception ex) {

@@ -307,17 +307,69 @@ SELECT
 FROM
     dual;
 --3.4 User Defined Table Valued Functions
---Task – Create a function that returns all 
+--Task – Create a function that returns all employees who are born after 1968.
 
 --4.0 Stored Procedures
 -- In this section you will be creating and executing stored procedures. You will be creating various types of stored procedures that take input and output parameters.
 --4.1 Basic Stored Procedure
 --Task – Create a stored procedure that selects the first and last names of all the employees.
+
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE PROCEDURE get_all_employee (
+    s OUT SYS_REFCURSOR
+)
+    IS
+BEGIN
+    OPEN s FOR SELECT
+        firstname,
+        lastname
+               FROM
+        employee;
+
+END;
+/
+
+DECLARE
+    s           SYS_REFCURSOR;
+    firstname   employee.firstname%TYPE;
+    lastname    employee.lastname%TYPE;
+BEGIN
+    get_all_employee(s);
+    LOOP
+        FETCH s INTO
+            firstname,
+            lastname;
+        EXIT WHEN s%notfound;
+        dbms_output.put_line(firstname
+                               || ' '
+                               || lastname);
+    END LOOP;
+
+    CLOSE s;
+END;
+/
+
 --4.2 Stored Procedure Input Parameters
 --Task – Create a stored procedure that updates the personal information of an employee.
 --Task – Create a stored procedure that returns the managers of an employee.
 --4.3 Stored Procedure Output Parameters
 --Task – Create a stored procedure that returns the name and company of a customer.
+
+CREATE OR REPLACE PROCEDURE get_name_and_company (
+    s OUT SYS_REFCURSOR
+)
+    IS
+BEGIN
+    OPEN s FOR SELECT
+        firstname,
+        lastname,
+        company
+               FROM
+        customer;
+
+END;
+/
 --5.0 Transactions
 --In this section you will be working with transactions. Transactions are usually nested within a stored procedure.
 --Task – Create a transaction that given a invoiceId will delete that invoice (There may be constraints that rely on this, find out how to resolve them).

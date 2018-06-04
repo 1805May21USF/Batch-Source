@@ -36,7 +36,7 @@ public class Customer {
 			optionsMessage();
 			getPleaseEnterANumberPrompt();
 			switch (input.next()) {
-			//Customer wants to withdraw
+			// Customer wants to withdraw
 			case "1":
 				System.out.println("Which account would you like to withdraw from?");
 				String account = input.next();
@@ -71,10 +71,20 @@ public class Customer {
 						}
 
 					}
+					System.out.println(
+							"Please confirm that you want to withdraw from this account: \n\t1 - Yes, withdraw from account\n\t2 - No!");
 
-					new CustomerDAOImpl().CustomerWithdraw(username, actualAccountValue[Integer.parseInt(account)],
-							newBalance + "");
-					break;
+					switch (input.next()) {
+					case "1":
+						new CustomerDAOImpl().CustomerWithdraw(username, actualAccountValue[Integer.parseInt(account)],
+								newBalance + "");
+						break;
+					case "2":
+						break;
+					default:
+						getError();
+					}
+
 				}
 
 			case "2":
@@ -106,9 +116,20 @@ public class Customer {
 							getError();
 						}
 					}
-					new CustomerDAOImpl().CustomerDeposit(username, actualAccountValue[Integer.parseInt(account2)],
-							newBalance + "");
-					break;
+					System.out.println(
+							"Please confirm that you want to deposit into this account: \n\t1 - Yes, deposit into account\n\t2 - No!");
+
+					switch (input.next()) {
+					case "1":
+						new CustomerDAOImpl().CustomerDeposit(username, actualAccountValue[Integer.parseInt(account2)],
+								newBalance + "");
+						break;
+					case "2":
+						break;
+					default:
+						getError();
+					}
+
 				}
 
 			case "3":
@@ -134,8 +155,21 @@ public class Customer {
 				} else {
 					if (Double.parseDouble(
 							getBalanceFromAccountNumber(actualAccountValue[Integer.parseInt(account3)])) == 0) {
-						deleteUserAccount(actualAccountValue[Integer.parseInt(account3)]);
-						return;
+						System.out.println(
+								"Please confirm that you want to delete this account: \n\t1 - Yes, delete account\n\t2 - No!");
+
+						switch (input.next()) {
+						case "1":
+							deleteUserAccount(actualAccountValue[Integer.parseInt(account3)]);
+							System.out.println("Account deletion successful!");
+							return;
+
+						case "2":
+							break;
+						default:
+							getError();
+						}
+
 					} else {
 						System.out.println(
 								"We're sorry, but you cannot delete an account if the balance is greater than 0.");
