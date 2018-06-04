@@ -78,6 +78,7 @@ public class Customer {
 												actualAccountValue[Integer.parseInt(account)], newBalance + "");
 										log.info(actualAccountValue[Integer.parseInt(account)] + " has withdrawn $"
 												+ amount + " from their account.");
+										System.out.println("Withdrawl successful!");
 										break LoopB;
 									case "2":
 										break;
@@ -121,25 +122,26 @@ public class Customer {
 							newBalance = Double.parseDouble(
 									getBalanceFromAccountNumber(actualAccountValue[Integer.parseInt(account2)]))
 									+ Double.parseDouble(amount2);
+							System.out.println(
+									"Please confirm that you want to deposit into this account: \n\t1 - Yes, deposit into account\n\t2 - No!");
 
+							switch (input.next()) {
+							case "1":
+								new CustomerDAOImpl().CustomerDeposit(username,
+										actualAccountValue[Integer.parseInt(account2)], newBalance + "");
+								log.info(actualAccountValue[Integer.parseInt(account2)] + " has deposited $" + amount2
+										+ " from their account.");
+								System.out.println("Deposit was successful!");
+								break;
+							case "2":
+								break;
+							default:
+								getError();
+							}
 							break;
 						} else {
 							getError();
 						}
-					}
-					System.out.println(
-							"Please confirm that you want to deposit into this account: \n\t1 - Yes, deposit into account\n\t2 - No!");
-
-					switch (input.next()) {
-					case "1":
-						new CustomerDAOImpl().CustomerDeposit(username, actualAccountValue[Integer.parseInt(account2)],
-								newBalance + "");
-						System.out.println("Deposit was successful!");
-						break;
-					case "2":
-						break;
-					default:
-						getError();
 					}
 
 				}
