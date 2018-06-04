@@ -238,7 +238,6 @@ SELECT get_employees
 FROM DUAL;
 
 --4.0 Stored Procedures
-
 --4.1 Basic Stored Procedure
 --Create a stored procedure that selects the first and last names of all the employees.
 --use a SYS_REFCURSOR
@@ -254,17 +253,47 @@ END;
 
 --4.2 Stored Procedure Input Parameters
 --Create a stored procedure that updates the personal information of an employee.
-CREATE OR REPLACE PROCEDURE update_emp
+CREATE OR REPLACE PROCEDURE update_emp (eid NUMBER, ln VARCHAR2, fn VARCHAR2, 
+tl VARCHAR2, rt NUMBER, bd DATE, hd DATE, ad VARCHAR2, cy VARCHAR2, st VARCHAR2, 
+cou VARCHAR2, poc VARCHAR2, ph VARCHAR2, fx VARCHAR2, el VARCHAR2)
 AS
 BEGIN
-UPDATE employees 
-SET status='Y' 
-WHERE employee_Code = @employeeID
-END
---Create a stored procedure that updates the personal information of an employee.
+UPDATE EMPLOYEE 
+SET EMPLOYEEID = eid, LASTNAME = ln, FIRSTNAME = fn, TITLE = tl, REPORTSTO = rt, 
+BIRTHDATE = bd, HIREDATE = hd, ADDRESS = ad, CITY = cy, STATE = st, COUNTRY = cou, 
+POSTALCODE = poc, PHONE = ph, FAX = fx, EMAIL = el;
+END;
+/
+
+--Create a stored procedure that returns the managers of an employee.
+--use a SYS_REFCURSOR
+CREATE OR REPLACE PROCEDURE get_mans_of_emp (eid NUMBER,
+e_rc OUT SYS_REFCURSOR)
+AS
+BEGIN
+OPEN e_rc 
+--use a for loop
+FOR
+SELECT REPORTSTO 
+FROM EMPLOYEE 
+WHERE EMPLOYEEID = eid;
+END;
+/
 
 --4.3 Stored Procedure Output Parameters
 --Create a stored procedure that returns the name and company of a customer.
+--use a SYS_REFCURSOR
+CREATE OR REPLACE PROCEDURE get_name_comp_of_cust(
+e_rc out SYS_REFCURSOR)
+AS
+BEGIN
+OPEN e_rc 
+--use a for loop
+FOR
+SELECT FIRSTNAME, LASTNAME, COMPANY 
+FROM CUSTOMER;
+END;
+/
 
 --5.0 Transactions
 
