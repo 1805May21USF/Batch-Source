@@ -1,5 +1,6 @@
 package com.revature.jdbcbankproj;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,7 +57,7 @@ public class Users {
 		
 		try {
 			stmt = conn.createStatement();
-			String sqlString = String.format("SELECT * FROM USERS WHERE USER_ID = " + user_id);
+			String sqlString = "SELECT * FROM USERS WHERE USER_ID = " + user_id;
 			ResultSet result = stmt.executeQuery(sqlString);
 			
 			while(result.next()) {
@@ -231,5 +232,66 @@ public class Users {
 		
 	}
 	
+	public void FindUser(String firstNam, String lastNam) {
+		// View User ID and Account ID and Account Balance
+
+		Statement stmt;
+		Connection conn = MainDriver.cf.getConnection();
+		
+		try {
+			stmt = conn.createStatement();
+			String sqlString = "SELECT U.USER_ID, US.USER_STATUS, U.USER_FNAME, U.USER_LNAME, BA.BANK_ACCOUNT_ID, BA.BANK_ACCOUNT_BALANCE, BAS.BANK_ACCOUNT_STATUS_ID, BAS.BANK_ACCOUNT_STATUS " 
+					+ "FROM USERS U "
+					+ "JOIN BANKACCOUNT BA ON U.USER_ID = BA.USER_ID "
+					+ "JOIN USER_STATUS US ON U.USER_STATUS_ID = US.USER_STATUS_ID " 
+					+ "JOIN BANKACCOUNTSTATUS BAS ON BA.BANK_ACCOUNT_STATUS_ID = BAS.BANK_ACCOUNT_STATUS_ID "
+					+ "WHERE U.USER_FNAME = '" + firstNam + "' AND U.USER_LNAME = '" + lastNam + "'";
+			
+			//System.out.println(sqlString);
+			ResultSet result = stmt.executeQuery(sqlString);
+			
+			while(result.next()) {
+				System.out.print("User ID: " + result.getInt("USER_ID") + " ");
+				System.out.print("Account ID: " + result.getInt("BANK_ACCOUNT_ID") + " ");
+				System.out.print("Balance: " + result.getDouble("BANK_ACCOUNT_BALANCE") + " ");
+				System.out.print("First Name: " + result.getString("USER_FNAME") + " ");
+				System.out.print("Last Name: " + result.getString("USER_LNAME") + " ");
+				System.out.print("Account Status: " + result.getString("BANK_ACCOUNT_STATUS") + " ");
+				System.out.print("User Status: " + result.getString("USER_STATUS") + " ");
+				System.out.println();
+			}
+			
+			
+			
+			stmt.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	
+	public void DeleteUser(int userId) {
+		
+		String getSPCloseUser = "{call CLOSEUSER(?)";
+		Connection conn = MainDriver.cf.getConnection();
+		try {
+			CallableStatement stmt = conn.prepareCall(getSPCloseUser);
+			stmt.setInt(1, userId);
+			
+			stmt.executeUpdate();
+			if(stmt != null) {
+				stmt.close();
+			}
+			
+			System.out.println("User Deleted.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 }

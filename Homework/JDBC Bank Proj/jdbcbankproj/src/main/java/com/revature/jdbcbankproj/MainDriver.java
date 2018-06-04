@@ -180,8 +180,6 @@ public class MainDriver {
 						if(u.usertypeid == 2) {
 							// View Customer Menu
 							
-
-							
 							// 1. CREATE ACCOUNT
 							// 2. VIEW ACCOUNT
 							// 3. DELETE ACCOUNT
@@ -469,19 +467,210 @@ public class MainDriver {
 										e.printStackTrace();
 									}
 								}
+							}
+						} // end if of USER
+						// IF SUPERUSER
+						else if(u.usertypeid == 1){
+							
+							
+							boolean superUserCont = true;
+							
+							while(superUserCont == true) {
+								// View Superuser Menu
+								System.out.println("SUPERUSER: " + u.username + " " + u.fname);
+								
+								// 1 View Account
+								// 2 Create Account
+								// 3 Update Account
+								// 4 Delete Account
+								// 5 Delete User
+								// 0 Exit
+								
+								System.out.println("1 View Account\n2 Create Account\n3 Update Account\n4 Delete Account\n5 Delete User\n\n0 Logout");
+								
+								int superUserInt = 0;
+								
+								Scanner scanSuperUserOption = new Scanner(System.in);
+								System.out.print("Enter number: ");
+								superUserInt = scanSuperUserOption.nextInt();
+								
+								// 0 Exit
+								if(superUserInt == 0) {
+									// Logout
+									System.out.println("Logging out. Goodbye. Thank you.");
 
+									// Wait 2 seconds before going back to BANK OPTIONS PAGE
+									try {
+										Thread.sleep(1000);
+										superUserCont = false;
+										
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
+								// 1 View Account
+								else if(superUserInt == 1) {
+									Scanner scanSU1 = new Scanner(System.in);
+									
+									// View All Users Using First Name and Last Name
+									System.out.println("Enter User Information.");
+									
+									String sUFName;
+									String sULName;
+									
+									System.out.print("First Name: ");
+									sUFName = scanSU1.next();
+									System.out.println("First Name: " + sUFName);
+									
+									System.out.println("Last Name: ");
+									sULName = scanSU1.next();
+									System.out.println("Last Name: " + sULName);
+									
+									// Find user using first name and last name
+									u.FindUser(sUFName, sULName);
+									
+									try {
+										Thread.sleep(2000);
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+									
+									// After finding User ID, enter userID to view accounts of user
+									
+									// Enter UserID
+									System.out.print("Enter User ID: ");
+									
+									int scanIntSU1 = scanSU1.nextInt();
+									
+									// New Account
+									Accounts superUserAcc = new Accounts();
+									// Set User
+									superUserAcc.SetAccount(scanIntSU1);
+									// View Accounts of User
+									superUserAcc.ViewAccount();
+									
+									
+								}
+								// 2 Create Account
+								else if(superUserInt == 2) {
+									Users uSuper = new Users();
+									
+									Scanner scanSCU = new Scanner(System.in);
+									
+									System.out.println("Create User.");
+									System.out.println("Enter Username: ");
+									String usernSCU = scanSCU.next();
+									System.out.println("Username entered: " + usernSCU);
+									
+									
+									// Check username
+									boolean userNameExists;
+									userNameExists = uSuper.CheckUsername(usernSCU);
+
+									// If username exists, ask for new username. Go back to topMenuControl1.
+									if (userNameExists == true) {
+										System.out.println("Username " + usernSCU + " exists. Please enter a new username.");
+										continue;
+									}
+									// If username doesn't exist, Registration Process Continues.
+									else {
+										System.out.println("Username " + usernSCU + " is avaialable. ");
+
+										// Continue User Registration
+										uSuper.CreateUsers(usernSCU);
+										// Exit while loop topMenuControl1
+										topMenuControl1 = false;
+									}
+									
+									
+									System.out.println("User created.");
+									
+								}
+								// 3 Update Account
+								else if(superUserInt == 3) {
+									System.out.println("This will feature will be implented soon.");
+								}
+								// 4 Delete Account
+								else if(superUserInt == 4) {
+									Users uSuper3 = new Users();
+									Accounts accSuper3 = new Accounts();
+									int accountNumber;
+									int userID;
+									Scanner scanSU3 = new Scanner(System.in);
+									
+									
+									System.out.println("Enter Account Number and UserID to Delete.");
+									System.out.println("Account Number: ");
+									accountNumber = scanSU3.nextInt();
+									System.out.println("Account Number Entered: " + accountNumber);
+									
+									
+									System.out.println("User ID: ");
+									userID = scanSU3.nextInt();
+									System.out.println("User ID Entered: " + userID);
+									
+									
+									accSuper3.DeleteAccount(accountNumber, userID);
+								}
+								// 5 Delete User
+								else if(superUserInt == 5) {
+									Users sU5 = new Users();
+									Scanner scanSU5 = new Scanner(System.in);
+									int userIDSU5;
+									
+									System.out.println("Enter User ID to delete.");
+									userIDSU5 = scanSU5.nextInt();
+									System.out.println("User ID entered: " + userIDSU5);
+									
+									sU5.DeleteUser(userIDSU5);
+									
+								}
+								else {
+									System.out.println("Number entered is invalid.");
+									try {
+										Thread.sleep(1000);
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+								
+								
+								// End, return to menu
+								try {
+									System.out.println("Returning to Menu.");
+									Thread.sleep(3000);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								
+							}
+							
+							
+							
+							
+							
+							
+							
+							System.out.println();
+							try {
+								Thread.sleep(3000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						} // end else of superuser
+						// IF NOT USER AND NOT SUPERUSER, USER TYPE IS UNKNOWN
+						else {
+							System.out.println("User Type Unknown.");
+							try {
+								Thread.sleep(3000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 						}
-						// IF SUPERUSER
-						else {
-							// View Superuser Menu
-							
-						}
-
 						
-
-						
-
 						// Exit while loop TopMenuControl2
 						topMenuControl2 = false;
 					}
