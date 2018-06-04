@@ -24,6 +24,8 @@ public class Connect2DB {
 	}
 	
 	public Connection getConnection() {
+		//the database connection method
+		
 		Connection conn = null;
 		
 		//.getConnection(url, username, password)

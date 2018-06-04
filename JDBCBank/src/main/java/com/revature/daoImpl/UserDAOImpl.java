@@ -1,5 +1,6 @@
 package com.revature.daoImpl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,12 +18,16 @@ public class UserDAOImpl implements UserDAO {
 	
 	public static Connect2DB cdb = Connect2DB.getInstance();
 
+	/*this method accepts four parameters:
+	 * firstname, lastname, username, and password
+	 * creates the user if user doesn't already exist
+	 */
 	public void registerUser(String firstName, String lastName, String username, String password) throws SQLException {
 		
 		Connection conn = cdb.getConnection();
 		String[] primaryKeys = new String[1];
 		primaryKeys[0] = "USERID";
-		String sql = "INSERT INTO BANK_USER VALUES(USER_ID.NEXTVAL, ?, ?, ?, ?, BANK_ACCOUNT_ID.NEXTVAL)";
+		String sql = "INSERT INTO BANK_USER VALUES(USER_ID.NEXTVAL, ?, ?, ?, ?)";
 		
 		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 		ps.setString(1, firstName);
@@ -32,6 +37,7 @@ public class UserDAOImpl implements UserDAO {
 		ps.executeUpdate();
 	}
 
+	//returns the userlist
 	public List<User> getUserList() throws SQLException {
 		List<User> userList = new ArrayList<User>();
 		Connection conn = cdb.getConnection();
@@ -41,12 +47,14 @@ public class UserDAOImpl implements UserDAO {
 		
 		while(rs.next()) {
 			user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), 
-					rs.getString(4), rs.getString(5), rs.getInt(6));
+					rs.getString(4), rs.getString(5));
 			userList.add(user);
 		}
 		return userList;
 	}
 
+	//this method validates login for users
+	//checks the login info against the database to make sure that the user exists
 	public boolean validateLogin(String username, String password) throws SQLException{
 		
 		String dbusername, dbpassword;
@@ -64,11 +72,35 @@ public class UserDAOImpl implements UserDAO {
 			}
 			
 		}
+		conn.close();
 		return success;
 	}
 	
-	/*public void viewUserAccount(Account ac) throws SQLException{
+	/*admin can pass a userid to this method to delete that user
+	 */
+	public void deleteUsers(int userID) throws SQLException {
 		Connection conn = cdb.getConnection();
-		String sql = "SELECT * FROM "
-	}*/
+		String sql = "{call DELETE_USER(?)";
+		
+		CallableStatement call = conn.prepareCall(sql);
+		call.setInt(1, userID);
+		call.execute();
+		conn.close();
+	}
+	
+	/*this method updates user info
+	 * accepts a user, new username, and new password of the user
+	 * and updates it in the database
+	 */
+	public void updateUserInfo(User user, String username, String password) throws SQLException{
+		Connection conn = cdb.getConnection();
+		String sql = "{call UPDATE_USER_INFO(?,?,?)";
+		
+		CallableStatement call = conn.prepareCall(sql);
+		call.setInt(1, user.getUserID());
+		call.setString(2, username);
+		call.setString(3, password);
+		call.execute();
+		conn.close();
+	}
 }

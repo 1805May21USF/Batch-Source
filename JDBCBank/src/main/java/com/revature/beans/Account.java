@@ -1,73 +1,102 @@
 package com.revature.beans;
 
+import java.sql.SQLException;
+
+import com.revature.daoImpl.AccountDAOImpl;
+
 public class Account {
 
 	private int accountID;
-	private String firstName;
-	private String lastName;
 	private float balance;
+	private int userID;
+	private static AccountDAOImpl acd = new AccountDAOImpl();
 	
 	public Account() {
 		super();
 		balance = 0.0f;
 	}
 
-	public Account(int accountID, String firstName, String lastName, float balance) {
+	
+	public Account(int accountID, float balance, int userID) {
 		super();
 		this.accountID = accountID;
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.balance = balance;
+		this.userID = userID;
 	}
+
 
 	public int getAccountID() {
 		return accountID;
 	}
 
+
 	public void setAccountID(int accountID) {
 		this.accountID = accountID;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 	public float getBalance() {
 		return balance;
 	}
 
+
 	public void setBalance(float balance) {
 		this.balance = balance;
 	}
 
-	@Override
-	public String toString() {
-		return "Account [accountID=" + accountID + ", firstName=" + firstName + ", lastName=" + lastName + ", balance="
-				+ balance + "]";
+
+	public int getUserID() {
+		return userID;
 	}
 
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Account [accountID=" + accountID + ", balance=" + balance + ", userID=" + userID + "]";
+	}
+
+
 	public void deposit(float amount) {
-		balance = balance + amount;
+		//deposit method
+		
+		this.setBalance(this.getBalance() + amount);
+		try {
+			acd.updateAccount(this, this.getBalance()); //updates the balance of the user
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("===========================================");
+		System.out.println("You have successfully deposited $" + balance);
+		System.out.println("===========================================");
 	}
 	
-	public void withdraw(float amount) {
-		if(amount <= balance) {
-			balance = balance - amount;
+	public void withdraw(float amount){
+		//withdraw method
+		
+		if(amount <= this.getBalance()) {
+			this.setBalance(this.getBalance() - amount);
+			try {
+				acd.updateAccount(this, this.getBalance()); //updates the user balance
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			System.out.println("===========================================");
 			System.out.println("You have successfully withdrawn $" + amount);
-		}else {
+			System.out.println("===========================================");
+		}else if(amount < 0.00) {
+			System.out.println("===========================================");
+			System.out.println("Amount must be bigger than 0");
+			System.out.println("===========================================");
+		}
+		else {
+			System.out.println("===========================================");
 			System.out.println("Insufficient funds");
+			System.out.println("===========================================");
 		}
 	}
 }

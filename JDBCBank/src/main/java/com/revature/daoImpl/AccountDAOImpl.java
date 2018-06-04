@@ -16,34 +16,35 @@ public class AccountDAOImpl implements AccountDAO {
 
 	public static Connect2DB cdb = Connect2DB.getInstance();
 
-	public List<?> getUserAccount() throws SQLException {
+	//user can view all the accounts using this method just by passing the userid
+	public List<Account> getUserAccount(int userID) throws SQLException {
 		List<Account> userAccount = new ArrayList<Account>();
 		Connection conn = cdb.getConnection();
-		String sql = "SELECT * FROM BANK_ACCOUNTS ORDER BY ACCOUNT_ID";
+		String sql = "SELECT * FROM BANK_ACCOUNTS WHERE USERID = ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, userID);
 		ResultSet rs = ps.executeQuery();
 		Account ac = null;
 		
 		while(rs.next()) {
-			ac = new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getFloat(4));
+			ac = new Account(rs.getInt(1), rs.getFloat(2), rs.getInt(3));
 			userAccount.add(ac);
 		}
-		
+		conn.close();
 		return userAccount;
 	}
 
-	public void createAccount(Account ac) throws SQLException {
+	//this method creates the sql statement to create new account for a registered user
+	public void createAccount(int userID) throws SQLException {
 		Connection conn = cdb.getConnection();
-		String sql = "{call CREATE_ACCOUNT(?,?,?,?)";
+		String sql = "{call CREATE_ACCOUNT(?)";
 		
 		CallableStatement call = conn.prepareCall(sql);
-		call.setInt(1, ac.getAccountID());
-		call.setString(2, ac.getFirstName());
-		call.setString(3, ac.getLastName());
-		call.setFloat(4, ac.getBalance());
+		call.setInt(1, userID);
 		call.execute();
 	}
 
+	//this method creates the sql statement to delete user account (user action)
 	public void deleteAccount(Account ac) throws SQLException {
 		Connection conn = cdb.getConnection();
 		String sql = "{call DELETE_ACCOUNT(?)";
@@ -51,6 +52,18 @@ public class AccountDAOImpl implements AccountDAO {
 		CallableStatement call = conn.prepareCall(sql);
 		call.setInt(1, ac.getAccountID());
 		call.execute();
+	}
+	
+	//this method updates the balance of the user in the database
+	public void updateAccount(Account ac, float balance) throws SQLException{
+		Connection conn = cdb.getConnection();
+		String sql = "{call UPDATE_BALANCE(?,?)";
+		
+		CallableStatement call = conn.prepareCall(sql);
+		call.setInt(1, ac.getAccountID());
+		call.setFloat(2, balance);
+		call.execute();
+		conn.close();
 	}
 
 }

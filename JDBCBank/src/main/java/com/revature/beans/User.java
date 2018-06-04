@@ -1,7 +1,11 @@
 package com.revature.beans;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.revature.daoImpl.AccountDAOImpl;
+
 
 public class User {
 
@@ -10,20 +14,19 @@ public class User {
 	private String lastName;
 	private String username;
 	private String password;
-	private int accountID;
+	private static AccountDAOImpl acd = new AccountDAOImpl();
 	
 	public User() {
 		super();
 	}
 	
-	public User(int userID, String firstName, String lastName, String username, String password, int accountID) {
+	public User(int userID, String firstName, String lastName, String username, String password) {
 		super();
 		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
-		this.accountID = accountID;
 	}
 	
 	public int getUserID() {
@@ -66,28 +69,35 @@ public class User {
 		this.password = password;
 	}
 
-	public int getAccountID() {
-		return accountID;
-	}
-
-	public void setAccountID(int accountID) {
-		this.accountID = accountID;
-	}
-
 	@Override
 	public String toString() {
 		return "User [userID=" + userID + ", firstName=" + firstName + ", lastName=" + lastName + ", username="
-				+ username + ", password=" + password + ", accountID=" + accountID + "]";
+				+ username + ", password=" + password + "]";
 	}
-
-	public boolean usernameExists(String username) {
-		List<User> users = new ArrayList<User>();
-		
-			if(users != null) {
-				for(User user: users)
-					if(user.getUsername().equals(username))
-						return true;
-			}
-			return false;
+	
+	/*admin can view all user accounts using this method
+	 * 
+	 */
+	public void viewUserAccount() throws SQLException{
+		System.out.println("===========================================");
+		System.out.println("               ***Accounts***              ");
+		List<Account> accounts = acd.getUserAccount(this.getUserID()); //gets the user account based on the userid
+		int i = 1;
+		for(Account ac: accounts ) {
+			System.out.println(i+") Account ID: "+ ac.getAccountID() + " " +"Balance : $"+String.format("%.2f", ac.getBalance()));
+			i++;
+		}
+		System.out.println("===========================================");
 	}
+	
+	/*
+	 * a registerd user can create a new bank account using this method
+	 */
+	public void createBankAccount() throws SQLException {
+		acd.createAccount(this.userID);
+		System.out.println("===========================================");
+		System.out.println("You have successfully created a new account");
+		System.out.println("===========================================");
+	}
+	
 }
