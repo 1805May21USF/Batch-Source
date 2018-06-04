@@ -12,7 +12,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-public class BankMain extends Account implements Serializable, AccountManager {
+public class BankMain  implements Serializable, AccountManager {
 	
 	@SuppressWarnings("resource")
 	public static void main(String[] args)  throws IOException{
@@ -81,6 +81,18 @@ public class BankMain extends Account implements Serializable, AccountManager {
 		System.out.println("Bye");
 	}
 		}
+
+	@Override
+	public void deposit(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void withdraw(double w) {
+		// TODO Auto-generated method stub
+		
+	}
 	}
 
 

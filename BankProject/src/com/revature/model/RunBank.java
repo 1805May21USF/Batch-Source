@@ -10,15 +10,16 @@ import java.util.Set;
 public class RunBank {
 
 	private static Scanner sc = new Scanner(System.in);
+	AccountManager bank = new AccountManager();
 
 public static void main(String[] args) throws IOException, ClassNotFoundException{
-	//AccountManager bank = new AccountManager();
+	AccountManager bank = new AccountManager();
 	Customer customer;// = new Customer();	
 	Serialize s = new Serialize();
 	
 	System.out.println("               Edwin's Bank        ");
 	System.out.println("");
-	//while(true) {
+	while(true) {
 		
 		Scanner input2 = new Scanner(System.in);
 		System.out.println(" Welcome ! ");
@@ -32,7 +33,10 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 		
 		switch(option2) {
 		
+		//AccountManager ac = new AccountManager();
 		case 1: 
+			
+
 		System.out.println("");
 		System.out.println("Enter a Username: ");
 		String username = input2.next();
@@ -41,12 +45,14 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 		String password = input2.next();
 		//customer.setPassword(password);
 		System.out.println("Enter amount to open the account :");
-		int accountBalance = input2.nextInt();//bank.createAccount(input2.nextDouble());
+		long accountNumber = bank.createAccount(input2.nextDouble());
+		if(accountNumber!=0);
+		//int accountBalance = input2.nextInt();//bank.createAccount(input2.nextDouble());
 		//if()//(accountNumber!=0)
 		Random rand = new Random();
 		int  n = rand.nextInt(50) + 1;
 			System.out.println("Congrationlations, here is your account number : " + n);//+accountNumber);
-			Customer c = new Customer(username, password, n, accountBalance);
+			Customer c = new Customer(username, password, n);
 			
 		//else
 			//System.out.println("Fails to create an account for you ");
@@ -133,6 +139,9 @@ public static void main(String[] args) throws IOException, ClassNotFoundExceptio
 		
 		}
 	}
+}
+	
+	
 }
 	//}
 	
