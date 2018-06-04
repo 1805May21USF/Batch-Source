@@ -1,4 +1,4 @@
-package com.revature.main;
+package com.revature.JDBCBank;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -24,7 +24,7 @@ public class Bank {
 	
 	public void withdraw(Customer c) throws SQLException {
 		AccountDAOImpl adi = new AccountDAOImpl();
-		ArrayList<Account> accounts = adi.listAccounts("CUSTOMERID = " + c.getId());
+		ArrayList<Account> accounts = adi.listAccounts(c.getId());
 		SignUp su = new SignUp(scan);
 		
 		inputLoop:
@@ -91,7 +91,7 @@ public class Bank {
 	
 	public void deposit(Customer c) throws SQLException{
 		AccountDAOImpl adi = new AccountDAOImpl();
-		ArrayList<Account> accounts = adi.listAccounts("CUSTOMERID = " + c.getId());
+		ArrayList<Account> accounts = adi.listAccounts(c.getId());
 		SignUp su = new SignUp(scan);
 		
 		inputLoop:
@@ -155,7 +155,7 @@ public class Bank {
 	
 	public void transfer(Customer c) throws SQLException {
 		AccountDAOImpl adi = new AccountDAOImpl();
-		ArrayList<Account> accounts = adi.listAccounts("CUSTOMERID = " + c.getId());
+		ArrayList<Account> accounts = adi.listAccounts(c.getId());
 		SignUp su = new SignUp(scan);
 		
 		inputLoop:
@@ -226,7 +226,7 @@ public class Bank {
 						continue depositAccountLoop;
 					}
 					
-					ArrayList<Account> allAccounts = adi.listAccounts("n");
+					ArrayList<Account> allAccounts = adi.listAccounts(0);
 					
 					exist:
 					for(Account a : allAccounts) {
@@ -301,11 +301,11 @@ public class Bank {
 		}
 	}
 	
-	public void openAccount(Customer c) throws SQLException {
+	public void openAccount(Customer c) throws SQLException{
 		AccountDAOImpl adi = new AccountDAOImpl();
 		CustomerDAOImpl cdi = new CustomerDAOImpl();
-		ArrayList<Account> accounts = adi.listAccounts("CUSTOMERID = " + c.getId());
-		ArrayList<Customer> customers = cdi.getCustomerList("n");
+		ArrayList<Account> accounts = adi.listAccounts(c.getId());
+		ArrayList<Customer> customers = cdi.getCustomerList(0);
 		Account newAcc = new Account(0, null, null, -1, -1);
 		SignUp su = new SignUp(scan);
 		
@@ -417,6 +417,7 @@ public class Bank {
 				else {
 					newAcc.setShared(0);
 					newAcc.setId(-1);
+					break inputLoop;
 				}
 			}
 		}
@@ -428,7 +429,7 @@ public class Bank {
 	
 	public void closeAccount(Customer c) throws SQLException {
 		AccountDAOImpl adi = new AccountDAOImpl();
-		ArrayList<Account> accounts = adi.listAccounts("CUSTOMERID = " + c.getId() + " AND BALANCE = 0");
+		ArrayList<Account> accounts = adi.listAccounts(c.getId(), 0.0);
 		
 		if(accounts.isEmpty()) {
 			System.out.println("No accounts available for closure!");
@@ -473,7 +474,7 @@ public class Bank {
 	
 	public void accountBalance(Customer c) throws SQLException {
 		AccountDAOImpl adi = new AccountDAOImpl();
-		ArrayList<Account> accounts = adi.listAccounts("CUSTOMERID = " + c.getId() + " OR SHARED_ACCOUNT = " + c.getId());
+		ArrayList<Account> accounts = adi.listAccounts(c.getId(), c.getId());
 		
 		inputLoop:
 		while(true) {
@@ -519,28 +520,28 @@ public class Bank {
 			
 			switch(input) {
 				case("WITHDRAWAL"):
-					transactions = tdi.listTransactions("WHERE CUSTOMERID = " + c.getId() + " AND TYPE = WITHDRAWAL");
+					transactions = tdi.listTransactions(c.getId(), "WITHDRAWAL");
 					System.out.println("Username :  Amount : Type");
 					for(Transaction t : transactions) {
 						System.out.println(c.getUsername() + " : " + t.getAmount() + " : " + t.getType());
 					}
 					break;
 				case("DEPOSIT"):
-					transactions = tdi.listTransactions("WHERE CUSTOMERID = " + c.getId() + " AND TYPE = DEPOSIT");
+					transactions = tdi.listTransactions(c.getId(), "DEPOSIT");
 					System.out.println("Username :  Amount : Type");
 					for(Transaction t : transactions) {
 						System.out.println(c.getUsername() + " : " + t.getAmount() + " : " + t.getType());
 					}
 					break;
 				case("TRANSFER"):
-					transactions = tdi.listTransactions("WHERE CUSTOMERID = " + c.getId() + " AND TYPE = TRANSFER");
+					transactions = tdi.listTransactions(c.getId(), "TRANSFER");
 					System.out.println("Username :  Amount : Type");
 					for(Transaction t : transactions) {
 						System.out.println(c.getUsername() + " : " + t.getAmount() + " : " + t.getType());
 					}
 					break;
 				case("ALL"):
-					transactions = tdi.listTransactions("WHERE CUSTOMERID = " + c.getId());
+					transactions = tdi.listTransactions(c.getId());
 					System.out.println("Username :  Amount : Type");
 					for(Transaction t : transactions) {
 						System.out.println(c.getUsername() + " : " + t.getAmount() + " : " + t.getType());

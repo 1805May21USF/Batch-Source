@@ -1,4 +1,4 @@
-package com.revature.main;
+package com.revature.JDBCBank;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class SignUp {
 								
 					validAlphaNumericInput(input);
 								
-					cus.setUsername(input);
+					cus.setPassword(input);
 				}catch(InvalidInputException e) {
 					System.out.println();
 				}
@@ -310,6 +310,7 @@ public class SignUp {
 											
 					cus.setState(input.toUpperCase());
 					cus.setId(-1);
+					break mainLoop;
 				}catch(InvalidInputException e) {
 					System.out.println();
 				}
@@ -319,9 +320,7 @@ public class SignUp {
 		// Executes if an employee was successfully registered
 		if(cus.getId() == -1) {
 			// Sends the employee information to the database to be entered
-			CustomerDAOImpl cdi = new CustomerDAOImpl();
-			cdi.createCustomer(cus.getUsername(), cus.getPassword(), cus.getFirstName(), cus.getLastName(), cus.getMiddleInitial(), cus.getAge(), 
-							   cus.getAddress(), cus.getState(), cus.getZip(), cus.getState());
+			createCustomer(cus);
 		}
 	}
 	
@@ -384,7 +383,7 @@ public class SignUp {
 								
 					validAlphaNumericInput(input);
 								
-					emp.setUsername(input);
+					emp.setPassword(input);
 				}catch(InvalidInputException e) {
 					System.out.println();
 				}
@@ -661,8 +660,9 @@ public class SignUp {
 																
 					validNumericInput(input);
 														
-					emp.setPay(Integer.parseInt(input));
+					emp.setPay(Double.parseDouble(input));
 					emp.setId(-1);
+					break mainLoop;
 				}catch(InvalidInputException e) {
 					System.out.println();
 				}
@@ -671,103 +671,120 @@ public class SignUp {
 		
 		// Executes if an employee was successfully registered
 		if(emp.getId() == -1) {
-			// Sends the employee information to the database to be entered
-			EmployeeDAOImpl edi = new EmployeeDAOImpl();
-			edi.createEmployee(emp.getUsername(), emp.getPassword(), emp.getFirstName(), emp.getLastName(), emp.getMiddleInitial(), emp.getAge(), 
-							   emp.getAddress(), emp.getState(), emp.getZip(), emp.getState(), emp.getDepartment(), emp.getPay());
+			createEmployee(emp);
 		}
 	}
 	
 	// Tests if the Customer exists
-	void customerExists(String username) throws UserExistsException{
+	boolean customerExists(String username) throws UserExistsException{
 		// Retrieves any customers who possess the entered username
 		try {
 			CustomerDAOImpl cdi = new CustomerDAOImpl();
-			ArrayList<Customer> customers = cdi.getCustomerList("USERNAME = " + username);
+			ArrayList<Customer> customers = cdi.customerExists(username);
 			// Executes if a customer already exists with that username
-			if(!customers.isEmpty())
+			if(customers.isEmpty())
 				throw new UserExistsException(username);
+				//return false;
+			return true;
 		// Executes if the database couldn't be connected to
 		}catch(SQLException e) {
 			System.out.println("Couldn't connect to the database! Please try again later!");
+			e.printStackTrace();
+			System.out.println(e.getMessage());
 			throw new UserExistsException(">");
+			//return false;
 		}
 	}
 	
 	// Tests if the Employee exists
-	void employeeExists(String username) throws UserExistsException {
+	boolean employeeExists(String username) throws UserExistsException {
 		// Retrieves any employees who possess the entered username
 		try {
 			EmployeeDAOImpl edi = new EmployeeDAOImpl();
-			ArrayList<Employee> employees = edi.getEmployeeList("USERNAME = " + username);
+			ArrayList<Employee> employees = edi.employeeExists(username);
 			// Executes if a customer already exists with that username
 			if(!employees.isEmpty())
 				throw new UserExistsException(username);
+				//return false;
+			return true;
 		// Executes if the database couldn't be connected to
 		}catch(SQLException e) {
 			System.out.println("Couldn't connect to the database! Please try again later!");
+			e.printStackTrace();
+			System.out.println(e.getMessage());
 			throw new UserExistsException(">");
+			//return false;
 		}
 	}
 	
 	// Creates a new Customer database entry
-	void createCustomer(Customer c) {
+	Customer createCustomer(Customer c) {
 		try {
 			// Attempts to put the entered customer information into the database
 			CustomerDAOImpl cdi = new CustomerDAOImpl();
 			cdi.createCustomer(c.getUsername(), c.getPassword(), c.getFirstName(), c.getLastName(), c.getMiddleInitial(), 
 							   c.getAge(), c.getAddress(), c.getCity(), c.getZip(), c.getState());
+			return c;
 		// Executes if the database couldn't be reached
 		}catch(SQLException e) {
 			System.out.println("Couldn't establish connection with the database! Please try again later!");
+			return null;
 		}
 	}
 	
 	// Creates a new Employee database entry
-	void createEmployee(Employee emp) {
+	Employee createEmployee(Employee emp) {
 		try {
 			// Attempts to put the entered employee information into the database
 			EmployeeDAOImpl edi = new EmployeeDAOImpl();
 			edi.createEmployee(emp.getUsername(), emp.getPassword(), emp.getFirstName(), emp.getLastName(), emp.getMiddleInitial(), 
 							   emp.getAge(), emp.getAddress(), emp.getCity(), emp.getZip(), emp.getState(), emp.getDepartment(), emp.getPay());
+			return emp;
 		// Executes if the database couldn't be reached
 		}catch(SQLException e) {
 			System.out.println("Couldn't establish connection with the database! Please try again later!");
+			return null;
 		}
 	}
 	
 	// Tests if the provided input was numeric
-	public void validNumericInput(String input) throws InvalidInputException{
+	public boolean validNumericInput(String input) throws InvalidInputException{
 		try {
 			// Attempts to parse the input into a number and returns true if the input was a number
-			Integer.parseInt(input);
+			Double.parseDouble(input);
 			if(input.length() == 0)
 				throw new NumberFormatException();
-		// Throws an invalidInputException if the input isn't numeric
+			return true;
+		// Throws an InvalidInputException if the input isn't numeric
 		}catch(NumberFormatException e) {
 			throw new InvalidInputException();
+			//return false;
 		}
 	}
 	
 	// Tests if the provided input was alphabetic
-	public void validAlphabeticInput(String input) throws InvalidInputException{
+	public boolean validAlphabeticInput(String input) throws InvalidInputException{
 		// Creates a pattern and matcher to determine if the input contains only alphabetic characters
-		Pattern pattern = Pattern.compile("[^A-Za-z]");
+		Pattern pattern = Pattern.compile("[^A-Za-z ]");
 		Matcher match = pattern.matcher(input);
 			
 		// Throws an InvalidInputException if the input isn't alphabetic
-		if(!match.find() || input.length() == 0)
+		if(match.find() || input.length() == 0)
 			throw new InvalidInputException();
+			//return false;
+		return true;
 	}
 	
 	// Tests if the provided input was alphanumeric
-	public void validAlphaNumericInput(String input) throws InvalidInputException{
+	public boolean validAlphaNumericInput(String input) throws InvalidInputException{
 		// Creates a pattern and matcher to determine if the input contains only alphanumeric characters
 		Pattern pattern = Pattern.compile("[^A-Za-z0-9]");
 		Matcher match = pattern.matcher(input);
 				
 		// Throws an InvalidInputException if the input isn't alphanumeric
-		if(!match.find() || input.length() == 0)
+		if(match.find() || input.length() == 0)
 			throw new InvalidInputException();
+			//return false;
+		return true;
 	}
 }

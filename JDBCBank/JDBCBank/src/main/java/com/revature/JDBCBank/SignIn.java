@@ -1,4 +1,4 @@
-package com.revature.main;
+package com.revature.JDBCBank;
 
 import java.io.File;
 import java.io.FileReader;
@@ -53,7 +53,9 @@ public class SignIn {
 				try{
 					if(customerLogin(user, pass))
 						return getCustomer(user);
-					}catch(IncorrectPasswordException e) {}
+					else
+						throw new IncorrectPasswordException();
+					}catch(IncorrectPasswordException e) {break password;}
 				}
 			}
 		
@@ -95,7 +97,10 @@ public class SignIn {
 					if(employeeLogin(user, pass)) {
 						return getEmployee(user);
 					}
-				}catch(IncorrectPasswordException e){}
+					else {
+						throw new IncorrectPasswordException();
+					}
+				}catch(IncorrectPasswordException e){break password;}
 			}
 		}
 		// Returns null by default
@@ -151,11 +156,11 @@ public class SignIn {
 	}
 	
 	// Takes the username and password and sees if it matche an Customers
-	boolean customerLogin(String username, String password) throws IncorrectPasswordException{
+	public boolean customerLogin(String username, String password) throws IncorrectPasswordException{
 		try {
 			// Uses CustomerDAOImpl to retrieve any customers who have the username and password provided by the user
 			CustomerDAOImpl cdi = new CustomerDAOImpl();
-			ArrayList<Customer> customers = cdi.getCustomerList("USERNAME = " + username + " AND PASSWORD = " + password);
+			ArrayList<Customer> customers = cdi.customerExists(username, password);
 		
 			// Returns true if there is a customer that matches the provided username and password
 			if(!customers.isEmpty())
@@ -169,11 +174,11 @@ public class SignIn {
 	}
 	
 	// Takes the username and password and sees if it matches any Employee
-	boolean employeeLogin(String username, String password) throws IncorrectPasswordException{
+	public boolean employeeLogin(String username, String password) throws IncorrectPasswordException{
 		try {
 			// Uses EmployeeDAOImpl to retrieve anyemployees who have the username and password provided by the user
 			EmployeeDAOImpl edi = new EmployeeDAOImpl();
-			ArrayList<Employee> employees = edi.getEmployeeList("USERNAME = " + username + " AND PASSWORD = " + password);
+			ArrayList<Employee> employees = edi.employeeExists(username, password);
 		
 			// Returns true if there is a customer that matches the provided username and password
 			if(!employees.isEmpty())
@@ -191,7 +196,7 @@ public class SignIn {
 		// Attempts to retrieve and return the customer information from the database
 		try {
 			CustomerDAOImpl cdi = new CustomerDAOImpl();
-			ArrayList<Customer> customers = cdi.getCustomerList("USERNAME = " + username.toUpperCase());
+			ArrayList<Customer> customers = cdi.customerExists(username);
 			// Returns the customer that matches the username provided
 			return customers.get(0);
 		// Executes if the database couldn't be reached
@@ -207,7 +212,7 @@ public class SignIn {
 		// Attempts to retrieve and return the employee information from the database
 		try {
 			EmployeeDAOImpl edi = new EmployeeDAOImpl();
-			ArrayList<Employee> employees = edi.getEmployeeList("USERNAME = " + username);
+			ArrayList<Employee> employees = edi.employeeExists(username);
 			// Returns the employee that matches the username provided
 			return employees.get(0);
 		// Executes if the database couldn't be reached

@@ -1,28 +1,7 @@
 
 Info:
-Account Personal Checking belonging to thomasLhad $4000.0 deposited into it by thomasL, making the total amount in the account $4000.0
+Successfully created customer test
 
 Info:
-Account Personal Checking belonging to thomasLhad $123.45 withdrawn from it by thomasL, making the total amount in the account $3876.55
-
-Error:
-thomasL couldn't request a new account
-
-Error:
-Admin could't read accounts.txt
-
-Error:
-thomasL couldn't request a new account
-
-Error:
-Admin could't read accounts.req
-
-Error:
-adamW could't read accounts.req
-
-Error:
-adamW could't read accounts.req
-
-Error:
-adamW could't read accounts.req
+Successfully created account number -1 named personal for customer number + 157
 

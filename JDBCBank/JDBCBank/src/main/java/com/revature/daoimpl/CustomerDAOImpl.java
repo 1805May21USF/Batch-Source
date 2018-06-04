@@ -16,7 +16,7 @@ import com.revature.dao.CustomerDAO;
 public class CustomerDAOImpl implements CustomerDAO {
 	// Retrieves the instance of the ConnFactory class
 	public static ConnFactory cf = ConnFactory.getInstance();
-	private static Logger log = Logger.getLogger(Customer.class.getName());
+	private static Logger log = Logger.getLogger(CustomerDAOImpl.class.getName());
 	
 	// Creates a customer with the entered information
 	public void createCustomer(String username, String password, String firstName, String lastName, char middleInitial, 
@@ -46,31 +46,27 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 
 	// Retrieves a list of all customers
-	public ArrayList<Customer> getCustomerList(String arg) throws SQLException {
+	public ArrayList<Customer> getCustomerList(int arg) throws SQLException {
 		// Instantiates the list to be returned
 		ArrayList<Customer> customerList = new ArrayList<>();
 		Connection conn = cf.getConnection();
 		
 		// Creates the prepared statement to collect a customer list
-		String sql = "SELECT * FROM CUSTOMER WHERE ?";
+		String sql = "SELECT * FROM BANK_CUSTOMER WHERE CUSTOMERID > ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		
-		// Returns all customers if a dummy argument was sent
-		if(!arg.equals("n"))
-			stmt.setString(1, "CUSTOMERID > 0");
-		// Returns all customers that match the sent valid argument
-		else
-			stmt.setString(1, arg);
+		// Returns all customers that match the provided arguments
+		stmt.setInt(1, arg);
+		
 		
 		// Creates a result set and executes the prepared statement
 		ResultSet rs = stmt.executeQuery();
-		stmt.executeQuery("SELECT * FROM CUSTOMER");
 		
 		// Puts the retrieved customers into the list
 		while(rs.next()) {
-			Customer c = new Customer(rs.getInt(0), rs.getString(1), rs.getString(2), rs.getString(3), 
-									  rs.getString(5).charAt(0), rs.getString(4), rs.getInt(6), rs.getString(7), 
-									  rs.getString(8), rs.getInt(9), rs.getString(10));
+			Customer c = new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), 
+									  rs.getString(6).charAt(0), rs.getString(5), rs.getInt(7), rs.getString(8), 
+									  rs.getString(9), rs.getInt(10), rs.getString(11));
 			
 			customerList.add(c);
 		}
@@ -78,6 +74,71 @@ public class CustomerDAOImpl implements CustomerDAO {
 		// Closes the database connection
 		conn.close();
 				
+		// Returns the list
+		return customerList;
+	}
+	
+	public ArrayList<Customer> customerExists(String arg) throws SQLException{
+		// Instantiates the list to be returned
+		ArrayList<Customer> customerList = new ArrayList<>();
+		Connection conn = cf.getConnection();
+				
+		// Creates the prepared statement to collect a customer list
+		String sql = "SELECT * FROM BANK_CUSTOMER WHERE USERNAME = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+				
+		// Returns all customers that match the provided arguments
+		stmt.setString(1, arg);
+				
+		// Creates a result set and executes the prepared statement
+		ResultSet rs = stmt.executeQuery();
+				
+		// Puts the retrieved customers into the list
+		while(rs.next()) {
+			Customer c = new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), 
+									  rs.getString(6).charAt(0), rs.getString(5), rs.getInt(7), rs.getString(8), 
+									  rs.getString(9), rs.getInt(10), rs.getString(11));
+					
+			customerList.add(c);
+		}
+				
+		// Closes the database connection
+		conn.close();
+						
+		// Returns the list
+		return customerList;
+	}
+	
+	public ArrayList<Customer> customerExists(String argOne, String argTwo) throws SQLException{
+		// Instantiates the list to be returned
+		ArrayList<Customer> customerList = new ArrayList<>();
+		Connection conn = cf.getConnection();
+				
+		// Creates the prepared statement to collect a customer list
+		String sql = "SELECT * FROM BANK_CUSTOMER WHERE USERNAME = ? AND PASSWORD = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+				
+		// Returns all customers that match the provided arguments
+		stmt.setString(1, argOne);
+		stmt.setString(2, argTwo);
+				
+				
+		// Creates a result set and executes the prepared statement
+		ResultSet rs = stmt.executeQuery();
+				
+		// Puts the retrieved customers into the list
+		while(rs.next()) {
+			Customer c = new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), 
+									  rs.getString(6).charAt(0), rs.getString(5), rs.getInt(7), rs.getString(8), 
+									  rs.getString(9), rs.getInt(10), rs.getString(11));
+			
+			
+			customerList.add(c);
+		}
+				
+		// Closes the database connection
+		conn.close();
+						
 		// Returns the list
 		return customerList;
 	}

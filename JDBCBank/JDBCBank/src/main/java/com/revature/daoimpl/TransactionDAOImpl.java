@@ -34,18 +34,15 @@ public class TransactionDAOImpl implements TransactionDAO{
 	}
 
 	@Override
-	public ArrayList<Transaction> listTransactions(String arg) throws SQLException {
+	public ArrayList<Transaction> listTransactions(int arg) throws SQLException {
 		ArrayList<Transaction> transactions = new ArrayList<>();
 		Connection conn = cf.getConnection();
 		
-		String sql = "SELECT * FROM TRANSACTION WHERE ?";
+		String sql = "SELECT * FROM TRANSACTION WHERE CUSTOMERID = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		
-		if(!arg.equals("n"))
-			stmt.setString(1, arg);
-		else
-			stmt.setString(1, "TRANSACTIONID > 0");
+		stmt.setInt(1, arg);
 		
 		ResultSet rs = stmt.executeQuery();
 		
@@ -62,4 +59,29 @@ public class TransactionDAOImpl implements TransactionDAO{
 		return transactions;
 	}
 
+	public ArrayList<Transaction> listTransactions(int argOne, String argTwo) throws SQLException {
+		ArrayList<Transaction> transactions = new ArrayList<>();
+		Connection conn = cf.getConnection();
+		
+		String sql = "SELECT * FROM TRANSACTION WHERE CUSTOMERID = ? AND TYPE = ?";
+		
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		
+		stmt.setInt(1, argOne);
+		stmt.setString(2, argTwo);
+		
+		ResultSet rs = stmt.executeQuery();
+		
+		// Puts the retrieved employees into the list
+		while(rs.next()) {
+			Transaction t = new Transaction(rs.getInt(0), rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getDouble(4), rs.getString(5));
+			
+			transactions.add(t);
+		}
+		
+		// Closes the database connection
+		conn.close();
+		
+		return transactions;
+	}
 }

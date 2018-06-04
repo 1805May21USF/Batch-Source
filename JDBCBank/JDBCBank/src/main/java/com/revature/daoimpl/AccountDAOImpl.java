@@ -16,7 +16,7 @@ import com.revature.dao.AccountDAO;
 public class AccountDAOImpl implements AccountDAO {
 	// Retrieves the instance of the ConnFactory class
 	public static ConnFactory cf = ConnFactory.getInstance();
-	private static Logger log = Logger.getLogger(Account.class.getName());
+	private static Logger log = Logger.getLogger(AccountDAOImpl.class.getName());
 	
 	// Creates a customer with the entered information
 	public void openAccount(int custId, Account acc) throws SQLException {
@@ -38,33 +38,110 @@ public class AccountDAOImpl implements AccountDAO {
 		
 		log.info("Info:\nSuccessfully created account number " + acc.getId() + " named " + acc.getName() + " for customer number + " + custId + "\n");
 	}
-
+	
 	// Retrieves a list of all accounts
+	public ArrayList<Account> listAccounts(int arg) throws SQLException {
+		// Instantiates the list to be returned
+		ArrayList<Account> accountList = new ArrayList<>();
+		Connection conn = cf.getConnection();
+			
+		String sql = "SELECT * FROM BANK_ACCOUNT WHERE CUSTOMERID = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+			
+		stmt.setInt(1, arg);
+			
+		ResultSet rs = stmt.executeQuery();
+			
+		// Puts the retrieved accounts into the list
+		while(rs.next()) {
+			Account a = new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5));
+				
+			accountList.add(a);
+		}
+			
+		// Closes the database connection
+		conn.close();
+			
+		// Returns the list
+		return accountList;
+	}
+	
 	public ArrayList<Account> listAccounts(String arg) throws SQLException {
 		// Instantiates the list to be returned
 		ArrayList<Account> accountList = new ArrayList<>();
 		Connection conn = cf.getConnection();
-		
-		String sql = "SELECT * FROM ACCOUNT WHERE ?";
+			
+		String sql = "SELECT * FROM BANK_ACCOUNT WHERE CUSTOMERID > ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		
-		if(!arg.equals("n"))
-			stmt.setString(1, arg);
-		else
-			stmt.setString(1, "ACCOUNTID > 0");
-		
+			
+		stmt.setInt(1, Integer.parseInt(arg));
+			
 		ResultSet rs = stmt.executeQuery();
-		
+			
 		// Puts the retrieved accounts into the list
 		while(rs.next()) {
-			Account a = new Account(rs.getInt(0), rs.getString(1), rs.getString(2), rs.getDouble(3), rs.getInt(4));
-			
+			Account a = new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5));
+				
 			accountList.add(a);
 		}
-		
+			
 		// Closes the database connection
 		conn.close();
-		
+			
+		// Returns the list
+		return accountList;
+	}
+	
+	public ArrayList<Account> listAccounts(int argOne, int argTwo) throws SQLException{
+		// Instantiates the list to be returned
+		ArrayList<Account> accountList = new ArrayList<>();
+		Connection conn = cf.getConnection();
+				
+		String sql = "SELECT * FROM BANK_ACCOUNT WHERE CUSTOMER ID = ? OR SHAREDID = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+				
+		stmt.setInt(1, argOne);
+		stmt.setInt(2, argTwo);
+			
+		ResultSet rs = stmt.executeQuery();
+				
+		// Puts the retrieved accounts into the list
+		while(rs.next()) {
+			Account a = new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5));
+					
+			accountList.add(a);
+		}
+				
+		// Closes the database connection
+		conn.close();
+				
+		// Returns the list
+		return accountList;
+	}
+	
+	public ArrayList<Account> listAccounts(int argOne, double argTwo) throws SQLException{
+		// Instantiates the list to be returned
+		ArrayList<Account> accountList = new ArrayList<>();
+		Connection conn = cf.getConnection();
+				
+		String sql = "SELECT * FROM BANK_ACCOUNT WHERE CUSTOMER ID = ? AND BALANCE = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+				
+		stmt.setInt(1, argOne);
+		stmt.setDouble(2, argTwo);
+			
+		ResultSet rs = stmt.executeQuery();
+				
+		// Puts the retrieved accounts into the list
+		while(rs.next()) {
+			Account a = new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4), rs.getInt(5));
+					
+			accountList.add(a);
+		}
+				
+		// Closes the database connection
+		conn.close();
+				
 		// Returns the list
 		return accountList;
 	}

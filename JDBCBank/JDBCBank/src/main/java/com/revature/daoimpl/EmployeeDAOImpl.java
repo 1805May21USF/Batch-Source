@@ -16,7 +16,7 @@ import com.revature.dao.EmployeeDAO;
 public class EmployeeDAOImpl implements EmployeeDAO {
 	// Retrieves the instance of the ConnFactory class
 	public static ConnFactory cf = ConnFactory.getInstance();
-	private static Logger log = Logger.getLogger(Employee.class.getName());
+	private static Logger log = Logger.getLogger(EmployeeDAOImpl.class.getName());
 	
 	// Creates an employee with the entered information
 	public void createEmployee(String username, String password, String firstName, String lastName, char middleInitial, 
@@ -48,27 +48,24 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	// Retrieves a list of all employees
-	public ArrayList<Employee> getEmployeeList(String arg) throws SQLException {
+	public ArrayList<Employee> getEmployeeList(int arg) throws SQLException {
 		// Instantiates the list to be returned
 		ArrayList<Employee> employeeList = new ArrayList<>();
 		Connection conn = cf.getConnection();
 		
-		String sql = "SELECT * FROM EMPLOYEE WHERE ?";
+		String sql = "SELECT * FROM BANK_EMPLOYEE WHERE ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		
-		if(!arg.equals("n"))
-			stmt.setString(1, arg);
-		else
-			stmt.setString(1, "EMPLOYEEID > 0");
+		stmt.setInt(1, arg);
 		
 		ResultSet rs = stmt.executeQuery();
 		
 		// Puts the retrieved employees into the list
 		while(rs.next()) {
-			Employee e = new Employee(rs.getInt(0), rs.getString(1), rs.getString(2), rs.getString(3), 
-									  rs.getString(5).charAt(0), rs.getString(4), rs.getInt(6), rs.getString(7), 
-									  rs.getString(8), rs.getInt(9), rs.getString(10), rs.getString(11), rs.getDouble(12));
+			Employee e = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), 
+									  rs.getString(6).charAt(0), rs.getString(5), rs.getInt(7), rs.getString(8), 
+									  rs.getString(9), rs.getInt(10), rs.getString(11), rs.getString(12), rs.getDouble(13));
 			
 			employeeList.add(e);
 		}
@@ -76,6 +73,65 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		// Closes the database connection
 		conn.close();
 		
+		// Returns the list
+		return employeeList;
+	}
+	
+	public ArrayList<Employee> employeeExists(String arg) throws SQLException{
+		// Instantiates the list to be returned
+		ArrayList<Employee> employeeList = new ArrayList<>();
+		Connection conn = cf.getConnection();
+				
+		String sql = "SELECT * FROM BANK_EMPLOYEE WHERE USERNAME = ?";
+				
+		PreparedStatement stmt = conn.prepareStatement(sql);
+				
+		stmt.setString(1, arg);
+				
+		ResultSet rs = stmt.executeQuery();
+				
+		// Puts the retrieved employees into the list
+		while(rs.next()) {
+			Employee e = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), 
+					  				  rs.getString(6).charAt(0), rs.getString(5), rs.getInt(7), rs.getString(8), 
+					  				  rs.getString(9), rs.getInt(10), rs.getString(11), rs.getString(12), rs.getDouble(13));
+					
+			employeeList.add(e);
+		}
+				
+		// Closes the database connection
+		conn.close();
+				
+		// Returns the list
+		return employeeList;
+	}
+	
+	public ArrayList<Employee> employeeExists(String argOne, String argTwo) throws SQLException{
+		// Instantiates the list to be returned
+		ArrayList<Employee> employeeList = new ArrayList<>();
+		Connection conn = cf.getConnection();
+				
+		String sql = "SELECT * FROM BANK_EMPLOYEE WHERE USERNAME = ? AND PASSWORD = ?";
+				
+		PreparedStatement stmt = conn.prepareStatement(sql);
+				
+		stmt.setString(1, argOne);
+		stmt.setString(2, argTwo);
+				
+		ResultSet rs = stmt.executeQuery();
+				
+		// Puts the retrieved employees into the list
+		while(rs.next()) {
+			Employee e = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), 
+									  rs.getString(6).charAt(0), rs.getString(5), rs.getInt(7), rs.getString(8), 
+									  rs.getString(9), rs.getInt(10), rs.getString(11), rs.getString(12), rs.getDouble(13));
+					
+			employeeList.add(e);
+		}
+				
+		// Closes the database connection
+		conn.close();
+				
 		// Returns the list
 		return employeeList;
 	}
