@@ -8,8 +8,10 @@ import java.util.Scanner;
 
 import com.revature.beans.BankAccount;
 import com.revature.beans.CustomerAccount;
+import com.revature.beans.UserTransaction;
 import com.revature.daoimpl.BankAccountDAOImpl;
 import com.revature.daoimpl.CustomerAccountDAOImpl;
+import com.revature.daoimpl.UserTransactionDAOImpl;
 import com.revature.driver.Driver;
 import com.revature.util.Helpers;
 
@@ -20,6 +22,7 @@ public class BankingActions {
 	private static Scanner sc = Driver.sc;
 	private static BankAccountDAOImpl badi = Driver.badi;
 	private static CustomerAccountDAOImpl cadi = Driver.cadi;
+	private static UserTransactionDAOImpl uadi = Driver.uadi;
 	private static NumberFormat formatter = new DecimalFormat("#0.00");
 	
 	/*
@@ -40,6 +43,7 @@ public class BankingActions {
 			} else if (input.equals("3")) {
 				try {
 					badi.createBankAccount(new BankAccount(0, 0, cus.getUser_ID()));
+					System.out.println("Bank Account Creation Success");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -55,7 +59,7 @@ public class BankingActions {
 	 */
 	private static void customerOption(int bankAccountID, CustomerAccount cus) {
 		while (true) {
-			System.out.println("1. Check Balance\n2. Withdraw\n3. Deposit\n4. Close Account\n-1 Exit");
+			System.out.println("1. Check Balance\n2. Withdraw\n3. Deposit\n4. View Recent Transactions\n5. Close Account\n-1 Exit");
 			String option = sc.nextLine();
 			
 			BankAccount acc = getBankAccount(bankAccountID);
@@ -65,11 +69,14 @@ public class BankingActions {
 				optionBalance(acc);
 			} else if (option.equals("2")) {
 				//Withdraw
-				optionWithdraw(acc);
+				optionWithdraw(cus.getUser_ID(), acc);
 			} else if (option.equals("3")) {
 				//Deposit
-				optionDeposit(acc);
+				optionDeposit(cus.getUser_ID(), acc);
 			} else if (option.equals("4")) {
+				//View Transactions
+				optionViewTransactions(bankAccountID, cus);
+			} else if (option.equals("5")) {
 				//Close Account
 				if (optionClose(acc))
 					return;				
@@ -82,6 +89,17 @@ public class BankingActions {
 		}
 	}
 	
+	private static void optionViewTransactions(int bankAccountID, CustomerAccount cus) {
+		try {
+			List<UserTransaction> userTransactions = uadi.getUserTransactions(new UserTransaction(0, cus.getUser_ID(), bankAccountID, ""));
+			for (UserTransaction userTransaction : userTransactions) 
+				System.out.println(userTransaction.getMessage() + " Bank Account ID: " + userTransaction.getBankAccountID());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/*
 	 * Displays the current bank account's balance.
 	 */
@@ -129,7 +147,7 @@ public class BankingActions {
 	/*
 	 * Allows customers to deposit funds into their bank account.
 	 */
-	private static void optionDeposit(BankAccount acc) {
+	private static void optionDeposit(int user_id, BankAccount acc) {
 		float amt = Helpers.getValidAmount();
 		if (amt == -1)
 			return;
@@ -145,12 +163,18 @@ public class BankingActions {
 		
 		Driver.log.info("Bank Account: " + acc.getBank_account_ID() +
 				" Deposited: " + formatter.format(amt));
+		try {
+			uadi.createUserTransaction(new UserTransaction(0, user_id, acc.getBank_account_ID(), "Deposited " + amt + " into"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
 	 * Allows customers to withdraw funds from their bank account.
 	 */
-	private static void optionWithdraw(BankAccount acc) {
+	private static void optionWithdraw(int user_id, BankAccount acc) {
 		float amt = Helpers.getValidWithdrawAmount(acc);
 		if (amt == -1)
 			return;
@@ -166,6 +190,12 @@ public class BankingActions {
 		
 		Driver.log.info("Bank Account: " + acc.getBank_account_ID() +
 				" Withdrew: " + formatter.format(amt));
+		try {
+			uadi.createUserTransaction(new UserTransaction(0, user_id, acc.getBank_account_ID(), "Withdrew " + amt + " from"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -224,7 +254,7 @@ public class BankingActions {
 	 */
 	public static void AdminOptions() {
 		while (true) {
-			System.out.println("1. Select A Bank Account\n2. Delete A Customer Account\n3. Create A Customer Account\n-1 Exit");
+			System.out.println("1. Select A Customer Account\n2. Delete A Customer Account\n3. Create A Customer Account\n-1 Exit");
 			String input = sc.nextLine();
 			if (input.equals("-1"))
 				return;

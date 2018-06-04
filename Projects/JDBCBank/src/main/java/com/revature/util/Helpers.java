@@ -41,8 +41,10 @@ public class Helpers {
 		float amt;
 		
 		while (true) {
-			System.out.println("Amount: ");
-			String input = sc.nextLine();
+			System.out.println("Amount:\n-1 Exit ");
+			String input = sc.nextLine();	
+			if (input.equals("-1"))
+				return -1;
 			try {
 				amt = Float.parseFloat(input);
 				if (amt >= 0)
@@ -64,7 +66,8 @@ public class Helpers {
 		while (true) {
 			//get valid float amt
 			amt = getValidAmount();
-					
+			if (amt == -1)
+				return -1;
 			if (acc.getBalance() >= amt || amt == -1f) {
 				return amt;
 			}

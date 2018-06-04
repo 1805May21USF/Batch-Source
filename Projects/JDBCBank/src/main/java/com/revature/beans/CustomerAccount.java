@@ -14,14 +14,6 @@ public class CustomerAccount {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public CustomerAccount(String username, String password, String firstname, String lastname) {
-		super();
-		this.user_ID = 0;
-		this.username = username;
-		this.password = password;
-		this.firstname = firstname;
-		this.lastname = lastname;
-	}
 	public CustomerAccount(int user_id, String username, String password, String firstname, String lastname) {
 		super();
 		this.user_ID = user_id;

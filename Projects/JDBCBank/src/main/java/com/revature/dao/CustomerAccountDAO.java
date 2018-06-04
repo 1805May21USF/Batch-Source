@@ -12,7 +12,7 @@ public interface CustomerAccountDAO {
 	/*
 	 * Retrieves all of the customer accounts from the database.
 	 */
-	public abstract List<?> getCustomerAccounts() throws SQLException;
+	public abstract List<CustomerAccount> getCustomerAccounts() throws SQLException;
 	
 	/*
 	 * Creates a new customer account and saves to the database.

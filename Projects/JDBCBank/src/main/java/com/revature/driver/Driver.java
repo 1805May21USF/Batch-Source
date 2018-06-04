@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.revature.beans.CustomerAccount;
 import com.revature.daoimpl.BankAccountDAOImpl;
 import com.revature.daoimpl.CustomerAccountDAOImpl;
+import com.revature.daoimpl.UserTransactionDAOImpl;
 import com.revature.main.BankingActions;
 import com.revature.util.Helpers;
 
@@ -20,6 +21,7 @@ public class Driver {
 	public final static Scanner sc = new Scanner(System.in);
 	public final static CustomerAccountDAOImpl cadi = new CustomerAccountDAOImpl();
 	public final static BankAccountDAOImpl badi = new BankAccountDAOImpl();
+	public final static UserTransactionDAOImpl uadi = new UserTransactionDAOImpl();
 	public static Logger log = LogManager.getLogger(Driver.class);
 	
 	public static void main(String[] args) {		
@@ -87,7 +89,7 @@ public class Driver {
 		try {
 			String username = getUsernameForReg();
 			cadi.createCustomerAccount(
-					new CustomerAccount(username, getPassword(), getFirstName(), getLastName()));
+					new CustomerAccount(0, username, getPassword(), getFirstName(), getLastName()));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -43,8 +43,6 @@ class TestBankAccount {
 			e.printStackTrace();
 		}
 	}
-	
-
 
 	@Test
 	void testGetBankAccounts() {

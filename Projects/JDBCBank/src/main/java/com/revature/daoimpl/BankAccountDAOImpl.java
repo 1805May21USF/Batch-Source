@@ -37,12 +37,11 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 	@Override
 	public void createBankAccount(BankAccount acc) throws SQLException {
 		Connection conn = cf.getConnection();
-		String sql = "{call INSERTBANK(?,?,?)";
+		String sql = "{call INSERTBANK(?,?)";
 		
 		CallableStatement call = conn.prepareCall(sql);
-		call.setInt(1, acc.getBank_account_ID());
-		call.setFloat(2, acc.getBalance());
-		call.setInt(3, acc.getUser_ID());
+		call.setFloat(1, acc.getBalance());
+		call.setInt(2, acc.getUser_ID());
 		call.execute();
 	}
 
