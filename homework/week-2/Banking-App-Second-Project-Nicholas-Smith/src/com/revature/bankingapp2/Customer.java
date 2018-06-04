@@ -1,105 +1,87 @@
 /**
  * This class represents a customer of a bank.
- * A customer can have multiple Accounts. 
  * 
  * Complete: No
  */
 package com.revature.bankingapp2;
+
+import com.revature.bankingapp2.ConnFactory;
 
 /**
  * @author Nicholas Smith
  *
  */
 public class Customer
-{
+{	
+	public Customer(int userId, String firstName, String lastName,
+			String username, String password)
+	{
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.password = password;
+	}
+
+
 	//instance variables
-	private String name;
-	private int ss;
-	private int age;
+	private int userId;
+	private String firstName;
+	private String lastName;
+	private String username;
+	private String password;
+	public int getUserId()
 	
-	public String getName()
+	//getters and setters
 	{
-		return name;
+		return userId;
 	}
-	public void setName(String name)
+	public void setUserId(int userId)
 	{
-		this.name = name;
+		this.userId = userId;
 	}
-	public int getSs()
+	public String getFirstName()
 	{
-		return ss;
+		return firstName;
 	}
-	public void setSs(int ss)
+	public void setFirstName(String firstName)
 	{
-		this.ss = ss;
+		this.firstName = firstName;
 	}
-	public int getAge()
+	public String getLastName()
 	{
-		return age;
+		return lastName;
 	}
-	public void setAge(int age)
+	public void setLastName(String lastName)
 	{
-		this.age = age;
+		this.lastName = lastName;
 	}
-
-	//create a constructor for Customer that takes 3 arguments
-	public Customer(String name, int ss, int age)
+	public String getUsername()
 	{
-		this.name = name;
-		this.ss = ss;
-		this.age = age;
+		return username;
 	}
-	
-	//create a constructor for Customer that takes no arguments
-	public Customer() 
+	public void setUsername(String username)
 	{
-		//
+		this.username = username;
 	}
-	
-	//create a method to transfer funds between accounts
-	//takes Account object1, Account object 2, double amount
-	//returns nothing
-	public void transfer(Account a1, Account a2, double amount) 
+	public String getPassword()
 	{
-		//withdraws Amount from account 1
-		//deposits Amount into account 2
-		
-		//set the account balance of a1 to a1's balance - amount
-		a1.setBalance(a1.getBalance() - amount);
-		
-		//set the account balance of a2 to a2's balance + amount
-		a2.setBalance(a2.getBalance() + amount);
-
+		return password;
+	}
+	public void setPassword(String password)
+	{
+		this.password = password;
 	}
 	
-	//create a method that allows customers to register for an account
-	//takes a user name and password
-	//returns Account
-	public Account register (String username, String password) 
+	
+	@Override
+	public String toString()
 	{
-		//creates a new Account Object
-		Account a1 = new Account(username, password);
-		
-		return a1;
+		return "Customer [userId=" + userId + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", username=" + username
+				+ ", password=" + password + "]";
 	}
 	
-	//create method that prints customer information
-	public void printCustomer() 
-	{
-		//print to the console
-		System.out.println("Customer name: " + name);
-		System.out.println("Customer Social Security: " + ss);
-		System.out.println("Customer age: " + age);
-	}
-	
-	//create a method so that a customer can apply for an account
-	//returns an Application object
-	public Application apply() 
-	{
-		//create an Application object
-		Application app = new Application(this.name, this.age, this.ss);
-		
-		return app;
-	}
 
 }

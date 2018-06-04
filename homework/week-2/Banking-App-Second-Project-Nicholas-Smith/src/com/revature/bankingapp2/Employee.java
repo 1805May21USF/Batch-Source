@@ -50,7 +50,7 @@ public class Employee
 	//prints to the console
 	public void viewCustomer(Customer c1) 
 	{
-		c1.printCustomer();
+		c1.toString();
 	}
 	
 	//create a method to read Application
