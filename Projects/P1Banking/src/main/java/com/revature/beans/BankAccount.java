@@ -5,12 +5,14 @@ import java.sql.SQLException;
 import com.revature.JDBCBank.App;
 import com.revature.exceptions.BadInputException;
 import com.revature.implementdao.ImpBankAccountDAO;
+import com.revature.implementdao.ImpTransactionsDAO;
 
 public class BankAccount {
 	private int accountid;
 	private float balance;
 	private int userid;
 	private static final ImpBankAccountDAO ibad = new ImpBankAccountDAO();
+	private static final ImpTransactionsDAO itd = new ImpTransactionsDAO();
 
 	/******Constructors************************/
 	public BankAccount(int accountid, float balance, int userid) {
@@ -86,8 +88,9 @@ public class BankAccount {
 		else {
 			this.setBalance(this.getBalance()-amount);
 			ibad.updateBankAccount(this);
+			itd.addTransaction("Withdrew",amount, this.getUserid(),this.getAccountid());
 			String money = String.format("%.2f", amount);
-			System.out.println("You withdrew "+money+" from the account.");
+			System.out.println("You withdrew $"+money+" from the account.");
 			App.log.info("Account-"+this.getAccountid()+" withdrew: $"+money);
 		}
 	}
@@ -102,8 +105,9 @@ public class BankAccount {
 		//deposit yo money
 		this.setBalance(this.getBalance()+amount);
 		ibad.updateBankAccount(this);
+		itd.addTransaction("Deposited",amount, this.getUserid(),this.getAccountid());
 		String money = String.format("%.2f", amount);
-		System.out.println("You have deposited "+money+" into the account.");
+		System.out.println("You have deposited $"+money+" into the account.");
 		App.log.info("Account-"+this.getAccountid()+" deposited: $"+money);
 	}
 	

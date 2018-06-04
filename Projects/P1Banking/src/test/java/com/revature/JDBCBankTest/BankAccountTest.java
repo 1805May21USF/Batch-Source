@@ -43,6 +43,8 @@ class BankAccountTest {
 		call.execute();
 		
 		int newsize = ibad.getBankAccountList().size();
+		
+		
 		ibad.deleteBankAccount(ibad.getUserBankAccounts(u.getId()).get(0).getAccountid());
 		iud.deleteUser(username);
 		conn.close();

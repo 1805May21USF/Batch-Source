@@ -30,7 +30,6 @@ public class ImpBankAccountDAO implements BankAccountDAO{
 	 */
 	@Override
 	public void createBankAccount(int userid) throws SQLException {
-		// TODO Auto-generated method stub
 		Connection conn = cf.getConnection();		
 		String sql = "{call INSERTBANKACCOUNT(?)";
 		

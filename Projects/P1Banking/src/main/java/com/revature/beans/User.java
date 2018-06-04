@@ -6,6 +6,7 @@ import java.util.List;
 import com.revature.JDBCBank.App;
 import com.revature.exceptions.BadInputException;
 import com.revature.implementdao.ImpBankAccountDAO;
+import com.revature.implementdao.ImpTransactionsDAO;
 
 public class User {
 	private int id;
@@ -14,6 +15,7 @@ public class User {
 	private String username;
 	private String password;
 	private static ImpBankAccountDAO ibad = new ImpBankAccountDAO();
+	private static ImpTransactionsDAO itd = new ImpTransactionsDAO();
 
 	/******Constructors************************/
 	public User() {
@@ -38,16 +40,17 @@ public class User {
 	 */
 	public void promptUser() {
 		int pick = -1;
-		while(pick != 5) {
+		while(pick != 6) {
 			try {
 				System.out.print("What would you like to do?"
 						+ "\n1)View info\n"
-						+ "2)Access your accounts\n"
-						+ "3)Add a bank account\n"
-						+ "4)Delete a bank account\n"
-						+ "5)Log Out\n");
+						+ "2)View all user transactions\n"
+						+ "3)Access your accounts\n"
+						+ "4)Add a bank account\n"
+						+ "5)Delete a bank account\n"
+						+ "6)Log Out\n");
 				pick = Integer.parseInt(App.sc.nextLine());
-				if(pick>5 || pick<1) {
+				if(pick>6 || pick<1) {
 					System.out.println("That was not a valid input.");
 					throw new BadInputException();
 				}
@@ -72,17 +75,20 @@ public class User {
 			case 1:
 				this.viewAccounts();
 				break;
-			//access accounts
 			case 2:
+				this.viewAllUserTransactions();
+				break;
+			//access accounts
+			case 3:
 				BankAccount acct = this.selectBankAccount();
 				acct.promptBankAccountActions();
 				break;
 			//create account
-			case 3:
+			case 4:
 				this.createBankAccount();
 				break;
 			//delete account
-			case 4:
+			case 5:
 				this.deleteBankAccount();
 				break;
 		}
@@ -145,6 +151,10 @@ public class User {
 		System.out.println("Select an account to access: ");
 		List<BankAccount> accts = ibad.getUserBankAccounts(this.id);
 		int i = 1;
+		if(accts.size() == 0) {
+			System.out.println("No accounts associated with user.");
+			throw new BadInputException();
+		}
 		for(BankAccount acct: accts) {
 			System.out.println(i+") Account-"+acct.getAccountid()+": $"+String.format("%.2f", acct.getBalance()));
 			i++;
@@ -157,6 +167,22 @@ public class User {
 			BankAccount selected = accts.get(pick-1);
 			return selected;
 		}
+	}
+	
+	/*
+	 * Name: viewAllUserTransactions
+	 * Input:None
+	 * Output:List<Transaction>
+	 * Description: User is able to view their transactions
+	 */
+	public void viewAllUserTransactions() throws SQLException {
+		List<Transaction> userTransactions = itd.getUserTransactions(this.getId());
+		System.out.println("Transactions: ");
+		for(Transaction t: userTransactions) {
+			String money = String.format("%.2f", t.getAmount());
+			System.out.println("Account-"+t.getAccountid()+" "+t.getType().toLowerCase()+" $"+money);
+		}
+		System.out.println();
 	}
 	
 	/*******Getters and Setter********************/
