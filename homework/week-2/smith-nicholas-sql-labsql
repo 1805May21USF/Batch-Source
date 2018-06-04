@@ -304,13 +304,44 @@ END;
 --7.0 JOINS
 
 --7.1 INNER
+--Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId.
+--select columns FIRSTNAME, LASTNAME, and INVOICEID
+SELECT CUSTOMER.FIRSTNAME, CUSTOMER.LASTNAME, INVOICE.INVOICEID
+FROM CUSTOMER
+INNER JOIN INVOICE 
+--CUSTOMERID must match in both tables
+ON CUSTOMER.CUSTOMERID = INVOICE.CUSTOMERID;
 
 --7.2 OUTER
+--Create an outer join that joins the customer and invoice table,
+--specifying the CustomerId, firstname, lastname, invoiceId, and total.
+SELECT CUSTOMER.CUSTOMERID, CUSTOMER.FIRSTNAME, CUSTOMER.LASTNAME, INVOICE.INVOICEID,
+INVOICE.TOTAL
+FROM CUSTOMER
+FULL OUTER JOIN INVOICE 
+--CUSTOMERID must match in both tables
+ON CUSTOMER.CUSTOMERID = INVOICE.CUSTOMERID;
 
 --7.3 RIGHT
+--Create a right join that joins album and artist specifying artist name and title.
+SELECT ARTIST.NAME, ALBUM.TITLE
+FROM ALBUM
+RIGHT JOIN ARTIST 
+ON ALBUM.ARTISTID = ARTIST.ARTISTID
+ORDER BY ARTIST.ARTISTID;
 
 --7.4 CROSS
+--Create a cross join that joins album and artist and sorts by artist name in ascending order.
+SELECT * 
+FROM ALBUM
+CROSS JOIN ARTIST
+ORDER BY ARTIST.NAME ASC;
 
 --7.5 SELF
+--Perform a self-join on the employee table, joining on the reports to column.
+SELECT *
+FROM EMPLOYEE e1, EMPLOYEE e2
+WHERE e1.REPORTSTO = e2.REPORTSTO
+ORDER BY e1.EMPLOYEEID;
 
 --END--
