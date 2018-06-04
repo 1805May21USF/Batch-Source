@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import com.revature.util.ConnFactory;
-
 public class User implements Serializable, UserDAO{
 	/**
 	 * 
@@ -25,6 +23,9 @@ public class User implements Serializable, UserDAO{
 	public static User defaultUser;
 	static {
 		defaultUser = getUsers().get(0);
+		if (defaultUser == null){
+			System.err.println("ERROR! We failed to get the default user!");
+		}
 
 
 	}
@@ -39,7 +40,7 @@ public class User implements Serializable, UserDAO{
 		Connection conn = cf.getConnection();
 		String[] primaryKeys = new String[1];
 		primaryKeys[0] = "USERID";
-		String sql = "select ADMIN from BANKUSERS where USERID= ?";
+		String sql = "select ISADMIN from BANKUSERS where USERID= ?";
 		try {
 		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 		ps.setInt(1, this.UserID);
@@ -79,7 +80,7 @@ public class User implements Serializable, UserDAO{
 		Connection conn = cf.getConnection();
 		String[] primaryKeys = new String[1];
 		primaryKeys[0] = "USERID";
-		String sql = "select ADMIN from BANKUSERS where USERID= ?";
+		String sql = "select USERNAME, PASSWORD from BANKUSERSLOGINS where USERID= ?";
 		try {
 		PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 		ps.setInt(1, this.UserID);

@@ -344,7 +344,6 @@ public class Bank implements Serializable {
 		
 	}
 	public boolean transfer(User src, User dest, double ammount){
-		/* TODO redo!
 		if (!(src == currentUser || currentUser.isAdmin())) {
 			logger.warn("Dude, " + currentUser.getLoginInfo().keySet() + " just tottally tried to move " + ammount + " from "+ src.getLoginInfo().keySet() + " to " + dest.getLoginInfo().keySet() + " But they arn't, like, in charge or anything.");
 			return false;
@@ -364,7 +363,6 @@ public class Bank implements Serializable {
 			
 			return false;
 		}
-		/*/
 		src.setBalance(src.getBalance() - ammount);
 		dest.setBalance(dest.getBalance() + ammount);
 		logger.info("Dude, " + currentUser.getLoginInfo().keySet() + " just moved " + ammount + " from "+ src.getLoginInfo().keySet() + " to " + dest.getLoginInfo().keySet() + ". That's economy brah, green changing hands.");
