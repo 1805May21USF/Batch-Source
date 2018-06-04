@@ -32,6 +32,7 @@ public class UserTransactionDAOImpl implements UserTransactionDAO {
 			a = new UserTransaction(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4));
 			userTransactions.add(a);
 		}
+		conn.close();
 		return userTransactions;
 	}
 
@@ -45,5 +46,6 @@ public class UserTransactionDAOImpl implements UserTransactionDAO {
 		call.setInt(2, ut.getBankAccountID());
 		call.setString(3, ut.getMessage());
 		call.execute();
+		conn.close();
 	}
 }

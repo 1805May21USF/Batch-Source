@@ -31,6 +31,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 			a = new BankAccount(rs.getInt(1), rs.getFloat(2), rs.getInt(3));
 			bankAccounts.add(a);
 		}
+		conn.close();
 		return bankAccounts;
 	}
 
@@ -43,6 +44,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 		call.setFloat(1, acc.getBalance());
 		call.setInt(2, acc.getUser_ID());
 		call.execute();
+		conn.close();
 	}
 
 	@Override
@@ -53,6 +55,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 		CallableStatement call = conn.prepareCall(sql);
 		call.setInt(1, acc.getBank_account_ID());
 		call.execute();
+		conn.close();
 	}
 
 	@Override
@@ -65,6 +68,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 		call.setDouble(2, acc.getBalance());
 		call.setInt(3, acc.getUser_ID());
 		call.execute();
+		conn.close();
 	}
 
 	public List<BankAccount> getCustomerBankAccounts(int user_ID) throws SQLException {
@@ -83,6 +87,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 			a = new BankAccount(rs.getInt(1), rs.getFloat(2), rs.getInt(3));
 			bankAccounts.add(a);
 		}
+		conn.close();
 		return bankAccounts;
 	}
 
@@ -98,6 +103,7 @@ public class BankAccountDAOImpl implements BankAccountDAO {
 			a = new BankAccount(rs.getInt(1), rs.getFloat(2), rs.getInt(3));
 			bankAccounts.add(a);
 		}
+		conn.close();
 		return bankAccounts.get(0);
 	}
 }

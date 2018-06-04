@@ -31,6 +31,7 @@ public class CustomerAccountDAOImpl implements CustomerAccountDAO {
 			a = new CustomerAccount(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
 			customerAccounts.add(a);
 		}
+		conn.close();
 		return customerAccounts;
 	}
 
@@ -45,6 +46,7 @@ public class CustomerAccountDAOImpl implements CustomerAccountDAO {
 		call.setString(3, cus.getFirstname());
 		call.setString(4, cus.getLastname());
 		call.execute();
+		conn.close();
 	}
 
 	@Override
@@ -55,6 +57,7 @@ public class CustomerAccountDAOImpl implements CustomerAccountDAO {
 		CallableStatement call = conn.prepareCall(sql);
 		call.setInt(1, cus.getUser_ID());
 		call.execute();
+		conn.close();
 	}
 
 	@Override
@@ -69,5 +72,6 @@ public class CustomerAccountDAOImpl implements CustomerAccountDAO {
 		call.setString(4, cus.getFirstname());
 		call.setString(5, cus.getLastname());
 		call.execute();
+		conn.close();
 	}
 }
