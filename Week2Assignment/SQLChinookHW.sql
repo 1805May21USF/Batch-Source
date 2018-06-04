@@ -1,3 +1,4 @@
+SET SERVEROUTPUT ON;
 --2.1 SELECT
 
 -- Select all records from the Employee table
@@ -213,69 +214,149 @@ AS OBJECT(
 SELECT GET_AFTER_1968_EMP FROM DUAL;
     
 
-
-
-CREATE OR REPLACE FUNCTION GET_AFTER_1968_EMP
-    RETURN EMPLOYEE%ROWTYPE
-    AS
-    PLUS_1968 EMPLOYEE%ROWTYPE;
-    BEGIN
-    SELECT * INTO PLUS_1968 FROM EMPLOYEE;
-    --WHERE BIRTHDATE > TO_DATE('January 1, 1968', 'Month dd, yyyy');
-    RETURN PLUS_1968;
-    END;
-    /
-    
-SELECT GET_AFTER_1968_EMP FROM DUAL;
-
-SELECT * FROM EMPLOYEE 
-WHERE BIRTHDATE > TO_DATE('January 1, 1968', 'Month dd, yyyy');
-
-
 -- 4.1 Basic Stored Procedures
 -- Create a stored procedure that selects the first and last names 
 -- of all the employees.
-CREATE OR REPLACE PROCEDURE GETALLEMPLOYEES(OUT SYSREF
+CREATE OR REPLACE PROCEDURE GETALLEMPLOYEES
 AS
-TEMP EMPLOYEE;
+CURSOR C1
+    IS SELECT * FROM EMPLOYEE;
+EMPROW EMPLOYEE%ROWTYPE;
 BEGIN
-SELECT FIRSTNAME, LASTNAME INTO TEMP FROM EMPLOYEE;
+OPEN C1;
+FETCH C1 INTO EMPROW;
+DBMS_OUTPUT.PUT_LINE(EMPROW.FIRSTNAME || EMPROW.LASTNAME);
+CLOSE C1;
 END;
 /
-
-SELECT FIRSTNAME, LASTNAME FROM EMPLOYEE;
 
 --4.2 Stored Procedure Input Parameters
 -- Create a stored procedure that updates the
 -- personal information of an employee.
+CREATE OR REPLACE PROCEDURE CHANGE_EMP_TITLE(EMPID NUMBER, NEWTITLE VARCHAR2)
+AS
+BEGIN
+    UPDATE EMPLOYEE SET TITLE = NEWTITLE WHERE EMPLOYEEID=EMPID;
+END;
+/
+EXECUTE CHANGE_EMP_TITLE(9,'Custodian Manager');
 
 
 -- Create a stored procedure that returns the managers of an employee.
+CREATE OR REPLACE PROCEDURE GETMANAGER(REPORTS NUMBER)
+AS
+CURSOR C1
+    IS SELECT * FROM EMPLOYEE WHERE REPORTSTO=REPORTS;
+EMPROW EMPLOYEE%ROWTYPE;
+BEGIN
+OPEN C1;
+FETCH C1 INTO EMPROW;
+DBMS_OUTPUT.PUT_LINE(EMPROW.FIRSTNAME || EMPROW.LASTNAME);
+CLOSE C1;
+END;
+/
+
 
 --4.3 Stored Procedure Output Parameters
---Create a stored procedure that returns the name and company of a customer.
+--Create a stored procedure that returns the name 
+--and company of a customer.
+CREATE OR REPLACE PROCEDURE GETCOMPANY(CID NUMBER, C OUT SYS_REFCURSOR)
+AS
+STMT VARCHAR(100);
+BEGIN
+    STMT := 'SELECT FIRSTNAME, LASTNAME, COMPANY
+        FROM CUSTOMER
+        WHERE CUSTOMERID = CID';
+    OPEN C FOR STMT;
+END;
+/
+
 
 --5.0 Transactions
 --Create a transaction that given a invoiceId will delete that invoice 
 --(There may be constraints that rely on this, find out how to resolve them).
-
+CREATE OR REPLACE PROCEDURE DELETEINVOICE(INVID NUMBER) 
+AS
+BEGIN
+DELETE FROM INVOICELINE WHERE INVOICEID = INVID;
+DELETE FROM INVOICE WHERE INVOICEID = INVID; 
+COMMIT;
+END;
+/
 
 --Create a transaction nested within a stored procedure that inserts 
 --a new record in the Customer table
-
-
+CREATE OR REPLACE PROCEDURE INSERTCUSTOMER(FNAME VARCHAR2,
+    LNAME VARCHAR2, E_MAIL VARCHAR2)
+AS
+BEGIN
+INSERT INTO CUSTOMER(CUSTOMERID,FIRSTNAME,LASTNAME,EMAIL)
+    VALUES(MYTESTSEQ.NEXTVAL,FNAME,LNAME,E_MAIL);
+COMMIT;
+END;
+/
 --6.1 AFTER/FOR
 --Create an after insert trigger on the employee table fired after a
 --new record is inserted into the table.
+CREATE OR REPLACE TRIGGER ADDEMPLOYEEID
+AFTER
+INSERT ON EMPLOYEE
+FOR EACH ROW
+BEGIN
+DBMS_OUTPUT.PUT_LINE('Employee Added');  
+END;
+/
 
-
+        
 --Create an after update trigger on the album table that fires after a 
 --row is inserted in the table
+CREATE TABLE ALBUMBACKUP(
+    ALBUMID NUMBER NOT NULL,
+    TITLE VARCHAR2(160),
+    ARTISTID NUMBER);
+
+CREATE OR REPLACE TRIGGER ALBUMCHANGE
+AFTER
+UPDATE ON ALBUM
+FOR EACH ROW
+BEGIN
+INSERT INTO ALBUMBACKUP VALUES(:OLD.ALBUMID, :OLD.TITLE, :OLD.ARTISTID);
+dbms_output.put_line('ALBUM BACKED UP');
+END;
+/
 
 
 --Create an after delete trigger on the customer table that 
 --fires after a row is deleted from the table.
+CREATE TABLE CUSTOMERBACKUP(
+    CUSTOMERID NUMBER,
+    FIRSTNAME VARCHAR2(40),
+    LASTNAME VARCHAR2(40),
+    COMPANY VARCHAR(80),
+    ADDRESS VARCHAR2(70),
+    CITY VARCHAR2(40),
+    STATE VARCHAR2(40),
+    COUNTRY VARCHAR2(40),
+    POSTALCODE VARCHAR2(10),
+    PHONE VARCHAR2(24),
+    FAX VARCHAR2(24),
+    EMAIL VARCHAR2(60),
+    SUPPORTREPID NUMBER
+    );
 
+CREATE OR REPLACE TRIGGER CUST_BACK_UP
+AFTER 
+DELETE ON CUSTOMER
+FOR EACH ROW
+BEGIN
+INSERT INTO CUSTOMERBACKUP VALUES(
+    :OLD.CUSTOMERID, :OLD.FIRSTNAME, :OLD.LASTNAME,
+    :OLD.COMPANY, :OLD.ADDRESS, :OLD.CITY, :OLD.STATE,
+    :OLD.COUNTRY, :OLD.POSTALCODE, :OLD.PHONE, :OLD.FAX,
+    :OLD.EMAIL, :OLD.SUPPORTREPID);
+dbms_output.put_line('CUSTOMER BACKED UP');
+END;
+/
 
 
 --7.1 INNER
