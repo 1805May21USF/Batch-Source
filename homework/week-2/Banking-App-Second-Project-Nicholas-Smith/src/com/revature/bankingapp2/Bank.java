@@ -46,10 +46,7 @@ public class Bank
 		//pull the information from my database
 		CustomerTools ct = new CustomerTools();
 		
-		
-		boolean exists = ct.checkCustomer("sdf");
-		
-		System.out.println("customer exists: " + exists);
+		ct.insertCustomer("Jim", "fejiei");
 		
 		/*REGISTER METHOD*/
 		
