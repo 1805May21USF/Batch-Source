@@ -296,13 +296,36 @@ END;
 /
 
 --5.0 Transactions
+--Create a transaction that given a invoiceId will delete that invoice 
+CREATE OR REPLACE PROCEDURE delete_invoice(
+inv_id NUMBER)
+AS
+BEGIN
+DELETE 
+FROM INVOICE 
+WHERE INVOICEID = inv_id;
+COMMIT;
+END;
+/
+
+--Create a transaction nested within a stored procedure that inserts a new record in the Customer table
+CREATE OR REPLACE PROCEDURE insert_customer(cid NUMBER, fn VARCHAR2, ln VARCHAR2, co VARCHAR2, ad VARCHAR2,
+ci VARCHAR2, st VARCHAR2, cy VARCHAR2, pc VARCHAR2, ph VARCHAR2, fx VARCHAR2, em VARCHAR2, srepid NUMBER)
+AS
+BEGIN
+--Insert record into CUSTOMER table
+INSERT INTO CUSTOMER (CUSTOMERID, FIRSTNAME, LASTNAME, COMPANY, ADDRESS, CITY, STATE,
+COUNTRY, POSTALCODE, PHONE, FAX, EMAIL, SUPPORTREPID)
+VALUES (cid, fn, ln, co, ad, ci, st, cy, pc, ph, fx, em, srepid);
+COMMIT;
+END;
+/
 
 --6.0 Triggers
 
 --6.1 AFTER/FOR
 
 --7.0 JOINS
-
 --7.1 INNER
 --Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId.
 --select columns FIRSTNAME, LASTNAME, and INVOICEID
