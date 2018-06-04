@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 import javax.security.auth.login.AccountException;
 
+import org.apache.log4j.Logger;
+
 import com.revature.daoimpl.AccountDAOimpl;
 
 public class Account {
@@ -13,7 +15,7 @@ public class Account {
 	private double balance;
 	private int accountNumber;
 	private int clientsID;
-	
+	final static Logger logger = Logger.getLogger(Account.class);
 	private Scanner in = new Scanner(System.in);
 	
 	
@@ -54,7 +56,8 @@ public class Account {
 		///need to add an exception if the new amount would result in a negative balance
 		double amount = Double.parseDouble(in.next());
 		setBalance(getBalance() + amount);
-		System.out.println("Your new balance is: " + getBalance());
+		logger.info("Your new balance is: " + getBalance());
+		logger.info("$ " + amount + " was withdrawn from your Account!");
 		try {
 		impl.updateBalance(this);
 		}catch(SQLException e) {
@@ -75,7 +78,8 @@ public class Account {
 		}
 		setBalance(getBalance() - amount);
 		enoughMoney = true;
-		System.out.println("Your new balance is: " + getBalance());
+		logger.info("Your new balance is: " + getBalance());
+		logger.info("$ " + amount + " was withdrawn from your Account!");
 		}catch(AccountException e) {
 			e.printStackTrace();
 		}

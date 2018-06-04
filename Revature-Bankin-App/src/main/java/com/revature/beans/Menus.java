@@ -11,11 +11,14 @@ import java.util.Scanner;
 
 import javax.security.auth.login.AccountException;
 
+import org.apache.log4j.Logger;
+
 import com.revature.daoimpl.*;
 import com.revature.beans.*;
 
 public class Menus {
 	
+	final static Logger logger = Logger.getLogger(Menus.class);
 	private static Scanner in = new Scanner(System.in);
 	private boolean validEntry = false;
 	private int entry;
@@ -169,7 +172,9 @@ public class Menus {
 	
 	private void superUserScreen(SuperUser sup) throws SQLException, FileNotFoundException, IOException {
 		superUserPrompt();
+		SuperUserDAOimpl impl = new SuperUserDAOimpl();
 		int option = Integer.parseInt(in.next());
+		Account account = null;
 		switch (option) {
 		
 		case 1:{
@@ -179,7 +184,7 @@ public class Menus {
 			
 		}
 		case 2:{
-			SuperUserDAOimpl impl = new SuperUserDAOimpl();
+			
 			impl.createAccount();
 			sup.getSuperAccountList().clear();
 			sup.setSuperAccountList(impl.getAllAccounts());
@@ -187,33 +192,51 @@ public class Menus {
 			superUserScreen(sup);
 		}
 		case 3:{
-			//delete an account
+			sup.printAccounts();
+			System.out.println("Select an acountNumber to delete that account!");
+			account = sup.getAccountForDelete();
+			if(account != null) {
+				impl.deleteAccount(account);
+				System.out.println("Account Deleted!");
+			}
+			superUserScreen(sup);
 		}
 		case 4:{
-			//update an account
+			sup.printAccounts();
+			System.out.println("Select an acountNumber to withdraw money from that account!");
+			//withdraw from account
+			option = Integer.parseInt(in.next());
+			account = sup.selectAccount(option);
+			sup.withdraw(account);
+			superUserScreen(sup);
 		}
 		case 5:{
+			sup.printAccounts();
+			System.out.println("Select an acountNumber to deposit money into that account!");
+			//deposit into account
+			option = Integer.parseInt(in.next());
+			account = sup.selectAccount(option);
+			sup.deposit(account);
+			superUserScreen(sup);
+		}
+		case 6:{
 			loginScreen();
 			}
 		}
 	}
 
 
-
-
-
-
+	
+	
 	private void superUserPrompt() {
 		System.out.println("----Select an option-----");
 		System.out.println("----(1)View Accounts-----");
 		System.out.println("----(2)Create Account-----");
 		System.out.println("----(3)Delete Account-----");
-		System.out.println("----(4)Update Account-----");
-		System.out.println("----(5)logout-----");
+		System.out.println("----(4)Withdraw from account-----");
+		System.out.println("----(5)Deposit into account-----");
+		System.out.println("----(6)Logout-----");
 	}
-
-
-
 
 
 
@@ -249,9 +272,6 @@ public class Menus {
 		
 		return null;
 	}
-	
-	
-	
 	
 	
 	
@@ -371,6 +391,7 @@ public class Menus {
 		passWord = in.next();
 		Properties prop = new Properties();
 		prop.load(new FileReader("SuperUser.properties"));
+		
 		if(username.equals(prop.getProperty("usr"))
 		&& passWord.equals( prop.getProperty("password"))) {
 			System.out.println("You are super");

@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import com.revature.beans.Account;
 import com.revature.beans.Client;
+import com.revature.beans.SuperUser;
 import com.revature.util.ConnFactory;
 
 public class SuperUserDAOimpl {
@@ -37,6 +38,8 @@ public class SuperUserDAOimpl {
 		return accountList;
 	}
 	
+	
+	
 public void createAccount() throws SQLException {
 		
 		System.out.println("Enter the clients ID");
@@ -54,4 +57,26 @@ public void createAccount() throws SQLException {
 		
 		conn.close();
 	}
+
+
+
+public void deleteAccount(Account account) throws SQLException {
+	
+	if(account.getBalance()==0.00) {
+	// TODO Auto-generated method stub
+	Connection conn = cf.getConnection();
+	String sql = "{call deleteAccount(?)";
+	
+	CallableStatement call = conn.prepareCall(sql);
+	call.setInt(1, account.getAccountNumber());
+	call.execute();
+	
+	conn.close();
+	}
+	else {
+		System.out.println("Withdraw all of your money before closing the account!");
+	}
+}
+
+
 }
