@@ -2,6 +2,11 @@ package com.revature.beans;
 
 import java.text.DecimalFormat;
 
+/**
+ * Class for creating bank account objects.
+ * @author Nathaniel Simpson
+ *
+ */
 public class Account {
 	
 	private int accountNumber;
@@ -11,10 +16,12 @@ public class Account {
 	
 	DecimalFormat df = new DecimalFormat("$#0.00");
 	
+	// Default constructor
 	public Account() {
 		super();
 	}
 
+	// Constructor
 	public Account(int accountNumber, double balance, String accountStatus, int userId) {
 		super();
 		this.accountNumber = accountNumber;
@@ -61,10 +68,16 @@ public class Account {
 				+ ", userId=" + userId + "]";
 	}
 	
+	/*
+	 * Returns the account number and balance as a formatted String
+	 */
 	public String toCustomerString() {
 		return "Acct#: " + accountNumber + "---------- " + df.format(balance);
 	}
 	
+	/*
+	 * Returns the balance as a formatted String
+	 */
 	public String toBalanceString() {
 		return df.format(balance);
 	}

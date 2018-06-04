@@ -8,6 +8,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Establishes a connection to a database.
+ * @author Nathaniel Simpson
+ *
+ */
 public class ConnFactory {
 
 	private static ConnFactory cf = new ConnFactory();

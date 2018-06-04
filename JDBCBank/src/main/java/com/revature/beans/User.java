@@ -1,5 +1,10 @@
 package com.revature.beans;
 
+/**
+ * Class for creating user account objects.
+ * @author Nathaniel Simpson
+ *
+ */
 public class User {
 	
 	private int id;
@@ -7,12 +12,14 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String password;
-	private int status; // 1=customer, 2=employee, 3=admin
+	private int status; // 0=pending approval 1=customer, 2=employee, 3=admin
 	
+	// Default constructor
 	public User() {
 		super();
 	}
 
+	// Constructor
 	public User(int id, String userName, String firstName, String lastName,
 			String password, int status) {
 		super();

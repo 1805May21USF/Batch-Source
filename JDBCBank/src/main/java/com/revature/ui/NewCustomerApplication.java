@@ -5,6 +5,11 @@ import java.sql.SQLException;
 import com.revature.beans.User;
 import com.revature.daoimpl.UserDAOImpl;
 
+/**
+ * Class for creating and sending new user applications.
+ * @author Nathaniel Simpson
+ *
+ */
 public class NewCustomerApplication {
 
 	private UserDAOImpl udi = new UserDAOImpl();
@@ -13,7 +18,7 @@ public class NewCustomerApplication {
 	private String firstName;
 	private String lastName;
 	private String password;
-	private final int STATUS = 0;
+	private final int STATUS = 1;
 
 	private boolean isValidUserName = false;
 	private boolean isValidPassword = false;

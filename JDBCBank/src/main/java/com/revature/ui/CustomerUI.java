@@ -2,6 +2,7 @@ package com.revature.ui;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -11,14 +12,26 @@ import com.revature.daoimpl.AccountDAOImpl;
 import com.revature.daoimpl.UserDAOImpl;
 import com.revature.driver.Driver;
 
+/**
+ * User interface class for allowing the customer to interact with their
+ * bank accounts, including creating accounts, deleting accounts,
+ * depositing into accounts, withdrawing from accounts, and
+ * transferring funds between accounts.
+ * @author Nathaniel Simpson
+ *
+ */
 public class CustomerUI {
-	
+
+	// DecimalFormat is used to format values to USD
 	DecimalFormat df = new DecimalFormat("$#0.00");
 
+	// Status constants for user and bank accounts access level
 	private static final int PENDING = 0;
 	private static final int CUSTOMER = 1;
 	private static final String DEFAULT_ACCT_STATUS = "OPEN";
 
+	// Instantiating the DAO implementations for database
+	// connectivity.
 	UserDAOImpl udi = new UserDAOImpl();
 	AccountDAOImpl adi = new AccountDAOImpl();
 	User user = null;
@@ -26,15 +39,23 @@ public class CustomerUI {
 	private String username;
 	private String password;
 
+	// Variables used for terminating the program 
+	// to mitigate brute force attacks.
 	private int terminateCount = 1;
 	private final int TERMINATE_LIMIT = 3;
 	private boolean validCredentials = false;
 
+	/*
+	 * Initializes the customer UI
+	 */
 	public void initializeCUI() {
 		System.out.println("Customer Login");
 		inputCredentials();
 	}
 
+	/*
+	 * Retrieving customer credentials
+	 */
 	private void inputCredentials() {
 		System.out.print("Username: ");
 		username = Menu.in.next();
@@ -43,6 +64,9 @@ public class CustomerUI {
 		verifyCredentials(username);
 	}
 
+	/*
+	 * Verifying customer credentials
+	 */
 	private void verifyCredentials(String inputUser) {
 		User tempUser = null;
 
@@ -77,6 +101,10 @@ public class CustomerUI {
 		}
 	}
 
+	/*
+	 * Verifies the status of the account to ensure that the user
+	 * is allowed access to this information.
+	 */
 	private void verifyAccountStatus() {
 		if (user.getStatus() == CUSTOMER) {
 			System.out.println("Account verified.");
@@ -89,6 +117,9 @@ public class CustomerUI {
 		}
 	}
 
+	/*
+	 * Creates the menu for most customer input.
+	 */
 	private void customerMenu() {
 
 		boolean validInputType = false;
@@ -128,6 +159,9 @@ public class CustomerUI {
 		menuSelection(selection);
 	}
 
+	/*
+	 * Performs the selection from the menu.
+	 */
 	private void menuSelection(int selection) {
 		switch (selection) {
 		case 1:
@@ -162,6 +196,9 @@ public class CustomerUI {
 		}
 	}
 
+	/*
+	 * Allows user to view their bank accounts
+	 */
 	private void viewAccounts() {
 		List<Account> accounts = null;
 
@@ -180,6 +217,9 @@ public class CustomerUI {
 		System.out.println();
 	}
 
+	/*
+	 * Deposits funds into a particular bank account
+	 */
 	private void depositAccount() {
 
 		List<Account> accounts = null;
@@ -195,24 +235,34 @@ public class CustomerUI {
 			} catch (Exception e) {
 				System.out.println("Account number must be an integer.");
 			}
-			
-			System.out.println("Verifying account...");
+
+			System.out.println("Retrieving accounts...");
 
 			try {
 				accounts = adi.retrieveUserAccounts(user.getId());
-				System.out.println("Account verified.");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
+			boolean isOpen = true;
+
 			for (Account a : accounts) {
-				if (a.getAccountNumber() == acctNum) {
+				if (a.getAccountNumber() == acctNum 
+						&& a.getAccountStatus().equals(DEFAULT_ACCT_STATUS)) {
 					isValidAccount = true;
+					break;
+				} else if (a.getAccountNumber() == acctNum 
+						&& !a.getAccountStatus().equals(DEFAULT_ACCT_STATUS)) {
+					isValidAccount = false;
+					isOpen = false;
+					break;
 				}
 			}
 
-			if (!isValidAccount) {
+			if (!isValidAccount && isOpen) {
 				System.out.println("Account does not exist.");
+			} else if (!isValidAccount && !isOpen) {
+				System.out.println("Account is inactive.");
 			}
 		}
 
@@ -240,9 +290,9 @@ public class CustomerUI {
 		Account depositAcct = null;
 		String beforeBalance = null;
 		String afterBalance = null;
-		
+
 		System.out.println("Processing deposit...\n");
-		
+
 		try {
 			depositAcct = adi.retrieveAccount(acctNum);
 			beforeBalance = depositAcct.toBalanceString();
@@ -257,7 +307,10 @@ public class CustomerUI {
 		System.out.println("Previous balance: " + beforeBalance);
 		System.out.println("Current balance: " + afterBalance);
 	}
-	
+
+	/*
+	 * Withdraws funds from a particular bank account
+	 */
 	private void withdrawAccount() {
 
 		List<Account> accounts = null;
@@ -273,24 +326,34 @@ public class CustomerUI {
 			} catch (Exception e) {
 				System.out.println("Account number must be an integer.");
 			}
-			
-			System.out.println("Verifying account...");
+
+			System.out.println("Retrieving accounts...");
 
 			try {
 				accounts = adi.retrieveUserAccounts(user.getId());
-				System.out.println("Account verified.");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
+			boolean isOpen = true;
+
 			for (Account a : accounts) {
-				if (a.getAccountNumber() == acctNum) {
+				if (a.getAccountNumber() == acctNum 
+						&& a.getAccountStatus().equals(DEFAULT_ACCT_STATUS)) {
 					isValidAccount = true;
+					break;
+				} else if (a.getAccountNumber() == acctNum 
+						&& !a.getAccountStatus().equals(DEFAULT_ACCT_STATUS)) {
+					isValidAccount = false;
+					isOpen = false;
+					break;
 				}
 			}
 
-			if (!isValidAccount) {
+			if (!isValidAccount && isOpen) {
 				System.out.println("Account does not exist.");
+			} else if (!isValidAccount && !isOpen) {
+				System.out.println("Account is inactive.");
 			}
 		}
 
@@ -300,7 +363,7 @@ public class CustomerUI {
 
 		if(isValidAccount) {
 			boolean isValidAmount = false;
-			
+
 			try {
 				acctBalance = adi.retrieveAccount(acctNum).getBalance();
 			} catch (SQLException e1) {
@@ -327,9 +390,9 @@ public class CustomerUI {
 
 		String beforeBalance = null;
 		String afterBalance = null;
-		
+
 		System.out.println("Processing withdrawal...\n");
-		
+
 		try {
 			withdrawAcct = adi.retrieveAccount(acctNum);
 			beforeBalance = withdrawAcct.toBalanceString();
@@ -344,28 +407,31 @@ public class CustomerUI {
 		System.out.println("Previous balance: " + beforeBalance);
 		System.out.println("Current balance: " + afterBalance);
 	}
-	
+
+	/*
+	 * Transfers funds between two particular bank accounts.
+	 */
 	private void transferFunds() {
 
 		List<Account> accounts = null;
-		
+
 		int withdrawAcctNum = 0;
 		int depositAcctNum = 0;
-		
+
 		boolean isValidAccount1 = false;
 		boolean isValidAccount2 = false;
 		boolean isValidAmount = false;
-		
+
 		double transferAmount = 0;
 		double withdrawAcctBalance = 0;
 		Account withdrawAcct = null;
 		Account depositAcct = null;
-		
+
 		String withdrawBeforeBalance = null;
 		String withdrawAfterBalance = null;
 		String depositBeforeBalance = null;
 		String depositAfterBalance = null;
-		
+
 		System.out.println("Which account are you transferring from?");
 
 		while (!isValidAccount1) {
@@ -384,17 +450,28 @@ public class CustomerUI {
 				e.printStackTrace();
 			}
 
+			boolean isOpen1 = true;
+
 			for (Account a : accounts) {
-				if (a.getAccountNumber() == withdrawAcctNum) {
+				if (a.getAccountNumber() == withdrawAcctNum 
+						&& a.getAccountStatus().equals(DEFAULT_ACCT_STATUS)) {
 					isValidAccount1 = true;
+					break;
+				} else if (a.getAccountNumber() == withdrawAcctNum 
+						&& !a.getAccountStatus().equals(DEFAULT_ACCT_STATUS)) {
+					isValidAccount1 = false;
+					isOpen1 = false;
+					break;
 				}
 			}
 
-			if (!isValidAccount1) {
+			if (!isValidAccount1 && isOpen1) {
 				System.out.println("Account does not exist.");
+			} else if (!isValidAccount1 && !isOpen1) {
+				System.out.println("Account is inactive.");
 			}
 		}
-		
+
 		System.out.println("Which account are you transferring to?");
 
 		while (!isValidAccount2) {
@@ -413,23 +490,34 @@ public class CustomerUI {
 				e.printStackTrace();
 			}
 
+			boolean isOpen2 = true;
+
 			for (Account a : accounts) {
-				if (a.getAccountNumber() == depositAcctNum) {
+				if (a.getAccountNumber() == depositAcctNum 
+						&& a.getAccountStatus().equals(DEFAULT_ACCT_STATUS)) {
 					isValidAccount2 = true;
+					break;
+				} else if (a.getAccountNumber() == depositAcctNum 
+						&& !a.getAccountStatus().equals(DEFAULT_ACCT_STATUS)) {
+					isValidAccount2 = false;
+					isOpen2 = false;
+					break;
 				}
 			}
 
-			if (!isValidAccount2) {
+			if (!isValidAccount2 && isOpen2) {
 				System.out.println("Account does not exist.");
+			} else if (!isValidAccount2 && !isOpen2) {
+				System.out.println("Account is inactive.");
 			}
 		}
-		
+
 		try {
 			withdrawAcctBalance = adi.retrieveAccount(withdrawAcctNum).getBalance();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		System.out.println("How much are you transferring?");
 		while(!isValidAmount) {
 			System.out.print("Amount to transfer: ");
@@ -447,9 +535,9 @@ public class CustomerUI {
 				isValidAmount = true;
 			}
 		}
-		
+
 		System.out.println("\nProcessing transfer...");
-		
+
 		try {
 			withdrawAcct = adi.retrieveAccount(withdrawAcctNum);
 			withdrawBeforeBalance = withdrawAcct.toBalanceString();
@@ -457,7 +545,7 @@ public class CustomerUI {
 					.getBalance() - transferAmount);
 			withdrawAcct = adi.retrieveAccount(withdrawAcctNum);
 			withdrawAfterBalance = withdrawAcct.toBalanceString();
-			
+
 			depositAcct = adi.retrieveAccount(depositAcctNum);
 			depositBeforeBalance = depositAcct.toBalanceString();
 			adi.updateAccount(depositAcctNum, depositAcct
@@ -467,21 +555,24 @@ public class CustomerUI {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("You transferred " 
 				+ df.format(transferAmount));
-		
+
 		System.out.println("\nPrevious withdraw "
 				+ "account balance: " + withdrawBeforeBalance);
 		System.out.println("Previous deposit "
 				+ "account balance: " + depositBeforeBalance);
-		
+
 		System.out.println("\nCurrent withdraw "
 				+ "account balance: " + withdrawAfterBalance);
 		System.out.println("Current withdraw "
 				+ "account balance: " + depositAfterBalance);
 	}
 
+	/*
+	 * Account manager for creating and closing bank accounts.
+	 */
 	private void manageAccounts() {
 		boolean validInputType = false;
 		boolean validSelection = false;
@@ -514,6 +605,8 @@ public class CustomerUI {
 			}
 		}
 
+		int accountToClose = 0;
+
 		boolean validAmount = false;
 		if (selection == 1) {
 			System.out.println("Account Creation");
@@ -530,6 +623,37 @@ public class CustomerUI {
 					validAmount = true;
 				}
 			}
+		} else if (selection == 2) {
+			boolean validDeletionSelection = false;
+
+			while(!validDeletionSelection) {
+				System.out.println("\nAccount Deletion");
+				System.out.println("Retrieving accounts...");
+				viewAccounts();
+				System.out.println("Which account are you deleting?");
+				System.out.print("Account #: ");
+
+				try {
+					accountToClose = Integer.parseInt(Menu.in.next());
+					validDeletionSelection = true;
+				} catch (Exception e) {
+					System.out.println("Value must be an integer.");
+				}
+
+			}
+
+			System.out.println("Verifying account...");
+			List<Account> listAccounts = null;
+			try {
+				listAccounts = adi.retrieveUserAccounts(user.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			for (Account a : listAccounts) {
+				if(a.getAccountNumber() == accountToClose) {
+					System.out.println("Account verified.");
+				}
+			}
 		}
 
 		switch (selection) {
@@ -537,7 +661,8 @@ public class CustomerUI {
 			createAccount(amount);
 			manageAccounts();
 		case 2:
-			// close account
+			closeAccount(accountToClose);
+			manageAccounts();
 			break;
 		case 0:
 			System.out.println();
@@ -548,6 +673,9 @@ public class CustomerUI {
 		}
 	}
 
+	/*
+	 * Uses the account DAO to create an account in the database.
+	 */
 	private void createAccount(double amount) {
 		try {
 			System.out.println("\nCreating account...");
@@ -560,6 +688,27 @@ public class CustomerUI {
 			}
 		} catch (SQLException e) {
 			System.out.println("Unable to create account.");
+		}
+	}
+
+	/*
+	 * Uses the account DAO to close an account in the database
+	 * using a stored procedure.
+	 */
+	private void closeAccount(int accountNumber) {
+		try {
+			if(adi.retrieveAccount(accountNumber).getBalance() > 0) {
+				System.out.println("Please withdraw remaining funds "
+						+ "before closing your account.");
+			}
+			else {
+				System.out.println("\nClosing account...");
+				adi.deleteAccount(accountNumber);
+				if(adi.retrieveAccount(accountNumber) == null)
+					System.out.println("Account successfully deleted.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

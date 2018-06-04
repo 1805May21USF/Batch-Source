@@ -1,5 +1,6 @@
 package com.revature.daoimpl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,8 +13,15 @@ import com.revature.beans.Account;
 import com.revature.dao.AccountDAO;
 import com.revature.util.ConnFactory;
 
+/**
+ * Data access object implementation for accessing, editing, and
+ * manipulating bank accounts.
+ * @author Nathaniel Simpson
+ *
+ */
 public class AccountDAOImpl implements AccountDAO {
 
+	//Connection factory object to connect to the database.
 	public static ConnFactory cf = ConnFactory.getInstance();
 
 	@Override
@@ -46,6 +54,9 @@ public class AccountDAOImpl implements AccountDAO {
 		List<Account> accountList = new ArrayList<>();
 
 		Connection conn = cf.getConnection();
+		// A PreparedStatement should have been used here
+		// The current implementation can leave the database
+		// vulnerable to SQL injections.
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(
 				"SELECT * FROM BANK_ACCOUNT WHERE USER_ID = " + userId);
@@ -57,11 +68,11 @@ public class AccountDAOImpl implements AccountDAO {
 					rs.getString(3), rs.getInt(4));
 			accountList.add(acct);
 		} 
-		
+
 		conn.close();
 		return accountList;
 	}
-	
+
 	/*
 	 * Retrieves a specific account
 	 */
@@ -69,17 +80,21 @@ public class AccountDAOImpl implements AccountDAO {
 	public Account retrieveAccount(int accountNumber) throws SQLException{
 
 		Connection conn = cf.getConnection();
+
+		// A PreparedStatement should have been used here
+		// The current implementation can leave the database
+		// vulnerable to SQL injections.
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(
 				"SELECT * FROM BANK_ACCOUNT "
-				+ "WHERE ACCOUNT_NUMBER = " + accountNumber);
+						+ "WHERE ACCOUNT_NUMBER = " + accountNumber);
 		Account acct = null;
 
 		while (rs.next()) {
 			//System.out.println("This user has an account");
 			acct = new Account(rs.getInt(1), rs.getDouble(2),
 					rs.getString(3), rs.getInt(4));
-			
+
 			conn.close();
 			return acct;
 		} 
@@ -112,6 +127,9 @@ public class AccountDAOImpl implements AccountDAO {
 	public void updateAccount(int accountNumber,
 			double amount) throws SQLException {
 		Connection conn = cf.getConnection();
+		// A PreparedStatement should have been used here
+		// The current implementation can leave the database
+		// vulnerable to SQL injections.
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(
 				"SELECT * FROM BANK_ACCOUNT WHERE"
@@ -135,11 +153,13 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
-	public void deleteAccount(String accountNumber) throws SQLException {
+	public void deleteAccount(int accountNumber) throws SQLException {
 		Connection conn = cf.getConnection();
-		Statement stmt = conn.createStatement();
-		stmt.execute("DELETE FROM BANK_ACCOUNT"
-				+ " WHERE ACCOUNT_NUMBER = " + accountNumber);
+		String sql = "{call DELETE_ACCOUNT(?)";
+
+		CallableStatement call = conn.prepareCall(sql);
+		call.setInt(1, accountNumber);
+		call.execute();
 		conn.close();
 	}
 

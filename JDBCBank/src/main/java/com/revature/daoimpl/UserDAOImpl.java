@@ -10,8 +10,15 @@ import com.revature.beans.User;
 import com.revature.dao.UserDAO;
 import com.revature.util.ConnFactory;
 
+/**
+ * Data access object implementation for accessing, editing, and
+ * manipulating user accounts.
+ * @author Nathaniel Simpson
+ *
+ */
 public class UserDAOImpl implements UserDAO {
 
+	//Connection factory object to connect to the database.
 	public static ConnFactory cf = ConnFactory.getInstance();
 
 	@Override
@@ -34,17 +41,21 @@ public class UserDAOImpl implements UserDAO {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		conn.close();
 	}
 
 	@Override
 	public User retrieveUser(String userName) throws SQLException{
 		Connection conn = cf.getConnection();
+
+		// A PreparedStatement should have been used here
+		// The current implementation can leave the database
+		// vulnerable to SQL injections.
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(
 				"SELECT * FROM USER_ACCOUNT WHERE"
-				+ " USERNAME = '" + userName + "'");
+						+ " USERNAME = '" + userName + "'");
 		User user = null;
 
 		if (rs.next()) {
@@ -67,11 +78,14 @@ public class UserDAOImpl implements UserDAO {
 	public void updateUser(String userName,
 			String newPassword) throws SQLException {
 		Connection conn = cf.getConnection();
+		// A PreparedStatement should have been used here
+		// The current implementation can leave the database
+		// vulnerable to SQL injections.
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(
 				"SELECT * FROM USER_ACCOUNT "
-				+ "WHERE USERNAME = '" + userName + "'");
-		
+						+ "WHERE USERNAME = '" + userName + "'");
+
 		if (rs.next()) {
 			String[] primaryKeys = new String[1];
 			primaryKeys[0] = "USER_ID";
@@ -93,6 +107,9 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public void deleteUser(String userName) throws SQLException {
 		Connection conn = cf.getConnection();
+		// A PreparedStatement should have been used here
+		// The current implementation can leave the database
+		// vulnerable to SQL injections.
 		Statement stmt = conn.createStatement();
 		stmt.execute("DELETE FROM USER_ACCOUNT"
 				+ " WHERE USERNAME = '" + userName + "'");

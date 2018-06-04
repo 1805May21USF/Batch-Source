@@ -2,8 +2,16 @@ package com.revature.ui;
 
 import java.util.Scanner;
 
+import com.revature.driver.Driver;
+
+/**
+ * Creates the main menu of the bank app.
+ * @author Nathaniel Simpson
+ *
+ */
 public class Menu {
 
+	//A static scanner is used to prevent strange anomalies 
 	static Scanner in = new Scanner(System.in);
 
 	boolean validInputType = false;
@@ -18,6 +26,9 @@ public class Menu {
 		performSelection(selection);
 	}
 
+	/*
+	 * Outputs the menu options and collects user input.
+	 */
 	private int getSelection() {
 
 		int selection = 0;
@@ -67,11 +78,15 @@ public class Menu {
 		return selection;
 	}
 
+	/*
+	 * Performs the selection made by the user.
+	 */
 	private void performSelection(int selection) {
 		switch (selection) {
 		case 1:
 			NewCustomerApplication nca = new NewCustomerApplication();
 			nca.createApplication();
+			Driver.reinitialize();
 			break;
 		case 2:
 			CustomerUI cui = new CustomerUI();
