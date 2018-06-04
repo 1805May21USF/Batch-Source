@@ -1,0 +1,20 @@
+--Create tables for my banking application. 
+
+--Create a CUSTOMERBANK table.
+--Columns:
+--USER_ID
+--FIRST_NAME
+--LAST_NAME
+--USER_NAME
+--PASSWORD
+
+--Create an ACCOUNTBANK table.
+--Columns:
+--BANK_ACCOUNT_ID
+--USER_ID (foreign key)
+--BALANCE
+
+--Create an EMPLOYEEBANK table.
+--EMPLOYEEID
+--FIRSTNAME
+--LASTNAME
