@@ -130,15 +130,7 @@ public class Users {
 		
 	}
 	
-	public boolean CheckUserStatus(String usern) {
-		// Check status of user
-		
-		
-		// If status is "CLOSED", return false
-		
-		// If status is "ACTIVE", return true.
-		return false;
-	}
+	
 	
 	public boolean CheckUsernameAndPass(String usern, String passw) {
 		// Check if Username and password exists.
