@@ -4,13 +4,18 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.beans.Messages;
 import com.revature.daoimpl.BankAdminDAOImpl;
 import com.revature.daoimpl.CheckUsernameDAOImpl;
 import com.revature.daoimpl.GetUserInfoDAOImpl;
+import com.revature.driver.Login;
 import com.revature.impl.CheckPassword;
 
 public class BankAdmin {
+
+	private static Logger log = Logger.getLogger(BankAdmin.class.getName());
 	private String username;
 	protected DecimalFormat df = new DecimalFormat("$###,###,##0.00");
 	Scanner input = new Scanner(System.in);
@@ -56,7 +61,11 @@ public class BankAdmin {
 								case "1":
 									new BankAdminDAOImpl().BankAdminApproveApplication(
 											listOfAccountNumbers.get(Integer.parseInt(accountChoice)));
+									log.info(username + " has approved of "
+											+ listOfAccountNumbers.get(Integer.parseInt(accountChoice))
+											+ "'s application.");
 									System.out.println("The application has been successflly approved.");
+									continue Loop1;
 								case "2":
 									break;
 								default:
@@ -84,13 +93,16 @@ public class BankAdmin {
 								case "1":
 									new BankAdminDAOImpl().BankAdminDenyApplication(
 											listOfAccountNumbers.get(Integer.parseInt(accountChoices)));
+									log.info(username + " has denied of "
+											+ listOfAccountNumbers.get(Integer.parseInt(accountChoices))
+											+ "'s application.");
 									System.out.println("The application has been successfully denied.");
+									continue Loop1; // Go back to the previous menu
 								case "2":
 									break;
 								default:
 									getError();
 								}
-
 							}
 						} else {
 							getError();
@@ -111,12 +123,14 @@ public class BankAdmin {
 				ArrayList<String> listOfAccountNumbers5 = new ArrayList<>();
 				int accountCount5 = 0;
 
+				System.out.println("ID - FIRSTNAME        LASTNAME      | ACCOUNT NUMBER  | STATUS   | BALANCE");
+				System.out.println("---------------------------------------------------------------------------");
 				for (String rst : listOfAllAccounts5) {
 					String t = rst;
 					t = t.replace(',', ' ');
 					String[] words = t.split("\\s+");
-					System.out.println(accountCount5++ + " - " + words[0] + " " + words[1] + " | Account Number: "
-							+ words[2] + " | Status: " + words[4] + " | Balance: " + words[3]);
+					System.out.printf("%s - %-15s %-15s | %-15s | %-10s | %-20s\n", accountCount5++, words[0], words[1],
+							words[2], words[4], df.format(Double.parseDouble(words[3])));
 					listOfAccountNumbers5.add(words[2]);
 				}
 				System.out.print(
@@ -156,7 +170,9 @@ public class BankAdmin {
 							case "1":
 								if (editInfo(accountNo5, newFirstName, 1)) {
 									System.out.println("Updating first name successful!");
-									return;
+									log.info(username + " has changed " + accountNo5 + "'s first name to "
+											+ newFirstName);
+									continue Loop1;
 								} else {
 									System.out.println("Updating first name failed!");
 								}
@@ -185,6 +201,9 @@ public class BankAdmin {
 							case "1":
 								if (editInfo(accountNo5, newLastName, 2)) {
 									System.out.println("Updating last name successful!");
+									log.info(
+											username + " has changed " + accountNo5 + "'s last name to " + newLastName);
+									continue Loop1;
 								} else {
 									System.out.println("Updating last name failed!");
 								}
@@ -215,6 +234,8 @@ public class BankAdmin {
 							case "1":
 								if (editInfo(accountNo5, newStatus, 3)) {
 									System.out.println("Updating status successful!");
+									log.info(username + " has changed " + accountNo5 + "'s status to " + newStatus);
+									continue Loop1;
 								} else {
 									System.out.println("Updating status failed!");
 								}
@@ -232,26 +253,6 @@ public class BankAdmin {
 							getError();
 							break;
 						}
-						String amountWithdraw5 = input.next();
-						double newBalance5 = Double.parseDouble(getBalance(accountNo5))
-								- Double.parseDouble(amountWithdraw5);
-						if (newBalance5 < 0) {
-							getError();
-							break;
-						} else {
-							System.out.println(
-									"Please confirm that you want to withdraw from this account: \n\t1 - Yes, withdraw from account\n\t2 - No!");
-							switch (input.next()) {
-							case "1":
-								getWithdrawProcess(accountNo5, newBalance5 + "");
-								System.out.println("Withdrawal successful!");
-							case "2":
-								break;
-							default:
-								getError();
-							}
-
-						}
 					}
 				} else {
 					getError();
@@ -265,13 +266,15 @@ public class BankAdmin {
 				ArrayList<String> listOfAllAccounts = getAllApplications();
 				ArrayList<String> listOfAccountNumbers2 = new ArrayList<>();
 				int accountCount = 0;
-
+				
+				System.out.println("ID - FIRSTNAME        LASTNAME      | ACCOUNT NUMBER  | STATUS   | BALANCE");
+				System.out.println("---------------------------------------------------------------------------");
 				for (String rst : listOfAllAccounts) {
 					String t = rst;
 					t = t.replace(',', ' ');
 					String[] words = t.split("\\s+");
-					System.out.println(accountCount++ + " - " + words[0] + " " + words[1] + " | Account Number: "
-							+ words[2] + " | Balance: " + df.format(Double.parseDouble(words[3])));
+					System.out.printf("%s - %-15s %-15s | %-15s | %-10s | %-20s\n", accountCount++, words[0], words[1],
+							words[2], words[4], df.format(Double.parseDouble(words[3])));
 					listOfAccountNumbers2.add(words[2]);
 				}
 				System.out.print("\nEnter the account to withdraw from: ");
@@ -288,7 +291,8 @@ public class BankAdmin {
 							double newBalance = Double.parseDouble(getBalance(accountNo))
 									- Double.parseDouble(amountWithdraw);
 							if (newBalance < 0) {
-								throw new OverDraftException("Error: Amount entered will cause an overdraft! Please try again!");
+								throw new OverDraftException(
+										"Error: Amount entered will cause an overdraft! Please try again!");
 							} else {
 								System.out.println(
 										"Please confirm that you want to withdraw from this account: \n\t1 - Yes, withdraw from account\n\t2 - No!");
@@ -296,7 +300,9 @@ public class BankAdmin {
 								switch (input.next()) {
 								case "1":
 									getWithdrawProcess(accountNo, newBalance + "");
+									log.info(username + " has withdrawn " + amountWithdraw + " from " + accountNo);
 									System.out.println("Withdrawal successful!");
+									continue Loop1;
 								case "2":
 									break;
 								default:
@@ -319,13 +325,14 @@ public class BankAdmin {
 				ArrayList<String> listOfAllAccounts3 = getAllApplications();
 				ArrayList<String> listOfAccountNumbers3 = new ArrayList<>();
 				int accountCount3 = 0;
-
+				System.out.println("ID - FIRSTNAME        LASTNAME      | ACCOUNT NUMBER  | STATUS   | BALANCE");
+				System.out.println("---------------------------------------------------------------------------");
 				for (String rst : listOfAllAccounts3) {
 					String t = rst;
 					t = t.replace(',', ' ');
 					String[] words = t.split("\\s+");
-					System.out.println(accountCount3++ + " - " + words[0] + " " + words[1] + " | Account Number: "
-							+ words[2] + " | Balance: " + words[3]);
+					System.out.printf("%s - %-15s %-15s | %-15s | %-10s | %-20s\n", accountCount3++, words[0], words[1],
+							words[2], words[4], df.format(Double.parseDouble(words[3])));
 					listOfAccountNumbers3.add(words[2]);
 				}
 				System.out.print("\nEnter the account to deposit to: ");
@@ -337,9 +344,9 @@ public class BankAdmin {
 					} else {
 						String accountNo3 = listOfAccountNumbers3.get(Integer.parseInt(option3));
 						System.out.println("Enter the amount you would like to deposit: ");
-						String amountWithdraw3 = input.next();
+						String amountDeposit3 = input.next();
 						double newBalance3 = Double.parseDouble(getBalance(accountNo3))
-								+ Double.parseDouble(amountWithdraw3);
+								+ Double.parseDouble(amountDeposit3);
 						if (newBalance3 < 0) {
 							getError();
 							break;
@@ -351,6 +358,8 @@ public class BankAdmin {
 							case "1":
 								getWithdrawProcess(accountNo3, newBalance3 + "");
 								System.out.println("Deposit successful!");
+								log.info(username + " has deposited " + amountDeposit3 + " to " + accountNo3);
+								continue Loop1;
 							case "2":
 								break;
 							default:
@@ -364,22 +373,23 @@ public class BankAdmin {
 					break;
 				}
 				break;
-			/* Case 5: The user wants to transfer funds between users */
+			/*
+			 * Case 5: The user wants to cancel accounts. You can only cancel accounts if
+			 * balance is 0.
+			 */
 			case "5":
-				break;
-			/* Case 6: The user wants to cancel accounts */
-			case "6":
 				System.out.println("List of accounts:");
 				ArrayList<String> listOfAllAccounts4 = getAllApplications();
 				ArrayList<String> listOfAccountNumbers4 = new ArrayList<>();
 				int accountCount4 = 0;
-
+				System.out.println("ID - FIRSTNAME        LASTNAME      | ACCOUNT NUMBER  | STATUS   | BALANCE");
+				System.out.println("---------------------------------------------------------------------------");
 				for (String rst : listOfAllAccounts4) {
 					String t = rst;
 					t = t.replace(',', ' ');
 					String[] words = t.split("\\s+");
-					System.out.println(accountCount4++ + " - " + words[0] + " " + words[1] + " | Account Number: "
-							+ words[2] + " | Balance: " + words[3]);
+					System.out.printf("%s - %-15s %-15s | %-15s | %-10s | %-20s\n", accountCount4++, words[0], words[1],
+							words[2], words[4], df.format(Double.parseDouble(words[3])));
 					listOfAccountNumbers4.add(words[2]);
 				}
 				System.out.print("\nEnter the account to cancel: ");
@@ -389,18 +399,25 @@ public class BankAdmin {
 						getError();
 						break;
 					} else {
-						String accountNo4 = listOfAccountNumbers4.get(Integer.parseInt(option4));
-						System.out.println(
-								"Please confirm that you want to cancel this account: \n\t1 - Yes, cancel account\n\t2 - No!");
-
-						switch (input.next()) {
-						case "1":
-							getCancelProcess(accountNo4);
-							System.out.println("Account Cancellation successful!");
-						case "2":
+						if (Double.parseDouble(getBalance(listOfAccountNumbers4.get(Integer.parseInt(option4)))) == 0) {
+							String accountNo4 = listOfAccountNumbers4.get(Integer.parseInt(option4));
+							System.out.println(
+									"Please confirm that you want to cancel this account: \n\t1 - Yes, cancel account\n\t2 - No!");
+							switch (input.next()) {
+							case "1":
+								getCancelProcess(accountNo4);
+								System.out.println("Account Cancellation successful!");
+								log.info(username + " has cancelled " + accountNo4 + "'s account.");
+								continue Loop1;
+							case "2":
+								break;
+							default:
+								getError();
+							}
+						} else {
+							System.out.println(
+									"We're sorry, but you cannot delete an account if the balance is greater than 0.");
 							break;
-						default:
-							getError();
 						}
 					}
 				} else {
@@ -408,8 +425,8 @@ public class BankAdmin {
 					break;
 				}
 				break;
-			/* Case 7: The user exits to the previous menu */
-			case "7":
+			/* Case 6: The user exits to the previous menu */
+			case "6":
 				System.out.println("Exiting to previous menu.");
 				return;
 			default:
@@ -423,7 +440,7 @@ public class BankAdmin {
 	 * user entered is valid.
 	 */
 	private boolean CheckNameIfValid(String str) {
-		return str.matches("[A-Z]*");
+		return str.matches("[A-z]*");
 	}
 
 	/*
@@ -468,24 +485,6 @@ public class BankAdmin {
 
 	private boolean editInfo(String account, String newInfo, int editPosition) {
 		return new BankAdminDAOImpl().BankAdminViewAndEditAccountInfo(account, newInfo, editPosition);
-	}
-
-	/*
-	 * A method that calls onto the class CheckUsername to check if the user name
-	 * exists in the database.
-	 */
-	private boolean checkUsername(String str) {
-		return new CheckUsernameDAOImpl().checkUsername(str);
-	}
-
-	/*
-	 * A method that calls onto the class CheckPassword to check if the pass word
-	 * the user entered is valid. The requirements can be changed in the
-	 * CheckPassword class.
-	 */
-	private boolean checkPassword(String str) {
-		CheckPassword chk = new CheckPassword();
-		return (chk.CheckPasswordIfValid(str));
 	}
 }
 

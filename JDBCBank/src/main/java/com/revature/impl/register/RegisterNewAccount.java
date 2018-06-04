@@ -7,10 +7,13 @@ package com.revature.impl.register;
 import java.util.Date;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.beans.Messages;
 import com.revature.daoimpl.CheckUsernameDAOImpl;
 import com.revature.daoimpl.RegistrationDAOImpl;
 import com.revature.impl.CheckPassword;
+import com.revature.impl.customer.Customer;
 
 public class RegisterNewAccount {
 
@@ -18,6 +21,7 @@ public class RegisterNewAccount {
 	private String newLastName;
 	private String newUsername;
 	private String newPassword;
+	private static Logger log = Logger.getLogger(Customer.class.getName());
 
 	public RegisterNewAccount() {
 		Scanner input = new Scanner(System.in);
@@ -78,7 +82,8 @@ public class RegisterNewAccount {
 		}
 
 		new RegisterNewAccount(newFirstName, newLastName, newUsername, newPassword);
-
+		log.info(newFirstName + " " + newLastName + " has registered for an account. Username: " + newUsername
+				+ " Password: " + newPassword);
 		exitMessage();
 	}
 
@@ -155,8 +160,8 @@ public class RegisterNewAccount {
 	 * A method that calls onto the class CheckName to check if the user name the
 	 * user entered is valid.
 	 */
-	private boolean CheckNameIfValid(String str) {
-		return str.matches("[A-Z]*");
+	public static boolean CheckNameIfValid(String str) {
+		return str.matches("[A-z]*");
 	}
 
 	/*

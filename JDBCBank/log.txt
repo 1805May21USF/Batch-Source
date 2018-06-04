@@ -2,3 +2,32 @@
 2018-06-04 13:23:04 INFO  Customer:79 - 1528055320706 has withdrawn $100 from their account.
 2018-06-04 13:26:32 INFO  Customer:79 - 1528055320706 has withdrawn $105.25 from their account.
 2018-06-04 13:32:36 INFO  Customer:132 - 1528055320706 has deposited $150.32 from their account.
+2018-06-04 14:42:58 INFO  Login:38 - customer1 has logged into their account.
+2018-06-04 14:43:05 INFO  Customer:200 - customer1 has logged out of their account.
+2018-06-04 14:43:32 INFO  Login:46 - admin has logged into their account.
+2018-06-04 14:44:11 INFO  Login:64 - admin has approved of 1528137801162's application.
+2018-06-04 14:44:32 INFO  Login:38 - customer1 has logged into their account.
+2018-06-04 14:53:41 INFO  Login:38 - customer1 has logged into their account.
+2018-06-04 14:54:41 INFO  Customer:132 - 1528137801162 has deposited $500 from their account.
+2018-06-04 15:26:42 INFO  Login:46 - admin has logged into their account.
+2018-06-04 15:29:53 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:33:36 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:41:25 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:42:03 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:42:54 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:43:20 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:44:49 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:49:06 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:49:41 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:50:16 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:50:51 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:51:25 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 15:51:33 INFO  Employee:112 - employee1 has logged out of their account.
+2018-06-04 15:51:42 INFO  Login:46 - admin has logged into their account.
+2018-06-04 15:55:51 INFO  Login:46 - admin has logged into their account.
+2018-06-04 15:56:15 INFO  BankAdmin:173 - admin has changed 1528137801162's first name to Cookie
+2018-06-04 15:57:03 INFO  BankAdmin:301 - admin has withdrawn 200.42 from 1528055320705
+2018-06-04 15:59:48 INFO  Login:46 - admin has logged into their account.
+2018-06-04 16:00:21 INFO  BankAdmin:361 - admin has deposited 1000 to 1528055320705
+2018-06-04 16:00:32 INFO  BankAdmin:303 - admin has withdrawn 500 from 1528137801162
+2018-06-04 16:00:39 INFO  BankAdmin:410 - admin has cancelled 1528137801162's account.

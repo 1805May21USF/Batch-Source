@@ -74,7 +74,7 @@ public class GetUserInfoDAOImpl implements GetUserInfoDAO {
 		Connection conn = cf.getConnection();
 		try {
 			Statement stmt = conn.createStatement();
-			String queryString = "Select person.accountid, personaccounts.balance from person inner join personaccounts on person.username = "
+			String queryString = "Select personaccounts.accountid, personaccounts.balance from person inner join personaccounts on person.username = "
 					+ "personaccounts.username where person.username = '" + username + "'";
 			ResultSet rst = stmt.executeQuery(queryString);
 			while (rst.next()) {

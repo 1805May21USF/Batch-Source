@@ -4,12 +4,16 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.beans.Messages;
 import com.revature.daoimpl.EmployeeDAOImpl;
+import com.revature.impl.customer.Customer;
 
 public class Employee {
 	private String username;
 	protected DecimalFormat df = new DecimalFormat("$###,###,##0.00");
+	private static Logger log = Logger.getLogger(Employee.class.getName());
 	Scanner input = new Scanner(System.in);
 
 	public Employee(String str) {
@@ -51,7 +55,10 @@ public class Employee {
 							} else {
 								new EmployeeDAOImpl().EmployeeApproveApplication(
 										listOfAccountNumbers.get(Integer.parseInt(accountChoice)));
-								System.out.println("The application has been successflly approved.");
+								log.info(username + " has approved of "
+										+ listOfAccountNumbers.get(Integer.parseInt(accountChoice))
+										+ "'s application.");
+								System.out.println("The application has been successfully approved.");
 							}
 						} else {
 							getError();
@@ -68,6 +75,9 @@ public class Employee {
 							} else {
 								new EmployeeDAOImpl().EmployeeDenyApplication(
 										listOfAccountNumbers.get(Integer.parseInt(accountChoices)));
+								log.info(username + " has denied "
+										+ listOfAccountNumbers.get(Integer.parseInt(accountChoices))
+										+ "'s application.");
 								System.out.println("The application has been successfully denied. ");
 							}
 						} else {
@@ -85,17 +95,21 @@ public class Employee {
 			// Case 2: View Customer Info. The employee should not be able to edit customer
 			// information.
 			case "2":
+				int accountCount5 = 0;
 				ArrayList<String> list = listOfCustomerInfo();
+				System.out.println("ID - FIRSTNAME        LASTNAME      | ACCOUNT NUMBER  | STATUS   | BALANCE");
+				System.out.println("---------------------------------------------------------------------------");
 				for (String st : list) {
 					String t = st;
 					t = t.replace(',', ' ');
 					String[] words = t.split("\\s+");
-					//words[0] = first name, words[1] = last name, words[2] = account number
-					System.out.println("\tName: " + words[0] + " " + words[1] + "\n\t\tAccount Number: " + words[2]);
+					System.out.printf("%s - %-15s %-15s | %-15s | %-10s | %-20s\n", accountCount5++, words[0], words[1],
+							words[2], words[4], df.format(Double.parseDouble(words[3])));
 				}
 				break;
 			case "3":
 				System.out.println("Exiting account to main menu.");
+				log.info(username + " has logged out of their account.");
 				return;
 			default:
 				getError();
@@ -107,7 +121,7 @@ public class Employee {
 		System.out.println(new Messages().getEmployeePrompt());
 	}
 
-	private boolean checkIfDigit(String t) {
+	public static boolean checkIfDigit(String t) {
 		return t.matches("[0-9]*");
 	}
 

@@ -3,10 +3,13 @@ package com.revature.impl.register;
 import java.util.Date;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.beans.Messages;
 import com.revature.daoimpl.CheckUsernameDAOImpl;
 import com.revature.daoimpl.RegistrationDAOImpl;
 import com.revature.impl.CheckPassword;
+import com.revature.impl.customer.Customer;
 
 public class RegisterNewAccountJoint {
 	private String newFirstName1;
@@ -17,6 +20,7 @@ public class RegisterNewAccountJoint {
 	private String newLastName2;
 	private String newUsername2;
 	private String newPassword2;
+	private static Logger log = Logger.getLogger(Customer.class.getName());
 	Scanner input = new Scanner(System.in);
 
 	public RegisterNewAccountJoint() {
@@ -134,8 +138,12 @@ public class RegisterNewAccountJoint {
 				getError();
 			}
 		}
+
 		new RegisterNewAccountJoint(newFirstName1, newLastName1, newUsername1, newPassword1, newFirstName2,
 				newLastName2, newUsername2, newPassword2);
+		log.info(newFirstName1 + " " + newLastName1 + "(" + newUsername1 + ", " + newPassword1
+				+ ") has registered for a joint account with " + newFirstName2 + " " + newLastName2 + "(" + newUsername2
+				+ ", " + newPassword2 + ")");
 		exitMessage();
 	}
 
@@ -218,7 +226,7 @@ public class RegisterNewAccountJoint {
 	 * user entered is valid.
 	 */
 	private boolean CheckNameIfValid(String str) {
-		return str.matches("[A-Z]*");
+		return str.matches("[A-z]*");
 	}
 
 	private static void getError() {

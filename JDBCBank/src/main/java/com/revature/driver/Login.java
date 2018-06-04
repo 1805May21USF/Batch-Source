@@ -2,6 +2,8 @@ package com.revature.driver;
 
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.beans.Messages;
 import com.revature.daoimpl.CheckUserDAOImpl;
 import com.revature.daoimpl.GetUserInfoDAOImpl;
@@ -10,8 +12,13 @@ import com.revature.impl.customer.Customer;
 import com.revature.impl.employee.Employee;
 
 public class Login {
+
+	private static Logger log = Logger.getLogger(Login.class.getName());
+
 	public Login() {
+
 		Scanner input = new Scanner(System.in);
+
 		Loop1: while (true) {
 			System.out.println("LOGIN:");
 			usernameMessage();
@@ -28,12 +35,15 @@ public class Login {
 					System.out.println("Your account application is currently being reviewed. Please try again later.");
 					break;
 				case 1:
+					log.info(username + " has logged into their account.");
 					new Customer(username);
 					break;
 				case 2:
+					log.info(username + " has logged into their account.");
 					new Employee(username);
 					break;
 				case 3:
+					log.info(username + " has logged into their account.");
 					new BankAdmin(username);
 					break;
 				default:

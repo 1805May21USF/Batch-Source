@@ -4,6 +4,10 @@ import java.util.Scanner;
 
 import com.revature.beans.Messages;
 
+/* BankApp Assignment created by Tiffany Tran
+ * Due: Monday June 4th at 5pm
+ * Log-file: log.txt is found in the Batch-Source folder
+ * */
 public class Driver {
 
 	public static void main(String[] args) {

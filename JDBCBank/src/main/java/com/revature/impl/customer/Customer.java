@@ -145,22 +145,12 @@ public class Customer {
 					}
 
 				}
-
-			case "3":
-				if (results.size() >= 2) {
-
-				} else {
-					System.out.println(
-							"We're sorry, but you are unable to transfer funds between accounts. Exiting transfer process.");
-					break;
-				}
-				new CustomerDAOImpl().CustomerTransfer(username);
 				break;
 			/*
 			 * The user wants to delete their account. They can only delete from their
 			 * account if the account balance is 0
 			 */
-			case "4":
+			case "3":
 				System.out.println("Which account would you like to delete?");
 				String account3 = input.next();
 				if (Integer.parseInt(account3) > accountNum) {
@@ -175,6 +165,7 @@ public class Customer {
 						switch (input.next()) {
 						case "1":
 							deleteUserAccount(actualAccountValue[Integer.parseInt(account3)]);
+							log.info(actualAccountValue[Integer.parseInt(account3)] + " has deleted their account! $");
 							System.out.println("Account deletion successful!");
 							return;
 
@@ -190,7 +181,8 @@ public class Customer {
 						break;
 					}
 				}
-			case "5":
+			case "4":
+				log.info(username + " has logged out of their account.");
 				System.out.println("Exiting account to main menu.");
 				return;
 			default:

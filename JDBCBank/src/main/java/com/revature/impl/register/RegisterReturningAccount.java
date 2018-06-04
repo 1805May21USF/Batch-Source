@@ -19,7 +19,9 @@ public class RegisterReturningAccount {
 
 		/*
 		 * To apply for an additional account as a returning user, the person must enter
-		 * a user name and password that is saved in the Person.txt
+		 * a user name and password that is saved in the Person.txt. There is currently
+		 * a bug where you cannot access your account once you re-apply as a returning
+		 * account user.
 		 */
 		Loop2: while (true) {
 			usernameMessage();
@@ -97,7 +99,7 @@ public class RegisterReturningAccount {
 	private void passwordMessage() {
 		System.out.print(new Messages().getPasswordPrompt());
 	}
-	
+
 	/* Prints a message that their application was submitted. */
 	private void exitMessage() {
 		System.out.print(new Messages().getRegisterExitMessage());
@@ -115,24 +117,24 @@ public class RegisterReturningAccount {
 		return result;
 	}
 
-	/* Checks if the user is in the database*/
+	/* Checks if the user is in the database */
 	private boolean checkUser(String username2, String password2) {
 		return new CheckUserDAOImpl().checkUserAndPassword(username2, password2);
 	}
-//
-//	public boolean checkUsername(String str) {
-//		CheckUsername chk = new CheckUsername();
-//		if (chk.CheckUsernameExists(str)) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
-//
-//	public boolean CheckNameIfValid(String str) {
-//		CheckName chk = new CheckName();
-//		return chk.CheckNameIfValid(str);
-//	}
+	//
+	// public boolean checkUsername(String str) {
+	// CheckUsername chk = new CheckUsername();
+	// if (chk.CheckUsernameExists(str)) {
+	// return true;
+	// } else {
+	// return false;
+	// }
+	// }
+	//
+	// public boolean CheckNameIfValid(String str) {
+	// CheckName chk = new CheckName();
+	// return chk.CheckNameIfValid(str);
+	// }
 
 	public String dateGenerator() {
 		Date t = new Date();

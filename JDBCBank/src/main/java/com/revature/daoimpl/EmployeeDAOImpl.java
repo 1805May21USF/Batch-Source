@@ -48,11 +48,34 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		Connection conn = cf.getConnection();
 		try {
 			Statement stmt = conn.createStatement();
-			String queryString = "select firstname, lastname, accountid from person where status < 2";
+			String queryString = "select  person.FIRSTNAME, person.lastname, person.ACCOUNTID, personaccounts.balance, person.status "
+					+ "FROM person INNER JOIN personaccounts ON person.accountid = personaccounts.accountid";
 			ResultSet rst = stmt.executeQuery(queryString);
 			// getString(1) = First Name, getString(2) = Last Name, getString(3) = AccountID
 			while (rst.next()) {
-				results.add(rst.getString(1) + "," + rst.getString(2) + "," + rst.getString(3));
+				String status = "";
+				//
+				switch (rst.getString(5)) {
+				case "-1":
+					status = "Denied";
+					break;
+				case "0":
+					status = "Open";
+					break;
+				case "1":
+					status = "Customer";
+					break;
+				case "2":
+					status = "Employee";
+					break;
+				case "3":
+					status = "Admin";
+					break;
+				default:
+					status = "Open";
+				}
+				results.add(rst.getString(1) + "," + rst.getString(2) + "," + rst.getString(3) + "," + rst.getString(4)
+						+ "," + status);
 			}
 			conn.close();
 		} catch (Exception ex) {

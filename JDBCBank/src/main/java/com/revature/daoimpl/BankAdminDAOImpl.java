@@ -170,7 +170,7 @@ public class BankAdminDAOImpl implements BankAdminDAO {
 		try {
 			Statement stmt = conn.createStatement();
 			String queryString = "select  person.FIRSTNAME, person.lastname, person.ACCOUNTID, personaccounts.balance, person.status "
-					+ "FROM person INNER JOIN personaccounts ON person.username = personaccounts.username";
+					+ "FROM person INNER JOIN personaccounts ON person.accountid = personaccounts.accountid";
 			ResultSet rst = stmt.executeQuery(queryString);
 			// getString(1) = First Name, getString(2) = Last Name, getString(3) =
 			// AccountID, getString(4) = Balance, getString(5) = status
