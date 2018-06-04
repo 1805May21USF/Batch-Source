@@ -13,4 +13,8 @@ public interface CustomerDAO {
 	public abstract String getPassword(String user) throws SQLException;
 	public abstract int getCustomerID(String user) throws SQLException;
 	public abstract Customer getCustomer(int cid) throws SQLException;
+	public abstract void removeCustomer(int cid) throws SQLException; 
+	public abstract void editCustomerName(int cid, String fn, String ln) throws SQLException;
+	public abstract void editCustomerUser(int cid, String user) throws SQLException;
+	public abstract void editCustomerPass(int cid, String pass) throws SQLException;
 }

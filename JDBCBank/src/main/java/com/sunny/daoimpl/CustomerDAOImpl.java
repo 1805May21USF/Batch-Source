@@ -1,5 +1,6 @@
 package com.sunny.daoimpl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -136,5 +137,46 @@ public class CustomerDAOImpl implements CustomerDAO {
 		ps.close();
 		con.close();
 		return c;
+	}
+
+	public void removeCustomer(int cid) throws SQLException {
+		Connection con = cf.getConnection();
+		String sql = "{call REMOVECUSTOMER(?)";
+		CallableStatement cs = con.prepareCall(sql);
+		cs.setInt(1, cid);
+		cs.executeQuery();
+		cs.close();
+		con.close();
+		
+		
+		
+	}
+	
+	public void editCustomerName(int cid, String fn, String ln) throws SQLException {
+		String sql = "UPDATE BANKCUSTOMER SET FNAME = ?, SET LNAME = ?, WHERE CID = ?";
+		Connection con = cf.getConnection();
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, fn);
+		ps.setString(2, ln);
+		ps.setInt(3, cid);
+		ps.executeQuery();
+	}
+	
+	public void editCustomerUser(int cid, String user) throws SQLException {
+		String sql = "UPDATE BANKCUSTOMER SET USERNAME = ? WHERE CID = ?";
+		Connection con = cf.getConnection();
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, user);
+		ps.setInt(2, cid);
+		ps.executeQuery();
+	}
+	
+	public void editCustomerPass(int cid, String pass) throws SQLException {
+		String sql = "UPDATE BANKCUSTOMER SET PASS = ? WHERE CID = ?";
+		Connection con = cf.getConnection();
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, pass);
+		ps.setInt(2, cid);
+		ps.executeQuery();
 	}
 }

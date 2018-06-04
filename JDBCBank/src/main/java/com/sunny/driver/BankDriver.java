@@ -6,6 +6,7 @@ import com.sunny.beans.Account;
 import com.sunny.beans.Customer;
 import com.sunny.daoimpl.*;
 import com.sunny.util.LinkTool;
+import com.sunny.util.OverDraftException;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,11 +15,13 @@ public class BankDriver {
 
 	private CustomerDAOImpl cdi;
 	private AccountDAOImpl adi;
+	private AdminDAOImpl admindi;
 	private LinkTool lt;
 
 	public BankDriver() {
 		cdi = new CustomerDAOImpl();
 		adi = new AccountDAOImpl();
+		admindi = new AdminDAOImpl();
 		lt = new LinkTool();
 	}
 
@@ -76,7 +79,12 @@ public class BankDriver {
 			System.out.println("Insert Username");
 			String user = in.nextLine().toLowerCase();			
 			//Checks for username in database
-			while(!cdi.customerExists(user)) {
+			boolean exists = cdi.customerExists(user);
+			boolean admin = admindi.adminExists(user);
+			if(admin) {
+				exists = true;
+			}
+			while(exists == false) {
 				System.out.println("User doesn't exist, please try again");
 				user = in.nextLine();
 			}
@@ -84,13 +92,19 @@ public class BankDriver {
 			System.out.println("Insert password");
 			String pw = in.nextLine();
 
-
-			while(!cdi.getPassword(user).equals(pw)) {
-				System.out.println("Wrong password, try again");
-				pw = in.nextLine();
+			if(!admin) {
+				while(!cdi.getPassword(user).equals(pw)) {
+					System.out.println("Wrong password, try again");
+					pw = in.nextLine();
+				}
+				login(cdi.getCustomerID(user));
+			} else {
+				while(!admindi.getPassword(user).equals(pw)) {
+					System.out.println("Wrong password, try again");
+					pw = in.nextLine();
+				}
+				adminAccess();
 			}
-
-			login(cdi.getCustomerID(user));
 
 
 		} else if (i == 2) {
@@ -237,7 +251,7 @@ public class BankDriver {
 								System.out.println("Invalid input. Try again");
 							}
 						}
-					
+
 					} else {
 						System.out.println("Balance is not $0. Try another account");
 						inp = in.nextLine();
@@ -533,8 +547,16 @@ public class BankDriver {
 						System.out.println("Please insert postive value");
 						inp = in.nextLine();
 					} else if (temp > a.getBalance()) { 
-						System.out.println("You don't have enough money. Try a different value.");
-						inp = in.nextLine();
+						try {
+							if(temp >a.getBalance()) {
+								throw new OverDraftException();
+							} 
+						} catch(OverDraftException e) {
+							e.printStackTrace();
+							System.out.println("Try a lower a amount");
+						}finally {
+							inp = in.nextLine();
+						}
 					}
 					else {
 						money = temp;
@@ -558,6 +580,177 @@ public class BankDriver {
 
 	}
 
+	private void adminAccess() throws SQLException {
+		System.out.println("Welcome back Administrator.");
+		System.out.println("What would you like to do today?");
+		System.out.println("1) View Customers\n2) Delete Customers\n" +
+				"3) Edit Customers\n4) Add Customers\n5) Exit");
+		Scanner in = new Scanner(System.in);
+		String s = in.nextLine();
+		boolean valid = false;
+		int chose = 0;
+		while(valid == false) {
+			if(s.equals("1")) {
+				valid = true;
+				printAllCustomers();
+			} else if(s.equals("2")) {
+				valid = true;
+				ArrayList<Customer> alist = printAllCustomers();
+				System.out.println("Which customer do you want to delete?");
+				System.out.printf("%d) Go back", alist.size()+1);
+				System.out.println();
+				s=in.nextLine();
+				int temp = alist.size()+1;
+				String ey = "" + temp;
+				if(!s.equals(ey)) {
+					int results = getAccChoice(s,alist);
+					System.out.println(alist.get(results).getUser() + " User removed\n");
+					cdi.removeCustomer(alist.get(results).getCustomerID());
+				}
+				
+			} else if(s.equals("3")) {
+				valid = true;
+				ArrayList<Customer> alist = printAllCustomers();
+				System.out.printf("%d) Go back\n", alist.size()+1);
+				System.out.println("Which customer do you want to edit?");
+				System.out.println();
+				s=in.nextLine();
+				int temp = alist.size()+1;
+				String ey = "" + temp;
+				if(!s.equals(ey)) {
+					int results = getAccChoice(s,alist);
+					editCustomer(alist.get(results));
+				}
+				
+			} else if(s.equals("4")) {
+				valid = true;
+				System.out.println("What is the first name");
+				String fn = in.nextLine();
+				System.out.println("What is the last name?");
+				String ln = in.nextLine();
+				System.out.println("What is the username?");
+				String user = in.nextLine();
+				while(cdi.customerExists(user) == true) {
+					System.out.println("Username taken, try another");
+					user = in.nextLine();
+				}
+				System.out.println("What is the password?");
+				String pass = in.nextLine();
+				System.out.println();
+				cdi.createCustomer(fn, ln, user, pass);
+				System.out.println("Account Succesfully created");
 
+				
+			} else if(s.equals("5")) {
+				chose = 5;
+				valid = true;
+			} else {
+				System.out.println("Invalid input. try again");
+				s =in.nextLine();
+			}
+		}
+		if(chose != 5) {
+			adminAccess();
+		} else {
+			System.out.println("Logging out.");
+			run();
+		}
+
+	}
+	
+	private void editCustomer(Customer customer) throws SQLException {
+		Customer c = customer;
+		System.out.println("What do you want to change?");
+		System.out.println("1) Name");
+		System.out.println("2) Username");
+		System.out.println("3) Password");
+		System.out.println("4) Cancel");
+		Scanner in = new Scanner(System.in);
+		String inp = in.nextLine();
+		boolean a = false;
+		while(a == false)
+		if(inp.equals("1")) {
+			a = true;
+			System.out.println("Type First Name");
+			String fn = in.nextLine();
+			c.setFname(fn);
+			System.out.println("Type Last name");
+			String ln = in.nextLine();
+			c.setLname(ln);
+			cdi.editCustomerName(c.getCustomerID(), fn, ln);
+			System.out.println("Updated Sucessfully");
+			
+		}else if(inp.equals("2")) {
+			a = true;
+			System.out.println("Type username");
+			String user = in.nextLine();
+			while(cdi.customerExists(user) == true) {
+				System.out.println("Username exists, try another");
+				user = in.nextLine();
+			}
+			cdi.editCustomerUser(c.getCustomerID(), user);
+			System.out.println("Username updated");
+		}else if(inp.equals("3")) {
+			a = true;
+			System.out.println("Type password");
+			String pass = in.nextLine();
+			cdi.editCustomerPass(c.getCustomerID(),pass);
+			System.out.println("Password updated");
+			
+		}else if(inp.equals("4")) {
+			a = true;
+			
+		} else {
+			System.out.println("Invalid input");
+			inp = in.nextLine();
+		}
+		System.out.println();
+		
+	}
+
+	private int getAccChoice(String input, ArrayList<Customer> alist) {
+		Scanner in = new Scanner(System.in);
+		String inp = input;
+		boolean number = false;
+		int value = 0;
+		while(!number) {	
+			try {
+				int temp = Integer.parseInt(inp);
+				if(temp <= alist.size()) {
+					value = temp-1;
+					number = true; 
+				} else {
+					System.out.println("Invalid input");
+					inp = in.nextLine();
+				}
+
+			} catch (Exception e) {
+				System.out.println("Type a number please.");
+				inp = in.nextLine();
+			}
+		}
+
+		return value;
+	}
+
+	public ArrayList<Customer> printAllCustomers() throws SQLException{
+		ArrayList<Customer> clist = cdi.getCustomerList();
+		for(int i = 0; i < clist.size(); i++) {
+			String name = clist.get(i).getFname() + " " + clist.get(i).getLname();
+			ArrayList<Integer> accidList = lt.getAcountLinks(clist.get(i).getCustomerID());
+			ArrayList<Account> alist = new ArrayList<Account>();
+			for(int j : accidList) {
+				alist.add(adi.getAccount(j));
+			}
+			
+			System.out.printf("%d) Username: %s\n\tName: %s\n\t%d Accounts:",i+1,clist.get(i).getUser(),
+					name,alist.size());
+			for(Account a : alist) {
+				System.out.printf("\n\t%s - $%.2f\t",lt.getAccountType(a.getAccType()),a.getBalance());
+			}
+			System.out.println("\n");
+		}
+		return clist;
+	}
 
 }
