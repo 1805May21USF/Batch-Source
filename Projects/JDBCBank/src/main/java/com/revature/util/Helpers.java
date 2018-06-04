@@ -59,7 +59,7 @@ public class Helpers {
 	/*
 	 * Retrieves a valid withdraw amount from user's bank account.
 	 */
-	public static float getValidWithdrawAmount(BankAccount acc) {
+	public static float getValidWithdrawAmount(BankAccount acc) throws OverdraftException {
 		float amt;
 		
 		//get valid amt against balance
@@ -71,7 +71,7 @@ public class Helpers {
 			if (acc.getBalance() >= amt || amt == -1f) {
 				return amt;
 			}
-			System.out.println("Amount greater than balance, please enter a smaller amount.");
+			throw new OverdraftException("Amount greater than balance");
 		}
 	}
 }

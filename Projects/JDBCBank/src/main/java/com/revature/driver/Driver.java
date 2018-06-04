@@ -70,7 +70,6 @@ public class Driver {
 			customerAccounts = cadi.getCustomerAccounts();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		if (customerAccounts != null)
 			for (CustomerAccount cus : customerAccounts) 

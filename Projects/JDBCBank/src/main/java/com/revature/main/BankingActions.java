@@ -14,6 +14,7 @@ import com.revature.daoimpl.CustomerAccountDAOImpl;
 import com.revature.daoimpl.UserTransactionDAOImpl;
 import com.revature.driver.Driver;
 import com.revature.util.Helpers;
+import com.revature.util.OverdraftException;
 
 /*
  * Provides main banking functionalities.
@@ -175,27 +176,27 @@ public class BankingActions {
 	 * Allows customers to withdraw funds from their bank account.
 	 */
 	private static void optionWithdraw(int user_id, BankAccount acc) {
-		float amt = Helpers.getValidWithdrawAmount(acc);
-		if (amt == -1)
-			return;
-		
-		acc.setBalance(acc.getBalance() - amt);
+		float amt = 0;
 		try {
+			amt = Helpers.getValidWithdrawAmount(acc);
+			if (amt == -1)
+				return;
+			
+			acc.setBalance(acc.getBalance() - amt);
+
 			badi.updateBankAccount(acc);
 			System.out.println("Withdraw successful");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		Driver.log.info("Bank Account: " + acc.getBank_account_ID() +
-				" Withdrew: " + formatter.format(amt));
-		try {
+			
+			Driver.log.info("Bank Account: " + acc.getBank_account_ID() +
+					" Withdrew: " + formatter.format(amt));
 			uadi.createUserTransaction(new UserTransaction(0, user_id, acc.getBank_account_ID(), "Withdrew " + amt + " from"));
+		} catch (OverdraftException e1) {
+			System.out.println(e1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	/*
