@@ -1,0 +1,65 @@
+--JDBC Banking app script
+create table CLIENT
+(clientID number,
+userName varchar(20),
+PassW varchar(20),
+fName varchar(20),
+lName varchar(20));
+
+
+insert into CLIENT values(
+1,'RollTide','RollTide','Roll','Tide');
+
+
+
+create table ACCOUNT
+(clientID number,
+AccountID number,
+balance decimal(10,2));
+
+
+
+insert into ACCOUNT values(1,1,100.00);
+insert into ACCOUNT values(1,2,300.00);
+insert into ACCOUNT values(2,3,340);
+
+
+create sequence accountIDseq
+start with 4;
+
+
+create sequence clientIDseq
+start with 2;
+
+create or replace procedure insertAccount(CLIENTID in number, BALANCE in decimal)
+as 
+begin
+insert into Account values(CLIENTID ,accountIDseq.nextval , BALANCE);
+commit;
+end;
+
+create or replace procedure deleteAccount(ID in number)
+as
+begin
+delete from ACCOUNT where ACCOUNTID = ID;
+commit;
+end;
+
+create or replace procedure IMPORTCLIENT
+(usr in varchar2, id_out out number)
+as
+begin
+    select CLIENTID into id_out from CLIENT where USERNAME = usr;
+    commit;
+end;
+
+
+create or replace procedure CREATECLIENT
+(usr in varchar2, pass in varchar2,fn in varchar2,ln in varchar)
+as
+begin
+    insert into CLIENT values(clientIDseq.nextval, usr,pass,fn,ln);
+commit;
+end;
+
+
