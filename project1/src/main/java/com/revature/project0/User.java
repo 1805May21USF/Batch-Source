@@ -22,7 +22,12 @@ public class User implements Serializable, UserDAO{
 	
 	public static User defaultUser;
 	static {
-		defaultUser = getUsers().get(0);
+		try {
+			defaultUser = getUser("defaultUser");
+		} catch (SQLException e) {
+			System.err.println("ERROR! We got an SQL execption from getuser!");
+			e.printStackTrace();
+		}
 		if (defaultUser == null){
 			System.err.println("ERROR! We failed to get the default user!");
 		}
@@ -230,7 +235,10 @@ public class User implements Serializable, UserDAO{
 				throw new NotPermittedException("Error! Username is in use, or has problem!");
 			}
 		}
+		conn.createStatement().execute("COMMIT");
+
 	}
+	
 	public boolean addAlias(String username, String password) {
 		//create the user's login info
 		Connection conn = cf.getConnection();
@@ -275,7 +283,6 @@ public class User implements Serializable, UserDAO{
 		ResultSet rs;
 
 			rs = stmt.executeQuery("SELECT * FROM BANKUSERS");
-	
 		User user= null;
 		while(rs.next()) {
 			user = new User(rs.getInt(1));
@@ -297,7 +304,10 @@ public class User implements Serializable, UserDAO{
 			PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
-			return new User(rs.getInt(1));
+			if(rs.next()) {
+				return new User(rs.getInt(1));
+			}
+			return null;
 			
 	}
 }
