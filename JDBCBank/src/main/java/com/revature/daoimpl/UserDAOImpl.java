@@ -34,6 +34,8 @@ public class UserDAOImpl implements UserDAO {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+		
+		conn.close();
 	}
 
 	@Override
@@ -46,13 +48,15 @@ public class UserDAOImpl implements UserDAO {
 		User user = null;
 
 		if (rs.next()) {
-			System.out.println("This user exists");
+			//System.out.println("This user exists");
 			user = new User(rs.getInt(1), rs.getString(2), rs.getString(3),
 					rs.getString(4), rs.getString(5), rs.getInt(6));
+			conn.close();
 			return user;
 		} else {
-			System.out.println("User not found");
+			//System.out.println("User not found");
 		}
+		conn.close();
 		return null;
 	}
 
@@ -81,8 +85,9 @@ public class UserDAOImpl implements UserDAO {
 				e.printStackTrace();
 			}
 		} else {
-			System.out.println("User does not exist");
+			System.out.println("User account not found");
 		}
+		conn.close();
 	}
 
 	@Override
@@ -91,6 +96,7 @@ public class UserDAOImpl implements UserDAO {
 		Statement stmt = conn.createStatement();
 		stmt.execute("DELETE FROM USER_ACCOUNT"
 				+ " WHERE USERNAME = '" + userName + "'");
+		conn.close();
 	}
 
 }
