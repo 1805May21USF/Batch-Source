@@ -4814,3 +4814,11 @@ org.eclipse.core.runtime.CoreException: Launch configuration bankMain references
 2018-06-04 16:05:41,071 [Worker-286] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
 2018-06-04 16:05:41,082 [Worker-286] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2018-06-04 16:05:41,089 [Worker-286] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-06-04 16:17:26,729 [Worker-289] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2018-06-04 16:17:26,730 [Worker-289] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-06-04 16:17:26,738 [Worker-289] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2018-06-04 16:17:26,747 [Worker-289] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2018-06-04 16:41:08,976 [Worker-293] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2018-06-04 16:41:08,977 [Worker-293] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2018-06-04 16:41:08,985 [Worker-293] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2018-06-04 16:41:08,991 [Worker-293] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource

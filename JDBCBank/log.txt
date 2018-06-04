@@ -31,3 +31,8 @@
 2018-06-04 16:00:21 INFO  BankAdmin:361 - admin has deposited 1000 to 1528055320705
 2018-06-04 16:00:32 INFO  BankAdmin:303 - admin has withdrawn 500 from 1528137801162
 2018-06-04 16:00:39 INFO  BankAdmin:410 - admin has cancelled 1528137801162's account.
+2018-06-04 16:23:46 INFO  Login:38 - customer1 has logged into their account.
+2018-06-04 16:27:24 INFO  Customer:185 - customer1 has logged out of their account.
+2018-06-04 16:27:30 INFO  Login:42 - employee1 has logged into their account.
+2018-06-04 16:27:59 INFO  Employee:112 - employee1 has logged out of their account.
+2018-06-04 16:28:03 INFO  Login:46 - admin has logged into their account.
