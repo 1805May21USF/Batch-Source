@@ -1,24 +1,33 @@
 package com.revature.accounts;
 
-import com.revature.people.Customer;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Joint extends Account{
-
-	private Customer joint_partner;
 	
-	protected Joint(String banking_account_id, int balance, int previous_transaction) {
+	public Joint(String banking_account_id, int balance, int previous_transaction, int joint_account) {
 		super(banking_account_id, balance, previous_transaction);
 	}
 	
-	protected void withdraw() {
-		
-	}
-	
-	protected void deposit() {
-		
-	}
-	
-	protected void transfer_funds() {
-		
+	public boolean deposit(String banking_id, int new_balance, int old_balance) {
+		try {
+			Connection conn = cf.getConnection();
+			
+			String sql = "{call deposit_joint_account (?,?,?)}";
+			
+			CallableStatement call = conn.prepareCall(sql);
+
+			call.setInt(1,Integer.parseInt(banking_id));
+			call.setInt(2, new_balance);
+			call.setInt(3, old_balance);
+
+			call.execute();
+			
+			return true;
+		} catch (SQLException e) {
+			System.out.println("Error depositing money into your account. Contact bank admin as soon as possible!");
+			return false;
+		}
 	}
 }

@@ -37,12 +37,15 @@ public class Employee extends Person{
 			switch (answer) {
 			case "1":
 				//Look up an account
+				break;
 			case "2":
 				approve_and_deny_accounts();
+				break;
 			case "3":
 				view_account();
 			case "4":
 				repeat = false;
+				break;
 			}	
 		}
 	}
@@ -446,11 +449,6 @@ public class Employee extends Person{
 			return rs;
 		}
 	}
-	
-	protected <T> void search_for_account(T account) {
-		
-	}
-	
 	
 	protected String view_account(String user_id_temp) {
 		try {	
