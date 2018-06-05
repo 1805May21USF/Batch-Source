@@ -1,5 +1,7 @@
 package com.revature.beans;
 
+import java.util.List;
+
 public class User {
 	
 	private int userID;
@@ -8,6 +10,8 @@ public class User {
 	private String email;
 	private String username;
 	private String password;
+	private Account account;
+	private List<Account> accounts;
 	
 	public User() {
 		super();
@@ -22,6 +26,17 @@ public class User {
 		this.email = email;
 		this.username = username;
 		this.password = password;
+	}
+	
+	public User(int userID, String firstName, String lastName, String email, String username, String password, Account account) {
+		super();
+		this.userID = userID;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.account = account;
 	}
 	
 	public User(String firstName, String lastName, String email, String username, String password) {
@@ -56,6 +71,10 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	public void setAccount(Account account) {
+		this.account = account;
+	}
 
 	public String getEmail() {
 		return email;
@@ -79,6 +98,10 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public Account getAccount() {
+		return account;
 	}
 
 	@Override

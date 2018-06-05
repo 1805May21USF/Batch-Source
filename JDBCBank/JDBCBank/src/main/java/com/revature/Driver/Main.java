@@ -15,7 +15,7 @@ public class Main {
 		
 		boolean success = false;
 		Scanner sc = new Scanner(System.in);
-		int startOption = sc.nextInt();
+		
 		
 		User u1 = new User();
 		UserDaoImp userDao = new UserDaoImp();
@@ -29,44 +29,46 @@ public class Main {
 			System.out.println("2) New Customer Login (Create An Account)");
 			System.out.println("3) Employee Login");
 			System.out.println("4) Administrator Login");
+			System.out.println("5) Close Application");
 			System.out.print(">");
 		
-		
+			int startOption = sc.nextInt();
 		
 			switch (startOption) {
 		
 			case 1: try {
-					userDao.login();
+					userDao.login(1);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
 			case 2: try {
 					userDao.newUserLogin();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
 			case 3: try {
-					userDao.login();
+					userDao.login(2);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
 			case 4: try {
-					userDao.login();
+					userDao.login(2);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				break;
+			case 5:
+				success = true;
 				break;
 			default: System.out.println("Invalid option! Please choose a valid option from the menu.");
 				break;
 			
 			}
 		}
+		
+		System.out.println("Thanks for using the banking app! Application closing...");
 	}
 }

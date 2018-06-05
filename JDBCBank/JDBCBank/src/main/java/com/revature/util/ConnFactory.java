@@ -26,24 +26,18 @@ public class ConnFactory {
 	public Connection getConnection() {
 		Connection conn = null;
 		
-		//.getConnection(url, username, password)
 		try {
-			//conn = DriverManager.getConnection("jdbc:oracle:thin:my-aws-db.cnrm17iwv7eh.us-east-2.rds.amazonaws.com:1521:ORCL", "ddmoore1221", "ma5t3rPass?");
 			Properties prop = new Properties();
 			prop.load(new FileReader("database.properties"));
 			Class.forName(prop.getProperty("driver"));
 			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("usr"), prop.getProperty("password"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return conn;

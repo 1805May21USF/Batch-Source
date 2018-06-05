@@ -15,6 +15,12 @@ public class Account {
 		this.clientID = clientID;
 		this.balance = balance;
 	}
+	
+	public Account(int clientID, double balance) {
+		this.clientID = clientID;
+		this.balance = balance;
+	}
+	
 	public int getAccountID() {
 		return accountID;
 	}
@@ -36,6 +42,14 @@ public class Account {
 	@Override
 	public String toString() {
 		return "Account [accountID=" + accountID + ", clientID=" + clientID + ", balance=" + balance + "]";
+	}
+	
+	public void deposit(double amount) {
+		this.balance = balance + amount;
+	}
+	
+	public void withdraw(double amount) {
+		this.balance = balance - amount;
 	}
 	
 	
