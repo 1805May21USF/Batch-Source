@@ -1,11 +1,9 @@
 /**
  * This class represents an employee.
- * An employee can view customer information
- * and approve/deny open applications for accounts.
+ * An employee can view customer information.
  */
 package com.revature.bankingapplication;
 
-import com.revature.bankingapplication.Application;
 import com.revature.bankingapplication.Customer;
 
 /**
@@ -58,21 +56,5 @@ public class Employee
 	
 	//create a method to read Application
 	//takes in an Application object
-	public void readApplication(Application app) 
-	{
-		int customerAge = app.getCustomerAge();
-		
-		if (customerAge >= 18) 
-		{
-			//approve the application
-			//set approved to true
-			app.setApproved(true);
-		}
-		else 
-		{
-			//deny method
-			//set approved to false
-			app.setApproved(false);
-		}
-	}
+	
 }

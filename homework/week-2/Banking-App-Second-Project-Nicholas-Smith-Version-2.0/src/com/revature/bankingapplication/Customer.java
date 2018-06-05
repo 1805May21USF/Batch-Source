@@ -1,9 +1,11 @@
 /**
  * This class represents a customer of a bank.
- * 
- * Complete: No
+ * A customer can login or register for an account. 
+ * Complete: Yes
  */
 package com.revature.bankingapplication;
+
+import java.sql.SQLException;
 
 import com.revature.bankingapplication.ConnFactory;
 
@@ -13,18 +15,7 @@ import com.revature.bankingapplication.ConnFactory;
  */
 public class Customer
 {	
-	public Customer(int userId, String firstName, String lastName,
-			String username, String password)
-	{
-		super();
-		this.userId = userId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		this.password = password;
-	}
-
-
+	
 	//instance variables
 	private int userId;
 	private String firstName;
@@ -83,5 +74,22 @@ public class Customer
 				+ ", password=" + password + "]";
 	}
 	
-
+	//method that will register a customer into the database
+	public void register(String username, String password, String firstName, String lastName) throws SQLException 
+	{
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		
+		CustomerTools customerTools = new CustomerTools();
+		customerTools.insertCustomer(username, password, firstName, lastName);
+	}
+	
+	//method that will allow the customer to login into the system
+	public void login() 
+	{
+		
+	}
+	
 }

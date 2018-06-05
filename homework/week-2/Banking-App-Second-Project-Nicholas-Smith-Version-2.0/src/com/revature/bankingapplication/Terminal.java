@@ -1,5 +1,5 @@
 /**
- * 
+ * This class interacts with the user.
  */
 package com.revature.bankingapplication;
 
@@ -37,4 +37,6 @@ public class Terminal
 		System.out.println("Please enter password:");
 		password = input.next();
 	}
+	
+	//create a method to register a customer
 }

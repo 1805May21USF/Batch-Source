@@ -1,3 +1,6 @@
+/**
+ * This class interacts with the BANCK_CUSTOMER table.
+ */
 package com.revature.bankingapplication;
 
 import java.sql.Connection;
@@ -7,6 +10,10 @@ import java.sql.SQLException;
 
 import com.revature.bankingapplication.ConnFactory; 
 
+/**
+ * @author Nicholas Smith
+ *
+ */
 public class CustomerTools
 {
 	//create an instance of ConnFactory
@@ -34,7 +41,7 @@ public class CustomerTools
 	}
 		
 	//TODO: insert customer into the database
-	public void insertCustomer(String username, String password) throws SQLException
+	public void insertCustomer(String username, String password, String firstName, String lastName) throws SQLException
 	{
 		int userId;  
 		
@@ -54,7 +61,7 @@ public class CustomerTools
 		userId = rs.getInt(1);	
 
 		//create a SQL statement that will insert a customer row into BANK_CUSTOMER
-		String sql2 = "INSERT INTO BANK_CUSTOMER(USER_NAME, USER_PASSWORD, USER_ID) VALUES(?, ?, ?)";
+		String sql2 = "INSERT INTO BANK_CUSTOMER(USER_NAME, USER_PASSWORD, USER_ID, FIRST_NAME, LAST_NAME) VALUES(?, ?, ?, ?, ?)";
 		
 		//create another prepared statement
 		PreparedStatement ps2 = conn.prepareStatement(sql2);
@@ -62,11 +69,17 @@ public class CustomerTools
 		//set the first ? to the value of username
 		ps2.setString(1, username);
 		
-		//set the second ? to the value of username
+		//set the second ? to the value of password
 		ps2.setString(2, password);
 		
-		//set the second ? to next value of user_id_sequence
+		//set the third ? to next value of user_id_sequence
 		ps2.setInt(3, userId);
+
+		//set the fourth ? to next value of firstName
+		ps2.setString(4, lastName);
+				
+		//set the fifth ? to next value of lastName
+		ps2.setString(5, firstName);		
 
 		//execute the query
 		rs = ps2.executeQuery();
