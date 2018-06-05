@@ -49,7 +49,8 @@ public class Account implements Serializable{
 		if(approved)
 		balance += money;
 		else {
-			System.out.println("Wait until an employee approves an account");		}
+			System.out.println("Wait until an employee approves an account");		
+		}
 	}
 	
 	
