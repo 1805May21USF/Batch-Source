@@ -149,9 +149,9 @@ public class Datastore {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
     	return c;
     }
@@ -269,6 +269,12 @@ public class Datastore {
     	Account c = null;
     	try {
 			c = this.accountImpl.findAccount(ID);
+			/*ArrayList<CustomerAccountRelation> rels= this.custAccRelImpl.findAllCustomerAccountRelations();
+			for(CustomerAccountRelation rel:rels) {
+				if(rel.getAccount_id() == c.getID()) {
+					c.addCustomer(this.getCustomerById(rel.getCustomer_id()));
+				}
+			}*/
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -280,6 +286,12 @@ public class Datastore {
     	Account c = null;
     	try {
 			c = this.accountImpl.findAccountByFingerprint(fingerprint);
+			/*ArrayList<CustomerAccountRelation> rels= this.custAccRelImpl.findAllCustomerAccountRelations();
+			for(CustomerAccountRelation rel:rels) {
+				if(rel.getAccount_id() == c.getID()) {
+					c.addCustomer(this.getCustomerById(rel.getCustomer_id()));
+				}
+			}*/
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -290,6 +302,14 @@ public class Datastore {
     	ArrayList<Account> c = null;
     	try {
 			c = this.accountImpl.findAllAccounts();
+			/*for(Account acc:c) {
+				ArrayList<CustomerAccountRelation> rels= this.custAccRelImpl.findAllCustomerAccountRelations();
+				for(CustomerAccountRelation rel:rels) {
+						if(rel.getAccount_id() == acc.getID()) {
+							acc.addCustomer(this.getCustomerById(rel.getCustomer_id()));
+						}
+				}
+			}*/
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -336,10 +356,42 @@ public class Datastore {
 			e.printStackTrace();
 		}
     }
+    public void applicationLoadCustomers(Application a) {
+    	try {
+			ArrayList<CustomerApplicationRelation> rels= this.custAppRelImpl.findAllCustomerApplicationRelations();
+			for(CustomerApplicationRelation rel:rels) {
+				if(rel.getApplication_id() == a.getID()) {
+					a.addCustomer(this.getCustomerById(rel.getCustomer_id()));
+				}
+			}
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    }
+    public void accountLoadCustomers(Account a) {
+    	try {
+    		ArrayList<Customer> customers = new ArrayList<Customer>();
+			ArrayList<CustomerAccountRelation> rels= this.custAccRelImpl.findAllCustomerAccountRelations();
+			for(CustomerAccountRelation rel:rels) {
+				if(rel.getAccount_id() == a.getID()) {
+					customers.add(this.getCustomerById(rel.getCustomer_id()));
+				}
+			}
+			a.setCustomers(customers);
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    }
     public Application getApplicationById(int ID) {
     	Application c = null;
     	try {
 			c = this.applicationImpl.findApplication(ID);
+			/*ArrayList<CustomerApplicationRelation> rels= this.custAppRelImpl.findAllCustomerApplicationRelations();
+			for(CustomerApplicationRelation rel:rels) {
+				if(rel.getApplication_id() == c.getID()) {
+					c.addCustomer(this.getCustomerById(rel.getCustomer_id()));
+				}
+			}*/
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -350,6 +402,12 @@ public class Datastore {
     	Application c = null;
     	try {
 			c = this.applicationImpl.findApplicationByFingerprint(fingerprint);
+			/*ArrayList<CustomerApplicationRelation> rels= this.custAppRelImpl.findAllCustomerApplicationRelations();
+			for(CustomerApplicationRelation rel:rels) {
+				if(rel.getApplication_id() == c.getID()) {
+					c.addCustomer(this.getCustomerById(rel.getCustomer_id()));
+				}
+			}*/
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -360,6 +418,15 @@ public class Datastore {
     	ArrayList<Application> c = null;
     	try {
 			c = this.applicationImpl.findAllApplications();
+			/*for(Application app:c) {
+				ArrayList<CustomerApplicationRelation> rels= this.custAppRelImpl.findAllCustomerApplicationRelations();
+				for(CustomerApplicationRelation rel:rels) {
+						if(rel.getApplication_id() == app.getID()) {
+							app.addCustomer(this.getCustomerById(rel.getCustomer_id()));
+						}
+				}
+			}*/
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -390,6 +457,16 @@ public class Datastore {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    public void accountLoadTransaction(Account acc) {
+    	ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+		ArrayList<Transaction >tr = this.getTransactions();
+		for(Transaction trans: tr) {
+			if(trans.getFrom_account_id() == acc.getID()) {
+				transactions.add(trans);
+			}
+		}
+		acc.setTransactions(transactions);
     }
     public Transaction getTransactionById(int ID) {
     	Transaction c = null;

@@ -1,2 +1,2 @@
-
-2018-06-04 16:01:38 INFO  TransactionDAOImpl:37 - Logging initialized.
+2018-06-06 09:48:44 INFO  TransactionDAOImpl:37 - Logging initialized.
+2018-06-06 09:48:51 INFO  TransactionDAOImpl:37 - Logging initialized.

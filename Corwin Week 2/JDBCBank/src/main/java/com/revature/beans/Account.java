@@ -119,10 +119,10 @@ public class Account{
 		int toremove = -1;
 		for(int i = 0;i<this.getCustomers().size();i++) {
 			if(this.getCustomers().get(i).ID==c.getID()) {
-				toremove = i;
+				toremove = -1;
 			}
 		}
-		if(toremove == -1) {
+		if(toremove != -1) {
 			this.getCustomers().add(c);
 			return true;
 		}

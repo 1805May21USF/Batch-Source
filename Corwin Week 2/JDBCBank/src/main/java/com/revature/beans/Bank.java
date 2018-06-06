@@ -376,12 +376,12 @@ public class Bank {
 							input = scanner.nextLine();
 						}while(d.getCustomerById(Integer.parseInt(input))==null);
 					}
-					a.getCustomers().add(d.getCustomerById(Integer.parseInt(input)));
+					a.addCustomer(d.getCustomerById(Integer.parseInt(input)));
 					break;
 				}
 				case 3:{
 					d.addApplication(a);
-					for(Customer customer:c) {
+					for(Customer customer:a.getCustomers()) {
 						d.addCustomerToApplication(customer,d.getApplicationByFingerprint(a.getFingerprint()));
 					}
 					inMenu=false;
@@ -511,6 +511,7 @@ public class Bank {
 		boolean inMenu = true;
 		while(inMenu) {
 			
+			c = d.getCustomerByUsername(c.userName);
 			linebreak();
 			System.out.println("Accounts");
 			linebreak();
@@ -785,14 +786,12 @@ public class Bank {
 			Scanner scanner = new Scanner(System.in);
 			int selection;
 			
-			ArrayList<Customer> customers = d.getCustomers();
 			ArrayList<Application> openapplications = new ArrayList<Application>();
-			
-			for(Customer c:customers) {
-				for(Application a:c.getApplications()) {
-					if(a.getApproval().equals("PENDING")) {
-						openapplications.add(a);
-					}
+		
+			for(Application a:d.getApplications()) {
+				if(a.getApproval().equals("PENDING")) {
+					d.applicationLoadCustomers(a);
+					openapplications.add(a);
 				}
 			}
 			
@@ -873,11 +872,16 @@ public class Bank {
 				for(Customer c:a.getCustomers()) {
 					c.addAccount(acc);
 				}
-				d.addAccount(acc);
-				acc = d.getAccountByFingerprint(acc.getFingerprint());
 				for(Customer c:a.getCustomers()) {
+					acc.addCustomer(c);
+				}
+				d.addAccount(acc);
+				ArrayList<Customer> g = d.getCustomers();
+				acc = d.getAccountByFingerprint(acc.getFingerprint());
+				for(Customer c:g) {
 					d.addCustomerToAccount(c, acc);
 				}
+				d.updateAccount(acc);
 				break;
 			case 2:
 				a.setApproval("DENIED");
@@ -899,7 +903,8 @@ public class Bank {
 			
 			Scanner scanner = new Scanner(System.in);
 			String s;
-			
+			a = d.getAccountByFingerprint(a.getFingerprint());
+			d.accountLoadCustomers(a);			
 			if(a.getStatus().equals("OPEN")&&currentUser.isCustomer()) {
 				System.out.println("ID: "+a.getID());
 				System.out.println("Balance: "+a.getBalance());
@@ -1002,6 +1007,8 @@ public class Bank {
 			if(currentUser.isEmployee()) {
 				System.out.println("ID: "+a.getID());
 				System.out.println("Balance: "+a.getBalance());
+				a = d.getAccountByFingerprint(a.getFingerprint());
+				d.accountLoadCustomers(a);
 				System.out.println("Signer: "+a.getCustomers().get(0).getFname() + " "+ a.getCustomers().get(0).getLname());
 				System.out.println("Status: "+a.getStatus());
 				
@@ -1236,7 +1243,9 @@ public class Bank {
 		boolean inMenu = true;
 		while(inMenu) {
 			linebreak();
+			
 			System.out.println("Transaction History");
+			d.accountLoadTransaction(a);
 			linebreak();
 			Scanner scanner = new Scanner(System.in);
 			System.out.println("1. Exit.");

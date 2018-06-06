@@ -84,7 +84,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 		String sql = "{call add_transaction(?,?,?,?,?,?,?)";
 		
 		CallableStatement ps = conn.prepareCall(sql);
-		ps.setString(1, transaction.getDate());
+		ps.setString(1, transaction.getDate().toString());
 		ps.setString(2, transaction.getStatus());
 		ps.setString(3, transaction.getType());
 		ps.setInt(4, transaction.getFrom_account_id());
@@ -104,7 +104,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 		String sql = "{call update_transaction(?,?,?,?,?,?,?,?)";
 		CallableStatement ps = conn.prepareCall(sql);
 		ps.setInt(1,transaction.getID());
-		ps.setString(2, transaction.getDate());
+		ps.setString(2, transaction.getDate().toString());
 		ps.setString(3, transaction.getStatus());
 		ps.setString(4, transaction.getType());
 		ps.setInt(5, transaction.getFrom_account_id());
