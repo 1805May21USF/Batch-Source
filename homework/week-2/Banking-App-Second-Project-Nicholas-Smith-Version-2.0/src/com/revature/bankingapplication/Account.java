@@ -23,13 +23,7 @@ public class Account
 		username = u;
 		password = p;
 	}
-	
-	//create a constructor for Account using 0 parameters
-	public Account() 
-	{
-		//
-	}
-	
+		
 	//getters and setters
 	public double getBalance()
 	{

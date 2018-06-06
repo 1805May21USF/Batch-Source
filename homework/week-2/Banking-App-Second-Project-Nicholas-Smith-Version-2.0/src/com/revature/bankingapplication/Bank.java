@@ -56,8 +56,6 @@ public class Bank
 				System.out.println("Press 1 to view balance.");
 				System.out.println("Press 2 to deposit.");
 				System.out.println("Press 3 to withdraw.");
-				
-				//TODO: NOTE: I will probably have to skip this one. 
 				System.out.println("Press 4 to transfer.");
 				
 				//grabe the userid
@@ -79,7 +77,6 @@ public class Bank
 				if(logNumSelect == 1) 
 				{
 					double balance;
-					System.out.println("You pressed: " + logNumSelect);
 					
 					//call the viewBalance() method
 					balance = accountTools.getDatabaseBalance(userId);
@@ -156,8 +153,8 @@ public class Bank
 			//Inform the newly registered customer
 			System.out.println("You are now registered.");
 			
-			String cString = customerTools.toString();
-			System.out.println(cString);
+			//String cString = customerTools.toString();
+			//System.out.println(cString);
 		}
 		
 		//END. Close the Scanner.

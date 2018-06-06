@@ -141,10 +141,10 @@ public class CustomerTools
 		ps2.setInt(3, userId);
 
 		//set the fourth ? to next value of firstName
-		ps2.setString(4, lastName);
+		ps2.setString(5, lastName);
 				
 		//set the fifth ? to next value of lastName
-		ps2.setString(5, firstName);		
+		ps2.setString(4, firstName);		
 
 		//execute the query
 		rs = ps2.executeQuery();
