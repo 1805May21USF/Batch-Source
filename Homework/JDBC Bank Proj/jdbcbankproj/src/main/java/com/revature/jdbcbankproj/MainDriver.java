@@ -3,12 +3,11 @@ package com.revature.jdbcbankproj;
 import java.sql.Connection;
 import java.util.Date;
 import java.util.Scanner;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+
 import java.text.SimpleDateFormat;
 
-import org.apache.log4j.BasicConfigurator;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -172,7 +171,7 @@ public class MainDriver {
 						// System.out.println("USER STATUS: " + u.userstatusid);
 						if (u.userstatusid == 2) {
 							// If USER is closed, exit
-							System.out.println("USER account is not active.");
+							System.out.println("USER is not active.");
 							break;
 						}
 						
@@ -320,6 +319,7 @@ public class MainDriver {
 										System.out.println("Enter amount to deposit: ");
 										Scanner scanDep = new Scanner(System.in);
 										double dep = 0.00;
+										// To Do: Will include check to make sure input does not include non numbers.
 										dep = scanDep.nextDouble();
 										System.out.println("Deposit Amount Entered: " + dep);
 
@@ -397,7 +397,7 @@ public class MainDriver {
 
 										if (with <= 0 || with > 500) {
 											System.out.println(
-													"Withdrawal must not be greater than 0 and must be less than equal to 500.");
+													"Withdrawal must be greater than 0 and must be less than equal to 500.");
 
 											try {
 												Thread.sleep(3000);

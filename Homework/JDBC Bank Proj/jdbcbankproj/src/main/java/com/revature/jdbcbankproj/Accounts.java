@@ -94,7 +94,7 @@ public class Accounts {
 	
 	public void ViewAccount() {
 		MainDriver.log.info("In ViewAccount(): ");
-		System.out.println("ACCOUNT INFORMATION: ");
+		System.out.println("\n\n\nACCOUNT INFORMATION: \n");
 		
 		for(int i = 0; i < this.accountid.size(); i++ ) {
 			if(!this.accountstatusid.get(i).equals(2)) {

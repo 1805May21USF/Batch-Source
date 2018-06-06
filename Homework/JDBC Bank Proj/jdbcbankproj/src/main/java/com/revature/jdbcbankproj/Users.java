@@ -190,6 +190,7 @@ public class Users {
 		this.lname = scanCU.next();
 		System.out.println("Last Name: " + this.lname);
 		
+		// To Do: Will include DOB input check to enable proper formatting.
 		System.out.println("Date Of Birth (YYYY-MM-DD): ");
 		this.DOB = scanCU.next();
 		System.out.println("DOB: " + this.DOB);
