@@ -11,10 +11,17 @@ import com.revature.jdbcbankproj.Users;
 public class JUnitUser {
 	Users u = new Users();
 	
+	@Test
+	public void testCheckUserID() {
+		// Check with existing id 1, superuser
+		Assertions.assertEquals(1, u.CheckUserID(1));
+		// Check that 0 returns when passing a non-existing value.
+		Assertions.assertEquals(0, u.CheckUserID(1000));
+	}
 	
 	@Test
 	public void testGetUserID() {
-		
+		// Check that the correct user id is return using correct username and password.
 		Assertions.assertEquals(2, u.GetUserID("BEAMIA", "BEAMIA123"));
 	}
 	

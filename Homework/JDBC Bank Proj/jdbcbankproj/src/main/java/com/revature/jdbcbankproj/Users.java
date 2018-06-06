@@ -21,6 +21,26 @@ public class Users {
 	int userstatusid; 
 	// User type 2 = customer. User status 1 = active.
 	
+	// Check if User ID exists Using User ID given
+	public int CheckUserID(int userID) {
+		int resUserID = 0;
+		Statement stmt;
+		Connection conn = MainDriver.cf.getConnection();
+		try {
+			stmt = conn.createStatement();
+			String sqlString = "SELECT USER_ID FROM USERS WHERE USER_ID = " + userID;
+			ResultSet rs = stmt.executeQuery(sqlString);
+			
+			while(rs.next()) {
+				resUserID = rs.getInt("USER_ID");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resUserID;
+	}
+	
+	// Get User ID using Username and Password
 	public int GetUserID(String usern, String passw) {
 		// Retrieve UserID
 		
@@ -46,7 +66,7 @@ public class Users {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		//if no user, returns a 0.
 		return userid_GetUserID;
 	}
 	
@@ -180,6 +200,9 @@ public class Users {
 		
 		System.out.println("Password: ");
 		this.passwd = scanCU.next();
+		if (this.passwd.equalsIgnoreCase("exit")) {
+			return;
+		}
 		System.out.println("Password: " + this.passwd);
 		
 		System.out.print("First Name: ");

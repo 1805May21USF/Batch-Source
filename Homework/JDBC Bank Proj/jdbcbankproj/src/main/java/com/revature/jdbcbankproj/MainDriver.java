@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import java.text.SimpleDateFormat;
 
-
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 /**
@@ -60,13 +60,17 @@ public class MainDriver {
 			System.out.println("Enter number to continue: ");
 			Scanner scan = new Scanner(System.in);
 			topMenuScan = 0;
+			while(!scan.hasNextInt()) {
+				System.out.println("Please enter a number.");
+				scan.next();
+			}
 			topMenuScan = scan.nextInt();
 			log.info("topMenuScan == " + topMenuScan);
 
 			// EXIT PROGRAM
 			if (topMenuScan == 0) {
 				log.info("Inside topMenuScan == 0");
-				System.out.println("Thank You. Goodbye. EXITING PROGRAM.");
+				System.out.println("\n\n\n\nThank You. Goodbye. EXITING PROGRAM.\n\n\n\n");
 				topMenuControl = false;
 			}
 			// REGISTRATION
@@ -110,7 +114,7 @@ public class MainDriver {
 
 				}
 				// After Registration Process, go to TOP MENU
-				System.out.println("Registration Complete. Returning to BANK MENU.");
+				System.out.println("Registration Complete. Returning to BANK MENU.\n\n");
 				try {
 					Thread.sleep(3000);
 				} catch (InterruptedException e) {
@@ -201,6 +205,11 @@ public class MainDriver {
 								System.out.println("5. WITHDRAW");
 								System.out.println("6. LOGOUT");
 								System.out.println("Enter number: ");
+								
+								while(!scan.hasNextInt()) {
+									System.out.println("Enter a number: ");
+									scan.next();
+								}
 								int options = scan.nextInt();
 								System.out.println("Selected: " + options);
 
@@ -228,11 +237,17 @@ public class MainDriver {
 										System.out.println("Enter 0 to return to BANK OPTIONS MENU");
 										System.out.print("Enter number: ");
 										Scanner scanAccountCont = new Scanner(System.in);
+										
+										// check if int
+										while(!scanAccountCont.hasNextInt()) {
+											System.out.println("Enter number: ");
+											scanAccountCont.next();
+										}
 										int scanAccountInt = scanAccountCont.nextInt();
 
 										if (scanAccountInt == 0) {
 											try {
-												System.out.println("Returning to BANK OPTIONS MENU.");
+												System.out.println("Returning to BANK OPTIONS MENU.\n\n");
 												Thread.sleep(2000);
 												accountCont = false;
 
@@ -240,7 +255,7 @@ public class MainDriver {
 												e.printStackTrace();
 											}
 										} else {
-											System.out.println("Enter 0 to return to BANK OPTIONS MENU");
+											System.out.println("Enter 0 to return to BANK OPTIONS MENU.\n\n");
 										}
 									}
 
@@ -260,7 +275,12 @@ public class MainDriver {
 										System.out.print("Enter account number to delete:");
 
 										Scanner scanAccDel = new Scanner(System.in);
-
+										
+										// check if int
+										while(!scanAccDel.hasNextInt()) {
+											System.out.print("Enter account number to delete: ");
+											scanAccDel.next();
+										}
 										accountNumDel = scanAccDel.nextInt();
 
 										System.out.println("Account Number to delete: " + accountNumDel);
@@ -300,7 +320,7 @@ public class MainDriver {
 									}
 
 									try {
-										System.out.println("Returning to BANK OPTIONS MENU.");
+										System.out.println("Returning to BANK OPTIONS MENU.\n\n");
 										Thread.sleep(3000);
 									} catch (InterruptedException e) {
 										// TODO Auto-generated catch block
@@ -319,7 +339,10 @@ public class MainDriver {
 										System.out.println("Enter amount to deposit: ");
 										Scanner scanDep = new Scanner(System.in);
 										double dep = 0.00;
-										// To Do: Will include check to make sure input does not include non numbers.
+										while(!scanDep.hasNextDouble()) {
+											System.out.println("Enter amount to desposit: ");
+											scanDep.next();
+										}
 										dep = scanDep.nextDouble();
 										System.out.println("Deposit Amount Entered: " + dep);
 
@@ -335,10 +358,16 @@ public class MainDriver {
 
 											continue;
 										}
-										System.out.println("Enter account number to deposit to.");
+										System.out.println("Enter account number to deposit to: ");
 
 										int accountNum = 0;
 										Scanner scanAcc = new Scanner(System.in);
+										
+										// check if int
+										while(!scanAcc.hasNextInt()) {
+											System.out.print("Enter account number to deposit to: ");
+											scanAcc.next();
+										}
 										accountNum = scanAcc.nextInt();
 										System.out.println("Account Number Entered: " + accountNum);
 
@@ -373,7 +402,7 @@ public class MainDriver {
 									}
 
 									try {
-										System.out.println("Returning to BANK OPTIONS MENU.");
+										System.out.println("Returning to BANK OPTIONS MENU.\n\n");
 										Thread.sleep(3000);
 									} catch (InterruptedException e) {
 										// TODO Auto-generated catch block
@@ -392,6 +421,10 @@ public class MainDriver {
 										System.out.println("Enter amount to withdraw: ");
 										Scanner scanWith = new Scanner(System.in);
 										double with = 0.00;
+										while(!scanWith.hasNextDouble()) {
+											System.out.println("Enter amount to withdraw: ");
+											scanWith.next();
+										}
 										with = scanWith.nextDouble();
 										System.out.println("Withdrawal Amount Entered: " + with);
 
@@ -407,11 +440,18 @@ public class MainDriver {
 
 											continue;
 										}
-										System.out.println("Enter account number to withdraw from.");
+										System.out.println("Enter account number to withdraw from: ");
 
 										int accountNum = 0;
 										Scanner scanAcc = new Scanner(System.in);
+										
+										// check if int
+										while(!scanAcc.hasNextInt()) {
+											System.out.println("Enter account number to withdraw from: ");
+											scanAcc.next();
+										}
 										accountNum = scanAcc.nextInt();
+										
 										System.out.println("Account Number Entered: " + accountNum);
 
 										boolean accNumExists = false;
@@ -445,7 +485,7 @@ public class MainDriver {
 									}
 
 									try {
-										System.out.println("Returning to BANK OPTIONS MENU.");
+										System.out.println("Returning to BANK OPTIONS MENU.\n\n");
 										Thread.sleep(3000);
 									} catch (InterruptedException e) {
 										// TODO Auto-generated catch block
@@ -453,12 +493,12 @@ public class MainDriver {
 									}
 								} else if (options == 6) {
 									// 6. LOGOUT
-									System.out.println("Thank You. Goodbye. EXITING BANK OPTIONS PAGE.");
+									System.out.println("\n\n\nThank You. Goodbye. EXITING BANK OPTIONS PAGE.\n\n");
 									bankOptions = false;
 								} else {
 									// INVALID CHOICE
 									// If user does not choose any
-									System.out.println("Please enter a valid number. Returning to BANK OPTIONS PAGE.");
+									System.out.println("Please enter a valid number. Returning to BANK OPTIONS PAGE.\n\n");
 
 									// Wait 3 seconds before going back to BANK OPTIONS PAGE
 									try {
@@ -479,19 +519,26 @@ public class MainDriver {
 								// View Superuser Menu
 								System.out.println("SUPERUSER: " + u.username + " " + u.fname);
 								
-								// 1 View Account
+								// 1 View User And Account
 								// 2 Create Account
 								// 3 Update Account
 								// 4 Delete Account
 								// 5 Delete User
+								// 6 Create User
 								// 0 Exit
 								
-								System.out.println("1 View Account\n2 Create Account\n3 Update Account\n4 Delete Account\n5 Delete User\n\n0 Logout");
+								System.out.println("\n1 View Account\n2 Create Account \n3 Update Account\n4 Delete Account\n5 Delete User\n6 Create User\n0 Logout");
 								
 								int superUserInt = 0;
 								
 								Scanner scanSuperUserOption = new Scanner(System.in);
 								System.out.print("Enter number: ");
+								
+								// checks number entered is an int before saving into int var
+								while(!scanSuperUserOption.hasNextInt()) {
+									System.out.println("Enter number: ");
+									scanSuperUserOption.next();
+								}
 								superUserInt = scanSuperUserOption.nextInt();
 								
 								// 0 Exit
@@ -499,7 +546,7 @@ public class MainDriver {
 									// Logout
 									System.out.println("Logging out. Goodbye. Thank you.");
 
-									// Wait 2 seconds before going back to BANK OPTIONS PAGE
+									// Wait 1 second before going back to BANK OPTIONS PAGE
 									try {
 										Thread.sleep(1000);
 										superUserCont = false;
@@ -540,6 +587,10 @@ public class MainDriver {
 									// Enter UserID
 									System.out.print("Enter User ID: ");
 									
+									while(!scanSU1.hasNextInt()) {
+										System.out.println("Enter User ID: ");
+										scanSU1.next();
+									}
 									int scanIntSU1 = scanSU1.nextInt();
 									
 									// New Account
@@ -549,10 +600,175 @@ public class MainDriver {
 									// View Accounts of User
 									superUserAcc.ViewAccount();
 									
+									System.out.print("Enter 0 to return to menu: ");
+									
+									boolean control1 = true;
+									while(control1 == true) {
+										while(!scanSU1.hasNextInt()) {
+											System.out.print("Enter 0 to return to menu: ");
+											scanSU1.next();
+										}
+										int exitBack = scanSU1.nextInt();
+										
+										if(exitBack == 0) {
+											System.out.println();
+											control1 = false;
+										}
+										
+									}
+									
+									
+									
 									
 								}
 								// 2 Create Account
 								else if(superUserInt == 2) {
+									Accounts a = new Accounts();
+									
+									System.out.println("CREATE ACCOUNT: ");
+									System.out.println("Enter User ID to create an account in: ");
+									
+									// Ask for User ID
+									Scanner scanSU2 = new Scanner(System.in);
+									// Check if int
+									while(!scanSU2.hasNextInt()) {
+										System.out.println("Enter User ID to create an account in: ");
+										scanSU2.next();
+									}
+									
+									int scanSU2Int = scanSU2.nextInt();
+									
+									
+									// Check if userid exists
+									Users u2 = new Users();
+									int userCheckNum = u2.CheckUserID(scanSU2Int);
+									
+									if(userCheckNum == 0) {
+										System.out.println("User ID does not exist.\n");
+										
+									}
+									else if(userCheckNum == scanSU2Int) {
+										System.out.println("User ID matches.\n");
+										a.CreateAccount(scanSU2Int);
+										System.out.println("An account has been created for User ID " + scanSU2Int);
+									}
+									else {
+										System.out.println("A number returned that does not match input from user.\n\n");
+									}
+									
+									
+									// To exit, enter 0
+									System.out.print("Enter 0 to return to menu: ");
+									boolean control2 = true;
+									while(control2 == true) {
+										while(!scanSU2.hasNextInt()) {
+											System.out.print("Enter 0 to return to menu: ");
+											scanSU2.next();
+										}
+										int exitBack2 = scanSU2.nextInt();
+										
+										if(exitBack2 == 0) {
+											System.out.println();
+											control2 = false;
+										}
+										
+									}
+								}
+								// 3 Update Account
+								else if(superUserInt == 3) {
+									System.out.println("This will feature will be implented soon.");
+								}
+								// 4 Delete Account
+								else if(superUserInt == 4) {
+									Users uSuper3 = new Users();
+									Accounts accSuper3 = new Accounts();
+									int accountNumber;
+									int userID;
+									Scanner scanSU3 = new Scanner(System.in);
+									
+									
+									System.out.println("Enter Account Number and UserID to Delete.");
+									System.out.println("Account Number: ");
+									
+									// make sure an int is entered
+									while(!scanSU3.hasNextInt()) {
+										System.out.println("Enter Account Number: ");
+										scanSU3.next();
+									}
+									accountNumber = scanSU3.nextInt();
+									System.out.println("Account Number Entered: " + accountNumber);
+									
+									
+									System.out.println("Enter User ID: ");
+									// make sure an int is entered
+									while(!scanSU3.hasNextInt()) {
+										System.out.println("Enter Account Number: ");
+										scanSU3.next();
+									}
+									userID = scanSU3.nextInt();
+									System.out.println("User ID Entered: " + userID);
+									
+									
+									accSuper3.DeleteAccount(accountNumber, userID);
+									
+									
+									// To exit, enter 0
+									System.out.print("Enter 0 to return to menu: ");
+									boolean control3 = true;
+									while(control3 == true) {
+										while(!scanSU3.hasNextInt()) {
+											System.out.print("Enter 0 to return to menu: ");
+											scanSU3.next();
+										}
+										int exitBack3 = scanSU3.nextInt();
+										
+										if(exitBack3 == 0) {
+											System.out.println();
+											control3 = false;
+										}
+										
+									}
+									
+								}
+								// 5 Delete User
+								else if(superUserInt == 5) {
+									Users sU5 = new Users();
+									Scanner scanSU5 = new Scanner(System.in);
+									int userIDSU5;
+									
+									System.out.println("Enter User ID to delete.");
+									
+									//check if int
+									while(!scanSU5.hasNextInt()) {
+										System.out.println("Enter User ID to delete: ");
+										scanSU5.next();
+									}
+									userIDSU5 = scanSU5.nextInt();
+									System.out.println("User ID entered: " + userIDSU5);
+									
+									sU5.DeleteUser(userIDSU5);
+									
+									
+									// To exit, enter 0
+									System.out.print("Enter 0 to return to menu: ");
+									boolean control5 = true;
+									while(control5 == true) {
+										while(!scanSU5.hasNextInt()) {
+											System.out.print("Enter 0 to return to menu: ");
+											scanSU5.next();
+										}
+										int exitBack2 = scanSU5.nextInt();
+										
+										if(exitBack2 == 0) {
+											System.out.println();
+											control5 = false;
+										}
+										
+									}
+									
+								}
+								// 6 CREATE USER
+								else if(superUserInt == 6) {
 									Users uSuper = new Users();
 									
 									Scanner scanSCU = new Scanner(System.in);
@@ -585,45 +801,22 @@ public class MainDriver {
 									
 									System.out.println("User created.");
 									
-								}
-								// 3 Update Account
-								else if(superUserInt == 3) {
-									System.out.println("This will feature will be implented soon.");
-								}
-								// 4 Delete Account
-								else if(superUserInt == 4) {
-									Users uSuper3 = new Users();
-									Accounts accSuper3 = new Accounts();
-									int accountNumber;
-									int userID;
-									Scanner scanSU3 = new Scanner(System.in);
-									
-									
-									System.out.println("Enter Account Number and UserID to Delete.");
-									System.out.println("Account Number: ");
-									accountNumber = scanSU3.nextInt();
-									System.out.println("Account Number Entered: " + accountNumber);
-									
-									
-									System.out.println("User ID: ");
-									userID = scanSU3.nextInt();
-									System.out.println("User ID Entered: " + userID);
-									
-									
-									accSuper3.DeleteAccount(accountNumber, userID);
-								}
-								// 5 Delete User
-								else if(superUserInt == 5) {
-									Users sU5 = new Users();
-									Scanner scanSU5 = new Scanner(System.in);
-									int userIDSU5;
-									
-									System.out.println("Enter User ID to delete.");
-									userIDSU5 = scanSU5.nextInt();
-									System.out.println("User ID entered: " + userIDSU5);
-									
-									sU5.DeleteUser(userIDSU5);
-									
+									// To exit, enter 0
+									System.out.print("Enter 0 to return to menu: ");
+									boolean control6 = true;
+									while(control6 == true) {
+										while(!scanSCU.hasNextInt()) {
+											System.out.print("Enter 0 to return to menu: ");
+											scanSCU.next();
+										}
+										int exitBack6 = scanSCU.nextInt();
+										
+										if(exitBack6 == 0) {
+											System.out.println();
+											control6 = false;
+										}
+										
+									}
 								}
 								else {
 									System.out.println("Number entered is invalid.");
@@ -638,8 +831,8 @@ public class MainDriver {
 								
 								// End, return to menu
 								try {
-									System.out.println("Returning to Menu.");
-									Thread.sleep(3000);
+									System.out.println("Returning to Menu.\n\n");
+									Thread.sleep(2000);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
@@ -678,7 +871,7 @@ public class MainDriver {
 				}
 
 				// After Login Process, go to TOP MENU
-				System.out.println("Returning to BANK MENU.");
+				System.out.println("Returning to BANK MENU.\n\n");
 				try {
 					Thread.sleep(3000);
 				} catch (InterruptedException e) {
@@ -689,7 +882,7 @@ public class MainDriver {
 			// INVALID CHOICE
 			else {
 				log.info("Inside topMenuScan == invalid option");
-				System.out.println("Please enter a valid number. Returning to BANK MENU.");
+				System.out.println("Please enter a valid number. Returning to BANK MENU.\n\n");
 
 				// Wait 5 seconds before going back to TOP MENU
 				try {

@@ -54,7 +54,7 @@ public class Accounts {
 	
 	public void SetAccount(int userid) {
 		MainDriver.log.info("In SetAccount(): ");
-		System.out.println("userid: " + userid);
+		//System.out.println("userid: " + userid);
 		Connection conn = MainDriver.cf.getConnection();
 		Statement stmt;
 		try {
@@ -96,14 +96,18 @@ public class Accounts {
 		MainDriver.log.info("In ViewAccount(): ");
 		System.out.println("\n\n\nACCOUNT INFORMATION: \n");
 		
+		int totalAccOpen = 0;
+		
 		for(int i = 0; i < this.accountid.size(); i++ ) {
+			
 			if(!this.accountstatusid.get(i).equals(2)) {
 				System.out.print("Account ID: " + this.accountid.get(i));
 				System.out.println("     Balance: " + this.accountbalance.get(i));
+				totalAccOpen += 1;
 			}
 			
-			
 		}
+		System.out.println("Total Active Accounts: " + totalAccOpen + "\n");
 		
 		
 	}
