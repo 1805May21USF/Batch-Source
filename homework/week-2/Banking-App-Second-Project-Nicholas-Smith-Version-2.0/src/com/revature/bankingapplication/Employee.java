@@ -4,7 +4,6 @@
  */
 package com.revature.bankingapplication;
 
-import com.revature.bankingapplication.Customer;
 
 /**
  * @author Nicholas Smith
@@ -45,16 +44,5 @@ public class Employee
 		this.name = name;
 		this.empID = empID;
 	}
-	
-	//create a method to view customer information
-	//takes in a customer object
-	//prints to the console
-	public void viewCustomer(Customer c1) 
-	{
-		c1.toString();
-	}
-	
-	//create a method to read Application
-	//takes in an Application object
 	
 }
