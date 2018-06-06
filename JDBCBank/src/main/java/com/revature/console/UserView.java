@@ -12,8 +12,10 @@ public class UserView {
 	{
 		
 		int choice;
-		System.out.println(newLine + "Welcome to the menu. What would you like to do?");
-		System.out.println("1. Create an account" + newLine + "2. Check accounts "+ newLine + "3. Withdraw vibranium" + newLine + "4. Deposit vibrainium" + newLine + "5. Close an account" + newLine + "6. Logout");
+		System.out.println("********************************************************" + newLine);
+		System.out.println("Welcome to the menu. What would you like to do?");
+		System.out.println("1. Create an account" + newLine + "2. Check accounts "+ newLine + "3. Withdraw vibranium" + newLine + "4. Deposit vibrainium" + newLine + "5. Close an account" + newLine + "6. Logout"+ newLine);
+		System.out.println("********************************************************" + newLine);
 			 while(!input.hasNextInt())
 		     {
 		    	 String input1 = input.nextLine();
@@ -65,8 +67,10 @@ public class UserView {
 	public void adminView(String username)
 	{
 		int choice;
-		System.out.println(newLine + "Welcome to the admin menu. What would you like to do?");
-		System.out.println("1. View Users"+ newLine + "2. Create users "+ newLine + "3. Update Users" + newLine + "4. Delete Users" + newLine + "5. Logout");
+		System.out.println("*****************************************************************" + newLine);
+		System.out.println("Welcome to the admin menu. What would you like to do?");
+		System.out.println("1. View Users"+ newLine + "2. Create users "+ newLine + "3. Update Users" + newLine + "4. Delete Users" + newLine + "5. Logout" + newLine);
+		System.out.println("*****************************************************************" + newLine);
 		 while(!input.hasNextInt())
 	     {
 	    	 String input1 = input.nextLine();

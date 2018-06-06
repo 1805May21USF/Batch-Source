@@ -14,16 +14,18 @@ public class Display {
 	public void userWelcome()
 	{
 		int choice;
-		System.out.println("										Welcome to Wakanda National Bank");
-        System.out.println("                 							     _______________________________________" + newLine);
+		System.out.println(newLine);
+        System.out.println("                 							     ***************************************" + newLine);
+		System.out.println("										WELCOME TO WAKANDA NATIONAL BANK" + newLine);
+        System.out.println("                 							     ***************************************" + newLine);
 
-          	 System.out.println("What would you like to do? Enter in the number of your selection.");
-		     System.out.println("1. Apply for a new account" + newLine + "2. Login " + newLine + "3. Exit bank");
+          	 System.out.println("What would you like to do? Enter in the number of your selection." + newLine);
+		     System.out.println("1. Apply for a new account" + newLine + "2. Login " + newLine + "3. Exit bank" + newLine);
 		     
 		     while(!input.hasNextInt())
 		     {
 		    	 String input2 = input.next();
-		    	 System.out.printf("\"%s\" is not a valid selection.\n" + newLine + "Enter 1, 2, or 3 to apply, login or exit respectively.", input2);
+		    	 System.out.printf("\"%s\" is not a valid selection.\n" + newLine + "Enter 1, 2, or 3 to apply, login or exit respectively." + newLine, input2);
 		     }
 		     
 		     choice = input.nextInt();
@@ -58,13 +60,12 @@ public class Display {
 		String password;
 		boolean isValid = true;
 		
-		System.out.println("Welcome to the registration process for Wakanda National Bank!");
+		System.out.println(newLine + "Welcome to the registration process for Wakanda National Bank!" + newLine);
 		
 		//firstName
 		do
 		{
-			System.out.println("Please enter your first name: ");
-			System.out.println("First name must have a capital first letter.");
+			System.out.println("Please enter your first name: "+ newLine);
 			firstName = input.next();
 			if (verify.validFirstName(firstName) == false)
 			{
@@ -81,13 +82,13 @@ public class Display {
 		//lastName
 		do
 		{
-			System.out.println("Please enter your last name: ");
+			System.out.println(newLine +"Please enter your last name: ");
 			lastName = input.next();
 			
 			if (verify.validLastName(lastName) == false)
 			{
 				isValid = false;
-				System.out.println("Invalid format for last name.");
+				System.out.println("Invalid format for last name." + newLine);
 			}
 			else
 			{
@@ -99,8 +100,8 @@ public class Display {
 		//userName
 		do
 		{
-			System.out.println("Please create a username: ");
-			System.out.println("Username cannot have capital letters and must include numbers.");
+			System.out.println(newLine + "Please create a username: ");
+			System.out.println("Username must not contain capital letters and must have at least 1 number." + newLine);
 			username = input.next();		
 			if (verify.validUsername(username) == false)
 			{
@@ -111,11 +112,11 @@ public class Display {
 			{
 				isValid = true;
 			}
-			System.out.println("Checking availability...");
+			System.out.println(newLine +"Checking availability...");
 			if(verify.usernameExists(username) == true)
 			{	
 				isValid = false;
-				System.out.println("Username already exists.");
+				System.out.println(newLine + "Username already exists.");
 			}
 			else
 			{
@@ -127,8 +128,8 @@ public class Display {
 		//password
 		do
 		{
-			System.out.println("Please create a password: ");
-			System.out.println("Pass must have at least 1 captial letter, a number and 1 special character.");
+			System.out.println(newLine + "Please create a password: ");
+			System.out.println("Password must have at least 1 captial letter, a number and 1 special character." + newLine);
 			password = input.next();
 			
 			if (verify.validPassword(password) == false)
@@ -143,7 +144,7 @@ public class Display {
 			
 		}while(isValid == false);
 		
-		System.out.println("You are now a registered user of Wakanda National Bank!");
+		System.out.println(newLine + "You are now a registered user of Wakanda National Bank!" + newLine);
 		
 		service.createUser(firstName, lastName, username, password);
 
@@ -163,13 +164,13 @@ public class Display {
 		//userName
 		do
 		{
-			System.out.println("Please enter your username: ");
+			System.out.println(newLine +"Please enter your username: ");
 			username = input.next();
 					
 			if (verify.validUsername(username) == false)
 			{
 				isValid = false;
-				System.out.println("Invalid format for username.");
+				System.out.println("Invalid format for username." );
 			}
 			else
 			{
@@ -181,7 +182,7 @@ public class Display {
 		//password
 		do
 		{
-			System.out.println("Please enter your password: ");
+			System.out.println(newLine +"Please enter your password: ");
 			password = input.next();
 			
 			if (verify.validPassword(password) == false)
@@ -197,15 +198,15 @@ public class Display {
 			
 		}while(isValid == false);
 		
-		System.out.println("Verifying...");
+		System.out.println(newLine +"Verifying...");
 		if(verify.usernameExists(username) == false )
 		{	
-			System.out.println("Username does not exist." + newLine + "Taking you back to home... ");
+			System.out.println(newLine +"Username does not exist." + newLine + "Taking you back to home... ");
 			userWelcome();
 		}
 		else
 		{
-			System.out.println("Login successful.");
+			System.out.println(newLine+"Login successful."+newLine);
 			if (service.isUser(username) == true)
 			{
 				uView.customerView(username);

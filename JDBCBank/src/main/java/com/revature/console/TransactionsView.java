@@ -14,10 +14,10 @@ public class TransactionsView {
 	public void createAccount(String username)
 	{
 		double initialAmount = 0.0;
-		System.out.println("Enter an intial amount.");
+		System.out.println(newLine +"Enter an intial amount.");
 		initialAmount = input.nextDouble();
 		service.createAccount(username, initialAmount);
-		System.out.println("You have successfully created an account!");
+		System.out.println(newLine +"You have successfully created an account!");
 		
 	}
 	
@@ -26,12 +26,14 @@ public class TransactionsView {
 		List <Account> acc = service.getAccounts(username);
 		
 		System.out.println(newLine + "Your accounts are:");
+		System.out.println("*******************************"+newLine);
 		for(Account a: acc )
 		{
 			System.out.println("Account Number: "+ a.getAccountId() +newLine+ "Balance: " + a.getBalance());
 			System.out.println();
 		}
 		
+		System.out.println("*******************************"+newLine);
 	}
 	
 	public void withdraw(String username)
@@ -43,7 +45,7 @@ public class TransactionsView {
 		checkAccounts(username);
 		System.out.println("Which account would you like to withdraw from?");
 		int accountId = input.nextInt();
-		System.out.println("Your current balance is " + service.getAccountBalance(username, accountId) + " V");
+		System.out.println(newLine+"Your current balance is " + service.getAccountBalance(username, accountId) + " V");
 		
 		do
 		{
@@ -65,10 +67,10 @@ public class TransactionsView {
 				if (service.withdraw(w, username, accountId) == true)
 				{
 					double balance = service.getAccountBalance(username, accountId);
-					System.out.println("Your withdrawal was successful. You now have a balance of "+ balance + " V");
+					System.out.println(newLine+"Your withdrawal was successful. You now have a balance of "+ balance + " V");
 					if (balance == 0.0)
 					{
-						System.out.println("Would you like to close this account? Enter yes or no");
+						System.out.println("Would you like to close this account? Enter yes or no.");
 						String decision = input.next();
 						if(decision.equalsIgnoreCase("yes"))
 						{
@@ -100,12 +102,12 @@ public class TransactionsView {
 		checkAccounts(username);
 		System.out.println("Which account would you like to deposit to?");
 		int accountId = input.nextInt();
-		System.out.println("Your current balance is " + service.getAccountBalance(username, accountId) + " V");
+		System.out.println(newLine+"Your current balance is " + service.getAccountBalance(username, accountId) + " V");
 		System.out.println("You can deposit as much vibrainum as you have.");
 		
 		do
 		{
-			System.out.println("How much do you want to deposit");
+			System.out.println("How much do you want to deposit?");
 			while(!input.hasNextDouble())
 		     {
 		    	 String input1 = input.next();
@@ -121,7 +123,7 @@ public class TransactionsView {
 				dAmountIsValid = true;
 				if (service.deposit(d, username, accountId) == true)
 				{
-					System.out.println("Your deposit was successful. You now have a balance of "+ service.getAccountBalance(username, accountId) + " V");
+					System.out.println(newLine+"Your deposit was successful. You now have a balance of "+ service.getAccountBalance(username, accountId) + " V");
 				}
 				else
 				{
@@ -138,10 +140,10 @@ public class TransactionsView {
 		String decision = null;
 		
 		checkAccounts(username);
-		System.out.println("Which account would you like to deposit close?");
+		System.out.println("Which account would you like to close?");
 		accountId = input.nextInt();
 		System.out.println("You have selected to close account "+ accountId + " with a balance of "+ service.getAccountBalance(username, accountId));
-		System.out.println("Are you sure? Enter yes or no");
+		System.out.println("Are you sure? Enter yes or no.");
 		decision = input.next();
 		if(decision.equalsIgnoreCase("yes"))
 		{
