@@ -87,7 +87,7 @@ public class Application extends Person{
 			}
 		} 
 	
-	public boolean check_to_see_if_money_account_exists(String username, String account_type) {
+	protected boolean check_to_see_if_money_account_exists(String username, String account_type) {
 		try {
 			String temp_account_type = null;
 			switch(account_type) {
@@ -125,7 +125,7 @@ public class Application extends Person{
 		}
 	}
 	
-	public static String find_existing_account_baking_id(String username) {
+	protected static String find_existing_account_baking_id(String username) {
 		try {
 			List<Customer> customer_list = new ArrayList<Customer>();
 			Connection conn = cf.getConnection();
@@ -155,7 +155,7 @@ public class Application extends Person{
 		return username;
 	}
 	
-	public static Person find_existing_account(String username) {
+	protected static Person find_existing_account(String username) {
 		try {
 			
 			Connection conn = cf.getConnection();
@@ -215,7 +215,7 @@ public class Application extends Person{
 		}	
 	}
 	
-	private String insert_application() {
+	protected String insert_application() {
 		try {
 			Connection conn = cf.getConnection();
 			String sql = "{call create_applications (?,?,?,?,?,?,?,?,?,?,?,?)}";

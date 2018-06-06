@@ -1,7 +1,5 @@
 package com.revature.messages;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,8 +10,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.revature.accounts.Account;
 import com.revature.people.Application;
+import com.revature.people.Bank_Admin;
 import com.revature.people.Customer;
 import com.revature.people.Employee;
 import com.revature.people.Person;
@@ -53,7 +51,7 @@ public class Messages {
 				  	case 3:
 				  		boolean claim_number_boolean = false;
 				  		while (claim_number_boolean == false) {
-				  			System.out.println("Please enter your claim # to search our database");
+				  			System.out.println("Please enter your username to search our database");
 				  			String username = input.nextLine();
 					  		String result = Application.check_on_application(username);
 					  		System.out.println(result);
@@ -73,7 +71,7 @@ public class Messages {
 	}
 	
 
-	private void login() {
+	protected void login() {
 		boolean repeat = true;
 		while (repeat) {
 			try {			
@@ -136,7 +134,7 @@ public class Messages {
 								System.out.println("Error collecting all information, please try again!");
 								repeat = false;
 							}
-						} else if (person.getAccount_level().contains("Customer")) {
+						} else if (matched_person.getAccount_level().contains("Customer")) {
 							try {
 								Customer customer = null;
 								rs = stmt.executeQuery("SELECT * FROM Banking_Accounts");
@@ -160,6 +158,21 @@ public class Messages {
 								System.out.println("Error collecting all information, please try again! d");
 								repeat = false;
 							}
+						} else if(matched_person.getAccount_level().contains("Employee - Admin")) {
+							try {
+								Bank_Admin admin = null;
+								rs = stmt.executeQuery("SELECT * FROM Banking_Accounts");
+								
+								while(rs.next()) {
+									admin = new Bank_Admin( Integer.toString(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12), Integer.toString(rs.getInt(13)));
+								}
+									admin.logged_in();
+									repeat = false;
+									break;
+							} catch (SQLException e){
+								System.out.println("Error collecting all information, please try again! d");
+								repeat = false;
+							}
 						}
 					} else {
 						System.out.println("The account can not be found, if you think this was a mistake please call the business during normal banking hours with your claim #");
@@ -171,7 +184,7 @@ public class Messages {
 					repeat = false;
 				}
 			} catch(SQLException e) {
-				System.out.println("Error: Having issues with the database. Please try again later!");
+				System.out.println("Error: Having issues with the database. Please try again later!\r");
 				repeat = false;
 			}
 	    }
@@ -209,7 +222,7 @@ public class Messages {
 		}
 	}
 	
-	private static String get_appplication_info_string(String message_info, String action, String error_info, String regex_patten) {
+	protected static String get_appplication_info_string(String message_info, String action, String error_info, String regex_patten) {
 		Scanner input = new Scanner(System.in);
 		boolean repeat = true;
 		String output = null;
@@ -229,13 +242,6 @@ public class Messages {
 				
 				switch(action) {
 					case "Username":
-						String username = check_for_username(output);
-						if (username.isEmpty() ) {
-							repeat = false;
-						} else {
-							System.out.println(username);
-							repeat = true;
-						}
 						break;
 					case "First name":
 						String first_name = check_for_length(output, action, 15, 2);
@@ -329,7 +335,7 @@ public class Messages {
 		return output;
 	}
 	
-	private static String check_for_length(String data, String action, int max, int min) {
+	protected static String check_for_length(String data, String action, int max, int min) {
 		
 		if (data.length() <= max && data.length() >= min) {
 			if(action.contains("Password")) {
@@ -343,62 +349,27 @@ public class Messages {
 		}
 	}
 	
-    private static boolean isContain(String source, String subItem){
+	protected static boolean isContain(String source, String subItem){
         String pattern = "\\b"+subItem+"\\b";
         Pattern p=Pattern.compile(pattern);
         Matcher m=p.matcher(source);
         return m.find();
    }
 	
-	private static void check_password(String data) {
+	protected static void check_password(String data) {
 		Scanner input = new Scanner(System.in);
 		boolean repeat = true;
 		
 		while (repeat == true) {
-			System.out.println("Type in the password again");
+			System.out.println("\rType in the password again");
 			
 			String repeat_password = input.nextLine();
 			
 			if (!isContain(data, repeat_password)) {
-				System.out.println("Passwords do not match! Try again!\r You entered \"" + data + "\" previously.");
+				System.out.println("Passwords do not match! Try again!\r You entered \"" + data + "\" previously.\r");
 			} else {
 				repeat = false;
 			}
-		}
-	}
-	
-	private static String check_for_username(String username_parm) {
-		
-		try {
-
-			List<String> usernames = new ArrayList<String>();
-					
-			//Accessing the file
-			Scanner  output = new Scanner (new File("C:\\Users\\JonWi\\Documents\\Revature\\Repository\\Batch-Source\\Banking_Application_Main\\src\\main\\Username\\usernames"));
-			
-			//While there is a next line
-			while (output.hasNext())
-			{
-				usernames.add(output.next());
-			}
-
-			output.close();
-			
-			for(String username : usernames) {
-				if (username.contains(username_parm))
-					return "Username is Taken";
-			}
-
-			if (username_parm.length() < 15 && username_parm.length() > 3) {
-				return "";
-			} else if (username_parm.length() > 15) {
-				return "Username is too long!";
-			} else {
-				return "Username is too short!";
-			}
-			//Close the scanner
-		} catch (FileNotFoundException e) {
-			return "File is not found. Please see an administrator!";
 		}
 	}
 	

@@ -32,7 +32,7 @@ public class Employee extends Person{
 		
 		while (repeat == true) {
 			System.out.println("What would you like to do " + this.getFirst_name() + " " + this.getLast_name() + "?\r");
-			System.out.println("1) Look up an account\r2) Approve or Deny accounts\r3) View accounts\r4) Go back\r");
+			System.out.println("1) Look up an account\r2) Approve or Deny accounts\r3) View accounts\r4) Logout\r");
 			String answer = input.nextLine();
 			switch (answer) {
 			case "1":
@@ -362,9 +362,9 @@ public class Employee extends Person{
 		        	repeat = false;
 		        	System.out.println("There is no accounts currently to approve/deny, please try again later!\r");
 		        } else {
-		        	
+					System.out.println("\rHere are the usernames applications awaiting approval!");
+					
 		        	for (Application single_applicant : see_applications) {
-						System.out.println("\rHere are the usernames applications awaiting approval!");
 				        	
 				        System.out.println(i + ") " + single_applicant.getFirst_name() + " " + single_applicant.getLast_name() + ". Applicant ID: " + single_applicant.getApplication_id());
 				        i++;

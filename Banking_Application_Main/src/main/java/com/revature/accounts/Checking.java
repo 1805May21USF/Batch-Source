@@ -7,12 +7,6 @@ import java.sql.SQLException;
 import com.revature.util.ConnFactory;
 
 public class Checking extends Account{
-
-	private String name = "Checking";
-	
-	protected String getName() {
-		return name;
-	}
 	
 	public static ConnFactory cf = ConnFactory.getInstance();
 

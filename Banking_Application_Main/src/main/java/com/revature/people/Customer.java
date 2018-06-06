@@ -41,7 +41,7 @@ public class Customer extends Person {
 		
 		while (repeat) {
 			System.out.println("What would you like to do " + this.getFirst_name() + " " + this.getLast_name() + "?\r");
-			System.out.println("1) Look up an account\r2) Apply for an account\r3) View personal information\r4) Go back\r");
+			System.out.println("1) Look up an account\r2) Apply for an account\r3) View personal information\r4) Logout\r");
 			String answer = input.nextLine();
 			switch (answer) {
 			case "1":
@@ -64,7 +64,7 @@ public class Customer extends Person {
 		}
 	}
 	
-	public static Person find_account_by_banking_id(String banking_id) {
+	protected static Person find_account_by_banking_id(String banking_id) {
 		try {
 			
 			Connection conn = cf.getConnection();
@@ -188,7 +188,7 @@ public class Customer extends Person {
 		}
 	}
 	
-	public void look_up_your_account() {
+	protected void look_up_your_account() {
 		boolean repeat = true;
 		while(repeat) {
 			Scanner input = new Scanner(System.in);
@@ -217,66 +217,29 @@ public class Customer extends Person {
 								while(deposit_repeat) {
 									acc = current_checking();
 									this.checking_account = acc;
-									System.out.println("Current Balance: $" + this.checking_account.getBalance() + "\r");
-									System.out.println("How much would you like to deposit?\r");
-									String new_balance_string = input.nextLine();
-									boolean number = tryParseInt(new_balance_string);
-									if (number) {
-										int new_balance = checking_account.getBalance() + Integer.parseInt(new_balance_string);
-										boolean successful_deposit = this.checking_account.deposit(this.getBanking_account_id(), new_balance, Integer.parseInt(new_balance_string));
-										boolean continue_to_deposit = true;
+									if (!(acc == null)) {
+										System.out.println("Current Balance: $" + this.checking_account.getBalance() + "\r");
+										System.out.println("How much would you like to deposit?\r");
+										String new_balance_string = input.nextLine();
+										boolean number = tryParseInt(new_balance_string);
+										if (number) {
+											int new_balance = checking_account.getBalance() + Math.abs(Integer.parseInt(new_balance_string));
+											boolean successful_deposit = this.checking_account.deposit(this.getBanking_account_id(), new_balance, Integer.parseInt(new_balance_string));
+											boolean continue_to_deposit = true;
 
-										if (successful_deposit) {
-											while(continue_to_deposit) {
-												System.out.println("Deposit successful! Would you like to make another deposit? \"Yes or No\"");
-											
-												String deposit_continue = input.nextLine();
-									
-												switch (deposit_continue) {
-													case "yes":
-														continue_to_deposit = false;
-														break;
-													case "no":
-														continue_to_deposit = false;
-														deposit_repeat = false;
-														break;
-													default:
-														System.out.println("Entered in incorrect data, please try again!\r");
-												}
-											}
-										}
-									} else {
-										System.out.println("Entered in incorrect data, please try again!\r");
-									}
-								}
-								break;
-							case "2":
-								while(withdraw_repeat) {
-									acc = current_checking();
-									this.checking_account = acc;
-									System.out.println("Current Balance: $" + this.checking_account.getBalance() + "\r");
-									System.out.println("How much would you like to withdraw?\r");
-									String minus = input.nextLine();
-									boolean number = tryParseInt(minus);
-									if (number) {
-										int new_balance = this.checking_account.getBalance() -  Integer.parseInt(minus);
-										if (!(new_balance < 0)) {
-											boolean successful_withdraw = checking_account.deposit(this.getBanking_account_id(), new_balance, Integer.parseInt(minus));
-											boolean continue_to_withdraw = true;
-											
-											if (successful_withdraw) {
-												while(continue_to_withdraw) {
-													System.out.println("Withdraw successful! Would you like to make another withdraw? \"Yes or No\"");
+											if (successful_deposit) {
+												while(continue_to_deposit) {
+													System.out.println("Deposit successful! Would you like to make another deposit? \"Yes or No\"");
 												
 													String deposit_continue = input.nextLine();
 										
 													switch (deposit_continue) {
 														case "yes":
-															continue_to_withdraw = false;
+															continue_to_deposit = false;
 															break;
 														case "no":
-															continue_to_withdraw = false;
-															withdraw_repeat = false;
+															continue_to_deposit = false;
+															deposit_repeat = false;
 															break;
 														default:
 															System.out.println("Entered in incorrect data, please try again!\r");
@@ -284,10 +247,59 @@ public class Customer extends Person {
 												}
 											}
 										} else {
-											System.out.println("You can not withdraw $" + minus + ", because you only have $" + this.checking_account.getBalance());
+											System.out.println("Entered in incorrect data, please try again!\r");
 										}
 									} else {
-										System.out.println("Entered in incorrect data, please try again!\r");
+										System.out.println("Could not find account, try entering it again!\r");
+										account_choice = false;
+										deposit_repeat = false;
+									}
+								}
+								break;
+							case "2":
+								while(withdraw_repeat) {
+									acc = current_checking();
+									this.checking_account = acc;
+									if (!(acc == null)) {
+										System.out.println("Current Balance: $" + this.checking_account.getBalance() + "\r");
+										System.out.println("How much would you like to withdraw?\r");
+										String minus = input.nextLine();
+										boolean number = tryParseInt(minus);
+										if (number) {
+											int new_balance = this.checking_account.getBalance() -  Math.abs(Integer.parseInt(minus));
+											if (!(new_balance < 0)) {
+												boolean successful_withdraw = checking_account.withdraw(this.getBanking_account_id(), new_balance, Integer.parseInt(minus));
+												boolean continue_to_withdraw = true;
+												
+												if (successful_withdraw) {
+													while(continue_to_withdraw) {
+														System.out.println("Withdraw successful! Would you like to make another withdraw? \"Yes or No\"");
+													
+														String deposit_continue = input.nextLine();
+											
+														switch (deposit_continue) {
+															case "yes":
+																continue_to_withdraw = false;
+																break;
+															case "no":
+																continue_to_withdraw = false;
+																withdraw_repeat = false;
+																break;
+															default:
+																System.out.println("Entered in incorrect data, please try again!\r");
+														}
+													}
+												}
+											} else {
+												System.out.println("You can not withdraw $" + minus + ", because you only have $" + this.checking_account.getBalance());
+											}
+										} else {
+											System.out.println("Entered in incorrect data, please try again!\r");
+										}
+									} else {
+										System.out.println("Could not find account, try entering it again!\r");
+										account_choice = false;
+										withdraw_repeat = false;
 									}
 								}
 								break;
@@ -296,24 +308,29 @@ public class Customer extends Person {
 									acc = current_checking();
 									this.checking_account = acc;
 									System.out.println("Current Balance: $" + this.checking_account.getBalance() + "\r");
-									
-									if (this.checking_account.getBalance() == 0) {
-										System.out.println("Would you like to remove the checking account? \"Type Yes or No\"\r");
-										String answer = input.nextLine();
-										boolean number = tryParseInt(answer);
-										if (!(number)) {
-											boolean deleted_account = Account.delete_checking_account(this.getBanking_account_id());
-											if (deleted_account) {
-												System.out.println("Your account was deleted!\r");
-												delete_account = false;
-												account_choice = false;
-											} else {
-												System.out.println("There was issues deleteing the account, please try again later!\r");
+									if (!(acc == null)) {
+										if (this.checking_account.getBalance() == 0) {
+											System.out.println("Would you like to remove the checking account? \"Type Yes or No\"\r");
+											String answer = input.nextLine();
+											boolean number = tryParseInt(answer);
+											if (!(number)) {
+												boolean deleted_account = Account.delete_checking_account(this.getBanking_account_id());
+												if (deleted_account) {
+													System.out.println("Your account was deleted!\r");
+													delete_account = false;
+													account_choice = false;
+												} else {
+													System.out.println("There was issues deleteing the account, please try again later!\r");
+												}
 											}
+										} else {
+											System.out.println("You can not delete your account since it has $" + this.current_checking().getBalance() + " left in it\r" );
+											delete_account = false;
 										}
 									} else {
-										System.out.println("You can not delete your account since it has $" + this.current_checking().getBalance() + " left in it\r" );
-										delete_account = false;
+										System.out.println("Could not find account, try entering it again!\r");
+										account_choice = false;
+										deposit_repeat = false;
 									}
 								}
 								break;
@@ -348,169 +365,14 @@ public class Customer extends Person {
 								while(deposit_repeat) {
 									savings = current_savings();
 									this.savings_account = savings;
-									System.out.println("Current Balance: $" + this.savings_account.getBalance() + "\r");
-									System.out.println("How much would you like to deposit?\r");
-									String new_balance_string = input.nextLine();
-									boolean number = tryParseInt(new_balance_string);
-									if (number) {
-										int new_balance = this.savings_account.getBalance() + Integer.parseInt(new_balance_string);
-										boolean successful_deposit = savings_account.deposit(this.getBanking_account_id(), new_balance, Integer.parseInt(new_balance_string));
-										boolean continue_to_deposit = true;
-
-										if (successful_deposit) {
-											while(continue_to_deposit) {
-												System.out.println("Deposit successful! Would you like to make another deposit? \"Yes or No\"");
-											
-												String deposit_continue = input.nextLine();
-									
-												switch (deposit_continue) {
-													case "yes":
-														continue_to_deposit = false;
-														break;
-													case "no":
-														continue_to_deposit = false;
-														deposit_repeat = false;
-														break;
-													default:
-														System.out.println("Entered in incorrect data, please try again!\r");
-												}
-											}
-										}
-									} else {
-										System.out.println("Entered in incorrect data, please try again!\r");
-									}
-								}
-								break;
-							case "2":
-								while(withdraw_repeat) {
-									savings = current_savings();
-									this.savings_account = savings;
-									System.out.println("Current Balance: $" + this.savings_account.getBalance() + "\r");
-									System.out.println("How much would you like to withdraw?\r");
-									String minus = input.nextLine();
-									boolean number = tryParseInt(minus);
-									if (number) {
-										int new_balance = this.savings_account.getBalance() -  Integer.parseInt(minus);
-										if (!(new_balance < 0)) {
-											boolean successful_withdraw = this.savings_account.deposit(this.getBanking_account_id(), new_balance, Integer.parseInt(minus));
-											boolean continue_to_withdraw = true;
-											
-											if (successful_withdraw) {
-												while(continue_to_withdraw) {
-													System.out.println("Withdraw successful! Would you like to make another withdraw? \"Yes or No\"");
-												
-													String deposit_continue = input.nextLine();
-										
-													switch (deposit_continue) {
-														case "yes":
-															continue_to_withdraw = false;
-															break;
-														case "no":
-															continue_to_withdraw = false;
-															withdraw_repeat = false;
-															break;
-														default:
-															System.out.println("Entered in incorrect data, please try again!\r");
-													}
-												}
-											}
-										} else {
-											System.out.println("You can not withdraw $" + minus + ", because you only have $" + this.savings_account.getBalance());
-										}
-									} else {
-										System.out.println("Entered in incorrect data, please try again!\r");
-									}
-								}
-								break;
-							case "3":
-								while(delete_account) {
-									savings = current_savings();
-									this.savings_account = savings;
-									System.out.println("Current Balance: $" + this.savings_account.getBalance() + "\r");
-									
-									if (this.getSavings_account().getBalance() == 0) {
-										System.out.println("Would you like to remove the savings account? \"Type Yes or No\"\r");
-										String answer = input.nextLine();
-										boolean number = tryParseInt(answer);
-										if (!(number)) {
-											boolean deleted_account = Account.delete_savings_account(this.getBanking_account_id());
-											if (deleted_account) {
-												System.out.println("Your account was deleted!\r");
-												delete_account = false;
-												account_choice = false;
-											} else {
-												System.out.println("There was issues deleteing the account, please try again later!\r");
-											}
-										}
-									} else {
-										System.out.println("You can not delete your account since it has $" + this.current_checking().getBalance() + " left in it\r" );
-										delete_account = false;
-									}
-								}
-								break;
-							case "4":
-								account_choice = false;
-								break;
-							default:
-								System.out.println("Entered in incorrect data, please try again!\r");
-							}
-						}
-					} else {
-						System.out.println("Can not find your account! Please try again!\r");
-					}
-					break;
-				case "3":
-					List<Joint> joint = current_joint_list();
-					if (!(joint.size() == 0)) {
-						int i = 1;
-						boolean continue_if_non_number = true;
-						boolean isNumber = false;
-						String joint_account_picked = null;
-						
-						while(continue_if_non_number) {
-							
-							System.out.println("Which account would you like to work with? \"Type the banking account id to access the account\"");
-							for(Joint single_joint : joint) {
-								Person joint_partner = find_account_by_banking_id(single_joint.getBanking_account_id());
-								System.out.println(i + ") " + joint_partner.getFirst_name() + " " + joint_partner.getLast_name() + ". Banking account id:  " + joint_partner.getBanking_account_id());
-								i++;
-							}
-							
-							joint_account_picked = input.nextLine();
-							isNumber = tryParseInt(joint_account_picked);
-							
-							if (isNumber) {
-								continue_if_non_number = false;
-							} else {
-								System.out.println("Values are not valid, please try again!");
-							}
-						}
-						
-						Joint single_account = current_joint_single(joint_account_picked);
-						this.joint_account = single_account;
-						boolean account_choice = true;
-						while (account_choice) {
-							System.out.println("What would you like to do? \"Type in One, Two, Three or Four\"\r");
-							
-							System.out.println("1) Deposit\r2) Withdraw\r3) Delete Account\r4) Go back");
-								
-							String choice = input.nextLine();
-							boolean deposit_repeat = true;
-							boolean withdraw_repeat = true;
-							boolean delete_account = true;
-								
-							switch(choice) {
-								case "1":
-									while(deposit_repeat) {
-										single_account = current_joint_single(joint_account_picked);
-										this.joint_account = single_account;
-										System.out.println("Current Balance: $" + this.joint_account.getBalance() + "\r");
+									if(!(savings == null)) {
+										System.out.println("Current Balance: $" + this.savings_account.getBalance() + "\r");
 										System.out.println("How much would you like to deposit?\r");
 										String new_balance_string = input.nextLine();
 										boolean number = tryParseInt(new_balance_string);
 										if (number) {
-											int new_balance = this.joint_account.getBalance() + Integer.parseInt(new_balance_string);
-											boolean successful_deposit = this.joint_account.deposit(joint_account_picked, new_balance, Integer.parseInt(new_balance_string));
+											int new_balance = this.savings_account.getBalance() + Math.abs(Integer.parseInt(new_balance_string));
+											boolean successful_deposit = savings_account.deposit(this.getBanking_account_id(), new_balance, Integer.parseInt(new_balance_string));
 											boolean continue_to_deposit = true;
 
 											if (successful_deposit) {
@@ -535,20 +397,27 @@ public class Customer extends Person {
 										} else {
 											System.out.println("Entered in incorrect data, please try again!\r");
 										}
+									} else {
+										System.out.println("Could not find account, try entering it again!\r");
+										account_choice = false;
+										deposit_repeat = false;
 									}
-									break;
-								case "2":
-									while(withdraw_repeat) {
-										acc = current_checking();
-										this.checking_account = acc;
-										System.out.println("Current Balance: $" + this.checking_account.getBalance() + "\r");
+									
+								}
+								break;
+							case "2":
+								while(withdraw_repeat) {
+									savings = current_savings();
+									this.savings_account = savings;
+									if (!(savings == null)) {
+										System.out.println("Current Balance: $" + this.savings_account.getBalance() + "\r");
 										System.out.println("How much would you like to withdraw?\r");
 										String minus = input.nextLine();
 										boolean number = tryParseInt(minus);
 										if (number) {
-											int new_balance = this.checking_account.getBalance() -  Integer.parseInt(minus);
+											int new_balance = this.savings_account.getBalance() -  Math.abs(Integer.parseInt(minus));
 											if (!(new_balance < 0)) {
-												boolean successful_withdraw = checking_account.deposit(this.getBanking_account_id(), new_balance, Integer.parseInt(minus));
+												boolean successful_withdraw = this.savings_account.deposit(this.getBanking_account_id(), new_balance, Integer.parseInt(minus));
 												boolean continue_to_withdraw = true;
 												
 												if (successful_withdraw) {
@@ -571,25 +440,31 @@ public class Customer extends Person {
 													}
 												}
 											} else {
-												System.out.println("You can not withdraw $" + minus + ", because you only have $" + this.checking_account.getBalance());
+												System.out.println("You can not withdraw $" + minus + ", because you only have $" + this.savings_account.getBalance());
 											}
 										} else {
 											System.out.println("Entered in incorrect data, please try again!\r");
 										}
+									} else {
+										System.out.println("Could not find account, try entering it again!\r");
+										account_choice = false;
+										withdraw_repeat = false;
 									}
-									break;
-								case "3":
-									while(delete_account) {
-										acc = current_checking();
-										this.checking_account = acc;
-										System.out.println("Current Balance: $" + this.checking_account.getBalance() + "\r");
+								}
+								break;
+							case "3":
+								while(delete_account) {
+									savings = current_savings();
+									this.savings_account = savings;
+									if(!(savings == null)) {
+										System.out.println("Current Balance: $" + this.savings_account.getBalance() + "\r");
 										
-										if (this.checking_account.getBalance() == 0) {
-											System.out.println("Would you like to remove the checking account? \"Type Yes or No\"\r");
+										if (this.getSavings_account().getBalance() == 0) {
+											System.out.println("Would you like to remove the savings account? \"Type Yes or No\"\r");
 											String answer = input.nextLine();
 											boolean number = tryParseInt(answer);
 											if (!(number)) {
-												boolean deleted_account = Account.delete_checking_account(this.getBanking_account_id());
+												boolean deleted_account = Account.delete_savings_account(this.getBanking_account_id());
 												if (deleted_account) {
 													System.out.println("Your account was deleted!\r");
 													delete_account = false;
@@ -602,49 +477,229 @@ public class Customer extends Person {
 											System.out.println("You can not delete your account since it has $" + this.current_checking().getBalance() + " left in it\r" );
 											delete_account = false;
 										}
+									} else {
+										System.out.println("Could not find account, try entering it again!\r");
+										account_choice = false;
+										delete_account = false;
 									}
-									break;
-								case "4":
-									account_choice = false;
-									break;
-								default:
-									System.out.println("Entered in incorrect data, please try again!\r");
+								}
+								break;
+							case "4":
+								account_choice = false;
+								break;
+							default:
+								System.out.println("Entered in incorrect data, please try again!\r");
+							}
+						}
+					} else {
+						System.out.println("Can not find your account! Please try again!\r");
+					}
+					break;
+				case "3":	
+					boolean get_new_joint_account = true;
+					while (get_new_joint_account) {
+						
+						List<Joint> joint = current_joint_list();
+						if (!(joint.size() == 0)) {
+							int i = 1;
+							boolean continue_if_non_number = true;
+							boolean isNumber = false;
+							String joint_account_picked = null;
+							
+							while(continue_if_non_number) {
+								
+								System.out.println("Which account would you like to work with? \"Type the banking account id to access the account\"");
+								for(Joint single_joint : joint) {
+									Person joint_partner = find_account_by_banking_id(single_joint.getBanking_account_id());
+									System.out.println(i + ") " + joint_partner.getFirst_name() + " " + joint_partner.getLast_name() + ". Banking account id:  " + joint_partner.getBanking_account_id());
+									i++;
+								}
+								System.out.println(i + ") Go back \"Type the number\"");
+								joint_account_picked = input.nextLine();
+								isNumber = tryParseInt(joint_account_picked);
+								
+								if (isNumber) {
+									continue_if_non_number = false;
+									if (Integer.parseInt(joint_account_picked) == i) {
+										break;
+									}
+								} else {
+									System.out.println("Values are not valid, please try again!");
 								}
 							}
-						} else {
-							System.out.println("Can not find your account! Please try again!\r");
-						}
+							
+							Joint single_account = current_joint_single(joint_account_picked);
+							this.joint_account = single_account;
+							boolean account_choice = true;
+							while (account_choice) {
+								System.out.println("What would you like to do? \"Type in One, Two, Three or Four\"\r");
+								
+								System.out.println("1) Deposit\r2) Withdraw\r3) Delete Account\r4) Go back");
+									
+								String choice = input.nextLine();
+
+								boolean deposit_repeat = true;
+								boolean withdraw_repeat = true;
+								boolean delete_account = true;
+									
+								switch(choice) {
+									case "1":
+										while(deposit_repeat) {
+											single_account = current_joint_single(joint_account_picked);
+											this.joint_account = single_account;
+											if (!(single_account == null)) {
+												System.out.println("Current Balance: $" + Math.abs(this.joint_account.getBalance()) + "\r");
+												System.out.println("How much would you like to deposit?\r");
+												String new_balance_string = input.nextLine();
+												boolean number = tryParseInt(new_balance_string);
+												if (number) {
+													int new_balance = this.joint_account.getBalance() + Integer.parseInt(new_balance_string);
+													boolean successful_deposit = this.joint_account.deposit(joint_account_picked, new_balance, Integer.parseInt(new_balance_string));
+													boolean continue_to_deposit = true;
+
+													if (successful_deposit) {
+														while(continue_to_deposit) {
+															System.out.println("Deposit successful! Would you like to make another deposit on this account? \"Yes or No\"");
+														
+															String deposit_continue = input.nextLine();
+												
+															switch (deposit_continue) {
+																case "yes":
+																	continue_to_deposit = false;
+																	break;
+																case "no":
+																	continue_to_deposit = false;
+																	deposit_repeat = false;
+																	get_new_joint_account = true;
+																	account_choice = false;
+																	break;
+																default:
+																	System.out.println("Entered in incorrect data, please try again!\r");
+															}
+														}
+													}
+												} else {
+													System.out.println("Entered in incorrect data, please try again!\r");
+												}
+											} else {
+												System.out.println("Could not find account, try entering it again!\r");
+												account_choice = false;
+												deposit_repeat = false;
+											}
+										}
+										break;
+									case "2":
+										while(withdraw_repeat) {
+											single_account = current_joint_single(joint_account_picked);
+											this.joint_account = single_account;
+											if (!(single_account == null)) {
+												System.out.println("Current Balance: $" + this.joint_account.getBalance() + "\r");
+												System.out.println("How much would you like to withdraw?\r");
+												String minus = input.nextLine();
+												boolean number = tryParseInt(minus);
+												if (number) {
+													int new_balance = this.joint_account.getBalance() - Math.abs(Integer.parseInt(minus));
+													if (!(new_balance < 0)) {
+														boolean successful_withdraw = this.joint_account.withdraw(joint_account_picked, new_balance, Integer.parseInt(minus));
+														boolean continue_to_withdraw = true;
+														
+														if (successful_withdraw) {
+															while(continue_to_withdraw) {
+																System.out.println("Withdraw successful! Would you like to make another deposit on this account? \"Yes or No\"");
+															
+																String deposit_continue = input.nextLine();
+													
+																switch (deposit_continue) {
+																	case "yes":
+																		continue_to_withdraw = false;
+																		break;
+																	case "no":
+																		continue_to_withdraw = false;
+																		withdraw_repeat = false;
+																		get_new_joint_account = true;
+																		account_choice = false;
+																		break;
+																	default:
+																		System.out.println("Entered in incorrect data, please try again!\r");
+																}
+															}
+														}
+													} else {
+														System.out.println("You can not withdraw $" + minus + ", because you only have $" + this.joint_account.getBalance());
+													}
+												} else {
+													System.out.println("Entered in incorrect data, please try again!\r");
+												}
+											} else {
+												System.out.println("Could not find account, try entering it again!\r");
+												account_choice = false;
+												withdraw_repeat = false;
+											}
+										}
+										break;
+									case "3":
+										while(delete_account) {
+											single_account = current_joint_single(joint_account_picked);
+											this.joint_account = single_account;
+											if (!(single_account == null)) {
+												System.out.println("Current Balance: $" + this.joint_account.getBalance() + "\r");
+												if (this.joint_account.getBalance() == 0) {
+													System.out.println("Would you like to remove the joint account? \"Type Yes or No\"\r");
+													String answer = input.nextLine();
+													boolean number = tryParseInt(answer);
+													if (!(number)) {
+														boolean deleted_account = Account.delete_joint_account(this.getBanking_account_id());
+														if (deleted_account) {
+															System.out.println("Your account was deleted!\r");
+															delete_account = false;
+															account_choice = false;
+														} else {
+															System.out.println("There was issues deleteing the account, please try again later!\r");
+														}
+													}
+												} else {
+													System.out.println("You can not delete your account since it has $" + this.getJoint_account().getBalance() + " left in it\r" );
+													delete_account = false;
+												}
+											} else {
+												System.out.println("Could not find account, try entering it again!\r");
+												account_choice = false;
+												delete_account = false;
+											}
+										}
+										break;
+									case "4":
+										account_choice = false;
+										break;
+									default:
+										System.out.println("Entered in incorrect data, please try again!\r");
+									}
+								}
+							} else {
+								System.out.println("Can not find your account! Please try again!\r");
+							}
+						
+					}		
 					break;
 				case "4":
 					repeat = false;
 					break;
 				default:
 					System.out.println("Entered in incorrect data, please try again!\r");
+			   }
+
 			}
-		}
 	}
 		
 	protected void look_up_personal_information() {
 		try {	
-			
-			Scanner input = new Scanner(System.in);
-			
-			System.out.println("----Secure account look up---\r");
-			
-			System.out.println("Enter in a username");
-			
-			String username = input.nextLine();
-			
-			System.out.println("\rEnter your password");
-			
-			String password = input.nextLine();
 			
 		    List<Person> person_list = new ArrayList<Person>(); 
 			Connection conn = cf.getConnection();
 			Statement stmt;
 			stmt = conn.createStatement();
 			ResultSet rs;
-			rs = stmt.executeQuery("SELECT * FROM BANKING_ACCOUNTS WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'");
+			rs = stmt.executeQuery("SELECT * FROM BANKING_ACCOUNTS WHERE USERNAME = '" + this.getUsername() + "' AND PASSWORD = '" + this.getPassword() + "'");
 			Person app = null;
 			
 			while(rs.next()) {

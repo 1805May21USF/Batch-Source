@@ -50,6 +50,24 @@ public class Account {
 		}
 	}
 	
+	public static boolean delete_joint_account(String account_id) {		
+		try {
+			
+			Connection conn = cf.getConnection();
+			String sql = "{call delete_joint_account (?)}";
+			
+			CallableStatement call = conn.prepareCall(sql);
+			
+			call.setInt(1, Integer.parseInt(account_id));
+			call.execute();
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public static boolean delete_savings_account(String account_id) {		
 		try {
 			
