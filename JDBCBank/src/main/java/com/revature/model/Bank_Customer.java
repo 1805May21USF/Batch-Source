@@ -2,7 +2,7 @@ package com.revature.model;
 
 public class Bank_Customer {
 	
-	private int customerID;
+	
 	private String userName;
 	private String password;
 	private String first_Name;
@@ -15,39 +15,22 @@ public class Bank_Customer {
 	private String zipcode;
 	
 	
-	public  Bank_Customer(int i, String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9, String string10) {
-		super();
+	//public  Bank_Customer(int i, String string, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9, String string10) {
+		//super();
 		// TODO Auto-generated constructor stub
-	}
+	//}
 
 
-	public Bank_Customer(int customerID, String userName) {
+	public Bank_Customer( String userName, String password) {
 		super();
-		this.customerID = customerID;
+		
 		this.userName = userName;
 		this.password = password;
-		this.first_Name = first_Name;
-		this.last_name = last_name;
-		this.social_Security = social_Security;
-		this.age = age;
-		this.address = address;
-		this.city = city;
-		this.state = state;
-		this.zipcode = zipcode;
+		
 	}
 
 
-	public int getCustomerID() {
-		return customerID;
-	}
-
-
-	public void setCustomerID(int customerID) {
-		this.customerID = customerID;
-	}
-
-
-	public String getUserName() {
+		public String getUserName() {
 		return userName;
 	}
 

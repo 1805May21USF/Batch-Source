@@ -1,20 +1,19 @@
 package com.revature.model;
 
 public class Account {
-
+	private String userName;
 	private int accountID;
-	private int customerID;
-	private int balance;
+	private double balance;
 	private String account_Type;
 	private String account_Name;
 	public Account() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Account(int accountID, int customerID, int balance, String account_Type, String account_Name) {
+	public Account(int accountID, String userName, double balance, String account_Type, String account_Name) {
 		super();
 		this.accountID = accountID;
-		this.customerID = customerID;
+		this.userName = userName;
 		this.balance = balance;
 		this.account_Type = account_Type;
 		this.account_Name = account_Name;
@@ -25,16 +24,17 @@ public class Account {
 	public void setAccountID(int accountID) {
 		this.accountID = accountID;
 	}
-	public int getCustomerID() {
-		return customerID;
+	
+	public String getUserName() {
+		return userName;
 	}
-	public void setCustomerID(int customerID) {
-		this.customerID = customerID;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-	public int getBalance() {
+	public double getBalance() {
 		return balance;
 	}
-	public void setBalance(int balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 	public String getAccount_Type() {
@@ -50,6 +50,19 @@ public class Account {
 		this.account_Name = account_Name;
 	}
 
+	public String display()
+	{
+		String output = "Account " + this.accountID  + " Balance " + this.balance;
+		return output;
+	}
+	public void deposit(double x) {
+		this.balance=this.balance+x;
+		
+	}
+	public void withdraw(double x) {
+		this.balance=this.balance-x;
+		
+	}
 	
 
 }

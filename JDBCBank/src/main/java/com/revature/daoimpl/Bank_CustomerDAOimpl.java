@@ -1,6 +1,7 @@
 package com.revature.daoimpl;
 
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,34 +30,40 @@ import com.revature.util.ConnFactory;
 		}
 
 		
-
-		public void createcustomerID(String customerID) throws SQLException {
+		public void createCustomer(Bank_Customer bankCustomer) throws SQLException {
 			// TODO Auto-generated method stub
 			Connection conn = cf.getConnection();
-			String[] primaryKeys = new String[1];
-			primaryKeys[0]="CustomerID";
-			String sql = "INSERT INTO BANK_CUSTOMER( CUSTOMERID,USERNAME, PASSWORD,FIRST_NAME,LAST_NAME,SOCIAL_SECURITY,AGE,ADDRESS,CITY,STATE,ZIPCODE)"
-					+ "VALUES ( 1,EDWIN123,PASSWORD1234,EDWIN,GARCIA,234-444-4444,34,STREET AVE.,34544 )(POWSEQ.NEXTVAL,?)";
-			try {
-			PreparedStatement ps = conn.prepareStatement(sql, primaryKeys);
-			ps.setString(1, customerID); // the 1 refers to the question mark  in the insert into
-			ps.executeUpdate();
-			}
-		catch 
-			(SQLException e){
-				e.printStackTrace();
+					String sql = "{call INSERTBANKCUSTOMER(?,?,?,?,?,?,?,?,?,?)";
+					CallableStatement call = conn.prepareCall(sql);
+					//call.setString(1,Integer.toString(bankCustomer.getCustomerID()));
+					call.setString(1, bankCustomer.getUserName());
+					call.setString(2, bankCustomer.getPassword());
+					call.setString(3,"");
+					call.setString(4, "");
+					call.setString(5,"");
+					call.setString(6,"");
+					call.setString(7,"");
+					call.setString(8, "");
+					call.setString(9, "");
+					call.setString(10, "");
+					call.execute();
+					
+					
+		//	String sql = "INSERT INTO BANK_CUSTOMER( CUSTOMERID,USERNAME, PASSWORD,FIRST_NAME,LAST_NAME,SOCIAL_SECURITY,AGE,ADDRESS,CITY,STATE,ZIPCODE)"
+				//	+ "VALUES ( 1,EDWIN123,PASSWORD1234,EDWIN,GARCIA,234-444-4444,34,STREET AVE.,34544 )(POWSEQ.NEXTVAL,?)";
+			
 			
 		}
-		}
+		
 
-		public List<Bank_Customer> getCustomerList() throws SQLException {
-			List<Bank_Customer> Bank_CustomerList = new ArrayList<Bank_Customer>();
+		public ArrayList<Bank_Customer> getCustomerList() throws SQLException {
+			ArrayList<Bank_Customer> Bank_CustomerList = new ArrayList<Bank_Customer>();
 			Connection conn = cf.getConnection();
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM BANK_CUSTOMER");
 			Bank_Customer bc = null;
 			while(rs.next()) {
-				bc = new Bank_Customer(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),rs.getString(9), rs.getString(10),rs.getString(11));
+				bc = new Bank_Customer(rs.getString(1), rs.getString(2));
 				Bank_CustomerList.add(bc);
 			}
 			
@@ -65,24 +72,40 @@ import com.revature.util.ConnFactory;
 
 
 
-		public void updateCustomer(int customerID) throws SQLException {
+		public void updateCustomer(Bank_Customer bankCustomer) throws SQLException {
+			Connection conn = cf.getConnection();
+			String sql = "{call UPDATEBANKCUSTOMER(?,?,?,?,?,?,?,?,?,?,?)";
+			CallableStatement call = conn.prepareCall(sql);
+			//call.setString(1,Integer.toString(bankCustomer.getCustomerID()));
+			call.setString(1, bankCustomer.getUserName());
+			call.setString(2, bankCustomer.getPassword());
+			call.setString(3, bankCustomer.getFirst_Name());
+			call.setString(4, bankCustomer.getLast_name());
+			call.setString(5, bankCustomer.getSocial_Security());
+			call.setString(6, bankCustomer.getAge());
+			call.setString(7,bankCustomer.getAddress());
+			call.setString(8, bankCustomer.getCity());
+			call.setString(9, bankCustomer.getState());
+			call.setString(10, bankCustomer.getZipcode());
+			call.execute();
+			
+		}
+
+
+
+		public void deleteCustomer(Bank_Customer bankCustomer) throws SQLException {
 			// TODO Auto-generated method stub
 			
 		}
 
 
 
-		public void deleteCustomer(int customerID) throws SQLException {
+		
+
+		//public void createCustomer(Bank_Customer bankCustomer) throws SQLException {
 			// TODO Auto-generated method stub
 			
-		}
-
-
-
-		public void createCustomer(String customerID) throws SQLException {
-			// TODO Auto-generated method stub
-			
-		}
+		//}
 	}
 		
 
