@@ -66,17 +66,32 @@ public class Driver {
 		System.out.println("Hi Welcome to JLukim Federal Credit Union (JFCU)");
 		//logger.info("Hi Welcome to JLukim Federal Credit Union (JFCU)");
 		System.out.println("Enter 1: To open an account");
-		System.out.println("      2: To sign in");
-		System.out.print("      3: To exit: ");
+		System.out.println("      2: To open a super user account");
+		System.out.println("      3: To sign in");
+		System.out.print("      4: To exit: ");
 		String choice = sc.next();
 		
 		//Handling user response using a switch case`
 		switch(choice){
 		case "1": System.out.println("");
 				  //Calling the open account method that creates an account for a user
-				  openAccount(sc, rand);
+				  openAccount(sc, rand, 1);
 		break;
 		case "2": System.out.println("");
+				  System.out.println("The fee is at least $1000 or type " + "\"" +"exit" + "\"" + " to go back to the main menu" );
+				  String amount = sc.next();
+				  if(amount.equalsIgnoreCase("exit")) {
+					  Intro();
+				  }else {
+					  double checkedAmount = checkNumber(amount, sc);
+					  if(checkedAmount < 1000) {
+						  System.out.println("Sorry you do not have enough money for this transaction");
+						  Intro();
+					  }  
+					  openAccount(sc, rand, 3);	  
+				  }
+				  break;
+		case "3": System.out.println("");
 				  System.out.print("Please Enter Your User Name: ");
 				  String user = sc.next();
 				  System.out.print("Please Enter Your Password: ");
@@ -85,7 +100,7 @@ public class Driver {
 				  signIn(user, password, sc);
 		break;
 		//to exit the application
-		case "3":System.out.println("");
+		case "4":System.out.println("");
 				 System.out.println("Thank you for visiting JLukim Federal Credit Union");
 				 System.exit(0);
 		break;
@@ -104,7 +119,7 @@ public class Driver {
 	 * @param rand: to generate a random number for account number
 	 * @return none
 	 */ 
-	public void openAccount(Scanner sc, Random rand){
+	public void openAccount(Scanner sc, Random rand, int status){
 		System.out.println("");
 		System.out.println("Opening an Account: ");
 		System.out.print("Enter Your First Name: ");
@@ -134,7 +149,8 @@ public class Driver {
 			ADI.createAccount(checkedAmount, accountNumber);
 			Account myAccount = ADI.readAccount(userName, password, accountNumber);
 			//add user info to the users table
-			CDI.createCustomer(firstName, lastName, userName, password, 1, accountNumber, myAccount.getAccount_id());
+			CDI.createCustomer(firstName, lastName, userName, password, status, accountNumber, myAccount.getAccount_id());
+			//System.out.println("I am here!");
 			customer = CDI.readCustomer(userName, password);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -360,7 +376,7 @@ public class Driver {
 		
 		switch(choice){
 		case "1": System.out.println("");
-				  openAccount(sc, rand);
+				  openAccount(sc, rand, 1);
 				  break;
 		case "2": printUserAccounts();
 				  superUserInterface(customer, userName, password);

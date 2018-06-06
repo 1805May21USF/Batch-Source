@@ -24,12 +24,13 @@ public class CustomerDaoImpl implements CustomerDao {
 	public void createCustomer(String Firstname, String Lastname, String Username, String Password, int status, 
 			int accountNumber, int accountId) throws SQLException {
 		// TODO Auto-generated method stub
-		Connection conn = cf.getConnection();
+		Connection conn2 = cf.getConnection();
+		
 		String[] primaryKeys = new String[1];
 		primaryKeys[0] = "User_id";
 		String sql = "Insert into Users values(useridseq.nextval, ?,?,?,?,?,?,?)";
 		
-		PreparedStatement stmt = conn.prepareStatement(sql, primaryKeys);
+		PreparedStatement stmt = conn2.prepareStatement(sql, primaryKeys);
 		stmt.setString(1, Firstname);
 		stmt.setString(2, Lastname);
 		stmt.setString(3, Username);
@@ -38,7 +39,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		stmt.setDouble(6, accountNumber);
 		stmt.setDouble(7, accountId);
 		stmt.executeUpdate();
-		conn.close();
+		conn2.close();
 	}
 
 	public Customer readCustomer(String Username, String Password) throws SQLException {
