@@ -36,7 +36,6 @@ homework.factorial = function(n){
 
 homework.rotateLeft = function(array,n){
     for(i = 0;i<n;i++){
-        var c = array[0];
         for(j = 0;j<array.length-1;j++){
             var c = array[j];
             array[j] = array[j+1];
@@ -150,13 +149,68 @@ homework.OnChangeSum = function(){
     result.innerHTML = sum;
 };
 
-var allElements = document.getElementsByName("skills")[0].children;
-for(i = 0;i<allElements.length;i++){
-    allElements[i].setAttribute("onselected","homework.OnSelectSkills()");
-}
-homework.onSelectSkills = function(){
-
+var allElements = document.getElementsByName("skills");
+allElements[0].setAttribute("onchange","homework.onSelectSkills(event)");
+homework.onSelectSkills = function(event){
+    alert("Are you sure "+event.target.value+" is one of your skills?");
 };
 
 
+
+var oldvalue = null;
+var newvalue = "red";
+homework.onClickRadio = function(event){
+    oldvalue = newvalue;
+    newvalue = event.target.value;
+    alert("so you like " +newvalue+" more than "+oldvalue+" now?");
+};
+var allElements = document.getElementsByName("favoriteColor");
+for(var i = 0;i<allElements.length;i++){
+    allElements[i].setAttribute("onclick","homework.onClickRadio(event)");
+}
+
+
+var allElements = document.getElementsByClassName("empName");
+for(var i = 0;i<allElements.length;i++){
+    allElements[i].setAttribute("onmouseover","homework.onHoverEmp(event)");
+}
+homework.onHoverEmp = function(event){
+    if(event.target.style.visibility.toString == "hidden"){
+        event.target.style.visibility = "visible";
+    }
+    else {
+        event.target.style.visibility = "hidden";
+    }
+};
+
+homework.getTime = function(){
+    function checkTime(i) {
+                return (i < 10) ? "0" + i : i;
+    }
+    var now = new Date();
+    h = checkTime(now.getHours());
+    m = checkTime(now.getMinutes());
+    s = checkTime(now.getSeconds());
+    document.getElementById('currentTime').innerHTML = h + ":" + m + ":" + s;
+    t = setTimeout(function(){homework.getTime()},1000);
+};
+homework.getTime();
+
+homework.waitDelay = function(){
+
+   document.getElementById("helloWorld").style.color = "#"+((1<<24)*Math.random()|0).toString(16);
+};
+document.getElementById("helloWorld").setAttribute("onclick","setTimeout(function(){homework.waitDelay()},3000)");
+
+homework.walkTheDOM = function(node, func){
+    func(node);
+    node = node.firstChild;
+    while(node){
+        homework.walkTheDOM(node,func);
+        node = node.nextSibling;
+    }
+}
+homework.walkTheDOM(document.body,function(a){
+   a.style.color = "#"+((1<<24)*Math.random()|0).toString(16);
+});
 

@@ -1,2 +1,5 @@
 2018-06-06 09:48:44 INFO  TransactionDAOImpl:37 - Logging initialized.
 2018-06-06 09:48:51 INFO  TransactionDAOImpl:37 - Logging initialized.
+2018-06-06 09:49:20 INFO  TransactionDAOImpl:97 - Transaction #0, From Account #1000, To Account #0, of Type: DEPOSIT, Amount: 50.0, Final Balance: 100.0
+2018-06-06 11:32:15 INFO  TransactionDAOImpl:37 - Logging initialized.
+2018-06-06 11:40:20 INFO  TransactionDAOImpl:97 - Transaction #0, From Account #1000, To Account #0, of Type: DEPOSIT, Amount: 50.0, Final Balance: 100.0
