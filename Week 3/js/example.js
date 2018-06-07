@@ -34,7 +34,7 @@ function incrementA()
 //console.log(7+7+'7');
 //console.log('7'+7+7);
 
-/* var person={"name": "fred", "age": 87};
+ var person={"name": "fred", "age": 87};
 person.gender = "undefined";
 
 function Person (name, age)
@@ -49,8 +49,8 @@ function MakePerson(name, age)
 {
     var p = {"name":name, "age":age};
     return p;
-} */
+} 
 
-/* var arr = [10, 20, 30];
-arr [9] = 5; */
+ var arr = [10, 20, 30];
+arr [9] = 5; 
 
