@@ -146,7 +146,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		cs.setInt(1, cid);
 		cs.executeQuery();
 		cs.close();
-		con.close();
+		con.close();	
 		
 		
 		
