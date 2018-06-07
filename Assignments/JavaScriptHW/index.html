@@ -238,7 +238,7 @@
          alert("So you like " + this.value + " more than " + lastColor + " now?");
          var cur = this;
          radios.forEach(function(el) {
-            el.style.backgroundColor = cur.value;
+            el.parentNode.style.backgroundColor = cur.value;
          })
          lastColor = this.value;
       });
