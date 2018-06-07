@@ -141,5 +141,4 @@ public class Driver {
 		System.out.println("Last Name: ");
 		return sc.nextLine();
 	}
-
 }

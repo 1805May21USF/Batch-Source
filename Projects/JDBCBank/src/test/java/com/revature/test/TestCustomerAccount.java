@@ -54,7 +54,7 @@ class TestCustomerAccount {
 			int size2 = customerAccounts.size();
 			
 			assertNotEquals(size1, size2);
-		} catch (SQLException e) {
+		} catch (SQLException e) {	
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
