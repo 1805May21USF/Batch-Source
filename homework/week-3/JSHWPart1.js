@@ -90,19 +90,19 @@ homework.rotateLeft = function(array, n)
     sortedArray = array;
 
     //store the length of the array
-    var length = tempArray.length;
+    var length = sortedArray.length;
 
     //use a for loop
     for(var i = 0; i < length; i++)
     {
         //print the index of the array 
-        console.log(i + "is" + array[i]);
+        //console.log(i + "is" + array[i]);
 
         sortedArray[i] = array[i+n];
     }
 
     //return the rotated array
-    return tempArray;
+    return sortedArray;
 }
 
 //5. Balanced Brackets
