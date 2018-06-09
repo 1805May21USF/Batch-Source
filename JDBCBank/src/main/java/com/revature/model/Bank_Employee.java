@@ -1,0 +1,177 @@
+package com.revature.model;
+
+public class Bank_Employee {
+	
+	private int emoployeeID;
+	private String department;
+	private int customerID;
+	private String userName;
+	private String password;
+	private String first_Name;
+	private String last_name;
+	private String social_Security;
+	private String age;
+	private String address;
+	private String city;
+	private String state;
+	private String zipcode;
+	
+	
+	public Bank_Employee() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public Bank_Employee(int emoployeeID, String department, int customerID, String userName, String password,
+			String first_Name, String last_name, String social_Security, String age, String address, String city,
+			String state, String zipcode) {
+		super();
+		this.emoployeeID = emoployeeID;
+		this.department = department;
+		this.customerID = customerID;
+		this.userName = userName;
+		this.password = password;
+		this.first_Name = first_Name;
+		this.last_name = last_name;
+		this.social_Security = social_Security;
+		this.age = age;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.zipcode = zipcode;
+	}
+
+
+	public int getEmoployeeID() {
+		return emoployeeID;
+	}
+
+
+	public void setEmoployeeID(int emoployeeID) {
+		this.emoployeeID = emoployeeID;
+	}
+
+
+	public String getDepartment() {
+		return department;
+	}
+
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+
+	public int getCustomerID() {
+		return customerID;
+	}
+
+
+	public void setCustomerID(int customerID) {
+		this.customerID = customerID;
+	}
+
+
+	public String getUserName() {
+		return userName;
+	}
+
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+	public String getFirst_Name() {
+		return first_Name;
+	}
+
+
+	public void setFirst_Name(String first_Name) {
+		this.first_Name = first_Name;
+	}
+
+
+	public String getLast_name() {
+		return last_name;
+	}
+
+
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
+	}
+
+
+	public String getSocial_Security() {
+		return social_Security;
+	}
+
+
+	public void setSocial_Security(String social_Security) {
+		this.social_Security = social_Security;
+	}
+
+
+	public String getAge() {
+		return age;
+	}
+
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+	public String getCity() {
+		return city;
+	}
+
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+
+	public String getState() {
+		return state;
+	}
+
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+	
+	
+	
+}
