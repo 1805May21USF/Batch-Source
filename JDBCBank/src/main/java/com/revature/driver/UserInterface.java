@@ -39,7 +39,7 @@ public class UserInterface {
 		String username = "";
 		String password = "";
 		
-		//System.out.println("Welcome!");
+		
 		
 		System.out.println("Please Enter your Username");
 		username = input.nextLine();
@@ -111,7 +111,8 @@ public class UserInterface {
 		String userinput = "";
 		while(!userinput.equals("3"))
 			
-		{
+		{	
+			System.out.println(" Welcome To Popular Bank ");
 			System.out.println("1. Login ");
 			System.out.println("2. Registration ");
 			System.out.println("3. Exit ");
@@ -123,12 +124,14 @@ public class UserInterface {
 				{	
 					System.out.println(" You have Successfully Logged in");
 					customerBankAccount();
-					//TODO TO ACCOUNT PAGE
+					
 				}
 				else
 				{
 					throw new IncorrectPasswordException("Incorrect password, please try again");
+					
 				}
+				
 			}
 			if(userinput.equals("2"))
 			{
@@ -161,7 +164,7 @@ public class UserInterface {
 					 System.out.println(itr.display());
 				 }
 			 }
-			 System.out.println(" create account | deposit | withdraw | delete account ");
+			 System.out.println(" create account | deposit | withdraw | delete account | transfer | exit ");
 			  customerInput = input.nextLine();
 			  String[] sepCustomerInput = customerInput.split(" ");
 			  if (sepCustomerInput[0].equals("deposit")) 
@@ -181,6 +184,10 @@ public class UserInterface {
 			  if(sepCustomerInput[0].equals("delete"))
 			  {
 				  deleteAccount(sepCustomerInput);
+			  }
+			  else
+			  { sepCustomerInput[0].equals("Exit");
+				  start();
 			  }
 		 }
 	 }

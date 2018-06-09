@@ -102,10 +102,7 @@ import com.revature.util.ConnFactory;
 
 		
 
-		//public void createCustomer(Bank_Customer bankCustomer) throws SQLException {
-			// TODO Auto-generated method stub
-			
-		//}
+		
 	}
 		
 
