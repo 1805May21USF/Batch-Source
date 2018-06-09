@@ -42,7 +42,7 @@ public class CustomerUI {
 	// Variables used for terminating the program 
 	// to mitigate brute force attacks.
 	private int terminateCount = 1;
-	private final int TERMINATE_LIMIT = 3;
+	private final int TERMINATE_LIMIT = 5;
 	private boolean validCredentials = false;
 
 	/*
@@ -566,7 +566,7 @@ public class CustomerUI {
 
 		System.out.println("\nCurrent withdraw "
 				+ "account balance: " + withdrawAfterBalance);
-		System.out.println("Current withdraw "
+		System.out.println("Current deposit "
 				+ "account balance: " + depositAfterBalance);
 	}
 
