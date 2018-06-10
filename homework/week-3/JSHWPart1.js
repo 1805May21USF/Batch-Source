@@ -82,25 +82,65 @@ homework.factorial = function(n)
  f([1,2,3,4,5], 6) = [2,3,4,5,1]
  f([1,2,3,4,5], 3) = [4,5,1,2,3]
   */
+ 
+  /**
+   * element at index i becomes element at index i-n
+   * element at index 4 becomes element at index 4-n
+   * element at index 0 becomes element at index 0-n
+   * 
+   * element at index 0 becomes element at index 2 (4-2)
+   * element at index 1 becomes element at index 3 (4-1)
+   * element at index 2 becomes element at index 4 (4-0)
+   * 
+   */
 
 homework.rotateLeft = function(array, n)
 {
     //move each element in the array n indexes left
-    //store a temp array
-    sortedArray = array;
 
     //store the length of the array
-    var length = sortedArray.length;
+    var length = array.length;
+
+    //store a temp array by creating a NEW array
+    var sortedArray = new Array(length);
+
+    //create a variable for the biggest index
+    var bigI = length - 1;
 
     //use a for loop
     for(var i = 0; i < length; i++)
     {
-        //print the index of the array 
-        //console.log(i + "is" + array[i]);
+        //create a variable to hold the new index
+        var newI = i - n;
 
-        sortedArray[i] = array[i+n];
+        //if newI is negative, assign it to newI + length
+        if(newI < 0)
+        {
+            //loop until newI is no longer negative
+            while(newI < 0)
+            {
+                newI = length + newI;
+            }
+            
+           //assign the element at newI in sortedArray to the element at index i in array
+           sortedArray[newI] = array[i];
+
+           //console.log("index " + i + " element " + array[i]);
+           //console.log("new index " + newI + " element " + sortedArray[newI]);
+
+        }
+        //if newI is 0, keep it at 0
+        else if (newI === 0)
+        {
+            //assign the element at newI in sortedArray to the element at index i in array
+            sortedArray[newI] = array[i];
+        }
+        else if(newI > 0)
+        {
+            //assign the element at newI in sortedArray to the element at index i in array
+           sortedArray[newI] = array[i];
+        }
     }
-
     //return the rotated array
     return sortedArray;
 }
