@@ -1,10 +1,4 @@
-<html>
-    <body>
-        <script type ="text/javascript" src="JSHWPart1.js">
-            </script>
-    </body>
-</html>
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
@@ -104,9 +98,315 @@
     <a>Click <span data-customAttr="500">Here3</span></a>
     <a>Click Here</a>
     <script type="text/javascript">
-   	 //TODO: Javascript homework
+		//TODO: Javascript homework
+
+		/**
+		 * Question 1: USA
+		 * Define function getUSA()
+		 * Find the html element that contains "USA".
+		 * print that element's content
+		 */
+		function getUSA() {
+			var tag = document.getElementsByTagName("*");
+			var i;
+			for(i = 0; i < tag.length; i++) {
+				if(tag[i].innerHTML == "USA") {
+					console.log(tag[i]);
+				}
+			}
+				
+		}
+
+		/**
+		* Question 2 Sales
+		* Define function getPeopleInSales();
+		* Print the names of all the people in the sales department
+		*/
+		function getPeopleInSales() {
+			var tag = document.getElementsByTagName("td");
+			var i;
+			var names = [];
+			for(i = 0; i < tag.length; i++) {
+				if (tag[i].innerText == "Sales") {
+					names.push(tag[i-1].innerText);
+				}
+			}
+			console.log(names);
+		}
+
+		/**
+		 * Question 3 Click Here
+		 * Define function getAnchorChildren()
+		 * Find all anchor elements with a <span> child
+		 * Print the contents of <span>
+		 */
+		function getAnchorChildren() {
+			 
+			var e = document.getElementsByTagName("*");
+			var i;
+			for(i = 0; i < e.length; i++) {
+				var j;
+				var child = e[i].firstChild;
+				while(child != null) {
+					if(child.nodeName == ("SPAN")) {
+						console.log(child.innerText);
+					}
+					child = child.nextSibling;
+				}
+			}
+		}
+		 
+
+		/**
+		 * Question 4 Hobbies
+		 * Define function getSkills()
+		 * Find all checked option in the 'skills' select element.
+		 * Print the value and the contents
+		 */
+		function getSkills() {
+			var skills = document.getElementsByTagName("select");
+			var i;
+			var options;
+			for(i = 0; i < skills.length; i++) {
+				if(skills[i].name == "skills") {
+					option = skills[i].childNodes;
+					var j;
+					for(j = 0; j < option.length; j++) {
+						if(option[j].selected) {
+							console.log(option[j].innerText);
+						}
+					}
+				}
+			}
+
+
+		}
+
+		/**
+		 * Question 5 Custom Attributes
+		 * Define function getCustomAttribute()
+		 * Find all elements with "data-customAttr" attribute
+		 * Print the alue of the attribute.
+		 * Print the elements that has the attribute.
+		 */
+		function getCustomAttribute() {
+			var e = document.getElementsByTagName("*");
+			var i;
+			for(i = 0; i< e.length; i++) {
+				if(e[i].hasAttribute("data-customAttr")) {
+					console.log(e[i].outerHTML);
+				}
+			}
+		}
+
+		/**
+		 * Question 6 Sum Event
+		 * NOTE: Write unobtrusie JS
+		 * Regarding these elements
+		 * <input id="num1" class="nums" type="text"/>
+		 * <input id="num2" class="nums" type="text"/>
+		 * <h3>Sum: span id="sum"></span></h3>
+		 * Define onchange event handler.
+		 * Add <input> element values
+		 * If values cannot be added, put "Cannot add" in the <span> element
+		 */
+		 function sumitup() {
+			var sum = document.getElementById("sum");
+			var num1 = document.getElementById("num1").value;
+			var num2 = document.getElementById("num2").value;
+			if(isNaN(parseFloat(num1) + parseFloat(num2))) {
+				sum.innerHTML = "Cannot add";
+			} else {
+				sum.innerHTML = parseFloat(num1) + parseFloat(num2);
+			}
+		}
+		var n1 = document.getElementById("num1");
+		var n2 = document.getElementById("num2");
+		n1.addEventListener("change",sumitup);
+		n2.addEventListener("change",sumitup);
+
+		
+
+		/**
+		 * Question 7 Skills Event
+		 * NOTE: Write unobtrusie JavaScript
+		 * When user selects a skill, create an alert with a message to:
+		 * "Are you sure CSS is one of your skills?"
+		 * NOTE: no alert should apear when user deselect a skill
+		 */
+		var inp = document.getElementsByName("skills");
+		inp = inp[0];
+		inp.addEventListener("change", function() {
+			for(var i = 0; i < inp.options.length; i++) {
+				if((inp.options[i].selected)) {	 //Only one option can be selected for dropdown?
+					alert("Are you sure " + inp.options[i].innerText + " is one of your skills?");
+				}
+			}
+
+		});
+
+
+		
+
+		/**
+		 * Question 8 Favorite Color Event
+		 * NOTE: Write unobtrusive JavaScript
+		 * NOTE: This is regarding the favoriteColor radio buttons
+		 * When a user selects a color, create an alert message with a message similar to:
+		 * "So you like green more than blue now?"
+		 * In this example, green is the new value and blue is the old value.
+		 * Make the background color (of all favoriteColor radio buttons)
+		 * the newly selected favoriteColor
+		 */
+		var cdata = document.getElementsByName("colors");
+		cdata = cdata[0];
+		var prev = cdata.options[cdata.selectedIndex].innerText;
+		cdata.addEventListener("change",function() {
+			for(var i = 0; i < this.options.length; i++) {
+				if(this.options[i].selected) {
+					alert("So you like " + prev + " more than " + this.options[i].innerText + " now?");
+					prev = this.options[i].innerText;
+				}
+			}
+			
+			var radios = document.getElementsByName("favoriteColor");
+			for(var i = 0; i < radios.length; i++) {
+				var s = document.createElement("span");
+				s.style.backgroundColor = prev;
+				var r = document.createRange();
+				if(radios[i].nextElementSibling.tagName == "SPAN") {
+					radios[i].nextElementSibling.style.backgroundColor = prev;
+				} else {
+					// inserts a span between text node in order to change background color
+					r.selectNode(radios[i].nextSibling);
+					r.surroundContents(s);
+				}
+				
+				//radios[i].nextSibling.nodeType = "<span>BLUE</span>";
+			}
+		});
+		
+
+		/**
+		 * Question 9 Show/Hide Event
+		 * NOTE: Write unobtrusive JavaScript
+		 * When user hovers over an employee name:
+		 * 
+		 * Hide the name if shown.
+		 * 		Show the name is hidden
+		 */
+		var emp = document.getElementsByClassName("empName");
+		for(var i = 0; i < emp.length; i++) {
+			emp[i].addEventListener("mouseover", function() {
+			if(this.style.opacity == '1') {
+				this.style.opacity ='0';
+			} else {
+				this.style.opacity ='1';
+			}
+			
+		});
+		}
+		
+
+		/**
+		 * Question 10 Current Time
+		 * Regarding this element:
+		 * 	<h5 id="currentTime"></h5>
+		 * Show the current time in this element in this format:
+		 * 	9:05:23 AM
+		 * The time should be accurate in the second without having to reload the page.
+		 */
+		var time = document.getElementById("currentTime");
+
+		
+		window.addEventListener("load",function() {
+			var to = document.getElementById("currentTime");
+
+			setInterval(function() {
+				var now = Date.now();
+				var t =  new Date(now);
+				var hours = t.getHours();
+				var mins = t.getMinutes();
+				var seconds = t.getSeconds();
+				var secString = "";
+				var minString = "";
+				var ampmString = "";
+				if(seconds.toString().length == 1) {
+					secString = "0" + seconds;
+				} else {
+					secString = seconds;
+				}
+
+				if(mins.toString().length == 1) {
+					minString = "0" + mins;
+				} else {
+					minString = mins;
+				}
+				if(hours <= 12) {
+					ampmString = "AM";
+				} else {
+					hours = hours - 12;
+					ampmString = "PM";
+				}
+				to.innerText = hours + ":" + minString +
+				 ":" + secString + " " + ampmString;
+			},1000);
+			
+		});
+
+		/**
+		 * Question 11 Delay
+		 * Regarding this element
+		 * <p id="helloWorld">Hello, World!</p>
+		 * Three seconds after a user clicks on this element, change the text to a random color.
+		 */
+		 var hw = document.getElementById("helloWorld");
+		 hw.addEventListener("click",function() {
+			var colors = ["BLUE", "RED", "GREEN", "GOLD", "MAGENTA"];
+			var choice = colors[Math.floor(Math.random() * colors.length)];
+			var h = document.getElementById("helloWorld");
+			setTimeout(function() {
+				h.style.color = choice;
+			},3000);
+		 });
+
+
+		/**
+		 * Question 12 Walk the DOM
+		 * Define function walkTheDOM(node,func)
+		 * 
+		 * This  function should traverse every node in the DOM.
+		 * Use recursion
+		 * 
+		 * On each node, call func(node);
+		 */
+		 var count = 0;
+		 function logMe(node) {
+			 console.log(node);
+			 count++;
+			 //node.style.backgroundColor = "YELLOW";
+		 }
+		function walkTheDOM(node, func) {
+			if(document.lastChild == node) {
+				func(node);
+			} else {
+				func(node);
+				if(node.hasChildNodes()) {
+					for(var i = 0; i < node.childNodes.length; i++) {
+						walkTheDOM(node.childNodes[i],func);
+					}
+					walkTheDOM(node.nextSibling,func);
+				} else {
+					walkTheDOM(node.nextSibling,func);
+				} 
+			}
+		}
+
+		document.body.childNodes;
+
+
     </script>
 </body>
-</html> -->
+</html> 
 
 
