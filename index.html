@@ -140,12 +140,110 @@ function getAnchorChildren() {
     })
 };
 
-getAnchorChildren();
-
-//Number 4
-function getSkills() {
-
-};
+//4
+function Hobbies() {
+            var amount = document.getElementsByTagName("select");
+            var skills = ["JAVA", ".NET", "DOM", "HTML", "CSS", "Javascript"];
+            for (var i = 0; i < amount.length; i++) {
+                var temp_select = document.getElementsByTagName("select")[i];
+                var temp_skill = temp_select.options[temp_select.selectedIndex].innerText;
+                if (skills.indexOf(temp_skill) > -1) {
+                    console.log(temp_skill);
+                }
+            }
+        }
+        //5
+        function getCustomAttribute() {
+            var usa_elemnets = document.querySelectorAll("[data-customAttr]");
+            for (var i = 0; i < usa_elemnets.length; i++) {
+                console.log(document.querySelectorAll("[data-customAttr]")[i].innerText);
+            }
+        }
+        //6
+        function sum_even() {
+            var nums = document.getElementsByClassName("nums");
+            var sum = 0;
+            for (var i = 0; i < nums.length; i++) {
+                if (isNaN(nums[i].value)) {
+                    console.log("Not a Number");
+                } else {
+                    sum += parseInt(nums[i].value, 0);
+                }
+            }
+            document.getElementById("sum").innerText = sum;
+        }
+        //7
+        window.onload = function () {
+            var skills = document.querySelector("[name='skills']");
+            if (skills) {
+                skills.addEventListener('change', function () {
+                    alert("Are you sure " + this.value + " is something you want to do?");
+                });
+            }
+        }
+        //8
+        window.onload = function () {
+            var radio = document.querySelectorAll("[name='favoriteColor']");
+            if (radio) {
+                for (var i = 0; i < radio.length; i++) {
+                    radio[i].addEventListener('onchange', function () {
+                        alert("So you like + thann ... now?");
+                    });
+                }
+            }
+        }
+        window.onload = function () {
+            //9
+            var names = document.getElementsByClassName("empName");
+            if (names) {
+                for (var i = 0; i < names.length; i++) {
+                    names[i].addEventListener('mouseenter', function () {
+                        this.setAttribute("style", "display: none");
+                    });
+                }
+                for (var i = 0; i < names.length; i++) {
+                    names[i].addEventListener('mouseout', function () {
+                        this.setAttribute("style", "display: inline");
+                    });
+                }
+            }
+        }
+        //10
+        window.onload = function () {
+            function add_zero(number) {
+                if (number < 10) {
+                    return "0" + number;
+                }
+                return number;
+            }
+            function check_am_pm(hour) {
+                if (hour == 0) {
+                    return "AM";
+                } else if (hour > 12) {
+                    return "PM";
+                } else {
+                    return "AM";
+                }
+            }
+            var time = document.getElementById('currentTime');
+            var now = new Date();
+            var h = now.getHours();
+            var m = now.getMinutes();
+            var s = now.getSeconds();
+            var am_pm = check_am_pm(h);
+            m = add_zero(m);
+            s = add_zero(s);
+            time.innerHTML = h + ":" + m + ":" + s + am_pm;
+        }
+        //11
+        window.onload = function () {
+            var p = document.getElementById("helloWorld");
+            p.addEventListener('click', function () {
+                setTimeout(function () {
+                    p.setAttribute("style", "color: red");
+                }, 3000)
+            });
+        }
 
 
 </script>
