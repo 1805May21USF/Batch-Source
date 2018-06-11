@@ -1,6 +1,8 @@
 package com.revature.beans;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable{
 	//encapsulation
 	private static String homePlanet="earth"; 
 	private String name;
@@ -54,7 +56,12 @@ public class Person {
 	}
 	
 	public int eat() {
-		this.setWeight(weight+5);
+		int newWeight=weight;
+		for(int i=1;i<6;i++) {
+			newWeight++;
+		}
+		
+		this.setWeight(newWeight);
 		return this.getWeight();
 	}
 	
