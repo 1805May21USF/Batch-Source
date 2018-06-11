@@ -1,0 +1,18 @@
+BEFORE YOU DO ANY WORK
+git checkout master
+git pull origin master
+git checkout -b sqlscript-add
+
+DO WORK NOW
+git add your changed files
+git commit -m "message"
+git push origin sqlscript-add
+
+READY TO SUBMIT
+git checkout master
+git pull origin master
+git push origin master
+
+git pull origin sqlscript-add
+git push origin master.
+git branch -d sqlscript-add
