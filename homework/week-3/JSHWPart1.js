@@ -146,3 +146,83 @@ homework.rotateLeft = function(array, n)
 }
 
 //5. Balanced Brackets
+
+/**
+ * Look at the first bracket.
+ * If it is a closing bracket, return false.
+ * If it is an opening bracket, look at the next bracket.
+ * If it is a closing bracket that doesn't match, return false.
+ * If it is closing bra
+ * 
+ * 
+ * 
+ * 
+ */
+
+homework.balancedBrackets = function(bracketsString)
+{
+    //console.log("I am in the balancedBrackets function");
+
+    //create an array of open brackets
+    var openBracketArray = ["(", "{", "["];
+
+    var closedBracketArray = [")", "}", "]"];
+
+    //console.log(openBracketArray);
+    //console.log(closedBracketArray);
+
+    var openBracket;
+    var closedBracket;
+
+    var bracket;
+    var nextBracket;
+    var open;
+    var closed;
+
+    var index;
+
+    //assign the first bracket from bracketsString to bracket
+    var bracket = bracketsString.charAt(0);
+    console.log(bracket);
+
+    //assign index to the index where bracket is found
+    var index = openBracketArray.indexOf(bracket);
+
+    //if bracket matches one of the brackets from openBracketArray
+    if(index >= 0)
+    {
+        //print the index of the bracket
+        console.log(index);
+
+        //Assign nextBracket to the next bracket in bracketsString
+        var nextBracket = bracketsString.charAt(1);
+
+        //find out which array bracket belongs to
+        //either openIndex or closedIndex will be negative
+        var openIndex = openBracketArray.indexOf(bracket);
+        var closedIndex = closedBracketArray.indexOf(bracket);
+
+        //use the index that isn't negative
+
+        //if nextBracket is closed and matches the opening bracket
+        if(index === openIndex)
+        {
+            
+        }
+        //if nextBracket is open
+        else if()
+        {
+
+        }
+        else 
+        {
+            return false;
+        }
+    }
+    else if(index < 0)
+    {
+        return false;
+    }
+
+    return true;
+}
