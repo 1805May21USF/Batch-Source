@@ -36,3 +36,9 @@
 2018-06-04 16:27:30 INFO  Login:42 - employee1 has logged into their account.
 2018-06-04 16:27:59 INFO  Employee:112 - employee1 has logged out of their account.
 2018-06-04 16:28:03 INFO  Login:46 - admin has logged into their account.
+2018-06-06 09:13:43 INFO  Login:46 - admin has logged into their account.
+2018-06-06 11:38:35 INFO  Login:46 - admin has logged into their account.
+2018-06-06 11:39:12 INFO  Customer:85 - Bobby Basketball has registered for an account. Username: bobby Password: basketball
+2018-06-06 11:46:07 INFO  Customer:85 - Tiffany Tran has registered for an account. Username: tiffany Password: 123456
+2018-06-06 11:46:30 INFO  Login:46 - admin has logged into their account.
+2018-06-06 11:46:48 INFO  BankAdmin:64 - admin has approved of 1528299966413's application.

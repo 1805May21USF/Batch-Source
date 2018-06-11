@@ -153,7 +153,7 @@ EXECUTE insertperson('Michael','Scott','mScott','password',3,'1528055320711');
 EXECUTE insertpersonacc('1528055320711','mScott','20.00');
 
 ----------------------------------------------------------------------
---------------- PRACTICE CODE ----------------------------------------
+----------------------------------------------------------------------
 ----------------------------------------------------------------------
 
 SELECT
@@ -167,62 +167,3 @@ FROM
     personaccounts;
 
 
-
-
-
-
-
-
-
-
-
-SELECT
-    person.firstname,
-    person.lastname,
-    person.accountid,
-    personaccounts.balance
-FROM
-    person
-    INNER JOIN personaccounts ON person.username = personaccounts.username;
-
-SELECT
-    *
-FROM
-    person
-WHERE
-    person.username = 'tomTran';
-
-SELECT
-    person.username,
-    person.userpassword
-FROM
-    person
-WHERE
-    person.username = 'admin';
-
-SELECT
-    *
-FROM
-    personaccounts;
-
-UPDATE person
-SET
-    status = '1'
-WHERE
-    accountid = '0x1.63c6876012p40';
-
-UPDATE personaccounts
-SET
-    balance = '5400'
-WHERE
-    accountid = '0x1.63c6876012p40';
-
-SELECT
-    person.firstname,
-    person.lastname,
-    person.accountid,
-    personaccounts.balance,
-    person.status
-FROM
-    person
-    INNER JOIN personaccounts ON person.username = personaccounts.username;

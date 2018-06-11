@@ -9,6 +9,7 @@
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="ServletDemo"/>
 			<item value="BankAppFinal"/>
 		</list>
 		<list key="projectNameTemplate">
@@ -59,9 +60,10 @@
 	</section>
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven"/>
+			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source"/>
 			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\Bank"/>
 			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\HeroJDBC"/>
-			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
