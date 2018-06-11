@@ -216,7 +216,18 @@ getCustomAttribute();
 // Put the sum in the <span> element.
 
 // If values cannot be added, put "Cannot add" in the <span> element
+function add(){
+    var a =  Number(document.getElementById("num1").value);
+    var b =  Number(document.getElementById("num2").value);
+    if(isNaN(a+b)){
+        document.getElementById("sum").innerHTML= "Cannot add";
+    }else{
+        document.getElementById("sum").innerHTML =a+b;
+    }
+}
 
+document.getElementById("num1").addEventListener("change",add);
+document.getElementById("num2").addEventListener("change",add);
 
 // 7. Skills Event
 
@@ -247,11 +258,26 @@ console.log(xx[0]);
 
 // Make the background color (of all favoriteColor radio buttons) 
 // the newly selected favoriteColor
-var yy = document.getElementsByName("colors");
-console.log(yy[0]);
-yy[0].onchange = function Color(){
-    alert("hi");
-}
+var yy = document.getElementsByName("favoriteColor");
+var selected = yy.value;
+console.log(selected);
+console.log(yy[0].value);
+for(var i = 0;i<yy.length;i++){
+    (function(i){
+        yy[i].onchange = (function Color(){
+        if(selected == undefined){selected = "no color";}
+        alert("so you like "+yy[i].value+" more than "+selected+" now");
+        selected = yy[i].value;
+        document.getElementById("firstForm").style.backgroundColor = yy[i].value;
+            //Changing the individual radio buttons wouldn't change the color.
+    // var temp =document.getElementsByName("favoriteColor");
+    //         for(var j = 0; j<temp.length;temp++){
+    //             temp[j].style.backgroundColor = yy[i].value;
+    //         }
+    });
+})(i)};
+
+
 
 // 9. Show/Hide Event
 
@@ -262,12 +288,16 @@ yy[0].onchange = function Color(){
 // Hide the name if shown.
 //     Show the name if hidden.
 var zz = document.getElementsByClassName("empName");
-console.log(zz[1]);
 for(var i = 0;i<zz.length;i++){
     zz[i].addEventListener("mouseover",mouse);
+    zz[i].style.opacity = 1;
     }
 function mouse(){
-    
+    var element = this;
+    if(this.style.opacity !=1){this.style.opacity = 1;}else{
+        this.style.opacity = 0;
+    console.log("MOUSE!!!");
+    }
 }
 
 
@@ -285,12 +315,14 @@ function curTime(){
     var e = "";
     var f = "AM"
     var g = d.getHours();
+    var minutes = d.getMinutes();
+    if (minutes<10){minutes = '0'+minutes;}
     if(g>12){
         g=g-12;
         e+=g;
         f="PM";
     }
-    e=e+":"+d.getMinutes()+": "+d.getSeconds()+f;
+    e=e+":"+minutes+": "+d.getSeconds()+f;
     document.getElementById("currentTime").innerHTML=e;
     
 }
@@ -321,18 +353,21 @@ function hello(){
 // Use recursion.
 
 // On each node, call func(node).
+function func(node){
+    console.log("hey I'm here");
+    console.log(node.parentNode);
+}
 function walkTheDom(node,func){
-    console.log(node);
-    node=node.firstChild;
-    while(node){
-        walkTheDom(node,func);
-        node=node.siblng;
+    var vv=node.childNodes;
+    for(var i = 0;i<vv.length;i++){
+        func(vv[i]);
+        walkTheDom(vv[i],func);
     }
 }
-walkTheDom(document);
+
+walkTheDom(document.body,func);
 
         //TODO: Javascript homework
     </script>
 </body>
 </html>
-
