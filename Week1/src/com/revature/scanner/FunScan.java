@@ -8,11 +8,21 @@ public class FunScan {
 	public static void printMe() {
 		String contents;
 		String contents1;
+<<<<<<< HEAD
 		System.out.print("What would you like to print?: ");
 		contents= sc.nextLine();
 		
 		System.out.print("What would you like also to print?: ");
 		contents1 = sc.next();
+=======
+		System.out.println("What would you like to print?");
+		contents= sc.nextLine();
+		
+		System.out.println("What would you like also to print?");
+		
+		contents1= sc.nextLine();
+		
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a
 		
 		//sc.close();
 		System.out.println(contents);
@@ -27,4 +37,8 @@ public class FunScan {
 	public static void main(String[] args) {
 		printMe();
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a

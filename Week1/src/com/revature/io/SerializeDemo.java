@@ -36,6 +36,11 @@ public class SerializeDemo {
 		IOWithCollections.readPersonFile();
 		System.out.println(IOWithCollections.personList.get(0).getName());
 		System.out.println(IOWithCollections.personList.get(1).getName());
+<<<<<<< HEAD
 
 	}
 }
+=======
+	}
+}
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a

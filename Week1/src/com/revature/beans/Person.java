@@ -2,7 +2,15 @@ package com.revature.beans;
 
 import java.io.Serializable;
 
+<<<<<<< HEAD
 public class Person implements Serializable{
+=======
+public class Person implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a
 	//encapsulation
 	private static String homePlanet="earth"; 
 	private String name;

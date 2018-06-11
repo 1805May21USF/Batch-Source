@@ -16,4 +16,8 @@ public class Wrapperz {
 	public static void main(String[] args) {
 		System.out.println(addEmUp(myInteger,myInteger));
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a

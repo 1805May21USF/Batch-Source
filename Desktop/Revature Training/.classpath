@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="1805May21USF/Batch-Source/Brainteaser/src"/>
+	<classpathentry kind="src" path="1805May21USF/Batch-Source/src"/>
+	<classpathentry kind="src" path="1805May21USF/Batch-Source/ThatsSoMaven/src/main/java"/>
+	<classpathentry kind="src" path="1805May21USF/Batch-Source/ThatsSoMaven/src/test/java"/>
+	<classpathentry kind="src" path="1805May21USF/Batch-Source/Week1/src"/>
+	<classpathentry kind="output" path="1805May21USF/Batch-Source/ThatsSoMaven/target/classes"/>
+</classpath>

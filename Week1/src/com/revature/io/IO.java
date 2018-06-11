@@ -11,6 +11,7 @@ import java.io.OutputStream;
 public class IO {
 	private static final String inFile="in.txt";
 	private static final String outFile="output.txt";
+<<<<<<< HEAD
 	
 	
 	//Write a String to a file
@@ -25,6 +26,16 @@ public class IO {
 		} 
 		catch (FileNotFoundException e) 
 		{
+=======
+	//Write a String to a file
+	public void writeOutputStreamContents(String contents) {
+		OutputStream os= null;
+		File file = new File(outFile);
+		try {
+			os= new FileOutputStream(file,true);
+			os.write(contents.getBytes());
+		} catch (FileNotFoundException e) {
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -72,4 +83,8 @@ public class IO {
 		}
 		return s.toString();
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a

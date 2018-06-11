@@ -12,6 +12,7 @@ public class ReflectionDemo2 {
 			Method methods[]= c.getDeclaredMethods();
 			for(int i=0;i<methods.length;i++) {
 				int modifiers =methods[i].getModifiers();
+<<<<<<< HEAD
 				if(Modifier.isPublic(modifiers)) //if the method is public then we are going to print it out
 				{
 					System.out.println(" "+ methods[i].getName());
@@ -21,6 +22,11 @@ public class ReflectionDemo2 {
 				{
 					System.out.println(" "+ methods[i].getName());
 				}*/
+=======
+				if(Modifier.isPublic(modifiers)) {
+					System.out.println(" "+ methods[i].getName());
+				}
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a
 			}
 		}catch(Exception e) {
 			System.out.println("Exception: " +e);

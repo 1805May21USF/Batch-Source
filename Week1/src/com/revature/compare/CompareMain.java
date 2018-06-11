@@ -46,7 +46,12 @@ public class CompareMain {
 		
 		System.out.println("=================================");
 		
+<<<<<<< HEAD
 		Collections.sort(studentList, (arg0, arg1) -> {return arg0.getName().compareTo(arg1.getName());});
+=======
+		Collections.sort(studentList, (arg0, arg1) 
+				-> {return arg0.getName().compareTo(arg1.getName());});
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a
 		
 		for(Student s : studentList){
 			

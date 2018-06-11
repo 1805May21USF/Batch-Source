@@ -2,7 +2,11 @@ package com.revature.utility;
 
 import java.util.Arrays;
 //var args: 1 to many, var arg has to be last in parameter list
+<<<<<<< HEAD
 //public static String format(String pattern, Object... arguments); 
+=======
+//public static String format(String pattern, Object... arguments); 
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a
 public class ArraysFun {
 	int [] arr3= {1,2,3};
 	public static void main(String[] args)
@@ -33,4 +37,8 @@ public class ArraysFun {
 		System.out.println(yar[1]);
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2362a755668e363534cf9e06cc67588320bdba0a
