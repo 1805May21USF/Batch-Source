@@ -1,0 +1,32 @@
+/**
+ *  1. Return the nth fibonacci number
+ */
+
+function Question_One (n) {
+
+}
+
+/**
+ *  2. Return the nth fibonacci number
+ */
+
+function Question_Two(){
+	  var array_of_int = [2,4,5,1,3,1]
+	  var i, len = array_of_int.length, el, j;
+
+	  for(i = 1; i<len; i++){
+	    el = array_of_int[i];
+	    j = i;
+
+	    while(j>0 && array_of_int[j-1]>toInsert){
+	    	array_of_int[j] = array_of_int[j-1];
+	      j--;
+	   }
+
+	   arr[j] = el;
+	  }
+
+	  Console.log(arr);
+}
+
+Question_Two();
