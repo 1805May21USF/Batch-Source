@@ -42,3 +42,4 @@
 2018-06-06 11:46:07 INFO  Customer:85 - Tiffany Tran has registered for an account. Username: tiffany Password: 123456
 2018-06-06 11:46:30 INFO  Login:46 - admin has logged into their account.
 2018-06-06 11:46:48 INFO  BankAdmin:64 - admin has approved of 1528299966413's application.
+2018-06-13 03:22:29 INFO  Login:46 - admin has logged into their account.

@@ -8,6 +8,8 @@
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="beans"/>
+			<item value="script"/>
 			<item value="trans"/>
 			<item value="transfer"/>
 			<item value="Loop1"/>
@@ -30,7 +32,7 @@
 		<item value="385" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="523" key="DIALOG_HEIGHT"/>
-		<item value="582" key="DIALOG_X_ORIGIN"/>
-		<item value="233" key="DIALOG_Y_ORIGIN"/>
+		<item value="1478" key="DIALOG_X_ORIGIN"/>
+		<item value="112" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

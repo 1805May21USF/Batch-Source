@@ -9,6 +9,8 @@
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="TRMS-Project1"/>
+			<item value="ServletRequestPractice"/>
 			<item value="ServletDemo"/>
 			<item value="BankAppFinal"/>
 		</list>
@@ -60,6 +62,7 @@
 	</section>
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+			<item value="C:\Users\tiffa\Documents\Revature\Projects\Project 1\TRMS-Project-1-thomasL"/>
 			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\ThatsSoMaven"/>
 			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source"/>
 			<item value="C:\Users\tiffa\Documents\Revature\Projects\Git\Batch-Source\Bank"/>
