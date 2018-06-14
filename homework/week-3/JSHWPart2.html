@@ -135,21 +135,38 @@ function getUSA()
    		var salesTable = document.getElementsByTagName("table")[0];
    		for (var i = 0; i <salesTable.rows.length;i++)
   		 {	
-			//assign entries to 
+			//assign entries to elements in rows
 			var entries = salesTable.rows[i].entries;
 		   
+			//if "Sales" are in entries
 			if(entries[1].textContent === "Sales")
-			{
-         	 alert(entries[0].textContent);
+			{	
+				//print the entries
+         	 	alert(entries[0].textContent);
        		}
    		}
-}
+	}
 
     //3. Click Here
+	//Define function getAnchorChildren()
+	//Find all anchor elements with a <span> child
+	//Print the contents of <span>
+	function getAnchorChildren()
+	{
+
+	}
 
     //4. Hobbies
+	function getSkills()
+	{
+
+	}
 
     //5. Custom Attribute
+	function getCustomAttribute()
+	{
+
+	}
 
     //6. Sum Event
 

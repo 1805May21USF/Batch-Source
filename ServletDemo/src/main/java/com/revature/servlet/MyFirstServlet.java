@@ -23,6 +23,5 @@ public class MyFirstServlet extends HttpServlet
 			throws ServletException, IOException
 	{
 		System.out.println("rah!");
-	}
-	
+	}	
 }

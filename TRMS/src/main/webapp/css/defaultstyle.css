@@ -1,0 +1,187 @@
+div#banner {
+    width: 100%;
+    height:80px;
+    padding:0;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background-color: rgba(255,127,80,1);
+    /* background-color: coral */
+    z-index: 2;
+     
+}
+
+#inside_banner {
+    width:80%;
+    height: 100%;
+    margin:0 auto;
+    padding: 12px;
+
+    color:white;
+    opacity: 1;
+    vertical-align: bottom;
+    text-align: center;
+}
+
+div#sidebar {
+    display:none;
+    width:20%;
+    position:fixed;
+    margin-top: 80px;
+    height: 100%;
+    background-color: gray
+}
+
+#opener {
+    margin-top: 42;
+    border:none;
+    background: inherit;
+    position: fixed;
+    cursor:pointer;
+    font-size: 18pt;
+}
+
+#opener:hover {
+    background-color: #ff7256;
+}
+
+#sidebar_h {
+    width: 100%;
+    vertical-align: center;
+    text-align: center;
+    
+    font-size: 35px;
+	padding-bottom: 40px;
+    
+}
+
+a.sidebar_button {
+    border:none;
+    display: inline-block;
+    vertical-align: middle;
+    text-decoration: none;
+    color:black;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    padding: 12px;
+    
+    font-size: 21px;
+    
+}
+
+a.sidebar_button:hover {
+    width: 100%;
+    height: 50px;
+    background-color: aliceblue;
+    margin: 0 auto;
+    
+    transition: 0.5s;
+}
+
+#loginForm {
+    position: relative;
+    max-width: 450px;
+    margin: 0 auto;
+    margin-top: 150px;
+    background-color: orange;
+    padding: 50px;
+    border-radius: 15px;
+    z-index: 1;
+    
+}
+
+#loginBtns {
+    position: relative;
+    margin-top: 10px;
+    font-size: 20pt;
+    
+     
+}
+
+#registerData {
+    position: relative;
+    max-width: 750px;
+    margin: 0 auto;
+    margin-top: 150px;
+    padding-top: 15px;
+}
+
+#bob {
+    width: 100%;
+    opacity: 50%;
+}
+
+#welcome {
+    padding-top: 150px;
+    color: white;
+}
+
+#name {
+    color: white;
+}
+
+#reim_status {
+    color: white;
+}
+
+#reim_table {
+    color: white;
+}
+
+.container {
+    background-image: url("gradient.jpg");
+    background-size: 100%;
+    
+    /* background-color: rgb(214, 214, 223); */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin-left:0%; 
+    margin-right:0%;
+    overflow: scroll;
+    z-index: 1;
+}
+
+.formbox {
+    position: relative;
+    max-width: 310px;
+    margin: 0 auto;
+    margin-top: 150px;
+    background-color: orange;
+    padding: 20px;
+    padding-top: 10%;
+    border-radius: 15px;
+    z-index: 1;
+    text-align: center;
+    
+    /* width: 100%;
+    line-height: 23pt; 
+    text-align: center;
+    padding-top: 10%;
+    padding-bottom:10%;
+    background-color: aqua; */
+}
+
+
+
+.formboxleft {
+    position: relative;
+    width: 100%;
+    line-height: 23pt; 
+    text-align: left;
+    padding-left: 10px;
+    padding-top: 10%;
+    padding-bottom:10%;
+    border-radius: 15px;
+    background-color: orange;
+}
+
+input {
+    height:25px
+}
+
+#pwalert {
+    color:red;
+}
