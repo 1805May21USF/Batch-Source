@@ -1,5 +1,8 @@
 package com.revature.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -30,4 +33,12 @@ public class ZipCodesService {
 	+ z.getZipCode()+ " was added successfully").build();
 	}
 	
+	@GET
+	@Path("/")
+	@Produces(value={"application/json", "application/xml"})
+	public Response getZipCodeList() {
+		List<ZipCodes> zipcodelist= new ArrayList<>();
+		zipcodelist = ZipCodeDAOImpl.getAllZipCodes();
+		return Response.status(Response.Status.OK).entity(zipcodelist).build();
+		}
 }
