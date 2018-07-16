@@ -1,0 +1,30 @@
+package com.revature.main;
+
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import com.revature.domain.ZipCodes;
+
+public class ClientDriver {
+
+	public static void main(String[] args) {
+		Client client = ClientBuilder.newClient();
+		WebTarget webTarget = 
+		client.target("http://localhost:8080/ZIpCodeRestService/rest/zipcodes");
+		//Get Request
+		Builder getZipCodeBuilder = webTarget.path("33579").request();
+		Response getZipCodeResponse =
+				getZipCodeBuilder.accept(MediaType.APPLICATION_JSON).get();
+		
+	int statusCode = getZipCodeResponse.getStatus();
+	System.out.println("Return with a status code: " +statusCode);
+	ZipCodes z = getZipCodeResponse.readEntity(ZipCodes.class);
+	System.out.println(z);
+	
+	}
+}
