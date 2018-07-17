@@ -1,0 +1,162 @@
+<!DOCTYPE>
+<html>
+
+<head>
+	<title>Template</title>
+</head>
+
+<link rel='stylesheet' href='css/defaultstyle.css' />
+<link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<body>
+	<div id='banner'>
+		<button id='opener'>=</button>
+		<div id='inside_banner'>
+			<h1>Reimbursement Form</h1>
+		</div>
+
+	</div>
+
+	<!--Side bar-->
+
+	<div id='sidebar'>
+		<h3 id='sidebar_h'>Menu</h3>
+		<a href="register.html" class='sidebar_button'>Sidebar1</a>
+		<br />
+		<a href="form.html" class='sidebar_button'>Sidebar2</a>
+	</div>
+
+
+
+	<!--Main Screen-->
+	<div class='container' style="width:100%">
+
+		<form class='formboxleft' id='formapp' method="post">
+
+			<div width="500px">
+				<fieldset>
+					<legend>User Information</legend>
+					<table>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<tr>
+							<td>
+								<input type="text" name="fname">
+							</td>
+							<td>
+								<input type="text" name="lname">
+							</td>
+						</tr>
+					</table>
+					<!-- First Name <input type="text" name="fname"> <br /> Last -->
+					<!-- Name <input type="text" name="lname"> <br /> Email <input
+						type="text" name="email"> <br /> -->
+				</fieldset>
+			</div>
+			<br />
+			<fieldset>
+				<legend>Event Information</legend>
+				<table>
+					<tr>
+						<td>Date of event: </td>
+						<td>
+							<input type="date" name="date">
+						</td>
+					</tr>
+					<tr>
+						<td>Time of event: </td>
+						<td>
+							<input type="time" name="time">
+						</td>
+					</tr>
+				</table>
+				<br/>
+				<table>
+					<tr>
+						<td>Location: </td>
+						<td>
+							<input type="text" name="loc">
+						</td>
+					</tr>
+				</table>
+				<br/>
+				<table>
+					<tr>
+						<td>Amount requested: </td>
+						<td>
+							<input type="text" name="amt">
+						</td>
+					</tr>
+				</table>
+				<br/>
+				<table>
+					<tr>
+						<td>Description: </td>
+						<td>
+							<textarea name='desc' class='parabox'></textarea>
+						</td>
+					</tr>
+				</table>
+				<br/>
+				<table>
+					<tr>
+						<td>Type of Event</td>
+						<td>
+								<select name="type">
+										<option value="University Courses">University Courses</option>
+										<option value="Seminar">Seminar</option>
+										<option value="Certification Preparation">Certification Preparation
+										</option>
+										<option value="Certification">Certification</option>
+										<option value="Technical Training">Technical Training</option>
+										<option value="Other">Other</option>
+									</select>
+						</td>
+					</tr>
+				</table>
+				<!-- Date and Time of Event <br /> <input type="date" name="date">
+				<input type="time" name="time"><br /> Location <input -->
+				<!-- type="text" name="loc"> -->
+				<!-- <br /> Amount Requested
+				<input type="text" name="amt"> -->
+				<!-- <br /> Description
+				<textarea name='desc' class='parabox'></textarea> -->
+				<!-- <br /> Type of Event
+				<select name="type">
+					<option value="University Courses">University Courses</option>
+					<option value="Seminar">Seminar</option>
+					<option value="Certification Preparation">Certification Preparation
+					</option>
+					<option value="Certification">Certification</option>
+					<option value="Technical Training">Technical Training</option>
+					<option value="Other">Other</option>
+				</select> -->
+				<br />
+			</fieldset>
+			<br />
+			<fieldset>
+				<legend>Extra</legend>
+				<table>
+					<tr>
+						<td>Work Related Justification: </td>
+						<td>
+								<textarea name='work-just' class='parabox'></textarea>
+						</td>
+					</tr>
+				</table>
+				<!-- Work Related Justification
+				<br />
+				<textarea name='work-just' class='parabox'></textarea>
+				<br /> -->
+			</fieldset>
+			<br />
+			<input type='submit' value='Submit' />
+		</form>
+
+
+	</div>
+	<script type='text/javascript' src='js/form.js'></script>
+	<script type='text/javascript' src='js/template.js'></script>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title>Login</title>
+</head>
+
+<link rel='stylesheet' href='css/defaultstyle.css' />
+<link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<body>
+
+    <div id='banner'>
+        <button id='opener'>=</button>
+        <div id='inside_banner'>
+            <h1>TRMS Website</h1>
+        </div>
+    </div>
+
+    <!--Side bar-->
+
+    <div id='sidebar' attribute='sidebar_anim'>
+        <h3 id='sidebar_h'>Menu</h3>
+        <a href="register.html" class='sidebar_button'>Register</a>
+        <br />
+        <a href="form.html" class='sidebar_button'>Submit Form</a>
+    </div>
+
+    <!--Main Screen-->
+    <div class='container' style="width: 100%">
+
+        <form method="post" name="loginForm" id="loginForm">
+            <table style="font-size:15pt"> 
+                <tr>
+                    <td>Email: </td>
+                    <td>
+                        <input type="text" name="email" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Password: </td>
+                    <td>
+                        <input type="password" name="password" />
+                    </td>
+                </tr>
+            </table>
+            <div style="text-align: center">
+                <br />
+            <input type="submit" value="Login" name="login" />
+            <input type="submit" value="Sign Up" name="signup" />
+            </div>
+        </form>
+    </div>
+
+    <script type='text/javascript' src='js/template.js'></script>
+</body>
+
+</html>

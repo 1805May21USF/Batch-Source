@@ -1,0 +1,65 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>Register</title>
+    </head>
+
+    <link rel='stylesheet' href='css/defaultstyle.css'/>
+    <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">   
+   
+    
+    
+    <body>
+        <div id='banner'>
+                <button id='opener'>=</button>
+            <div id='inside_banner'>
+                <h1>TRMS Website</h1>
+            </div>
+        </div>
+
+        <!--Side bar-->
+
+        <div id='sidebar'>
+            <h3 id='sidebar_h'>Menu</h3>
+            <a href="register.html" class='sidebar_button'>Sidebar1</a><br />
+            <a href="form.html" class='sidebar_button'>Sidebar2</a>
+        </div>
+
+        
+
+        <!--Main Screen-->
+       <div class='container' style="width: 100%">
+			<form id="registerdata" class='formbox' method="post">
+					<fieldset >
+					<legend>Register User</legend>
+					<h5>Name</h5>
+					<label>	
+						<input type='text' name='fname' maxlength='30' placeholder = 'First Name' required='required'/>
+					</label>
+					<label>
+						<input type='text' name='lname' maxlength='30' placeholder = 'Last Name' required='required'/>
+					</label>
+					<br />
+					<h5>Email</h5>
+					<label>
+						<input type='text' name='email' maxlength='100' placeholder = 'youremail@email.com'  required='required'/>
+					</label>
+					<br />
+					<h5>Password</h5>
+					<label>
+						<span id='pwalert'></span>
+						<input type='password' name='password' maxlength='100' placeholder='Password' required='required'/>
+						<input type='password' name='password2' maxlength='100' placeholder='Retype password'required='required'/>
+					</label>
+					<br />
+					<input type='submit' value='Submit'/> 
+					</fieldset> 
+					</form>
+				
+       </div>
+
+	   <script type='text/javascript' src='js/register.js'></script>
+       <script type='text/javascript' src='js/template.js'></script>
+	   <script type="text/javascript" src="bootstrap-4.1.1-dist/js/bootstrap.min.js"></script>
+	</body>
+</html>

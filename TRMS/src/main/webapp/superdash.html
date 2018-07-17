@@ -1,0 +1,72 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title id='usertitle'>Welcome</title>
+</head>
+<link rel='stylesheet' href='css/defaultstyle.css' />
+<link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+<body style=>
+    <div id='banner'>
+        <button id='opener'>=</button>
+        <div id='inside_banner'>
+            <h1>TRMS Website</h1>
+        </div>
+    </div>
+
+    <!--Side bar-->
+
+    <div id='sidebar'>
+        <h3 id='sidebar_h'>Menu</h3>
+        <a href="register.html" class='sidebar_button'>Add Reimbursement</a>
+        <br />
+        <a href="form.html" class='sidebar_button'>Check Reimbursement</a>
+        <br />
+        <a href="login.html" class='sidebar_button'>Log Out</a>
+        <br />
+    </div>
+
+
+
+    <!--Main Screen-->
+    <div class='container' style="width: 100%">
+
+        <div>
+            <h2 id='welcome'>Welcome,
+                <span id='name'></span>
+            </h2>
+        </div>
+
+        <div>
+            <h3 id="reim_status">Current Reimbursement Status</h3>
+        </div>
+        <table id="reim_table">
+            <tr class="reim_row">
+                <th class="reim_header">NAME</th>
+                <th class="reim_header">RID</th>
+                <th class="reim_header">GRADE</th>
+                <th class="reim_header">AMOUNT</th>
+                <th class="reim_header">DATE</th>
+                <th class="reim_header">APPROVE/DENY</th>
+            </tr>
+            <tr class="reim_row">
+                <td class="reim_td">N/A</td>
+                <td class="reim_td">N/A</td>
+                <td class="reim_td">N/A</td>
+                <td class="reim_td">N/A</td>
+                <td class="reim_td">N/A</td>
+                <td class="reim_btns">
+                    <!-- <button id="approveBtn">Approve</button>
+                    <button id="denyBtn">Deny</button> -->
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <script type='text/javascript' src='js/superdash.js'></script>
+    <script type='text/javascript' src='js/template.js'></script>
+</body>
+
+</html>
